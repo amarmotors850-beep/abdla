@@ -173,7 +173,7 @@
         /* Video Hero */
         .video-hero {
             position: relative;
-            height: 80vh;
+            height: 85vh;
             overflow: hidden;
             margin-top: 70px;
         }
@@ -274,9 +274,96 @@
             box-shadow: 0 10px 25px rgba(197, 48, 48, 0.4);
         }
 
+        /* Hero Search Container */
+        .hero-search-container {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(197, 48, 48, 0.2);
+        }
+
+        .search-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Advanced Search in Hero */
+        .advanced-search {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            margin-bottom: 0;
+            box-shadow: none;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            min-width: 200px;
+        }
+
+        .search-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .search-group select,
+        .search-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-group select:focus,
+        .search-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.1);
+        }
+
+        .search-submit {
+            padding: 0.9rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            height: 50px;
+        }
+
+        .search-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(197, 48, 48, 0.4);
+        }
+
         /* Action Buttons Section */
         .action-buttons-section {
-            padding: 6rem 2rem;
+            padding: 8rem 2rem 6rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-align: center;
@@ -382,20 +469,33 @@
         .brands-section {
             background: var(--light);
             padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .brands-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
+        .brands-container {
+            position: relative;
+            max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .brands-swiper {
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        .brands-swiper .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+            transition: var(--transition);
         }
 
         .brand-card {
             background: var(--white);
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
             transition: var(--transition);
             border: 2px solid transparent;
@@ -403,90 +503,67 @@
             text-decoration: none;
             color: inherit;
             display: block;
+            width: 180px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .brand-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.1);
+            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.15);
         }
 
-        .brand-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.8rem;
         }
 
         .brand-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--secondary);
+            text-align: center;
+        }
+
+        /* Navigation Arrows for Swiper */
+        .swiper-button-next,
+        .swiper-button-prev {
+            background: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background: var(--primary);
+        }
+
+        .swiper-button-next:hover:after,
+        .swiper-button-prev:hover:after {
+            color: white;
         }
 
         /* Products Section */
         .products-section {
             padding: 6rem 2rem;
             background: var(--white);
-        }
-
-        /* Advanced Search */
-        .advanced-search {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 3rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .search-group {
-            min-width: 200px;
-        }
-
-        .search-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .search-group select,
-        .search-group input {
-            width: 100%;
-            padding: 0.7rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            transition: var(--transition);
-        }
-
-        .search-group select:focus,
-        .search-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .search-submit {
-            padding: 0.7rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            height: 42px;
-        }
-
-        .search-submit:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
         }
 
         /* Products Grid */
@@ -813,9 +890,10 @@
                 justify-content: center;
             }
             
-            .search-bar {
-                width: 100%;
-                margin-left: 0;
+            .hero-search-container {
+                width: 95%;
+                padding: 1.5rem;
+                bottom: -60px;
             }
             
             .hero-title {
@@ -834,6 +912,21 @@
         @media (max-width: 768px) {
             .section {
                 padding: 4rem 1.5rem;
+            }
+            
+            .hero-search-container {
+                position: relative;
+                bottom: 0;
+                left: 0;
+                transform: none;
+                width: 100%;
+                margin-top: 2rem;
+                border-radius: 0;
+            }
+            
+            .video-hero {
+                height: auto;
+                padding-bottom: 0;
             }
             
             .hero-title {
@@ -871,12 +964,18 @@
                 grid-template-columns: 1fr;
             }
             
-            .brands-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .products-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .brand-card {
+                width: 150px;
+                height: 90px;
+            }
+            
+            .brand-logo {
+                width: 50px;
+                height: 50px;
             }
         }
 
@@ -898,12 +997,19 @@
                 font-size: 1.1rem;
             }
             
-            .brands-grid {
+            .footer-content {
                 grid-template-columns: 1fr;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
+            .brand-card {
+                width: 130px;
+                height: 80px;
+                padding: 1rem;
+            }
+            
+            .brand-logo {
+                width: 40px;
+                height: 40px;
             }
         }
 
@@ -1050,14 +1156,14 @@
             <ul class="nav-links">
                 <li><a href="#home" class="scroll-link" id="navHome">🏠 الرئيسية</a></li>
                 <li><a href="#actions" class="scroll-link" id="navActions">⚡ الخدمات</a></li>
-                <li><a href="#categories" class="scroll-link" id="navCategories">🚗 الأنواع</a></li>
-                <li><a href="#brands" class="scroll-link" id="navBrands">🏎️ الماركات</a></li>
+                <li><a href="#categories" class="scroll-link" id="navCategories">🚗 الفئات</a></li>
+                <li><a href="#brands" class="scroll-link" id="navBrands">🏎️ الشركات</a></li>
                 <li><a href="#products" class="scroll-link" id="navProducts">🛒 السيارات</a></li>
-                <li><a href="#contact" class="scroll-link" id="navContact">📞  تواصل معنا </a></li>
+                <li><a href="#contact" class="scroll-link" id="navContact">📞 تواصل معنا</a></li>
             </ul>
         </nav>
 
-        <!-- Video Hero -->
+        <!-- Video Hero with Search -->
         <section id="home" class="video-hero">
             <video id="backgroundVideo" autoplay muted loop playsinline>
                 <source src="logo2.mp4" type="video/mp4">
@@ -1074,6 +1180,43 @@
                     <a href="#products" class="hero-button primary" id="ctaButton">استعرض السيارات</a>
                     <a href="#contact" class="hero-button secondary" id="contactButton">تواصل معنا</a>
                 </div>
+            </div>
+            
+            <!-- Advanced Search in Hero -->
+            <div class="hero-search-container animate-on-scroll">
+                <h3 class="search-title" id="searchTitle">ابحث عن سيارتك المثالية</h3>
+                <form class="search-form" id="advancedSearchForm">
+                    <div class="search-group">
+                        <label for="searchCategory" id="searchCategoryLabel">الفئة</label>
+                        <select id="searchCategory">
+                            <option value="">جميع الفئات</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <label for="searchType" id="searchTypeLabel">النوع</label>
+                        <select id="searchType">
+                            <option value="">جميع الأنواع</option>
+                            <option value="new">جديد</option>
+                            <option value="used">مستعمل</option>
+                            <option value="electric">كهربائي</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <label for="searchBrand" id="searchBrandLabel">الشركة</label>
+                        <select id="searchBrand">
+                            <option value="">جميع الشركات</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <label for="searchModel" id="searchModelLabel">الموديل</label>
+                        <select id="searchModel">
+                            <option value="">جميع الموديلات</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <button type="submit" class="search-submit" id="searchSubmit">بحث متقدم</button>
+                    </div>
+                </form>
             </div>
         </section>
 
@@ -1101,7 +1244,7 @@
 
         <!-- Categories Type Section -->
         <section id="categories" class="categories-type-section">
-            <h2 class="section-title animate-on-scroll" id="categoriesTitle">تصفح حسب النوع</h2>
+            <h2 class="section-title animate-on-scroll" id="categoriesTitle">تصفح حسب الفئة</h2>
             <div class="type-grid">
                 <a href="category.html?type=new" class="type-card animate-on-scroll">
                     <div class="type-icon">🚗</div>
@@ -1121,11 +1264,18 @@
             </div>
         </section>
 
-        <!-- Brands Section -->
+        <!-- Brands Section with Swiper -->
         <section id="brands" class="brands-section">
-            <h2 class="section-title animate-on-scroll" id="brandsTitle">تصفح حسب الماركة</h2>
-            <div class="brands-grid" id="brandsContainer">
-                <!-- سيتم تحميل الماركات ديناميكياً -->
+            <h2 class="section-title animate-on-scroll" id="brandsTitle">تصفح حسب الشركة</h2>
+            <div class="brands-container">
+                <div class="brands-swiper swiper">
+                    <div class="swiper-wrapper" id="brandsContainer">
+                        <!-- سيتم تحميل الماركات ديناميكياً -->
+                    </div>
+                    <!-- Add navigation arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
             </div>
         </section>
 
@@ -1133,51 +1283,6 @@
         <section id="products" class="products-section">
             <h2 class="section-title animate-on-scroll" id="productsTitle">أحدث السيارات المتاحة</h2>
             
-            <!-- Advanced Search -->
-            <div class="advanced-search animate-on-scroll">
-                <form class="search-form" id="advancedSearchForm">
-                    <div class="search-group">
-                        <label for="searchCategory" id="searchCategoryLabel">القسم</label>
-                        <select id="searchCategory">
-                            <option value="">جميع الأقسام</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchType" id="searchTypeLabel">النوع</label>
-                        <select id="searchType">
-                            <option value="">جميع الأنواع</option>
-                            <option value="new">جديد</option>
-                            <option value="used">مستعمل</option>
-                            <option value="electric">كهربائي</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchBrand" id="searchBrandLabel">الماركة</label>
-                        <select id="searchBrand">
-                            <option value="">جميع الماركات</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchModel" id="searchModelLabel">الموديل</label>
-                        <select id="searchModel">
-                            <option value="">جميع الموديلات</option>
-                            <!-- سيتم تعبئة الموديلات من 2000 إلى 2026 -->
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchMinPrice" id="searchMinPriceLabel">السعر من</label>
-                        <input type="number" id="searchMinPrice" placeholder="أقل سعر">
-                    </div>
-                    <div class="search-group">
-                        <label for="searchMaxPrice" id="searchMaxPriceLabel">السعر إلى</label>
-                        <input type="number" id="searchMaxPrice" placeholder="أعلى سعر">
-                    </div>
-                    <div class="search-group">
-                        <button type="submit" class="search-submit" id="searchSubmit">بحث</button>
-                    </div>
-                </form>
-            </div>
-
             <!-- Products Grid -->
             <div class="products-grid" id="productsContainer">
                 <!-- سيتم تحميل المنتجات ديناميكياً -->
@@ -1202,8 +1307,8 @@
                     <ul class="footer-links">
                         <li><a href="#home" class="scroll-link" id="footerHome">🏠 الرئيسية</a></li>
                         <li><a href="#actions" class="scroll-link" id="footerActions">⚡ الخدمات</a></li>
-                        <li><a href="#categories" class="scroll-link" id="footerCategories">🚗 الأنواع</a></li>
-                        <li><a href="#brands" class="scroll-link" id="footerBrands">🏎️ الماركات</a></li>
+                        <li><a href="#categories" class="scroll-link" id="footerCategories">🚗 الفئات</a></li>
+                        <li><a href="#brands" class="scroll-link" id="footerBrands">🏎️ الشركات</a></li>
                         <li><a href="#products" class="scroll-link" id="footerProducts">🛒 السيارات</a></li>
                     </ul>
                 </div>
@@ -1241,12 +1346,13 @@
                 heroDescription: "تجربة فاخرة في عالم السيارات. الجودة والتميز في كل تفصيل، حيث تجتمع الأناقة مع الأداء المتميز لتقدم لك أفضل ما في عالم السيارات الفاخرة.",
                 ctaButton: "استعرض السيارات",
                 contactButton: "تواصل معنا",
+                searchTitle: "ابحث عن سيارتك المثالية",
                 
                 // Navigation
                 navHome: "🏠 الرئيسية",
                 navActions: "⚡ الخدمات",
-                navCategories: "🚗 الأنواع",
-                navBrands: "🏎️ الماركات",
+                navCategories: "🚗 الفئات",
+                navBrands: "🏎️ الشركات",
                 navProducts: "🛒 السيارات",
                 navContact: "📞 اتصل بنا",
                 
@@ -1260,8 +1366,8 @@
                 exchangeDescription: "استبدل سيارتك القديمة بسيارة جديدة مع دفع الفرق",
                 
                 // Sections
-                categoriesTitle: "تصفح حسب النوع",
-                brandsTitle: "تصفح حسب الماركة",
+                categoriesTitle: "تصفح حسب الفئة",
+                brandsTitle: "تصفح حسب الشركة",
                 productsTitle: "أحدث السيارات المتاحة",
                 
                 // Categories
@@ -1273,13 +1379,13 @@
                 electricCarsDesc: "سيارات كهربائية صديقة للبيئة بتقنيات حديثة",
                 
                 // Search
-                searchCategoryLabel: "القسم",
+                searchCategoryLabel: "الفئة",
                 searchTypeLabel: "النوع",
-                searchBrandLabel: "الماركة",
+                searchBrandLabel: "الشركة",
                 searchModelLabel: "الموديل",
                 searchMinPriceLabel: "السعر من",
                 searchMaxPriceLabel: "السعر إلى",
-                searchSubmit: "بحث",
+                searchSubmit: "بحث متقدم",
                 
                 // Footer
                 footerAboutTitle: "عبدالله للسيارات",
@@ -1287,8 +1393,8 @@
                 footerLinksTitle: "روابط سريعة",
                 footerHome: "🏠 الرئيسية",
                 footerActions: "⚡ الخدمات",
-                footerCategories: "🚗 الأنواع",
-                footerBrands: "🏎️ الماركات",
+                footerCategories: "🚗 الفئات",
+                footerBrands: "🏎️ الشركات",
                 footerProducts: "🛒 السيارات",
                 footerContactTitle: "اتصل بنا",
                 footerPhone: "📞 الهاتف:",
@@ -1318,11 +1424,12 @@
                 heroDescription: "A luxurious experience in the world of cars. Quality and excellence in every detail, where elegance meets exceptional performance to offer you the best in the world of luxury cars.",
                 ctaButton: "Browse Cars",
                 contactButton: "Contact Us",
+                searchTitle: "Search for Your Ideal Car",
                 
                 // Navigation
                 navHome: "🏠 Home",
                 navActions: "⚡ Services",
-                navCategories: "🚗 Types",
+                navCategories: "🚗 Categories",
                 navBrands: "🏎️ Brands",
                 navProducts: "🛒 Cars",
                 navContact: "📞 Contact",
@@ -1337,7 +1444,7 @@
                 exchangeDescription: "Exchange your old car for a new one by paying the difference",
                 
                 // Sections
-                categoriesTitle: "Browse by Type",
+                categoriesTitle: "Browse by Category",
                 brandsTitle: "Browse by Brand",
                 productsTitle: "Latest Available Cars",
                 
@@ -1356,7 +1463,7 @@
                 searchModelLabel: "Model",
                 searchMinPriceLabel: "Price From",
                 searchMaxPriceLabel: "Price To",
-                searchSubmit: "Search",
+                searchSubmit: "Advanced Search",
                 
                 // Footer
                 footerAboutTitle: "Abdullah Cars",
@@ -1364,7 +1471,7 @@
                 footerLinksTitle: "Quick Links",
                 footerHome: "🏠 Home",
                 footerActions: "⚡ Services",
-                footerCategories: "🚗 Types",
+                footerCategories: "🚗 Categories",
                 footerBrands: "🏎️ Brands",
                 footerProducts: "🛒 Cars",
                 footerContactTitle: "Contact Us",
@@ -1383,10 +1490,146 @@
             }
         };
 
+        // قائمة الشركات الكاملة مع روابط الشعارات
+        const allBrands = [
+            // الشركات الأساسية
+            { 
+                name: "Toyota", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/1024px-Toyota_carlogo.svg.png" 
+            },
+            { 
+                name: "Mercedes", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1024px-Mercedes-Logo.svg.png" 
+            },
+            { 
+                name: "BMW", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" 
+            },
+            { 
+                name: "Audi", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png" 
+            },
+            { 
+                name: "Nissan", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Nissan_logo.png/1024px-Nissan_logo.png" 
+            },
+            { 
+                name: "Honda", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Honda_logo.svg/1024px-Honda_logo.svg.png" 
+            },
+            { 
+                name: "Hyundai", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Hyundai_Motor_Company_logo.svg/1024px-Hyundai_Motor_Company_logo.svg.png" 
+            },
+            { 
+                name: "Kia", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Kia_logo.svg/1024px-Kia_logo.svg.png" 
+            },
+            // الشركات الجديدة التي طلبتها
+            { 
+                name: "Smart", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Smart_logo.svg/1024px-Smart_logo.svg.png" 
+            },
+            { 
+                name: "Brilliance", 
+                logo: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1e/Brilliance_Auto_logo.svg/1024px-Brilliance_Auto_logo.svg.png" 
+            },
+            { 
+                name: "Aston Martin", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Aston_Martin_Lagonda_logo.svg/1024px-Aston_Martin_Lagonda_logo.svg.png" 
+            },
+            { 
+                name: "PROTON", 
+                logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Proton_Logo.svg/1024px-Proton_Logo.svg.png" 
+            },
+            { 
+                name: "Subaru", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Subaru_logo.svg/1024px-Subaru_logo.svg.png" 
+            },
+            { 
+                name: "DFSK", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/DFSK_logo.svg/1024px-DFSK_logo.svg.png" 
+            },
+            { 
+                name: "Fiat", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Fiat_logo.svg/1024px-Fiat_logo.svg.png" 
+            },
+            { 
+                name: "Mini", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/MINI_logo.svg/1024px-MINI_logo.svg.png" 
+            },
+            { 
+                name: "Zeekr", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Zeekr_logo.svg/1024px-Zeekr_logo.svg.png" 
+            },
+            { 
+                name: "IM", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/IM_Motors_logo.svg/1024px-IM_Motors_logo.svg.png" 
+            },
+            { 
+                name: "Vgv", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/VGV_logo.svg/1024px-VGV_logo.svg.png" 
+            },
+            { 
+                name: "Hongqi", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Hongqi_logo.svg/1024px-Hongqi_logo.svg.png" 
+            },
+            { 
+                name: "Li Auto", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Li_Auto_logo.svg/1024px-Li_Auto_logo.svg.png" 
+            },
+            { 
+                name: "Rox", 
+                logo: "https://via.placeholder.com/100x60?text=ROX" 
+            },
+            // شركات إضافية
+            { 
+                name: "Volkswagen", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/1024px-Volkswagen_logo_2019.svg.png" 
+            },
+            { 
+                name: "Ford", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/1024px-Ford_logo_flat.svg.png" 
+            },
+            { 
+                name: "Chevrolet", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Chevrolet_logo.svg/1024px-Chevrolet_logo.svg.png" 
+            },
+            { 
+                name: "Tesla", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/1024px-Tesla_Motors.svg.png" 
+            },
+            { 
+                name: "Jeep", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Jeep_logo.svg/1024px-Jeep_logo.svg.png" 
+            },
+            { 
+                name: "Lexus", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lexus_logo.svg/1024px-Lexus_logo.svg.png" 
+            },
+            { 
+                name: "Mazda", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Mazda_logo_2021.svg/1024px-Mazda_logo_2021.svg.png" 
+            },
+            { 
+                name: "Mitsubishi", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mitsubishi_logo.svg/1024px-Mitsubishi_logo.svg.png" 
+            },
+            { 
+                name: "Porsche", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Porsche_logo.svg/1024px-Porsche_logo.svg.png" 
+            },
+            { 
+                name: "Range Rover", 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Land_Rover_logo.svg/1024px-Land_Rover_logo.svg.png" 
+            }
+        ];
+
         // اللغة الحالية
         let currentLanguage = 'ar';
         let siteData = null;
         let filteredProducts = [];
+        let brandsSwiper = null;
 
         // التهيئة
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1402,7 +1645,44 @@
             
             // تهيئة النظام
             initializeSystem();
+            
+            // تهيئة Swiper
+            initializeSwiper();
         });
+
+        // تهيئة Swiper
+        function initializeSwiper() {
+            brandsSwiper = new Swiper('.brands-swiper', {
+                slidesPerView: 'auto',
+                spaceBetween: 15,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 2,
+                        spaceBetween: 10
+                    },
+                    480: {
+                        slidesPerView: 3,
+                        spaceBetween: 15
+                    },
+                    768: {
+                        slidesPerView: 4,
+                        spaceBetween: 20
+                    },
+                    1024: {
+                        slidesPerView: 6,
+                        spaceBetween: 25
+                    },
+                    1200: {
+                        slidesPerView: 7,
+                        spaceBetween: 30
+                    }
+                }
+            });
+        }
 
         // تحميل بيانات الموقع
         async function loadSiteData() {
@@ -1618,41 +1898,25 @@
             const container = document.getElementById('brandsContainer');
             if (!container) return;
             
-            // جمع الماركات الفريدة من المنتجات
-            const brandsSet = new Set();
-            if (siteData?.products) {
-                siteData.products.forEach(product => {
-                    if (product.brand) {
-                        brandsSet.add(product.brand);
-                    }
-                });
-            }
+            // استخدام القائمة الكاملة للشركات
+            const brands = allBrands;
             
-            const brands = Array.from(brandsSet);
-            
-            if (brands.length === 0) {
-                const defaultBrands = [
-                    { name: "Toyota", icon: "🚗" },
-                    { name: "Nissan", icon: "🚙" },
-                    { name: "Honda", icon: "🏎️" },
-                    { name: "Mercedes", icon: "🌟" },
-                    { name: "BMW", icon: "⚡" },
-                    { name: "Audi", icon: "🔷" },
-                    { name: "Kia", icon: "🚘" },
-                    { name: "Hyundai", icon: "🚔" }
-                ];
-                
-                defaultBrands.forEach(brand => {
-                    brandsSet.add(brand.name);
-                });
-            }
-            
-            container.innerHTML = Array.from(brandsSet).map(brand => `
-                <a href="category.html?brand=${encodeURIComponent(brand)}" class="brand-card animate-on-scroll">
-                    <div class="brand-icon">🚗</div>
-                    <div class="brand-name">${brand}</div>
-                </a>
+            // إنشاء HTML للشركات
+            container.innerHTML = brands.map(brand => `
+                <div class="swiper-slide">
+                    <a href="category.html?brand=${encodeURIComponent(brand.name)}" class="brand-card animate-on-scroll">
+                        <img src="${brand.logo}" alt="${brand.name}" class="brand-logo" onerror="this.src='https://via.placeholder.com/60x60?text=${brand.name.charAt(0)}'">
+                        <div class="brand-name">${brand.name}</div>
+                    </a>
+                </div>
             `).join('');
+            
+            // إعادة تهيئة Swiper بعد تحديث المحتوى
+            if (brandsSwiper) {
+                setTimeout(() => {
+                    brandsSwiper.update();
+                }, 100);
+            }
         }
 
         // تحديث المنتجات
@@ -1732,8 +1996,6 @@
             const type = document.getElementById('searchType').value;
             const brand = document.getElementById('searchBrand').value;
             const model = document.getElementById('searchModel').value;
-            const minPrice = document.getElementById('searchMinPrice').value;
-            const maxPrice = document.getElementById('searchMaxPrice').value;
             
             let filteredProducts = siteData?.products || [];
             
@@ -1756,14 +2018,6 @@
                 filteredProducts = filteredProducts.filter(p => 
                     p.year && p.year.toString() === model
                 );
-            }
-            
-            if (minPrice) {
-                filteredProducts = filteredProducts.filter(p => p.price >= parseFloat(minPrice));
-            }
-            
-            if (maxPrice) {
-                filteredProducts = filteredProducts.filter(p => p.price <= parseFloat(maxPrice));
             }
             
             updateProducts(filteredProducts);
