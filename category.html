@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">الأقسام | عبدالله للسيارات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #c53030;
+            --primary-dark: #9b2c2c;
+            --secondary: #0a0a0a;
+            --light: #f7fafc;
+            --gray: #a0aec0;
+            --dark-gray: #4a5568;
+            --white: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--white);
+            color: var(--secondary);
+            overflow-x: hidden;
+            text-align: right;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 25px;
+            border: 2px solid var(--primary);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(197, 48, 48, 0.2);
+            transition: var(--transition);
+        }
+
+        .language-switcher.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #loadingVideo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 2rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            animation: loadingAnimation 2s ease-in-out forwards;
+        }
+
+        @keyframes loadingAnimation {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            100% { width: 100%; }
+        }
+
+        /* Navigation */
+        .category-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .back-button {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        .nav-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(197, 48, 48, 0.2);
+            animation: pulseLogo 2s infinite;
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(197, 48, 48, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(197, 48, 48, 0.5);
+                transform: scale(1.05);
+            }
+        }
+
+        .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        /* Category Container */
+        .category-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .category-container {
+                padding: 6rem 1rem 2rem;
+            }
+        }
+
+        /* Category Header */
+        .category-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background: var(--light);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .category-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            border: 4px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .category-title {
+                font-size: 2rem;
+            }
+        }
+
+        .category-description {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Search Filter */
+        .search-filter {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--primary);
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            transition: var(--transition);
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-submit {
+            padding: 0.7rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            height: 42px;
+        }
+
+        .filter-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Products Section */
+        .products-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-card {
+            background: var(--light);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 2px solid #e2e8f0;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(197, 48, 48, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+
+        .product-brand {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .product-model {
+            color: var(--dark-gray);
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .view-button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .view-button:hover::before {
+            left: 100%;
+        }
+
+        .view-button:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--dark-gray);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            z-index: 10000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50%) translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .category-nav {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .category-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .category-description {
+                font-size: 1rem;
+            }
+            
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="ar" id="langAr">🇪🇬</button>
+        <button class="lang-btn" data-lang="en" id="langEn">🇺🇸</button>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <video id="loadingVideo" autoplay muted playsinline>
+            <source src="logo.mp4" type="video/mp4">
+        </video>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="category-nav">
+        <a href="index.html" class="back-button" id="backButton">
+            <i class="fas fa-arrow-right"></i>
+            <span id="backText">العودة</span>
+        </a>
+        <a href="index.html" class="nav-logo-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="عبدالله للسيارات" onerror="this.src='https://via.placeholder.com/50'">
+            </div>
+            <div class="logo-text">عبدالله <span>للسيارات</span></div>
+        </a>
+    </nav>
+
+    <!-- Category Container -->
+    <div class="category-container">
+        <div id="categoryContent">
+            <!-- سيتم تحميل محتوى القسم ديناميكياً -->
+            <div style="text-align: center; padding: 4rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <p id="loadingText">جاري تحميل محتوى القسم...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="sync.js"></script>
+    <script>
+        // نصوص اللغة
+        const categoryTexts = {
+            ar: {
+                pageTitle: "الأقسام | عبدالله للسيارات",
+                
+                // Navigation
+                backText: "العودة",
+                
+                // Loading
+                loadingText: "جاري تحميل محتوى القسم...",
+                
+                // Filters
+                filterBrand: "الماركة",
+                filterModel: "الموديل",
+                filterMinPrice: "السعر من",
+                filterMaxPrice: "السعر إلى",
+                filterSubmit: "بحث",
+                
+                // Products
+                productsTitle: "المنتجات في هذا القسم",
+                noProducts: "لا توجد منتجات في هذا القسم حالياً",
+                brand: "الماركة:",
+                model: "الموديل:",
+                
+                // Messages
+                categoryNotFound: "القسم غير موجود",
+                errorLoading: "حدث خطأ في تحميل القسم"
+            },
+            
+            en: {
+                pageTitle: "Categories | Abdullah Cars",
+                
+                // Navigation
+                backText: "Back",
+                
+                // Loading
+                loadingText: "Loading category content...",
+                
+                // Filters
+                filterBrand: "Brand",
+                filterModel: "Model",
+                filterMinPrice: "Price From",
+                filterMaxPrice: "Price To",
+                filterSubmit: "Search",
+                
+                // Products
+                productsTitle: "Products in this category",
+                noProducts: "No products in this category at the moment",
+                brand: "Brand:",
+                model: "Model:",
+                
+                // Messages
+                categoryNotFound: "Category not found",
+                errorLoading: "Error loading category"
+            }
+        };
+
+        // اللغة الحالية
+        let currentLanguage = 'ar';
+        let siteData = null;
+        let currentCategory = null;
+        let filteredProducts = [];
+
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', async () => {
+            // الحصول على اللغة من التخزين المحلي
+            const savedLang = localStorage.getItem('siteLanguage') || 'ar';
+            currentLanguage = savedLang;
+            
+            // تطبيق اللغة
+            applyLanguage(currentLanguage);
+            
+            // تهيئة مبدل اللغة
+            initLanguageSwitcher();
+            
+            // تحميل بيانات الموقع
+            await loadSiteData();
+            
+            // تحميل القسم
+            await loadCategory();
+            
+            // بدء رسوميات التحميل
+            startLoadingAnimation();
+        });
+
+        // تحميل بيانات الموقع
+        async function loadSiteData() {
+            try {
+                if (window.gitHubSync && window.gitHubSync.fetch) {
+                    siteData = await window.gitHubSync.fetch();
+                } else {
+                    // تحميل من localStorage
+                    const savedData = localStorage.getItem('siteData');
+                    if (savedData) {
+                        siteData = JSON.parse(savedData);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading site data:', error);
+                showToast(categoryTexts[currentLanguage].errorLoading);
+            }
+        }
+
+        // تحميل القسم
+        async function loadCategory() {
+            try {
+                // الحصول على معرف القسم من URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryId = urlParams.get('id');
+                const categoryType = urlParams.get('type');
+                
+                if ((!categoryId && !categoryType) || !siteData) {
+                    showCategoryNotFound();
+                    return;
+                }
+                
+                let category;
+                
+                if (categoryId) {
+                    // البحث عن القسم بواسطة ID
+                    category = siteData.categories?.find(c => c.id === categoryId);
+                } else if (categoryType) {
+                    // البحث عن القسم بواسطة النوع
+                    category = {
+                        id: categoryType,
+                        name: {
+                            ar: categoryType === 'new' ? 'سيارات جديدة' : 
+                                categoryType === 'used' ? 'سيارات مستعملة' : 'سيارات كهربائية',
+                            en: categoryType === 'new' ? 'New Cars' : 
+                                categoryType === 'used' ? 'Used Cars' : 'Electric Cars'
+                        },
+                        type: categoryType,
+                        description: {
+                            ar: categoryType === 'new' ? 'أحدث الموديلات بأعلى المواصفات' : 
+                                categoryType === 'used' ? 'سيارات مستعملة بحالة ممتازة' : 'سيارات صديقة للبيئة',
+                            en: categoryType === 'new' ? 'Latest models with highest specifications' : 
+                                categoryType === 'used' ? 'Used cars in excellent condition' : 'Environmentally friendly cars'
+                        }
+                    };
+                }
+                
+                if (!category) {
+                    showCategoryNotFound();
+                    return;
+                }
+                
+                currentCategory = category;
+                
+                // عرض محتوى القسم
+                displayCategoryContent();
+                
+            } catch (error) {
+                console.error('Error loading category:', error);
+                showCategoryNotFound();
+            }
+        }
+
+        // عرض محتوى القسم
+        function displayCategoryContent() {
+            if (!currentCategory) return;
+            
+            // البحث عن المنتجات التابعة لهذا القسم
+            let categoryProducts = [];
+            
+            if (currentCategory.id && siteData.products) {
+                // إذا كان قسم محدد بواسطة ID
+                categoryProducts = siteData.products.filter(p => p.categoryId === currentCategory.id);
+            } else if (currentCategory.type && siteData.products) {
+                // إذا كان قسم محدد بواسطة النوع
+                categoryProducts = siteData.products.filter(p => p.type === currentCategory.type);
+            }
+            
+            filteredProducts = [...categoryProducts];
+            
+            // جمع الماركات الفريدة للمرشح
+            const uniqueBrands = [...new Set(categoryProducts.map(p => p.brand).filter(Boolean))];
+            
+            const html = `
+                <!-- Category Header -->
+                <div class="category-header">
+                    <img src="${currentCategory.image || 'https://via.placeholder.com/200?text=No+Image'}" 
+                         alt="${currentCategory.name?.[currentLanguage] || 'Category'}" 
+                         class="category-image"
+                         onerror="this.src='https://via.placeholder.com/200?text=No+Image'">
+                    <h1 class="category-title">${currentCategory.name?.[currentLanguage] || 'Category'}</h1>
+                    <p class="category-description">
+                        ${currentCategory.description?.[currentLanguage] || currentCategory.description || 'لا يوجد وصف'}
+                    </p>
+                </div>
+
+                <!-- Search Filter -->
+                <div class="search-filter">
+                    <form class="filter-form" id="filterForm">
+                        <div class="filter-group">
+                            <label for="filterBrand">${categoryTexts[currentLanguage].filterBrand}</label>
+                            <select id="filterBrand">
+                                <option value="">${categoryTexts[currentLanguage].filterBrand}</option>
+                                ${uniqueBrands.map(brand => `<option value="${brand}">${brand}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterModel">${categoryTexts[currentLanguage].filterModel}</label>
+                            <select id="filterModel">
+                                <option value="">${categoryTexts[currentLanguage].filterModel}</option>
+                                <!-- سيتم تعبئة الموديلات من 2000 إلى 2026 -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterMinPrice">${categoryTexts[currentLanguage].filterMinPrice}</label>
+                            <input type="number" id="filterMinPrice" placeholder="${categoryTexts[currentLanguage].filterMinPrice}">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterMaxPrice">${categoryTexts[currentLanguage].filterMaxPrice}</label>
+                            <input type="number" id="filterMaxPrice" placeholder="${categoryTexts[currentLanguage].filterMaxPrice}">
+                        </div>
+                        <div class="filter-group">
+                            <button type="submit" class="filter-submit">${categoryTexts[currentLanguage].filterSubmit}</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Products Section -->
+                <div class="products-section">
+                    <h2 class="section-title">${categoryTexts[currentLanguage].productsTitle}</h2>
+                    
+                    <div class="products-grid" id="productsGrid">
+                        ${renderProducts(filteredProducts)}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('categoryContent').innerHTML = html;
+            
+            // تعبئة خيارات الموديل
+            populateModelFilter();
+            
+            // إعداد مستمع الأحداث للفلتر
+            document.getElementById('filterForm').addEventListener('submit', handleFilter);
+        }
+
+        // تعبئة فلتر الموديل
+        function populateModelFilter() {
+            const modelSelect = document.getElementById('filterModel');
+            if (!modelSelect) return;
+            
+            // مسح الخيارات الحالية
+            modelSelect.innerHTML = `<option value="">${categoryTexts[currentLanguage].filterModel}</option>`;
+            
+            // إضافة الموديلات من 2000 إلى 2026
+            for (let year = 2026; year >= 2000; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                modelSelect.appendChild(option);
+            }
+        }
+
+        // عرض المنتجات
+        function renderProducts(products) {
+            if (products.length === 0) {
+                return `
+                    <div class="empty-state">
+                        <i class="fas fa-car"></i>
+                        <h3>${categoryTexts[currentLanguage].noProducts}</h3>
+                        <p>${currentLanguage === 'ar' ? 'حاول استخدام معايير بحث مختلفة' : 'Try different search criteria'}</p>
+                    </div>
+                `;
+            }
+            
+            return products.map(product => `
+                <div class="product-card">
+                    <img src="${product.images?.[0] || 'https://via.placeholder.com/400x250?text=No+Image'}" 
+                         alt="${product.name?.[currentLanguage] || 'Product'}" 
+                         class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name?.[currentLanguage] || 'Product'}</h3>
+                        <div class="product-details">
+                            <span class="product-brand">${categoryTexts[currentLanguage].brand} ${product.brand || '--'}</span>
+                            <span class="product-model">${categoryTexts[currentLanguage].model} ${product.year || '--'}</span>
+                        </div>
+                        <div class="product-price">${product.price || '0'} ${siteData?.site?.currencySymbol || 'ج.م'}</div>
+                        <a href="product-details.html?id=${product.id}" class="view-button">
+                            ${currentLanguage === 'ar' ? 'عرض التفاصيل' : 'View Details'}
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // معالجة الفلتر
+        function handleFilter(e) {
+            e.preventDefault();
+            
+            const brand = document.getElementById('filterBrand').value;
+            const model = document.getElementById('filterModel').value;
+            const minPrice = document.getElementById('filterMinPrice').value;
+            const maxPrice = document.getElementById('filterMaxPrice').value;
+            
+            let filtered = [];
+            
+            if (currentCategory.id && siteData.products) {
+                filtered = siteData.products.filter(p => p.categoryId === currentCategory.id);
+            } else if (currentCategory.type && siteData.products) {
+                filtered = siteData.products.filter(p => p.type === currentCategory.type);
+            }
+            
+            // تطبيق الفلاتر
+            if (brand) {
+                filtered = filtered.filter(p => p.brand && p.brand.toLowerCase() === brand.toLowerCase());
+            }
+            
+            if (model) {
+                filtered = filtered.filter(p => p.year && p.year.toString() === model);
+            }
+            
+            if (minPrice) {
+                filtered = filtered.filter(p => p.price >= parseFloat(minPrice));
+            }
+            
+            if (maxPrice) {
+                filtered = filtered.filter(p => p.price <= parseFloat(maxPrice));
+            }
+            
+            filteredProducts = filtered;
+            
+            // تحديث العرض
+            document.getElementById('productsGrid').innerHTML = renderProducts(filtered);
+            
+            // عرض رسالة إذا لم توجد نتائج
+            if (filtered.length === 0) {
+                showToast(currentLanguage === 'ar' ? 'لم يتم العثور على نتائج' : 'No results found');
+            }
+        }
+
+        // عرض رسالة عدم وجود القسم
+        function showCategoryNotFound() {
+            const html = `
+                <div class="empty-state" style="min-height: 50vh; display: flex; flex-direction: column; justify-content: center;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h2>${categoryTexts[currentLanguage].categoryNotFound}</h2>
+                    <p style="margin: 1rem 0 2rem;">${currentLanguage === 'ar' ? 'القسم الذي تبحث عنه غير موجود أو تم إزالته.' : 'The category you are looking for does not exist or has been removed.'}</p>
+                    <a href="index.html" class="view-button" style="display: inline-block; width: auto;">
+                        <i class="fas fa-home"></i>
+                        ${currentLanguage === 'ar' ? 'العودة للرئيسية' : 'Back to Home'}
+                    </a>
+                </div>
+            `;
+            document.getElementById('categoryContent').innerHTML = html;
+        }
+
+        // رسوميات التحميل
+        function startLoadingAnimation() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingVideo = document.getElementById('loadingVideo');
+
+            const onLoadingComplete = () => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 500);
+            };
+
+            loadingVideo.addEventListener('ended', onLoadingComplete);
+            setTimeout(onLoadingComplete, 2000);
+        }
+
+        // تطبيق اللغة على جميع العناصر
+        function applyLanguage(lang) {
+            const texts = categoryTexts[lang];
+            
+            // تحديث عنوان الصفحة
+            document.title = texts.pageTitle;
+            
+            // تحديث جميع العناصر التي تحتوي على بيانات
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = texts[key];
+                }
+            });
+            
+            // تحديث مبدل اللغة
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // تحديث اتجاه HTML
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            
+            // تحديث محاذاة النص
+            document.body.style.textAlign = lang === 'ar' ? 'right' : 'left';
+        }
+
+        // مبدل اللغة
+        function initLanguageSwitcher() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const newLang = this.dataset.lang;
+                    
+                    if (newLang !== currentLanguage) {
+                        currentLanguage = newLang;
+                        
+                        // حفظ اللغة
+                        localStorage.setItem('siteLanguage', currentLanguage);
+                        document.cookie = `siteLanguage=${currentLanguage}; path=/; max-age=31536000`;
+                        
+                        // تطبيق اللغة الجديدة
+                        applyLanguage(currentLanguage);
+                        
+                        // إعادة تحميل محتوى القسم
+                        if (currentCategory) {
+                            displayCategoryContent();
+                        }
+                    }
+                });
+            });
+        }
+
+        // عرض الإشعار
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // إخفاء مبدل اللغة عند التمرير
+        window.addEventListener('scroll', () => {
+            const languageSwitcher = document.querySelector('.language-switcher');
+            if (languageSwitcher) {
+                if (window.scrollY > 100) {
+                    languageSwitcher.classList.add('hidden');
+                } else {
+                    languageSwitcher.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

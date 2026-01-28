@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">طلب شراء | عبدالله للسيارات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #c53030;
+            --primary-dark: #9b2c2c;
+            --secondary: #0a0a0a;
+            --light: #f7fafc;
+            --gray: #a0aec0;
+            --dark-gray: #4a5568;
+            --white: #ffffff;
+            --success: #38a169;
+            --warning: #ed8936;
+            --danger: #e53e3e;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif !important;
+            background-color: var(--white);
+            color: var(--secondary);
+            overflow-x: hidden;
+            text-align: right;
+        }
+
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #loadingVideo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 2rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            animation: loadingAnimation 2s ease-in-out forwards;
+        }
+
+        @keyframes loadingAnimation {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            100% { width: 100%; }
+        }
+
+        /* Navigation */
+        .order-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .back-button {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif !important;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        .nav-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(197, 48, 48, 0.2);
+            animation: pulseLogo 2s infinite;
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(197, 48, 48, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(197, 48, 48, 0.5);
+                transform: scale(1.05);
+            }
+        }
+
+        .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        /* Order Container */
+        .order-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .order-container {
+                padding: 6rem 1rem 2rem;
+            }
+        }
+
+        /* Order Header */
+        .order-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background: var(--light);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
+        }
+
+        .order-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .order-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .order-title {
+                font-size: 2rem;
+            }
+        }
+
+        .order-subtitle {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Order Content */
+        .order-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        @media (max-width: 992px) {
+            .order-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Order Form */
+        .order-form {
+            background: var(--light);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .order-form {
+                padding: 2rem;
+            }
+        }
+
+        .order-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            color: var(--secondary);
+            font-family: 'Cairo', sans-serif !important;
+            font-size: 1rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(197, 48, 48, 0.2);
+        }
+
+        .form-textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c53030' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 1rem center;
+            padding-left: 3rem;
+        }
+
+        .form-required {
+            color: var(--danger);
+        }
+
+        /* Payment Method */
+        .payment-method {
+            margin: 2rem 0;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 576px) {
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .payment-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* قسم التقسيط */
+        .installment-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(197, 48, 48, 0.1);
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            display: none;
+        }
+
+        .installment-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .installment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .installment-option {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .installment-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.1);
+        }
+
+        .installment-option.selected {
+            border-color: var(--primary);
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        .installment-details {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            display: none;
+        }
+
+        .installment-details.show {
+            display: block;
+        }
+
+        /* Form Buttons */
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .form-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .submit-button {
+            flex: 1;
+            padding: 1.2rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.2);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.3);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .reset-button {
+            padding: 1.2rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .reset-button:hover {
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: var(--light);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 992px) {
+            .order-summary {
+                position: static;
+            }
+        }
+
+        .order-summary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .summary-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-preview {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 480px) {
+            .product-preview {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 480px) {
+            .product-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .product-details {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .summary-items {
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .summary-label {
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Product Selection */
+        .product-selection {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .products-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .product-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(197, 48, 48, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .product-option:hover {
+            background: rgba(197, 48, 48, 0.2);
+        }
+
+        .product-option.selected {
+            background: rgba(197, 48, 48, 0.3);
+        }
+
+        .product-option-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-option-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-option-name {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .product-option-price {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 4rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid var(--primary);
+            transform: scale(0.9);
+            transition: var(--transition);
+            box-shadow: 0 20px 50px rgba(197, 48, 48, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        .success-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .success-icon {
+            font-size: 6rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .modal-title {
+                font-size: 2rem;
+            }
+        }
+
+        .modal-message {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-order-id {
+            background: rgba(197, 48, 48, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            font-family: monospace;
+            font-size: 1.3rem;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .modal-button {
+            padding: 1rem 2.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .modal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .modal-button:hover::before {
+            left: 100%;
+        }
+
+        .modal-button.primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .modal-button.primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.3);
+        }
+
+        .modal-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .modal-button.secondary:hover {
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        /* Error States */
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-input.error,
+        .form-textarea.error,
+        .form-select.error {
+            border-color: var(--danger);
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            z-index: 10000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50%) translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .order-nav {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <video id="loadingVideo" autoplay muted playsinline>
+            <source src="logo.mp4" type="video/mp4">
+        </video>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="order-nav">
+        <a href="index.html" class="back-button" id="backButton">
+            <i class="fas fa-arrow-right"></i>
+            <span id="backText">العودة للرئيسية</span>
+        </a>
+        <a href="index.html" class="nav-logo-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="عبدالله للسيارات" onerror="this.src='https://via.placeholder.com/50'">
+            </div>
+            <div class="logo-text">عبدالله <span>للسيارات</span></div>
+        </a>
+    </nav>
+
+    <!-- Order Container -->
+    <div class="order-container">
+        <!-- Order Header -->
+        <div class="order-header">
+            <h1 class="order-title" id="orderTitle">طلب شراء سيارة</h1>
+            <p class="order-subtitle" id="orderSubtitle">املأ النموذج التالي وسنتصل بك في أقرب وقت ممكن لتأكيد طلبك</p>
+        </div>
+
+        <!-- Order Content -->
+        <div class="order-content">
+            <!-- Order Form -->
+            <form class="order-form" id="orderForm">
+                <h2 class="form-title" id="formTitle">معلومات الطلب</h2>
+                
+                <!-- Product Selection -->
+                <div class="product-selection" id="productSelection">
+                    <h3 id="productSelectionTitle">اختر السيارة المطلوبة</h3>
+                    <div class="products-list" id="productsList">
+                        <!-- سيتم تحميل المنتجات ديناميكياً -->
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="form-group payment-method">
+                    <label class="form-label">طريقة الدفع</label>
+                    <div class="payment-options">
+                        <div class="payment-option" data-method="cash" onclick="selectPaymentMethod('cash')">
+                            <div class="payment-icon">💵</div>
+                            <div class="payment-label">كاش</div>
+                        </div>
+                        <div class="payment-option" data-method="installment" onclick="selectPaymentMethod('installment')">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-label">تقسيط</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم التقسيط -->
+                <div class="installment-section" id="installmentSection">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-credit-card"></i>
+                        <span id="installmentTitle">خيارات التقسيط</span>
+                    </h4>
+                    
+                    <div class="installment-options" id="installmentOptions">
+                        <!-- سيتم تحميل خطط التقسيط ديناميكياً -->
+                    </div>
+                    
+                    <div class="installment-details" id="installmentDetails">
+                        <h5 style="color: var(--primary); margin-bottom: 0.5rem;" id="installmentDetailsTitle">تفاصيل التقسيط المختار:</h5>
+                        <div id="selectedInstallmentInfo"></div>
+                    </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="form-group">
+                    <label for="fullName" class="form-label">
+                        <span id="nameLabel">الاسم بالكامل</span> <span class="form-required">*</span>
+                    </label>
+                    <input type="text" id="fullName" class="form-input" required 
+                           placeholder="أدخل اسمك بالكامل">
+                    <div class="error-message" id="nameError">الرجاء إدخال اسم صحيح</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber" class="form-label">
+                        <span id="phoneLabel">رقم الهاتف</span> <span class="form-required">*</span>
+                    </label>
+                    <input type="tel" id="phoneNumber" class="form-input" required 
+                           placeholder="مثال: 01XXXXXXXXX">
+                    <div class="error-message" id="phoneError">الرجاء إدخال رقم هاتف صحيح</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <span id="emailLabel">البريد الإلكتروني</span>
+                    </label>
+                    <input type="email" id="email" class="form-input" 
+                           placeholder="example@domain.com">
+                    <div class="error-message" id="emailError">الرجاء إدخال بريد إلكتروني صحيح</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="form-label">
+                        <span id="addressLabel">العنوان بالتفصيل</span> <span class="form-required">*</span>
+                    </label>
+                    <textarea id="address" class="form-textarea" required 
+                              placeholder="الرجاء كتابة العنوان كاملاً مع اسم المدينة والحي"></textarea>
+                    <div class="error-message" id="addressError">الرجاء إدخال العنوان كاملاً</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="city" class="form-label">
+                        <span id="cityLabel">المدينة</span> <span class="form-required">*</span>
+                    </label>
+                    <select id="city" class="form-select" required>
+                        <option value="">اختر المدينة</option>
+                        <option value="القاهرة">القاهرة</option>
+                        <option value="الجيزة">الجيزة</option>
+                        <option value="الإسكندرية">الإسكندرية</option>
+                        <option value="بورسعيد">بورسعيد</option>
+                        <option value="السويس">السويس</option>
+                        <option value="دمياط">دمياط</option>
+                        <option value="الدقهلية">الدقهلية</option>
+                        <option value="الشرقية">الشرقية</option>
+                        <option value="القليوبية">القليوبية</option>
+                        <option value="كفر الشيخ">كفر الشيخ</option>
+                        <option value="الغربية">الغربية</option>
+                        <option value="المنوفية">المنوفية</option>
+                        <option value="الفيوم">الفيوم</option>
+                        <option value="المنيا">المنيا</option>
+                        <option value="أسيوط">أسيوط</option>
+                        <option value="سوهاج">سوهاج</option>
+                        <option value="قنا">قنا</option>
+                        <option value="أسوان">أسوان</option>
+                        <option value="الأقصر">الأقصر</option>
+                        <option value="البحر الأحمر">البحر الأحمر</option>
+                        <option value="الوادي الجديد">الوادي الجديد</option>
+                        <option value="مرسى مطروح">مرسى مطروح</option>
+                        <option value="شمال سيناء">شمال سيناء</option>
+                        <option value="جنوب سيناء">جنوب سيناء</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                    <div class="error-message" id="cityError">الرجاء اختيار المدينة</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactMethod" class="form-label">
+                        <span id="contactMethodLabel">طريقة التواصل المفضلة</span>
+                    </label>
+                    <select id="contactMethod" class="form-select">
+                        <option value="phone">مكالمة هاتفية</option>
+                        <option value="whatsapp">واتساب</option>
+                        <option value="email">البريد الإلكتروني</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes" class="form-label">
+                        <span id="notesLabel">ملاحظات إضافية (اختياري)</span>
+                    </label>
+                    <textarea id="notes" class="form-textarea" 
+                              placeholder="أي ملاحظات إضافية تريد إضافتها"></textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="submit-button" id="submitButton">
+                        <span id="submitText">إرسال الطلب</span>
+                    </button>
+                    <button type="reset" class="reset-button" id="resetButton">
+                        <span id="resetText">مسح النموذج</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3 class="summary-title" id="summaryTitle">ملخص الطلب</h3>
+                
+                <div class="product-preview" id="selectedProductPreview">
+                    <!-- سيتم تحديثه ديناميكياً -->
+                </div>
+
+                <div class="summary-items">
+                    <div class="summary-item">
+                        <span class="summary-label" id="orderNumberLabel">رقم الطلب:</span>
+                        <span class="summary-value" id="orderNumber">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" id="orderDateLabel">تاريخ الطلب:</span>
+                        <span class="summary-value" id="orderDate">${new Date().toLocaleDateString('ar-SA')}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" id="orderStatusLabel">حالة الطلب:</span>
+                        <span class="summary-value" style="color: var(--primary);" id="orderStatus">قيد المراجعة</span>
+                    </div>
+                    <div class="summary-item" id="paymentMethodItem">
+                        <span class="summary-label" id="paymentMethodLabel">طريقة الدفع:</span>
+                        <span class="summary-value" id="paymentMethodValue">---</span>
+                    </div>
+                    <div class="summary-item" id="installmentSummary" style="display: none;">
+                        <span class="summary-label" id="installmentLabel">خطة التقسيط:</span>
+                        <span class="summary-value" id="installmentPlan">---</span>
+                    </div>
+                </div>
+
+                <div class="summary-total">
+                    <span id="totalLabel">المبلغ الإجمالي:</span>
+                    <span id="totalAmount">0 ج.م</span>
+                </div>
+
+                <div style="margin-top: 2rem; font-size: 0.9rem;">
+                    <p>⚠️ <span id="orderHint1">سيتم التواصل معك خلال 24 ساعة لتأكيد الطلب</span></p>
+                    <p>📞 <span id="orderHint2">للاستفسار: <strong style="color: var(--primary);" id="orderPhone">---</strong></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h2 class="modal-title" id="modalTitle">تم استلام طلبك بنجاح!</h2>
+            <p class="modal-message" id="modalMessage">
+                شكراً لك على ثقتك بنا. سيتم مراجعة طلبك والتواصل معك في أقرب وقت ممكن.
+            </p>
+            <div class="modal-order-id" id="modalOrderId">---</div>
+            <div class="modal-buttons">
+                <a href="index.html" class="modal-button primary" id="modalHomeButton">العودة للرئيسية</a>
+                <button class="modal-button secondary" onclick="closeModal()" id="modalCloseButton">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="sync.js"></script>
+    <script>
+        // نصوص اللغة
+        const orderTexts = {
+            ar: {
+                pageTitle: "طلب شراء | عبدالله للسيارات",
+                
+                // Navigation
+                backText: "العودة للرئيسية",
+                
+                // Order Header
+                orderTitle: "طلب شراء سيارة",
+                orderSubtitle: "املأ النموذج التالي وسنتصل بك في أقرب وقت ممكن لتأكيد طلبك",
+                
+                // Form
+                formTitle: "معلومات الطلب",
+                productSelectionTitle: "اختر السيارة المطلوبة",
+                installmentTitle: "خيارات التقسيط",
+                installmentDetailsTitle: "تفاصيل التقسيط المختار:",
+                nameLabel: "الاسم بالكامل",
+                phoneLabel: "رقم الهاتف",
+                emailLabel: "البريد الإلكتروني",
+                addressLabel: "العنوان بالتفصيل",
+                cityLabel: "المدينة",
+                notesLabel: "ملاحظات إضافية (اختياري)",
+                contactMethodLabel: "طريقة التواصل المفضلة",
+                submitText: "إرسال الطلب",
+                resetText: "مسح النموذج",
+                
+                // Summary
+                summaryTitle: "ملخص الطلب",
+                orderNumberLabel: "رقم الطلب:",
+                orderDateLabel: "تاريخ الطلب:",
+                orderStatusLabel: "حالة الطلب:",
+                paymentMethodLabel: "طريقة الدفع:",
+                installmentLabel: "خطة التقسيط:",
+                totalLabel: "المبلغ الإجمالي:",
+                
+                // Order Hints
+                orderHint1: "سيتم التواصل معك خلال 24 ساعة لتأكيد الطلب",
+                orderHint2: "للاستفسار:",
+                
+                // Modal
+                modalTitle: "تم استلام طلبك بنجاح!",
+                modalMessage: "شكراً لك على ثقتك بنا. سيتم مراجعة طلبك والتواصل معك في أقرب وقت ممكن.",
+                modalHomeButton: "العودة للرئيسية",
+                modalCloseButton: "إغلاق",
+                
+                // Messages
+                noProducts: "لا توجد سيارات متاحة للطلب حالياً",
+                selectProduct: "الرجاء اختيار سيارة أولاً",
+                orderSuccess: "تم إرسال طلبك بنجاح",
+                orderError: "حدث خطأ أثناء إرسال الطلب",
+                phoneError: "الرجاء إدخال رقم هاتف مصري صحيح",
+                noInstallmentPlans: "لا توجد خيارات تقسيط متاحة لهذا المنتج",
+                selectPaymentMethod: "الرجاء اختيار طريقة الدفع",
+                selectInstallmentPlan: "الرجاء اختيار خطة التقسيط"
+            }
+        };
+
+        // البيانات
+        let siteData = null;
+        let selectedProduct = null;
+        let orderNumber = generateOrderNumber();
+        let selectedInstallmentPlan = null;
+        let paymentMethod = null;
+
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', async () => {
+            // تطبيق اللغة
+            applyLanguage();
+            
+            // تحميل بيانات الموقع
+            await loadSiteData();
+            
+            // تحميل المنتجات
+            loadProducts();
+            
+            // تحديث ملخص الطلب
+            updateOrderSummary();
+            
+            // تهيئة النموذج
+            initializeForm();
+            
+            // بدء رسوميات التحميل
+            startLoadingAnimation();
+        });
+
+        // تطبيق اللغة
+        function applyLanguage() {
+            const texts = orderTexts.ar;
+            
+            // تحديث عنوان الصفحة
+            document.title = texts.pageTitle;
+            document.getElementById('pageTitle').textContent = texts.pageTitle;
+            
+            // تحديث جميع العناصر
+            Object.keys(texts).forEach(key => {
+                if (typeof texts[key] === 'string') {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = texts[key];
+                    }
+                }
+            });
+        }
+
+        // تحميل بيانات الموقع
+        async function loadSiteData() {
+            try {
+                if (window.gitHubSync && window.gitHubSync.fetch) {
+                    siteData = await window.gitHubSync.fetch();
+                } else {
+                    // تحميل من localStorage
+                    const savedData = localStorage.getItem('siteData');
+                    if (savedData) {
+                        siteData = JSON.parse(savedData);
+                    }
+                }
+                
+                // تحديث رقم الهاتف في ملخص الطلب
+                if (siteData?.contact?.phone) {
+                    document.getElementById('orderPhone').textContent = siteData.contact.phone;
+                }
+            } catch (error) {
+                console.error('Error loading site data:', error);
+            }
+        }
+
+        // تحميل المنتجات
+        function loadProducts() {
+            const container = document.getElementById('productsList');
+            if (!container) return;
+            
+            const products = siteData?.products?.filter(p => p.status === 'available') || [];
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
+                        <i class="fas fa-car" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>${orderTexts.ar.noProducts}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(product => `
+                <div class="product-option" onclick="selectProduct('${product.id}')">
+                    <img src="${product.images?.[0] || 'https://via.placeholder.com/60?text=No+Image'}" 
+                         alt="${product.name?.ar || 'Product'}" 
+                         class="product-option-image">
+                    <div class="product-option-info">
+                        <div class="product-option-name">${product.name?.ar || 'Product'}</div>
+                        <div class="product-option-price">${product.price || '0'} ${siteData?.site?.currencySymbol || 'ج.م'}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // تحديد أول منتج تلقائياً
+            if (products.length > 0) {
+                selectProduct(products[0].id);
+            }
+        }
+
+        // تحديد منتج
+        function selectProduct(productId) {
+            // إزالة التحديد من جميع المنتجات
+            document.querySelectorAll('.product-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للمنتج المختار
+            const selectedOption = document.querySelector(`.product-option[onclick*="${productId}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+                
+                // العثور على المنتج في البيانات
+                selectedProduct = siteData?.products?.find(p => p.id === productId);
+                if (selectedProduct) {
+                    updateProductPreview();
+                    
+                    // إعادة تعيين طريقة الدفع
+                    resetPaymentMethod();
+                    
+                    // إخفاء قسم التقسيط
+                    document.getElementById('installmentSection').classList.remove('show');
+                    document.getElementById('installmentDetails').classList.remove('show');
+                }
+            }
+        }
+
+        // تحديث معاينة المنتج
+        function updateProductPreview() {
+            const container = document.getElementById('selectedProductPreview');
+            if (!container || !selectedProduct) return;
+            
+            container.innerHTML = `
+                <img src="${selectedProduct.images?.[0] || 'https://via.placeholder.com/120?text=No+Image'}" 
+                     alt="${selectedProduct.name?.ar || 'Product'}" 
+                     class="product-image">
+                <div class="product-details">
+                    <h4 class="product-name">${selectedProduct.name?.ar || 'Product'}</h4>
+                    <div class="product-price">${selectedProduct.price || '0'} ${siteData.site?.currencySymbol || 'ج.م'}</div>
+                </div>
+            `;
+            
+            // تحديث المبلغ الإجمالي
+            document.getElementById('totalAmount').textContent = 
+                `${selectedProduct.price || '0'} ${siteData.site?.currencySymbol || 'ج.م'}`;
+        }
+
+        // تحديد طريقة الدفع
+        function selectPaymentMethod(method) {
+            // إزالة التحديد من جميع الخيارات
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للطريقة المختارة
+            const selectedOption = document.querySelector(`.payment-option[data-method="${method}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+            
+            paymentMethod = method;
+            
+            // تحديث ملخص الطلب
+            document.getElementById('paymentMethodValue').textContent = 
+                method === 'cash' ? 'كاش' : 'تقسيط';
+            document.getElementById('paymentMethodItem').style.display = 'flex';
+            
+            // إظهار أو إخفاء قسم التقسيط
+            const installmentSection = document.getElementById('installmentSection');
+            if (method === 'installment') {
+                installmentSection.classList.add('show');
+                loadInstallmentPlans();
+            } else {
+                installmentSection.classList.remove('show');
+                document.getElementById('installmentDetails').classList.remove('show');
+                document.getElementById('installmentSummary').style.display = 'none';
+                
+                // إعادة تعيين المبلغ الإجمالي إلى سعر المنتج
+                if (selectedProduct) {
+                    document.getElementById('totalAmount').textContent = 
+                        `${selectedProduct.price || '0'} ${siteData.site?.currencySymbol || 'ج.م'}`;
+                }
+            }
+        }
+
+        // إعادة تعيين طريقة الدفع
+        function resetPaymentMethod() {
+            paymentMethod = null;
+            selectedInstallmentPlan = null;
+            
+            // إزالة التحديد من جميع الخيارات
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // إخفاء قسم التقسيط
+            document.getElementById('installmentSection').classList.remove('show');
+            document.getElementById('installmentDetails').classList.remove('show');
+            document.getElementById('installmentSummary').style.display = 'none';
+            
+            // إعادة تعيين ملخص الطلب
+            document.getElementById('paymentMethodValue').textContent = '---';
+            document.getElementById('paymentMethodItem').style.display = 'flex';
+            
+            // إعادة تعيين المبلغ الإجمالي
+            if (selectedProduct) {
+                document.getElementById('totalAmount').textContent = 
+                    `${selectedProduct.price || '0'} ${siteData.site?.currencySymbol || 'ج.م'}`;
+            }
+        }
+
+        // تحميل خطط التقسيط
+        function loadInstallmentPlans() {
+            const container = document.getElementById('installmentOptions');
+            if (!container || !selectedProduct || !siteData) return;
+            
+            // الحصول على خطط التقسيط للمنتج
+            const productInstallmentPlans = selectedProduct.installmentPlans || [];
+            
+            if (productInstallmentPlans.length === 0) {
+                container.innerHTML = `<p style="color: var(--dark-gray); text-align: center; grid-column: 1 / -1;">${orderTexts.ar.noInstallmentPlans}</p>`;
+                return;
+            }
+            
+            container.innerHTML = productInstallmentPlans.map(plan => `
+                <div class="installment-option" 
+                     onclick="selectInstallmentPlan(${plan.months}, ${plan.downPayment}, ${plan.monthlyPayment}, ${plan.interestRate || 0}, ${plan.downPercentage})">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">${plan.months} شهر</div>
+                    <div style="font-size: 0.9rem; color: var(--dark-gray); margin: 0.3rem 0;">
+                        مقدم: ${plan.downPayment.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}
+                    </div>
+                    <div style="font-size: 1.1rem; font-weight: 600; color: var(--secondary);">
+                        ${plan.monthlyPayment.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}/شهر
+                    </div>
+                    ${plan.interestRate ? `
+                        <div style="font-size: 0.8rem; color: var(--success); margin-top: 0.3rem;">
+                            فائدة: ${plan.interestRate}%
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // اختيار خطة التقسيط
+        function selectInstallmentPlan(months, downPayment, monthlyPayment, interestRate, downPercentage) {
+            // إزالة التحديد من جميع الخطط
+            document.querySelectorAll('.installment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للخطة المختارة
+            const selectedOption = document.querySelector(`.installment-option[onclick*="${months}, ${downPayment}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+            
+            // حساب المبلغ الإجمالي
+            const totalAmount = downPayment + (monthlyPayment * months);
+            
+            // حفظ الخطة المختارة
+            selectedInstallmentPlan = {
+                months: months,
+                downPayment: downPayment,
+                monthlyPayment: monthlyPayment,
+                interestRate: interestRate,
+                downPercentage: downPercentage,
+                totalAmount: totalAmount
+            };
+            
+            // عرض تفاصيل التقسيط
+            const detailsContainer = document.getElementById('installmentDetails');
+            const infoContainer = document.getElementById('selectedInstallmentInfo');
+            
+            infoContainer.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                    <div>
+                        <strong>مدة التقسيط:</strong>
+                        <div>${months} شهر (${Math.floor(months/12)} سنة و ${months%12} شهر)</div>
+                    </div>
+                    <div>
+                        <strong>المقدم:</strong>
+                        <div>${downPayment.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'} (${downPercentage}%)</div>
+                    </div>
+                    <div>
+                        <strong>القسط الشهري:</strong>
+                        <div>${monthlyPayment.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}</div>
+                    </div>
+                    <div>
+                        <strong>المبلغ الإجمالي:</strong>
+                        <div>${totalAmount.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}</div>
+                    </div>
+                </div>
+                ${interestRate > 0 ? `
+                    <div style="background: rgba(56, 161, 105, 0.1); padding: 0.5rem; border-radius: 5px; border: 1px solid var(--success);">
+                        <strong>ملاحظة:</strong> يتضمن التقسيط فائدة بنسبة ${interestRate}%
+                    </div>
+                ` : `
+                    <div style="background: rgba(56, 161, 105, 0.1); padding: 0.5rem; border-radius: 5px; border: 1px solid var(--success);">
+                        <strong>مميز:</strong> تقسيط بدون فوائد
+                    </div>
+                `}
+            `;
+            
+            detailsContainer.classList.add('show');
+            
+            // تحديث ملخص التقسيط
+            document.getElementById('installmentPlan').textContent = 
+                `${months} شهر - ${monthlyPayment.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}/شهر`;
+            document.getElementById('installmentSummary').style.display = 'flex';
+            
+            // تحديث المبلغ الإجمالي
+            document.getElementById('totalAmount').textContent = 
+                `${totalAmount.toLocaleString()} ${siteData.site?.currencySymbol || 'ج.م'}`;
+        }
+
+        // تحديث ملخص الطلب
+        function updateOrderSummary() {
+            document.getElementById('orderNumber').textContent = orderNumber;
+            document.getElementById('orderDate').textContent = new Date().toLocaleDateString('ar-SA');
+            document.getElementById('modalOrderId').textContent = orderNumber;
+        }
+
+        // توليد رقم طلب
+        function generateOrderNumber() {
+            const timestamp = Date.now().toString().slice(-8);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `ORD-${timestamp}${random}`;
+        }
+
+        // تهيئة النموذج
+        function initializeForm() {
+            const form = document.getElementById('orderForm');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearError);
+            });
+            
+            form.addEventListener('submit', handleSubmit);
+            
+            document.getElementById('resetButton').addEventListener('click', () => {
+                setTimeout(() => {
+                    clearAllErrors();
+                    resetForm();
+                }, 100);
+            });
+        }
+
+        // إعادة تعيين النموذج
+        function resetForm() {
+            // إعادة تعيين طريقة الدفع
+            resetPaymentMethod();
+            
+            // إعادة تعيين المنتج المختار
+            if (siteData?.products?.length > 0) {
+                const availableProducts = siteData.products.filter(p => p.status === 'available');
+                if (availableProducts.length > 0) {
+                    selectProduct(availableProducts[0].id);
+                }
+            }
+        }
+
+        // التحقق من الحقل
+        function validateField(e) {
+            const field = e.target;
+            const value = field.value.trim();
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            
+            let isValid = true;
+            let errorMessage = '';
+            
+            switch (field.id) {
+                case 'fullName':
+                    if (value.length < 3) {
+                        isValid = false;
+                        errorMessage = 'الاسم يجب أن يكون 3 أحرف على الأقل';
+                    }
+                    break;
+                    
+                case 'phoneNumber':
+                    // تحقق من رقم الهاتف المصري
+                    const phoneRegex = /^01[0125][0-9]{8}$/;
+                    if (!phoneRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = orderTexts.ar.phoneError;
+                    }
+                    break;
+                    
+                case 'email':
+                    if (value && !isValidEmail(value)) {
+                        isValid = false;
+                        errorMessage = 'الرجاء إدخال بريد إلكتروني صحيح';
+                    }
+                    break;
+                    
+                case 'address':
+                    if (value.length < 10) {
+                        isValid = false;
+                        errorMessage = 'الرجاء إدخال العنوان بالتفصيل';
+                    }
+                    break;
+                    
+                case 'city':
+                    if (!value) {
+                        isValid = false;
+                        errorMessage = 'الرجاء اختيار المدينة';
+                    }
+                    break;
+            }
+            
+            if (!isValid) {
+                field.classList.add('error');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('show');
+            }
+            
+            return isValid;
+        }
+
+        // التحقق من البريد الإلكتروني
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // مسح الخطأ
+        function clearError(e) {
+            const field = e.target;
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            
+            field.classList.remove('error');
+            errorElement.classList.remove('show');
+        }
+
+        // مسح جميع الأخطاء
+        function clearAllErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(el => {
+                el.classList.remove('error');
+            });
+        }
+
+        // التعامل مع إرسال النموذج
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            // التحقق من اختيار المنتج
+            if (!selectedProduct) {
+                showToast(orderTexts.ar.selectProduct);
+                return;
+            }
+            
+            // التحقق من اختيار طريقة الدفع
+            if (!paymentMethod) {
+                showToast(orderTexts.ar.selectPaymentMethod);
+                return;
+            }
+            
+            // التحقق من اختيار خطة التقسيط إذا كانت الطريقة تقسيط
+            if (paymentMethod === 'installment' && !selectedInstallmentPlan) {
+                showToast(orderTexts.ar.selectInstallmentPlan);
+                return;
+            }
+            
+            const form = e.target;
+            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+            
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!validateField({ target: input })) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                return;
+            }
+            
+            const submitButton = document.getElementById('submitButton');
+            
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            
+            try {
+                const formData = new FormData(form);
+                const orderData = {
+                    id: 'ord_' + Date.now(),
+                    orderNumber: orderNumber,
+                    customer: {
+                        fullName: formData.get('fullName'),
+                        phone: formData.get('phoneNumber'),
+                        email: formData.get('email'),
+                        address: formData.get('address'),
+                        city: formData.get('city'),
+                        notes: formData.get('notes'),
+                        contactMethod: formData.get('contactMethod')
+                    },
+                    product: {
+                        id: selectedProduct.id,
+                        name: selectedProduct.name?.ar || selectedProduct.name,
+                        price: selectedProduct.price,
+                        image: selectedProduct.images?.[0]
+                    },
+                    paymentMethod: paymentMethod,
+                    installment: paymentMethod === 'installment' ? selectedInstallmentPlan : null,
+                    totalAmount: paymentMethod === 'installment' ? selectedInstallmentPlan.totalAmount : selectedProduct.price,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                };
+                
+                // حفظ الطلب في البيانات
+                if (!siteData.orders) {
+                    siteData.orders = [];
+                }
+                siteData.orders.push(orderData);
+                
+                // حفظ البيانات
+                if (window.gitHubSync && window.gitHubSync.push) {
+                    await window.gitHubSync.push(siteData, `طلب جديد من ${orderData.customer.fullName}`);
+                } else {
+                    localStorage.setItem('siteData', JSON.stringify(siteData));
+                }
+                
+                // إرسال إشعار التلجرام
+                if (window.gitHubSync && window.gitHubSync.sendTelegramNotification) {
+                    window.gitHubSync.sendTelegramNotification(orderData);
+                }
+                
+                setTimeout(() => {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = orderTexts.ar.submitText;
+                    
+                    showSuccessModal();
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                
+                submitButton.disabled = false;
+                submitButton.innerHTML = orderTexts.ar.submitText;
+                
+                showToast(orderTexts.ar.orderError);
+            }
+        }
+
+        // عرض نافذة النجاح
+        function showSuccessModal() {
+            document.getElementById('modalOrderId').textContent = orderNumber;
+            
+            const modal = document.getElementById('successModal');
+            modal.classList.add('active');
+            
+            document.body.style.overflow = 'hidden';
+            
+            showToast(orderTexts.ar.orderSuccess);
+        }
+
+        // إغلاق النافذة المنبثقة
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('active');
+            
+            document.body.style.overflow = '';
+            document.getElementById('orderForm').reset();
+            
+            // إعادة تعيين المنتج المختار
+            if (siteData?.products?.length > 0) {
+                const availableProducts = siteData.products.filter(p => p.status === 'available');
+                if (availableProducts.length > 0) {
+                    selectProduct(availableProducts[0].id);
+                }
+            }
+            
+            // إعادة تعيين طريقة الدفع
+            resetPaymentMethod();
+            
+            // توليد رقم طلب جديد
+            orderNumber = generateOrderNumber();
+            updateOrderSummary();
+        }
+
+        // رسوميات التحميل
+        function startLoadingAnimation() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingVideo = document.getElementById('loadingVideo');
+
+            const onLoadingComplete = () => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 500);
+            };
+
+            loadingVideo.addEventListener('ended', onLoadingComplete);
+            setTimeout(onLoadingComplete, 2000);
+        }
+
+        // عرض الإشعار
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
