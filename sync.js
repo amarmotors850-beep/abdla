@@ -1,11 +1,10 @@
-[file name]: sync.js
-[file content begin]
+
 class GitHubSync {
     constructor() {
         this.config = {
             owner: 'MHmooDhazm',
             repo: 'bitelazz-data',
-            token: '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',
+            token: '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',
             branch: 'main',
             filePath: 'site-data.json'
         };
