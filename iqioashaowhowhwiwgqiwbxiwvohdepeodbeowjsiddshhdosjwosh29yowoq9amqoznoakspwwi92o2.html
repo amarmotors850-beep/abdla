@@ -1,5 +1,3 @@
-[file name]: iqioashaowhowhwiwgqiwbxiwvohdepeodbeowjsiddshhdosjwosh29yowoq9amqoznoakspwwi92o2.html
-[file content begin]
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -589,6 +587,56 @@
             flex: 1;
         }
 
+        /* Image Upload */
+        .image-upload-container {
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .image-upload-container:hover {
+            border-color: var(--primary);
+            background: rgba(197, 48, 48, 0.02);
+        }
+
+        .image-preview {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 4rem;
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .image-upload-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
         /* Tables */
         .data-table-container {
             background: var(--white);
@@ -1052,13 +1100,15 @@
                    class="login-input" 
                    id="adminUsername" 
                    placeholder="اسم المستخدم"
-                   autocomplete="off">
+                   autocomplete="off"
+                   value="admin">
             
             <input type="password" 
                    class="login-input" 
                    id="adminPassword" 
                    placeholder="كلمة المرور"
-                   autocomplete="off">
+                   autocomplete="off"
+                   value="2845">
             
             <button class="login-button" onclick="login()">
                 <i class="fas fa-sign-in-alt"></i>
@@ -1086,7 +1136,7 @@
                 <button class="menu-toggle" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <a href="#" class="dashboard-logo">
+                <a href="index.html" class="dashboard-logo">
                     <div class="logo">ع</div>
                     <span class="dashboard-title">لوحة التحكم</span>
                 </a>
@@ -1339,6 +1389,34 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="form-card">
+                        <h2 class="form-title">روابط التواصل الاجتماعي</h2>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">فيسبوك</label>
+                                <input type="url" class="form-input" id="siteFacebook">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">انستجرام</label>
+                                <input type="url" class="form-input" id="siteInstagram">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">تيك توك</label>
+                                <input type="url" class="form-input" id="siteTiktok">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">يوتيوب</label>
+                                <input type="url" class="form-input" id="siteYoutube">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </section>
         </main>
@@ -1420,12 +1498,31 @@
                         <textarea class="form-textarea" id="productDescription" rows="4" required></textarea>
                     </div>
                     
+                    <!-- صورة المنتج -->
                     <div class="form-group">
-                        <label class="form-label">المواصفات</label>
-                        <div class="specifications-container" id="specificationsContainer"></div>
-                        <button type="button" class="action-button secondary" onclick="addSpecification()">
-                            <i class="fas fa-plus"></i> إضافة مواصفة
-                        </button>
+                        <label class="form-label">صورة السيارة</label>
+                        <div class="image-upload-container" onclick="document.getElementById('productImageInput').click()">
+                            <div class="image-preview" id="productImagePreview">
+                                <div class="image-preview-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>انقر لرفع صورة</span>
+                                </div>
+                            </div>
+                            <input type="file" 
+                                   id="productImageInput" 
+                                   accept="image/*" 
+                                   style="display: none;"
+                                   onchange="previewImage(event, 'productImagePreview', 'productImageUrl')">
+                            <input type="hidden" id="productImageUrl">
+                            <div class="image-upload-buttons">
+                                <button type="button" class="action-button secondary" onclick="document.getElementById('productImageInput').click()">
+                                    <i class="fas fa-upload"></i> رفع صورة
+                                </button>
+                                <button type="button" class="action-button secondary" onclick="clearImage('productImagePreview', 'productImageUrl')">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -1476,6 +1573,33 @@
                     <div class="form-group">
                         <label class="form-label">وصف الماركة</label>
                         <textarea class="form-textarea" id="brandDescription" rows="3"></textarea>
+                    </div>
+                    
+                    <!-- صورة الماركة -->
+                    <div class="form-group">
+                        <label class="form-label">شعار الماركة</label>
+                        <div class="image-upload-container" onclick="document.getElementById('brandImageInput').click()">
+                            <div class="image-preview" id="brandImagePreview">
+                                <div class="image-preview-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>انقر لرفع صورة</span>
+                                </div>
+                            </div>
+                            <input type="file" 
+                                   id="brandImageInput" 
+                                   accept="image/*" 
+                                   style="display: none;"
+                                   onchange="previewImage(event, 'brandImagePreview', 'brandImageUrl')">
+                            <input type="hidden" id="brandImageUrl">
+                            <div class="image-upload-buttons">
+                                <button type="button" class="action-button secondary" onclick="document.getElementById('brandImageInput').click()">
+                                    <i class="fas fa-upload"></i> رفع صورة
+                                </button>
+                                <button type="button" class="action-button secondary" onclick="clearImage('brandImagePreview', 'brandImageUrl')">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-row">
@@ -1604,7 +1728,7 @@
 
         // ============ التهيئة ============
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🔧 Admin Panel Initializing...');
+            console.log('🔧 لوحة التحكم تعمل...');
             
             // التحقق من الجلسة
             if (checkSession()) {
@@ -1630,7 +1754,7 @@
                     }
                 }
             } catch (error) {
-                console.error('Session error:', error);
+                console.error('خطأ في الجلسة:', error);
             }
             
             return false;
@@ -1709,7 +1833,7 @@
                 }
                 
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('خطأ في تسجيل الدخول:', error);
                 errorMessage.textContent = 'حدث خطأ في النظام';
                 errorElement.style.display = 'block';
             } finally {
@@ -1751,10 +1875,10 @@
                 // إظهار القسم الرئيسي
                 showSection('overview');
                 
-                console.log('✅ Dashboard initialized');
+                console.log('✅ تم تهيئة لوحة التحكم');
                 
             } catch (error) {
-                console.error('Dashboard initialization error:', error);
+                console.error('خطأ في تهيئة لوحة التحكم:', error);
                 showToast('حدث خطأ في تحميل لوحة التحكم', 'error');
             }
         }
@@ -1766,27 +1890,27 @@
             try {
                 if (window.gitHubSync) {
                     adminData = await window.gitHubSync.fetch();
-                    console.log('📊 Admin data loaded:', {
+                    console.log('📊 بيانات الإدارة المحملة:', {
                         products: adminData.products?.length || 0,
                         brands: adminData.brands?.length || 0,
                         users: adminData.users?.length || 0
                     });
                 } else {
-                    throw new Error('GitHub sync not available');
+                    throw new Error('نظام المزامنة غير متوفر');
                 }
                 
             } catch (error) {
-                console.error('❌ Error loading admin data:', error);
+                console.error('❌ خطأ في تحميل بيانات الإدارة:', error);
                 
                 // استخدام البيانات المحلية
                 const localData = localStorage.getItem('siteData');
                 if (localData) {
                     adminData = JSON.parse(localData);
-                    console.log('📦 Using local data');
+                    console.log('📦 استخدام البيانات المحلية');
                 } else {
                     // إنشاء بيانات افتراضية
                     adminData = createDefaultData();
-                    console.log('🆕 Created default data');
+                    console.log('🆕 إنشاء بيانات افتراضية');
                 }
                 
             } finally {
@@ -1818,11 +1942,17 @@
                     currencySymbol: "ج.م"
                 },
                 contact: {
-                    phone: "01012345678",
-                    whatsapp: "01012345678",
-                    email: "info@abdullahcars.com",
+                    phone: "01121811110",
+                    whatsapp: "01121811110",
+                    email: "amarmotors850@gmail.com",
                     address: "القاهرة، مصر",
                     workingHours: "9 ص - 9 م"
+                },
+                social: {
+                    facebook: "https://www.facebook.com/share/1SdkvcBynu/?mibextid=wwXIfr",
+                    instagram: "https://www.instagram.com/abdullah_auto_?igsh=Nm5hNnJtMjM2ZDEw&utm_source=qr",
+                    tiktok: "https://www.tiktok.com/@abdullah.auto0?_r=1&_t=ZS-93NEKHAJ5TJ",
+                    youtube: ""
                 },
                 system: {
                     lastSync: new Date().toISOString(),
@@ -1940,12 +2070,15 @@
                 const typeText = getTypeText(product.type);
                 const statusClass = product.featured ? 'status-active' : 'status-inactive';
                 const statusText = product.featured ? 'مميز' : 'عادي';
+                const imageUrl = product.images && product.images.length > 0 
+                    ? product.images[0] 
+                    : product.image;
                 
                 return `
                     <tr>
                         <td>
-                            ${product.images && product.images.length > 0 ? 
-                                `<img src="${product.images[0]}" class="table-image" alt="${product.name?.ar}">` : 
+                            ${imageUrl ? 
+                                `<img src="${imageUrl}" class="table-image" alt="${product.name?.ar}">` : 
                                 `<div style="width: 60px; height: 60px; background: var(--light); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
                                     <i class="fas fa-car"></i>
                                 </div>`}
@@ -1955,7 +2088,7 @@
                             <small style="color: var(--gray);">${product.model || ''}</small>
                         </td>
                         <td>${product.brand || 'غير محدد'}</td>
-                        <td><strong>${product.price || 0} ج.م</strong></td>
+                        <td><strong>${formatPrice(product.price || 0)}</strong></td>
                         <td>${typeText}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
@@ -1992,14 +2125,20 @@
             }
             
             container.innerHTML = brands.map(brand => {
-                const productCount = adminData.products?.filter(p => p.brand === brand.name?.ar || p.brand === brand.name).length || 0;
+                const productCount = adminData.products?.filter(p => 
+                    p.brand === brand.name?.ar || p.brand === brand.name || p.brandId === brand.id
+                ).length || 0;
+                
+                const logoContent = brand.logo 
+                    ? `<img src="${brand.logo}" alt="${brand.name?.ar || brand.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 10px;">`
+                    : `<div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
+                            ${(brand.name?.ar || brand.name || 'م').charAt(0)}
+                       </div>`;
                 
                 return `
                     <div class="form-card">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                            <div style="width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
-                                ${(brand.name?.ar || brand.name || 'م').charAt(0)}
-                            </div>
+                            ${logoContent}
                             <div style="flex: 1;">
                                 <h3 style="margin: 0; color: var(--secondary);">${brand.name?.ar || brand.name}</h3>
                                 <p style="margin: 0.2rem 0 0; color: var(--gray); font-size: 0.9rem;">
@@ -2081,6 +2220,13 @@
                 document.getElementById('siteAddress').value = adminData.contact.address || '';
                 document.getElementById('siteHours').value = adminData.contact.workingHours || '';
             }
+            
+            if (adminData.social) {
+                document.getElementById('siteFacebook').value = adminData.social.facebook || '';
+                document.getElementById('siteInstagram').value = adminData.social.instagram || '';
+                document.getElementById('siteTiktok').value = adminData.social.tiktok || '';
+                document.getElementById('siteYoutube').value = adminData.social.youtube || '';
+            }
         }
 
         // تحديث المنتجات الأخيرة
@@ -2089,7 +2235,7 @@
             if (!container) return;
             
             const products = adminData.products || [];
-            const recentProducts = products.slice(-3).reverse();
+            const recentProducts = products.slice(-5).reverse();
             
             if (recentProducts.length === 0) {
                 container.innerHTML = `
@@ -2115,7 +2261,7 @@
                                 </p>
                             </div>
                             <div style="text-align: left;">
-                                <strong style="color: var(--primary);">${product.price || 0} ج.م</strong>
+                                <strong style="color: var(--primary);">${formatPrice(product.price || 0)}</strong>
                             </div>
                         </div>
                     `).join('')}
@@ -2163,6 +2309,9 @@
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
             
+            // تحديث قائمة الماركات
+            updateBrandsDropdown();
+            
             if (productId) {
                 title.textContent = 'تعديل السيارة';
                 const product = adminData.products?.find(p => p.id === productId);
@@ -2171,7 +2320,23 @@
                     document.getElementById('productId').value = product.id;
                     document.getElementById('productNameAr').value = product.name?.ar || product.name || '';
                     document.getElementById('productNameEn').value = product.name?.en || '';
-                    document.getElementById('productBrand').value = product.brandId || '';
+                    
+                    // اختيار الماركة
+                    const brandSelect = document.getElementById('productBrand');
+                    if (brandSelect) {
+                        if (product.brandId) {
+                            brandSelect.value = product.brandId;
+                        } else {
+                            // البحث عن الماركة بالاسم
+                            const brand = adminData.brands?.find(b => 
+                                b.name?.ar === product.brand || b.name === product.brand
+                            );
+                            if (brand) {
+                                brandSelect.value = brand.id;
+                            }
+                        }
+                    }
+                    
                     document.getElementById('productModel').value = product.model || '';
                     document.getElementById('productYear').value = product.year || '';
                     document.getElementById('productPrice').value = product.price || '';
@@ -2180,14 +2345,47 @@
                     document.getElementById('productDescription').value = product.description || '';
                     document.getElementById('productFeatured').checked = product.featured || false;
                     document.getElementById('productInstallment').checked = product.installment || false;
+                    
+                    // عرض الصورة
+                    const imageUrl = product.images && product.images.length > 0 
+                        ? product.images[0] 
+                        : product.image;
+                    if (imageUrl) {
+                        document.getElementById('productImageUrl').value = imageUrl;
+                        document.getElementById('productImagePreview').innerHTML = `
+                            <img src="${imageUrl}" alt="${product.name?.ar || product.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        `;
+                    }
                 }
             } else {
                 title.textContent = 'إضافة سيارة جديدة';
                 document.getElementById('productForm').reset();
                 document.getElementById('productId').value = '';
+                document.getElementById('productImagePreview').innerHTML = `
+                    <div class="image-preview-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>انقر لرفع صورة</span>
+                    </div>
+                `;
+                document.getElementById('productImageUrl').value = '';
             }
             
             modal.classList.add('active');
+        }
+
+        function updateBrandsDropdown() {
+            const brandSelect = document.getElementById('productBrand');
+            if (!brandSelect) return;
+            
+            const brands = adminData.brands || [];
+            
+            brandSelect.innerHTML = '<option value="">اختر الماركة</option>';
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand.id;
+                option.textContent = brand.name?.ar || brand.name;
+                brandSelect.appendChild(option);
+            });
         }
 
         async function saveProduct(e) {
@@ -2199,6 +2397,7 @@
                 const productId = document.getElementById('productId').value || generateId();
                 const brandId = document.getElementById('productBrand').value;
                 const brand = adminData.brands?.find(b => b.id === brandId);
+                const imageUrl = document.getElementById('productImageUrl').value;
                 
                 const product = {
                     id: productId,
@@ -2220,6 +2419,12 @@
                     updatedAt: new Date().toISOString()
                 };
                 
+                // إضافة الصورة
+                if (imageUrl) {
+                    product.image = imageUrl;
+                    product.images = [imageUrl];
+                }
+                
                 // التحقق من وجود المنتج
                 if (!adminData.products) adminData.products = [];
                 
@@ -2239,7 +2444,7 @@
                 showToast('تم حفظ السيارة بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error saving product:', error);
+                console.error('خطأ في حفظ المنتج:', error);
                 showToast('حدث خطأ أثناء حفظ السيارة', 'error');
             } finally {
                 hideLoading();
@@ -2259,7 +2464,7 @@
                 showToast('تم حذف السيارة بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error deleting product:', error);
+                console.error('خطأ في حذف المنتج:', error);
                 showToast('حدث خطأ أثناء حذف السيارة', 'error');
             } finally {
                 hideLoading();
@@ -2280,11 +2485,26 @@
                     document.getElementById('brandNameAr').value = brand.name?.ar || brand.name || '';
                     document.getElementById('brandNameEn').value = brand.name?.en || '';
                     document.getElementById('brandDescription').value = brand.description || '';
+                    
+                    // عرض الصورة
+                    if (brand.logo) {
+                        document.getElementById('brandImageUrl').value = brand.logo;
+                        document.getElementById('brandImagePreview').innerHTML = `
+                            <img src="${brand.logo}" alt="${brand.name?.ar || brand.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        `;
+                    }
                 }
             } else {
                 title.textContent = 'إضافة ماركة جديدة';
                 document.getElementById('brandForm').reset();
                 document.getElementById('brandId').value = '';
+                document.getElementById('brandImagePreview').innerHTML = `
+                    <div class="image-preview-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>انقر لرفع صورة</span>
+                    </div>
+                `;
+                document.getElementById('brandImageUrl').value = '';
             }
             
             modal.classList.add('active');
@@ -2297,6 +2517,7 @@
             
             try {
                 const brandId = document.getElementById('brandId').value || generateId();
+                const imageUrl = document.getElementById('brandImageUrl').value;
                 
                 const brand = {
                     id: brandId,
@@ -2308,6 +2529,11 @@
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 };
+                
+                // إضافة الصورة
+                if (imageUrl) {
+                    brand.logo = imageUrl;
+                }
                 
                 // التحقق من وجود الماركة
                 if (!adminData.brands) adminData.brands = [];
@@ -2328,7 +2554,7 @@
                 showToast('تم حفظ الماركة بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error saving brand:', error);
+                console.error('خطأ في حفظ الماركة:', error);
                 showToast('حدث خطأ أثناء حفظ الماركة', 'error');
             } finally {
                 hideLoading();
@@ -2356,7 +2582,7 @@
                 showToast('تم حذف الماركة بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error deleting brand:', error);
+                console.error('خطأ في حذف الماركة:', error);
                 showToast('حدث خطأ أثناء حذف الماركة', 'error');
             } finally {
                 hideLoading();
@@ -2445,7 +2671,7 @@
                 showToast('تم حفظ المستخدم بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error saving user:', error);
+                console.error('خطأ في حفظ المستخدم:', error);
                 showToast('حدث خطأ أثناء حفظ المستخدم', 'error');
             } finally {
                 hideLoading();
@@ -2470,7 +2696,7 @@
                 showToast('تم حذف المستخدم بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error deleting user:', error);
+                console.error('خطأ في حذف المستخدم:', error);
                 showToast('حدث خطأ أثناء حذف المستخدم', 'error');
             } finally {
                 hideLoading();
@@ -2484,6 +2710,7 @@
             try {
                 adminData.site = adminData.site || {};
                 adminData.contact = adminData.contact || {};
+                adminData.social = adminData.social || {};
                 
                 // معلومات الموقع
                 adminData.site.name = {
@@ -2503,13 +2730,19 @@
                 adminData.contact.address = document.getElementById('siteAddress').value;
                 adminData.contact.workingHours = document.getElementById('siteHours').value;
                 
+                // روابط التواصل الاجتماعي
+                adminData.social.facebook = document.getElementById('siteFacebook').value;
+                adminData.social.instagram = document.getElementById('siteInstagram').value;
+                adminData.social.tiktok = document.getElementById('siteTiktok').value;
+                adminData.social.youtube = document.getElementById('siteYoutube').value;
+                
                 // حفظ البيانات
                 await saveAdminData();
                 
                 showToast('تم حفظ الإعدادات بنجاح', 'success');
                 
             } catch (error) {
-                console.error('Error saving settings:', error);
+                console.error('خطأ في حفظ الإعدادات:', error);
                 showToast('حدث خطأ أثناء حفظ الإعدادات', 'error');
             } finally {
                 hideLoading();
@@ -2523,17 +2756,17 @@
                     const result = await window.gitHubSync.push(adminData);
                     
                     if (result.success) {
-                        console.log('Data saved successfully');
+                        console.log('تم حفظ البيانات بنجاح');
                         return true;
                     } else {
-                        throw new Error(result.error || 'Unknown error');
+                        throw new Error(result.error || 'خطأ غير معروف');
                     }
                 } else {
                     localStorage.setItem('siteData', JSON.stringify(adminData));
                     return true;
                 }
             } catch (error) {
-                console.error('Error saving data:', error);
+                console.error('خطأ في حفظ البيانات:', error);
                 throw error;
             }
         }
@@ -2547,11 +2780,42 @@
                 updateDashboard();
                 showToast('تمت المزامنة بنجاح', 'success');
             } catch (error) {
-                console.error('Sync error:', error);
+                console.error('خطأ في المزامنة:', error);
                 showToast('فشلت المزامنة', 'error');
             } finally {
                 hideLoading();
             }
+        }
+
+        // ============ إدارة الصور ============
+        function previewImage(event, previewId, urlInputId) {
+            const input = event.target;
+            const preview = document.getElementById(previewId);
+            const urlInput = document.getElementById(urlInputId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    urlInput.value = e.target.result;
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function clearImage(previewId, urlInputId) {
+            const preview = document.getElementById(previewId);
+            const urlInput = document.getElementById(urlInputId);
+            
+            preview.innerHTML = `
+                <div class="image-preview-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>انقر لرفع صورة</span>
+                </div>
+            `;
+            urlInput.value = '';
         }
 
         // ============ أدوات مساعدة ============
@@ -2559,31 +2823,26 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
 
+        function formatPrice(price) {
+            if (!price && price !== 0) return '0 ج.م';
+            
+            const numPrice = parseFloat(price);
+            if (isNaN(numPrice)) return '0 ج.م';
+            
+            return new Intl.NumberFormat('ar-EG').format(numPrice) + ' ج.م';
+        }
+
         function getTypeText(type) {
-            switch(type) {
-                case 'new': return 'جديد';
-                case 'used': return 'مستعمل';
-                case 'electric': return 'كهربائي';
-                default: return 'غير محدد';
-            }
+            const types = {
+                'new': 'جديد',
+                'used': 'مستعمل',
+                'electric': 'كهربائي'
+            };
+            return types[type] || 'غير محدد';
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
-        }
-
-        function addSpecification() {
-            const container = document.getElementById('specificationsContainer');
-            const div = document.createElement('div');
-            div.className = 'spec-row';
-            div.innerHTML = `
-                <input type="text" class="form-input" placeholder="اسم المواصفة">
-                <input type="text" class="form-input" placeholder="القيمة">
-                <button type="button" class="action-button secondary" onclick="this.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            container.appendChild(div);
         }
 
         // ============ إدارة التحميل ============
@@ -2708,7 +2967,27 @@
             
             showToast('تم تصدير البيانات بنجاح', 'success');
         }
+
+        // جعل الدوال متاحة عالمياً
+        window.login = login;
+        window.logout = logout;
+        window.syncData = syncData;
+        window.toggleSidebar = toggleSidebar;
+        window.showSection = showSection;
+        window.showProductModal = showProductModal;
+        window.showBrandModal = showBrandModal;
+        window.showUserModal = showUserModal;
+        window.closeModal = closeModal;
+        window.previewImage = previewImage;
+        window.clearImage = clearImage;
+        window.editProduct = editProduct;
+        window.editBrand = editBrand;
+        window.editUser = editUser;
+        window.deleteProduct = deleteProduct;
+        window.deleteBrand = deleteBrand;
+        window.deleteUser = deleteUser;
+        window.exportProducts = exportProducts;
+        window.saveSettings = saveSettings;
     </script>
 </body>
 </html>
-[file content end]
