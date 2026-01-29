@@ -1,25 +1,29 @@
+[file name]: index.html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Meta Tags للسيو -->
-    <meta name="description" content="معرض عبدالله للسيارات - أفضل عروض السيارات الجديدة والمستعملة في مصر. تصفح أحدث الموديلات من جميع الماركات العالمية بأسعار تنافسية">
-    <meta name="keywords" content="سيارات للبيع, معرض سيارات مصر, سيارات جديدة, سيارات مستعملة, عبدالله للسيارات, تويوتا, نيسان, هوندا, مرسيدس, بي ام دبليو">
-    <meta name="author" content="عبدالله للسيارات">
-    <meta property="og:title" content="عبدالله للسيارات | معرض السيارات الفاخرة">
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="سيارات عبدالله - أفضل عروض السيارات الجديدة والمستعملة في مصر. تصفح أحدث الموديلات من جميع الماركات العالمية بأسعار تنافسية">
+    <meta name="keywords" content="سيارات للبيع, معرض سيارات مصر, سيارات جديدة, سيارات مستعملة, سيارات عبدالله, تويوتا, نيسان, هوندا, مرسيدس, بي ام دبليو">
+    <meta name="author" content="سيارات عبدالله">
+    <meta property="og:title" content="سيارات عبدالله | معرض السيارات الفاخرة">
     <meta property="og:description" content="أفضل عروض السيارات الجديدة والمستعملة في مصر">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="logo.png">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/MHmooDhazm/bitelazz-data/logo.png">
     <meta name="robots" content="index, follow">
     
-    <title id="pageTitle">عبدالله للسيارات | معرض السيارات الفاخرة</title>
+    <title>سيارات عبدالله | معرض السيارات الفاخرة</title>
+    
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
     <style>
         :root {
             --primary: #c53030;
@@ -57,27 +61,30 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000;
+            background: var(--secondary);
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
 
-        #loadingVideo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .loading-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
         }
 
-        /* Main Content */
-        .main-content {
-            opacity: 0;
-            transition: opacity 1s ease;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
         }
 
-        .main-content.visible {
-            opacity: 1;
+        .loading-text {
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         /* Navigation */
@@ -114,30 +121,18 @@
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 15px rgba(197, 48, 48, 0.2);
-            animation: pulseLogo 2s infinite;
-        }
-
-        @keyframes pulseLogo {
-            0%, 100% { 
-                box-shadow: 0 0 15px rgba(197, 48, 48, 0.3);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 30px rgba(197, 48, 48, 0.5);
-                transform: scale(1.05);
-            }
-        }
-
-        .nav-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
         }
 
         .logo-text {
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--secondary);
         }
 
@@ -155,7 +150,7 @@
             color: var(--secondary);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: var(--transition);
             position: relative;
             padding: 0.5rem 0;
@@ -180,81 +175,10 @@
             color: var(--primary);
         }
 
-        /* Search Bar فوق الفيديو */
-        .hero-search {
-            position: absolute;
-            top: 120px;
-            right: 50%;
-            transform: translateX(50%);
-            width: 90%;
-            max-width: 800px;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border: 2px solid var(--primary);
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .search-group {
-            min-width: 180px;
-        }
-
-        .search-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .search-group select,
-        .search-group input {
-            width: 100%;
-            padding: 0.7rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            transition: var(--transition);
-            background: white;
-        }
-
-        .search-group select:focus,
-        .search-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.1);
-        }
-
-        .search-submit {
-            padding: 0.7rem 2rem;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            height: 42px;
-        }
-
-        .search-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(197, 48, 48, 0.3);
-        }
-
         /* Video Hero */
         .video-hero {
             position: relative;
-            height: 100vh;
+            height: 85vh;
             overflow: hidden;
             margin-top: 70px;
         }
@@ -292,44 +216,30 @@
         }
 
         .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
+            font-size: 4rem;
+            font-weight: 900;
             color: white;
-            margin-bottom: 1.2rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-            animation: fadeInUp 1s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-            animation: fadeInUp 1s ease 0.3s both;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 1rem;
-            animation: fadeInUp 1s ease 0.6s both;
+            gap: 1.5rem;
         }
 
         .hero-button {
-            padding: 1rem 2.5rem;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -341,167 +251,215 @@
         .hero-button.primary {
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
             color: white;
-            box-shadow: 0 8px 20px rgba(197, 48, 48, 0.3);
+            box-shadow: 0 10px 25px rgba(197, 48, 48, 0.4);
         }
 
         .hero-button.secondary {
             background: transparent;
-            border: 2px solid white;
+            border: 3px solid white;
             color: white;
         }
 
         .hero-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(197, 48, 48, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.5);
         }
 
-        /* Action Buttons Section */
-        .action-buttons-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .action-buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-top: 3rem;
-        }
-
-        .action-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 3rem 2rem;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .action-card:hover {
-            transform: translateY(-10px);
-            border-color: white;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .action-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .action-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .action-description {
-            font-size: 1rem;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-
-        /* Categories Type Section */
-        .categories-type-section {
+        /* Advanced Search Section */
+        .advanced-search-section {
             background: var(--white);
-            padding: 6rem 2rem;
+            padding: 4rem 2rem;
+            margin-top: -80px;
+            position: relative;
+            z-index: 100;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-title {
             text-align: center;
-        }
-
-        .type-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .type-card {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 2px solid #e2e8f0;
-            transition: var(--transition);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .type-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.1);
-        }
-
-        .type-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-
-        .type-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
             color: var(--secondary);
+            margin-bottom: 3rem;
+            position: relative;
         }
 
-        .type-description {
-            font-size: 0.95rem;
+        .search-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 2px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-group {
+            position: relative;
+        }
+
+        .search-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .search-select, .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .search-select:focus, .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(197, 48, 48, 0.1);
+        }
+
+        .price-range {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .price-range span {
             color: var(--dark-gray);
-            line-height: 1.6;
+            font-weight: 600;
         }
 
-        /* الفئات Section */
-        .brands-section {
+        .search-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .search-button {
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .search-button.primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .search-button.secondary {
             background: var(--light);
+            color: var(--secondary);
+            border: 2px solid #e2e8f0;
+        }
+
+        .search-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Brands Section */
+        .brands-section {
             padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--light) 0%, #ffffff 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 2px;
         }
 
         .brands-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .brand-card {
             background: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
+            padding: 2.5rem 1.5rem;
+            border-radius: 15px;
             text-align: center;
             transition: var(--transition);
-            border: 2px solid transparent;
             cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            border: 3px solid transparent;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
 
         .brand-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.05);
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.1);
+            box-shadow: 0 20px 40px rgba(197, 48, 48, 0.15);
         }
 
-        .brand-icon {
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 2.5rem;
-            margin-bottom: 1rem;
             color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
         .brand-name {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-count {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
         /* Products Section */
@@ -510,111 +468,149 @@
             background: var(--white);
         }
 
-        /* Advanced Search */
-        .advanced-search {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 15px;
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 3rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Products Grid */
+        .products-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-button {
+            padding: 0.8rem 1.5rem;
+            background: var(--light);
+            color: var(--secondary);
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .filter-button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .product-card {
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             transition: var(--transition);
-            border: 2px solid transparent;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .product-card.featured {
-            border-color: var(--primary);
+            border: 3px solid transparent;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.15);
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(197, 48, 48, 0.2);
+        }
+
+        .product-card.featured::before {
+            content: 'مميز';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
         }
 
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            position: relative;
+            transition: transform 0.5s ease;
         }
 
-        .product-card.featured .product-image::after {
-            content: 'مميز';
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--primary);
-            color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
+        .product-card:hover .product-image {
+            transform: scale(1.1);
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .product-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 1rem;
         }
 
         .product-name {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--secondary);
-            font-weight: 600;
+            margin: 0;
         }
 
         .product-type {
             background: rgba(197, 48, 48, 0.1);
             color: var(--primary);
-            padding: 0.2rem 0.8rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-weight: 900;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .product-old-price {
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--gray);
             text-decoration: line-through;
-            margin-right: 0.8rem;
+            font-weight: 600;
         }
 
         .product-specs {
             list-style: none;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .product-specs li {
             color: var(--dark-gray);
-            margin-bottom: 0.4rem;
-            padding-right: 1.2rem;
+            margin-bottom: 0.8rem;
+            padding-right: 1.5rem;
             position: relative;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .product-specs li::before {
@@ -622,63 +618,82 @@
             color: var(--primary);
             position: absolute;
             right: 0;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .product-button {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--primary);
-            color: white;
+            flex: 1;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
             text-decoration: none;
-            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .product-button.primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .product-button.secondary {
+            background: var(--light);
+            color: var(--secondary);
+            border: 2px solid #e2e8f0;
         }
 
         .product-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-        /* Installment Badge */
         .installment-badge {
             background: linear-gradient(45deg, #38a169, #2f855a);
             color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 1rem;
             display: inline-block;
         }
 
         /* Footer */
         footer {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a202c 100%);
             color: white;
-            padding: 4rem 2rem 2rem;
+            padding: 5rem 2rem 2rem;
+            margin-top: 4rem;
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2.5rem;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .footer-col h3 {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 1.2rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
             position: relative;
-            padding-bottom: 0.8rem;
+            padding-bottom: 1rem;
         }
 
         .footer-col h3::after {
@@ -686,16 +701,16 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 40px;
-            height: 2px;
+            width: 60px;
+            height: 3px;
             background: var(--primary);
         }
 
         .footer-col p {
             color: #cbd5e0;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
         }
 
         .footer-links {
@@ -703,7 +718,7 @@
         }
 
         .footer-links li {
-            margin-bottom: 0.7rem;
+            margin-bottom: 1rem;
         }
 
         .footer-links a {
@@ -712,24 +727,24 @@
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
+            gap: 1rem;
+            font-size: 1rem;
         }
 
         .footer-links a:hover {
             color: var(--primary);
-            transform: translateX(-3px);
+            transform: translateX(-5px);
         }
 
         .social-links {
             display: flex;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid var(--primary);
             border-radius: 50%;
@@ -739,230 +754,47 @@
             color: white;
             text-decoration: none;
             transition: var(--transition);
+            font-size: 1.2rem;
         }
 
         .social-link:hover {
             background: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
         }
 
         .copyright {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 4rem;
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #cbd5e0;
-            font-size: 0.85rem;
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 2rem;
-            position: relative;
-        }
-
-        .section:nth-child(even) {
-            background: var(--light);
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 50%;
-            transform: translateX(50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-        }
-
-        /* Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            grid-column: 1 / -1;
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-state p {
-            color: var(--dark-gray);
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .products-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .products-sidebar {
-                display: none;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .main-nav {
-                flex-wrap: wrap;
-                gap: 1rem;
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero-search {
-                top: 100px;
-                width: 95%;
-                padding: 1rem;
-            }
-            
-            .search-form {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .hero-title {
-                font-size: 2.8rem;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .section {
-                padding: 4rem 1.5rem;
-            }
-            
-            .hero-title {
-                font-size: 2.2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-            
-            .hero-search {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                width: 100%;
-                margin: 1rem auto;
-                border-radius: 0;
-                border-right: none;
-                border-left: none;
-            }
-            
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .hero-button {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .action-buttons-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .type-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .brands-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .section {
-                padding: 3rem 1rem;
-            }
-            
-            .hero-title {
-                font-size: 1.8rem;
-            }
-            
-            .nav-logo {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .logo-text {
-                font-size: 1.1rem;
-            }
-            
-            .brands-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
+            font-size: 0.9rem;
         }
 
         /* Toast */
         .toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 100px;
+            right: 30px;
             background: var(--primary);
             color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 1.2rem 1.8rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 10000;
-            animation: slideInRight 0.3s ease;
-            max-width: 300px;
+            animation: slideInRight 0.4s ease;
+            max-width: 350px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toast.error {
+            background: #e53e3e;
+        }
+
+        .toast.success {
+            background: #38a169;
         }
 
         @keyframes slideInRight {
@@ -976,886 +808,977 @@
             }
         }
 
-        /* Language Selector */
-        .language-selector {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1002;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            grid-column: 1 / -1;
         }
 
-        .language-selector button {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--primary);
-            padding: 8px 16px;
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            color: var(--secondary);
-            transition: var(--transition);
-            box-shadow: 0 3px 10px rgba(197, 48, 48, 0.2);
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
         }
 
-        .language-selector button:hover {
-            background: var(--primary);
-            color: white;
+        .empty-state h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
         }
 
-        .language-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 5px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            min-width: 160px;
-            display: none;
-            overflow: hidden;
-            z-index: 1001;
+        .empty-state p {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .language-dropdown.show {
-            display: block;
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
         }
 
-        .language-option {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-bottom: 1px solid #eee;
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
         }
 
-        .language-option:last-child {
-            border-bottom: none;
+        @media (max-width: 768px) {
+            .main-nav {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .hero-button {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .advanced-search-section {
+                margin: 2rem 1rem;
+                padding: 2.5rem 1.5rem;
+            }
+            
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .price-range {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-actions {
+                flex-direction: column;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .language-option:hover {
-            background: rgba(197, 48, 48, 0.1);
-        }
-
-        .language-option.active {
-            background: var(--primary);
-            color: white;
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .brands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card {
+                margin: 0 1rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Language Selector -->
-    <div class="language-selector">
-        <button onclick="toggleLanguageDropdown()">
-            <span id="currentLangFlag">🇪🇬</span>
-            <span id="currentLangText">العربية</span>
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="language-dropdown" id="languageDropdown">
-            <div class="language-option active" data-lang="ar" onclick="changeLanguage('ar')">
-                <span>🇪🇬</span>
-                <span>العربية</span>
-            </div>
-            <div class="language-option" data-lang="en" onclick="changeLanguage('en')">
-                <span>🇺🇸</span>
-                <span>English</span>
-            </div>
-        </div>
-    </div>
-
     <!-- Loading Screen -->
     <div id="loadingScreen">
-        <video id="loadingVideo" autoplay muted playsinline onended="hideLoadingScreen()">
-            <source src="logo.mp4" type="video/mp4">
-            <!-- إذا لم يتوفر الفيديو -->
-            <div style="color: white; text-align: center;">
-                <i class="fas fa-car" style="font-size: 4rem; margin-bottom: 1rem;"></i>
-                <h2>عبدالله للسيارات</h2>
+        <div class="loading-logo">
+            <div style="width: 100%; height: 100%; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 800;">
+                ع
             </div>
+        </div>
+        <div class="loading-text">جاري تحميل المحتوى...</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo-container">
+            <div class="nav-logo">ع</div>
+            <div class="logo-text">سيارات <span>عبدالله</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">🏠 الرئيسية</a></li>
+            <li><a href="#search">🔍 بحث متقدم</a></li>
+            <li><a href="#brands">🏎️ الماركات</a></li>
+            <li><a href="#products">🚗 السيارات</a></li>
+            <li><a href="#contact">📞 اتصل بنا</a></li>
+            <li><a href="admin.html" target="_blank">⚙️ لوحة التحكم</a></li>
+        </ul>
+    </nav>
+
+    <!-- Video Hero -->
+    <section id="home" class="video-hero">
+        <video id="backgroundVideo" autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-sports-car-432-large.mp4" type="video/mp4">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, var(--primary), var(--secondary));"></div>
         </video>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Navigation -->
-        <nav class="main-nav">
-            <a href="index.html" class="nav-logo-container">
-                <div class="nav-logo">
-                    <img src="logo.png" alt="عبدالله للسيارات" onerror="this.src='https://via.placeholder.com/50?text=AL'">
-                </div>
-                <div class="logo-text" id="siteName">عبدالله <span>للسيارات</span></div>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#home" class="scroll-link" id="navHome">🏠 الرئيسية</a></li>
-                <li><a href="#actions" class="scroll-link" id="navActions">⚡ الخدمات</a></li>
-                <li><a href="#categories" class="scroll-link" id="navCategories">🚗 الأنواع</a></li>
-                <li><a href="#brands" class="scroll-link" id="navBrands">🏎️ الفئات</a></li>
-                <li><a href="#products" class="scroll-link" id="navProducts">🛒 السيارات</a></li>
-                <li><a href="#contact" class="scroll-link" id="navContact">📞  تواصل معنا </a></li>
-            </ul>
-        </nav>
-
-        <!-- Video Hero مع البحث -->
-        <section id="home" class="video-hero">
-            <!-- شريط البحث فوق الفيديو -->
-            <div class="hero-search animate-on-scroll">
-                <form class="search-form" id="heroSearchForm">
-                    <div class="search-group">
-                        <label for="heroSearchType" id="heroSearchTypeLabel">النوع</label>
-                        <select id="heroSearchType">
-                            <option value="">جميع الأنواع</option>
-                            <option value="new">جديد</option>
-                            <option value="used">مستعمل</option>
-                            <option value="electric">كهربائي</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="heroSearchCategory" id="heroSearchCategoryLabel">الفئة</label>
-                        <select id="heroSearchCategory">
-                            <option value="">جميع الفئات</option>
-                            <!-- سيتم تعبئة الفئات ديناميكياً -->
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="heroSearchBrand" id="heroSearchBrandLabel">الماركة</label>
-                        <select id="heroSearchBrand">
-                            <option value="">جميع الماركات</option>
-                            <!-- سيتم تعبئة الماركات ديناميكياً -->
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <button type="submit" class="search-submit" id="heroSearchSubmit">
-                            <i class="fas fa-search"></i> بحث
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <video id="backgroundVideo" autoplay muted loop playsinline>
-                <source src="logo2.mp4" type="video/mp4">
-                <!-- إذا لم يتوفر الفيديو -->
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, var(--primary), var(--secondary));"></div>
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title" id="heroTitle">عبدالله للسيارات</h1>
-                <p class="hero-subtitle" id="heroDescription">
-                    تجربة فاخرة في عالم السيارات. الجودة والتميز في كل تفصيل، حيث تجتمع الأناقة مع الأداء المتميز لتقدم لك أفضل ما في عالم السيارات الفاخرة.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#products" class="hero-button primary" id="ctaButton">استعرض السيارات</a>
-                    <a href="#contact" class="hero-button secondary" id="contactButton">تواصل معنا</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Action Buttons Section -->
-        <section id="actions" class="action-buttons-section">
-            <h2 class="section-title animate-on-scroll" id="actionsTitle">ما الذي تبحث عنه؟</h2>
-            <div class="action-buttons-grid">
-                <div class="action-card animate-on-scroll" onclick="window.location.href='#products'">
-                    <div class="action-icon">🛒</div>
-                    <h3 class="action-title" id="buyTitle">شراء سيارة</h3>
-                    <p class="action-description" id="buyDescription">تصفح أحدث السيارات المتاحة للشراء مع خيارات تقسيط مريحة</p>
-                </div>
-                <div class="action-card animate-on-scroll" onclick="window.location.href='sell.html'">
-                    <div class="action-icon">💰</div>
-                    <h3 class="action-title" id="sellTitle">بيع سيارتك</h3>
-                    <p class="action-description" id="sellDescription">بيع سيارتك بسرعة وسهولة وبأفضل سعر في السوق</p>
-                </div>
-                <div class="action-card animate-on-scroll" onclick="window.location.href='exchange.html'">
-                    <div class="action-icon">🔄</div>
-                    <h3 class="action-title" id="exchangeTitle">استبدال سيارتك</h3>
-                    <p class="action-description" id="exchangeDescription">استبدل سيارتك القديمة بسيارة جديدة مع دفع الفرق</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories Type Section -->
-        <section id="categories" class="categories-type-section">
-            <h2 class="section-title animate-on-scroll" id="categoriesTitle">تصفح حسب النوع</h2>
-            <div class="type-grid">
-                <a href="category.html?type=new" class="type-card animate-on-scroll">
-                    <div class="type-icon">🚗</div>
-                    <h3 class="type-title" id="newCarsTitle">سيارات جديدة</h3>
-                    <p class="type-description" id="newCarsDesc">أحدث الموديلات بأعلى المواصفات وضمان المصنع الكامل</p>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">سيارات عبدالله</h1>
+            <p class="hero-subtitle">
+                تجربة فاخرة في عالم السيارات. حيث الجودة والتميز في كل تفصيل، تجتمع الأناقة مع الأداء المتميز لتقدم لك أفضل ما في عالم السيارات الفاخرة
+            </p>
+            <div class="hero-buttons">
+                <a href="#search" class="hero-button primary">
+                    <i class="fas fa-search"></i> بحث متقدم
                 </a>
-                <a href="category.html?type=used" class="type-card animate-on-scroll">
-                    <div class="type-icon">🚙</div>
-                    <h3 class="type-title" id="usedCarsTitle">سيارات مستعملة</h3>
-                    <p class="type-description" id="usedCarsDesc">سيارات مستعملة بحالة ممتازة مع فحص فني شامل</p>
-                </a>
-                <a href="category.html?type=electric" class="type-card animate-on-scroll">
-                    <div class="type-icon">⚡</div>
-                    <h3 class="type-title" id="electricCarsTitle">سيارات كهربائية</h3>
-                    <p class="type-description" id="electricCarsDesc">سيارات كهربائية صديقة للبيئة بتقنيات حديثة</p>
+                <a href="#products" class="hero-button secondary">
+                    <i class="fas fa-car"></i> استعرض السيارات
                 </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- الفئات Section -->
-        <section id="brands" class="brands-section">
-            <h2 class="section-title animate-on-scroll" id="brandsTitle">تصفح حسب الماركة</h2>
-            <div class="brands-grid" id="brandsContainer">
-                <!-- سيتم تحميل الفئات ديناميكياً -->
+    <!-- Advanced Search Section -->
+    <section id="search" class="advanced-search-section">
+        <h2 class="search-title">بحث متقدم عن السيارات</h2>
+        
+        <form id="advancedSearchForm">
+            <div class="search-grid">
+                <!-- الماركة -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-tag"></i> الماركة
+                    </label>
+                    <select class="search-select" id="searchBrand">
+                        <option value="">جميع الماركات</option>
+                        <!-- سيتم تعبئتها ديناميكياً -->
+                    </select>
+                </div>
+
+                <!-- الموديل -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-car"></i> الموديل
+                    </label>
+                    <input type="text" class="search-input" id="searchModel" placeholder="أدخل اسم الموديل">
+                </div>
+
+                <!-- السنة -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-calendar"></i> السنة
+                    </label>
+                    <select class="search-select" id="searchYear">
+                        <option value="">جميع السنوات</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                </div>
+
+                <!-- السعر -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-money-bill-wave"></i> نطاق السعر
+                    </label>
+                    <div class="price-range">
+                        <input type="number" class="search-input" id="minPrice" placeholder="الحد الأدنى">
+                        <span>إلى</span>
+                        <input type="number" class="search-input" id="maxPrice" placeholder="الحد الأقصى">
+                    </div>
+                </div>
+
+                <!-- النوع -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-bolt"></i> النوع
+                    </label>
+                    <select class="search-select" id="searchType">
+                        <option value="">جميع الأنواع</option>
+                        <option value="new">جديد</option>
+                        <option value="used">مستعمل</option>
+                        <option value="electric">كهربائي</option>
+                    </select>
+                </div>
+
+                <!-- الوقود -->
+                <div class="search-group">
+                    <label class="search-label">
+                        <i class="fas fa-gas-pump"></i> نوع الوقود
+                    </label>
+                    <select class="search-select" id="searchFuel">
+                        <option value="">جميع الأنواع</option>
+                        <option value="gasoline">بنزين</option>
+                        <option value="diesel">ديزل</option>
+                        <option value="electric">كهرباء</option>
+                        <option value="hybrid">هايبرد</option>
+                    </select>
+                </div>
             </div>
-        </section>
 
-        <!-- Products Section -->
-        <section id="products" class="products-section">
-            <h2 class="section-title animate-on-scroll" id="productsTitle">أحدث السيارات المتاحة</h2>
+            <div class="search-actions">
+                <button type="submit" class="search-button primary">
+                    <i class="fas fa-search"></i> بحث متقدم
+                </button>
+                <button type="button" class="search-button secondary" onclick="resetSearch()">
+                    <i class="fas fa-redo"></i> إعادة تعيين
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Brands Section -->
+    <section id="brands" class="brands-section">
+        <h2 class="section-title">الماركات المتاحة</h2>
+        <div class="brands-grid" id="brandsContainer">
+            <!-- سيتم تعبئتها ديناميكياً -->
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="products-header">
+            <h2 class="section-title">أحدث السيارات</h2>
+            <div class="products-actions">
+                <button class="filter-button active" onclick="filterProducts('all')">الكل</button>
+                <button class="filter-button" onclick="filterProducts('new')">جديد</button>
+                <button class="filter-button" onclick="filterProducts('used')">مستعمل</button>
+                <button class="filter-button" onclick="filterProducts('featured')">مميز</button>
+            </div>
+        </div>
+        
+        <div class="products-grid" id="productsContainer">
+            <!-- سيتم تعبئتها ديناميكياً -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>سيارات عبدالله</h3>
+                <p>معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
             
-            <!-- Products Grid -->
-            <div class="products-grid" id="productsContainer">
-                <!-- سيتم تحميل المنتجات ديناميكياً -->
+            <div class="footer-col">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#home"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#search"><i class="fas fa-search"></i> بحث متقدم</a></li>
+                    <li><a href="#brands"><i class="fas fa-tags"></i> الماركات</a></li>
+                    <li><a href="#products"><i class="fas fa-car"></i> السيارات</a></li>
+                    <li><a href="admin.html" target="_blank"><i class="fas fa-cog"></i> لوحة التحكم</a></li>
+                </ul>
             </div>
-        </section>
+            
+            <div class="footer-col">
+                <h3>اتصل بنا</h3>
+                <p><i class="fas fa-phone"></i> الهاتف: <span id="footerPhone">01012345678</span></p>
+                <p><i class="fab fa-whatsapp"></i> واتساب: <span id="footerWhatsapp">01012345678</span></p>
+                <p><i class="fas fa-envelope"></i> البريد: <span id="footerEmail">info@abdullahcars.com</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> العنوان: <span id="footerAddress">القاهرة، مصر</span></p>
+                <p><i class="fas fa-clock"></i> ساعات العمل: <span id="footerHours">9 ص - 9 م</span></p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2024 سيارات عبدالله. جميع الحقوق محفوظة.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">تم التطوير بكل ❤️ لتقديم أفضل تجربة</p>
+        </div>
+    </footer>
 
-        <!-- Footer -->
-        <footer id="contact">
-            <div class="footer-content">
-                <div class="footer-col">
-                    <h3 id="footerAboutTitle">عبدالله للسيارات</h3>
-                    <p id="footerAboutDesc">معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" id="facebookLink"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link" id="instagramLink"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link" id="tiktokLink"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" class="social-link" id="youtubeLink"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3 id="footerLinksTitle">روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home" class="scroll-link" id="footerHome">🏠 الرئيسية</a></li>
-                        <li><a href="#actions" class="scroll-link" id="footerActions">⚡ الخدمات</a></li>
-                        <li><a href="#categories" class="scroll-link" id="footerCategories">🚗 الأنواع</a></li>
-                        <li><a href="#brands" class="scroll-link" id="footerBrands">🏎️ الفئات</a></li>
-                        <li><a href="#products" class="scroll-link" id="footerProducts">🛒 السيارات</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 id="footerContactTitle">اتصل بنا</h3>
-                    <p id="footerPhone">📞 الهاتف: <span id="contactPhoneValue">01012345678</span></p>
-                    <p id="footerWhatsapp">📱 واتساب: <span id="contactWhatsappValue">01012345678</span></p>
-                    <p id="footerEmail">✉️ البريد: <span id="contactEmailValue">info@abdullahcars.com</span></p>
-                    <p id="footerAddress">📍 العنوان: <span id="contactAddressValue">القاهرة، مصر</span></p>
-                    <p id="footerHours">⏰ ساعات العمل: <span id="contactHoursValue">9 ص - 9 م</span></p>
-                </div>
-            </div>
-            <div class="copyright">
-                <span id="copyrightText">© 2024 عبدالله للسيارات. جميع الحقوق محفوظة.</span>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Scripts -->
     <script src="sync.js"></script>
-    <script src="security.js"></script>
     <script>
-        // نصوص اللغة
-        const texts = {
-            ar: {
-                // Page
-                pageTitle: "عبدالله للسيارات | معرض السيارات الفاخرة",
-                siteName: "عبدالله للسيارات",
-                
-                // Language
-                currentLangText: "العربية",
-                
-                // Hero
-                heroTitle: "عبدالله للسيارات",
-                heroDescription: "تجربة فاخرة في عالم السيارات. الجودة والتميز في كل تفصيل، حيث تجتمع الأناقة مع الأداء المتميز لتقدم لك أفضل ما في عالم السيارات الفاخرة.",
-                ctaButton: "استعرض السيارات",
-                contactButton: "تواصل معنا",
-                
-                // Navigation
-                navHome: "🏠 الرئيسية",
-                navActions: "⚡ الخدمات",
-                navCategories: "🚗 الأنواع",
-                navBrands: "🏎️ الفئات",
-                navProducts: "🛒 السيارات",
-                navContact: "📞 اتصل بنا",
-                
-                // Search
-                heroSearchTypeLabel: "النوع",
-                heroSearchCategoryLabel: "الفئة",
-                heroSearchBrandLabel: "الماركة",
-                heroSearchSubmit: "بحث",
-                
-                // Actions
-                actionsTitle: "ما الذي تبحث عنه؟",
-                buyTitle: "شراء سيارة",
-                buyDescription: "تصفح أحدث السيارات المتاحة للشراء مع خيارات تقسيط مريحة",
-                sellTitle: "بيع سيارتك",
-                sellDescription: "بيع سيارتك بسرعة وسهولة وبأفضل سعر في السوق",
-                exchangeTitle: "استبدال سيارتك",
-                exchangeDescription: "استبدل سيارتك القديمة بسيارة جديدة مع دفع الفرق",
-                
-                // Sections
-                categoriesTitle: "تصفح حسب النوع",
-                brandsTitle: "تصفح حسب الفئة",
-                productsTitle: "أحدث السيارات المتاحة",
-                
-                // Categories
-                newCarsTitle: "سيارات جديدة",
-                newCarsDesc: "أحدث الموديلات بأعلى المواصفات وضمان المصنع الكامل",
-                usedCarsTitle: "سيارات مستعملة",
-                usedCarsDesc: "سيارات مستعملة بحالة ممتازة مع فحص فني شامل",
-                electricCarsTitle: "سيارات كهربائية",
-                electricCarsDesc: "سيارات كهربائية صديقة للبيئة بتقنيات حديثة",
-                
-                // Footer
-                footerAboutTitle: "عبدالله للسيارات",
-                footerAboutDesc: "معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.",
-                footerLinksTitle: "روابط سريعة",
-                footerHome: "🏠 الرئيسية",
-                footerActions: "⚡ الخدمات",
-                footerCategories: "🚗 الأنواع",
-                footerBrands: "🏎️ الفئات",
-                footerProducts: "🛒 السيارات",
-                footerContactTitle: "اتصل بنا",
-                footerPhone: "📞 الهاتف:",
-                footerWhatsapp: "📱 واتساب:",
-                footerEmail: "✉️ البريد:",
-                footerAddress: "📍 العنوان:",
-                footerHours: "⏰ ساعات العمل:",
-                copyrightText: "© 2024 عبدالله للسيارات. جميع الحقوق محفوظة.",
-                
-                // Messages
-                loading: "جاري التحميل...",
-                noProducts: "لا توجد سيارات متطابقة مع بحثك",
-                viewDetails: "عرض التفاصيل",
-                installmentAvailable: "تقسيط متاح"
-            },
-            
-            en: {
-                // Page
-                pageTitle: "Abdullah Cars | Luxury Car Showroom",
-                siteName: "Abdullah Cars",
-                
-                // Language
-                currentLangText: "English",
-                
-                // Hero
-                heroTitle: "Abdullah Cars",
-                heroDescription: "A luxurious experience in the world of cars. Quality and excellence in every detail, where elegance meets exceptional performance to offer you the best in the world of luxury cars.",
-                ctaButton: "Browse Cars",
-                contactButton: "Contact Us",
-                
-                // Navigation
-                navHome: "🏠 Home",
-                navActions: "⚡ Services",
-                navCategories: "🚗 Types",
-                navBrands: "🏎️ Categories",
-                navProducts: "🛒 Cars",
-                navContact: "📞 Contact",
-                
-                // Search
-                heroSearchTypeLabel: "Type",
-                heroSearchCategoryLabel: "Category",
-                heroSearchBrandLabel: "Brand",
-                heroSearchSubmit: "Search",
-                
-                // Actions
-                actionsTitle: "What are you looking for?",
-                buyTitle: "Buy a Car",
-                buyDescription: "Browse the latest cars available for purchase with convenient installment options",
-                sellTitle: "Sell Your Car",
-                sellDescription: "Sell your car quickly and easily at the best market price",
-                exchangeTitle: "Exchange Your Car",
-                exchangeDescription: "Exchange your old car for a new one by paying the difference",
-                
-                // Sections
-                categoriesTitle: "Browse by Type",
-                brandsTitle: "Browse by Category",
-                productsTitle: "Latest Available Cars",
-                
-                // Categories
-                newCarsTitle: "New Cars",
-                newCarsDesc: "Latest models with highest specifications and full factory warranty",
-                usedCarsTitle: "Used Cars",
-                usedCarsDesc: "Used cars in excellent condition with comprehensive technical inspection",
-                electricCarsTitle: "Electric Cars",
-                electricCarsDesc: "Environmentally friendly electric cars with modern technology",
-                
-                // Footer
-                footerAboutTitle: "Abdullah Cars",
-                footerAboutDesc: "The first luxury car showroom in Egypt, offering you the best services and finest cars with comprehensive warranty and premium service.",
-                footerLinksTitle: "Quick Links",
-                footerHome: "🏠 Home",
-                footerActions: "⚡ Services",
-                footerCategories: "🚗 Types",
-                footerBrands: "🏎️ Categories",
-                footerProducts: "🛒 Cars",
-                footerContactTitle: "Contact Us",
-                footerPhone: "📞 Phone:",
-                footerWhatsapp: "📱 WhatsApp:",
-                footerEmail: "✉️ Email:",
-                footerAddress: "📍 Address:",
-                footerHours: "⏰ Working Hours:",
-                copyrightText: "© 2024 Abdullah Cars. All rights reserved.",
-                
-                // Messages
-                loading: "Loading...",
-                noProducts: "No cars match your search",
-                viewDetails: "View Details",
-                installmentAvailable: "Installment Available"
-            }
-        };
-
-        // اللغة الحالية
-        let currentLanguage = 'ar';
         let siteData = null;
         let filteredProducts = [];
+        let currentFilter = 'all';
 
-        // التهيئة
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', async () => {
-            // الحصول على اللغة من التخزين المحلي
-            const savedLang = localStorage.getItem('siteLanguage') || 'ar';
-            currentLanguage = savedLang;
+            // إخفاء شاشة التحميل بعد 1.5 ثانية
+            setTimeout(hideLoading, 1500);
             
-            // تحميل بيانات الموقع
+            // تحميل البيانات
             await loadSiteData();
             
-            // تطبيق اللغة
-            applyLanguage(currentLanguage);
+            // تهيئة المكونات
+            initializePage();
             
-            // تهيئة النظام
-            initializeSystem();
+            // إعداد المستمعين للأحداث
+            setupEventListeners();
+            
+            // بدء الفيديو
+            startVideo();
         });
+
+        // إخفاء شاشة التحميل
+        function hideLoading() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    
+                    // إظهار الأنيميشن
+                    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                        if (el.getBoundingClientRect().top < window.innerHeight) {
+                            el.classList.add('visible');
+                        }
+                    });
+                }, 500);
+            }
+        }
 
         // تحميل بيانات الموقع
         async function loadSiteData() {
             try {
-                if (window.gitHubSync && window.gitHubSync.fetch) {
+                console.log('Loading site data...');
+                
+                if (window.gitHubSync) {
                     siteData = await window.gitHubSync.fetch();
+                    console.log('Data loaded successfully:', siteData);
+                    
+                    if (!siteData) {
+                        throw new Error('No data received');
+                    }
                 } else {
-                    // تحميل من localStorage
-                    const savedData = localStorage.getItem('siteData_encrypted');
-                    if (savedData && window.gitHubSync) {
-                        siteData = window.gitHubSync.decryptData(savedData);
+                    // استخدام بيانات محلية
+                    const localData = localStorage.getItem('siteData');
+                    if (localData) {
+                        siteData = JSON.parse(localData);
                     } else {
-                        const plainData = localStorage.getItem('siteData');
-                        if (plainData) {
-                            siteData = JSON.parse(plainData);
-                        }
+                        siteData = createDefaultData();
                     }
                 }
                 
-                if (!siteData) {
-                    // بيانات افتراضية
-                    siteData = {
-                        products: [],
-                        categories: [],
-                        site: {
-                            name: {
-                                ar: "عبدالله للسيارات",
-                                en: "Abdullah Cars"
-                            }
-                        }
-                    };
-                }
-                
-                // تحديث المحتوى الديناميكي
-                updateDynamicContent();
-                updateBrands();
-                updateProducts();
-                updateSearchOptions();
-                
+                return true;
             } catch (error) {
                 console.error('Error loading site data:', error);
                 showToast('حدث خطأ في تحميل البيانات', 'error');
+                
+                // استخدام بيانات افتراضية
+                siteData = createDefaultData();
+                return false;
             }
         }
 
-        // تطبيق اللغة
-        function applyLanguage(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('siteLanguage', lang);
-            
-            const t = texts[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                        element.placeholder = t[key];
-                    } else {
-                        element.textContent = t[key];
+        // إنشاء بيانات افتراضية
+        function createDefaultData() {
+            return {
+                products: [],
+                brands: [
+                    { id: '1', name: 'تويوتا', icon: '🚗', count: 0 },
+                    { id: '2', name: 'نيسان', icon: '🚙', count: 0 },
+                    { id: '3', name: 'هوندا', icon: '🏎️', count: 0 },
+                    { id: '4', name: 'مرسيدس', icon: '🌟', count: 0 },
+                    { id: '5', name: 'بي إم دبليو', icon: '⚡', count: 0 },
+                    { id: '6', name: 'أودي', icon: '🔷', count: 0 },
+                    { id: '7', name: 'كيا', icon: '🚘', count: 0 },
+                    { id: '8', name: 'هيونداي', icon: '🚔', count: 0 }
+                ],
+                site: {
+                    name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
+                    contact: {
+                        phone: "01012345678",
+                        whatsapp: "01012345678",
+                        email: "info@abdullahcars.com",
+                        address: "القاهرة، مصر",
+                        workingHours: "9 ص - 9 م"
                     }
                 }
-            });
-            
-            // تحديث عنوان الصفحة
-            document.title = t.pageTitle;
-            
-            // تحديث اتجاه الصفحة
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            document.documentElement.lang = lang;
-            
-            // تحديث أزرار اللغة
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.dataset.lang === lang) {
-                    option.classList.add('active');
-                    const flag = option.querySelector('span').textContent;
-                    const text = option.querySelectorAll('span')[1].textContent;
-                    document.getElementById('currentLangFlag').textContent = flag;
-                    document.getElementById('currentLangText').textContent = text;
-                }
-            });
+            };
         }
 
-        // تحديث خيارات البحث
-        function updateSearchOptions() {
-            const categorySelect = document.getElementById('heroSearchCategory');
-            const brandSelect = document.getElementById('heroSearchBrand');
-            
-            categorySelect.innerHTML = '<option value="">' + texts[currentLanguage].heroSearchCategoryLabel + '</option>';
-            brandSelect.innerHTML = '<option value="">' + texts[currentLanguage].heroSearchBrandLabel + '</option>';
-            
-            if (siteData?.categories) {
-                siteData.categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.id;
-                    option.textContent = category.name?.[currentLanguage] || category.name;
-                    categorySelect.appendChild(option);
-                });
-            }
-            
-            // جمع الماركات من المنتجات
-            const brands = new Set();
-            if (siteData?.products) {
-                siteData.products.forEach(product => {
-                    if (product.brand) {
-                        brands.add(product.brand);
-                    }
-                });
-            }
-            
-            // إضافة الماركات الفريدة
-            brands.forEach(brand => {
-                const option = document.createElement('option');
-                option.value = brand;
-                option.textContent = brand;
-                brandSelect.appendChild(option);
-            });
-        }
-
-        // تحديث المحتوى الديناميكي
-        function updateDynamicContent() {
+        // تهيئة الصفحة
+        function initializePage() {
             if (!siteData) return;
             
-            // تحديث اسم الموقع
-            if (siteData.site?.name) {
-                document.getElementById('siteName').innerHTML = 
-                    `${siteData.site.name[currentLanguage]} <span>${currentLanguage === 'ar' ? 'للسيارات' : 'Cars'}</span>`;
-                
-                document.getElementById('heroTitle').textContent = siteData.site.name[currentLanguage];
-            }
+            // تحديث العلامة التجارية
+            updateBrands();
+            
+            // تحديث المنتجات
+            updateProducts();
+            
+            // تحديث خيارات البحث
+            updateSearchOptions();
+            
+            // تحديث معلومات التذييل
+            updateFooterInfo();
+            
+            // إعداد التنقل
+            setupNavigation();
         }
 
-        // تحديث الفئات
+        // تحديث الماركات
         function updateBrands() {
             const container = document.getElementById('brandsContainer');
             if (!container) return;
             
-            const categories = siteData?.categories || [];
+            const brands = siteData.brands || [];
             
-            if (categories.length === 0) {
-                const defaultCategories = [
-                    { name: "تويوتا", icon: "🚗" },
-                    { name: "نيسان", icon: "🚙" },
-                    { name: "هوندا", icon: "🏎️" },
-                    { name: "مرسيدس", icon: "🌟" },
-                    { name: "بي ام دبليو", icon: "⚡" },
-                    { name: "أودي", icon: "🔷" },
-                    { name: "كيا", icon: "🚘" },
-                    { name: "هيونداي", icon: "🚔" }
-                ];
-                
-                container.innerHTML = defaultCategories.map(cat => `
-                    <a href="category.html?category=${encodeURIComponent(cat.name)}" class="brand-card animate-on-scroll">
-                        <div class="brand-icon">${cat.icon}</div>
-                        <div class="brand-name">${currentLanguage === 'ar' ? cat.name : cat.name}</div>
-                    </a>
-                `).join('');
-            } else {
-                container.innerHTML = categories.map(category => `
-                    <a href="category.html?category=${encodeURIComponent(category.id)}" class="brand-card animate-on-scroll">
-                        <div class="brand-icon">${category.icon || '🚗'}</div>
-                        <div class="brand-name">${category.name?.[currentLanguage] || category.name || 'فئة'}</div>
-                    </a>
-                `).join('');
+            if (brands.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-tags"></i>
+                        <h3>لا توجد ماركات متاحة</h3>
+                        <p>سيتم إضافة الماركات قريباً</p>
+                    </div>
+                `;
+                return;
             }
+            
+            container.innerHTML = brands.map(brand => {
+                // حساب عدد المنتجات لكل ماركة
+                const productCount = siteData.products?.filter(p => p.brand === brand.name).length || 0;
+                
+                return `
+                <div class="brand-card animate-on-scroll" onclick="filterByBrand('${brand.id}')">
+                    <div class="brand-logo">
+                        ${brand.icon || '🚗'}
+                    </div>
+                    <h3 class="brand-name">${brand.name}</h3>
+                    <div class="brand-count">${productCount} سيارة</div>
+                </div>
+                `;
+            }).join('');
         }
 
         // تحديث المنتجات
-        function updateProducts(filtered = null) {
+        function updateProducts(filter = 'all') {
             const container = document.getElementById('productsContainer');
             if (!container) return;
             
-            let products = filtered || siteData?.products || [];
+            let products = siteData.products || [];
+            currentFilter = filter;
+            
+            // تطبيق الفلتر
+            if (filter === 'new') {
+                products = products.filter(p => p.type === 'new');
+            } else if (filter === 'used') {
+                products = products.filter(p => p.type === 'used');
+            } else if (filter === 'featured') {
+                products = products.filter(p => p.featured);
+            }
+            
             filteredProducts = products;
+            
+            // تحديث أزرار الفلتر
+            document.querySelectorAll('.filter-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(getFilterText(filter))) {
+                    btn.classList.add('active');
+                }
+            });
             
             if (products.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-state animate-on-scroll" style="grid-column: 1 / -1;">
+                    <div class="empty-state">
                         <i class="fas fa-car"></i>
-                        <h3>${texts[currentLanguage].noProducts}</h3>
-                        <p>${currentLanguage === 'ar' ? 'حاول استخدام معايير بحث مختلفة' : 'Try different search criteria'}</p>
+                        <h3>لا توجد سيارات متاحة</h3>
+                        <p>${filter === 'all' ? 'سيتم إضافة السيارات قريباً' : 'لا توجد سيارات تطابق هذا الفلتر'}</p>
                     </div>
                 `;
                 return;
             }
             
             container.innerHTML = products.map(product => {
-                const category = siteData?.categories?.find(c => c.id === product.categoryId);
-                const typeText = currentLanguage === 'ar' ? 
-                    (product.type === 'new' ? 'جديد' : product.type === 'used' ? 'مستعمل' : 'كهربائي') :
-                    (product.type === 'new' ? 'New' : product.type === 'used' ? 'Used' : 'Electric');
+                const typeText = getTypeText(product.type);
+                const isFeatured = product.featured ? 'featured' : '';
                 
                 return `
-                <div class="product-card animate-on-scroll ${product.featured ? 'featured' : ''}">
-                    <div style="width: 100%; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-car" style="font-size: 4rem; color: #666;"></i>
+                <div class="product-card animate-on-scroll ${isFeatured}">
+                    <div class="product-image-container">
+                        ${product.images && product.images.length > 0 ? 
+                            `<img src="${product.images[0]}" class="product-image" alt="${product.name?.ar || product.name}">` : 
+                            `<div style="width: 100%; height: 100%; background: linear-gradient(45deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
+                                <i class="fas fa-car"></i>
+                            </div>`}
                     </div>
                     <div class="product-info">
                         <div class="product-header">
-                            <h3 class="product-name">${product.name?.[currentLanguage] || product.name || 'منتج'}</h3>
+                            <h3 class="product-name">${product.name?.ar || product.name || 'سيارة'}</h3>
                             <span class="product-type">${typeText}</span>
                         </div>
+                        
                         <div class="product-price">
                             ${product.oldPrice ? `
                                 <span class="product-old-price">${product.oldPrice} ج.م</span>
                             ` : ''}
                             ${product.price || '0'} ج.م
                         </div>
-                        ${product.installment ? `
-                            <div class="installment-badge">${texts[currentLanguage].installmentAvailable}</div>
-                        ` : ''}
+                        
                         <ul class="product-specs">
-                            ${product.brand ? `<li>الماركة: ${product.brand}</li>` : ''}
-                            ${product.model ? `<li>الموديل: ${product.model}</li>` : ''}
-                            ${product.year ? `<li>السنة: ${product.year}</li>` : ''}
+                            ${product.brand ? `<li><strong>الماركة:</strong> ${product.brand}</li>` : ''}
+                            ${product.model ? `<li><strong>الموديل:</strong> ${product.model}</li>` : ''}
+                            ${product.year ? `<li><strong>السنة:</strong> ${product.year}</li>` : ''}
+                            ${product.fuel ? `<li><strong>الوقود:</strong> ${product.fuel}</li>` : ''}
+                            ${product.transmission ? `<li><strong>ناقل الحركة:</strong> ${product.transmission}</li>` : ''}
                         </ul>
-                        <a href="product-details.html?id=${product.id}" class="product-button">
-                            ${texts[currentLanguage].viewDetails}
-                        </a>
+                        
+                        ${product.installment ? `
+                            <div class="installment-badge">
+                                <i class="fas fa-credit-card"></i> تقسيط متاح
+                            </div>
+                        ` : ''}
+                        
+                        <div class="product-actions">
+                            <button class="product-button primary" onclick="viewProductDetails('${product.id}')">
+                                <i class="fas fa-eye"></i> عرض التفاصيل
+                            </button>
+                            <button class="product-button secondary" onclick="contactAboutProduct('${product.id}')">
+                                <i class="fas fa-phone"></i> استفسار
+                            </button>
+                        </div>
                     </div>
                 </div>
-            `}).join('');
+                `;
+            }).join('');
         }
 
-        // تهيئة النظام
-        function initializeSystem() {
-            // إعداد نموذج البحث في الهيرو
-            document.getElementById('heroSearchForm').addEventListener('submit', handleHeroSearch);
+        // تحديث خيارات البحث
+        function updateSearchOptions() {
+            const brandSelect = document.getElementById('searchBrand');
+            if (!brandSelect) return;
             
-            // إعداد التنقل
-            initNavigation();
+            const brands = siteData.brands || [];
             
-            // إخفاء شاشة التحميل بعد 3 ثواني كحد أقصى
-            setTimeout(hideLoadingScreen, 3000);
+            brandSelect.innerHTML = '<option value="">جميع الماركات</option>';
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand.id;
+                option.textContent = brand.name;
+                brandSelect.appendChild(option);
+            });
         }
 
-        // معالجة البحث في الهيرو
-        function handleHeroSearch(e) {
-            e.preventDefault();
+        // تحديث معلومات التذييل
+        function updateFooterInfo() {
+            if (!siteData.site?.contact) return;
             
-            const type = document.getElementById('heroSearchType').value;
-            const category = document.getElementById('heroSearchCategory').value;
-            const brand = document.getElementById('heroSearchBrand').value;
+            const contact = siteData.site.contact;
             
-            let filteredProducts = siteData?.products || [];
-            
-            // تطبيق الفلاتر
-            if (type) {
-                filteredProducts = filteredProducts.filter(p => p.type === type);
+            if (contact.phone) {
+                document.getElementById('footerPhone').textContent = contact.phone;
             }
-            
-            if (category) {
-                filteredProducts = filteredProducts.filter(p => p.categoryId === category);
+            if (contact.whatsapp) {
+                document.getElementById('footerWhatsapp').textContent = contact.whatsapp;
             }
-            
-            if (brand) {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.brand && p.brand.toLowerCase() === brand.toLowerCase()
-                );
+            if (contact.email) {
+                document.getElementById('footerEmail').textContent = contact.email;
             }
-            
-            updateProducts(filteredProducts);
-            
-            // التنقل إلى قسم المنتجات
-            const productsSection = document.getElementById('products');
-            if (productsSection) {
-                window.scrollTo({
-                    top: productsSection.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+            if (contact.address) {
+                document.getElementById('footerAddress').textContent = contact.address;
             }
-            
-            // عرض رسالة إذا لم توجد نتائج
-            if (filteredProducts.length === 0) {
-                showToast('لم يتم العثور على سيارات تطابق معايير البحث', 'info');
+            if (contact.workingHours) {
+                document.getElementById('footerHours').textContent = contact.workingHours;
             }
         }
 
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            const dropdown = document.getElementById('languageDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // تغيير اللغة
-        function changeLanguage(lang) {
-            if (lang !== currentLanguage) {
-                applyLanguage(lang);
-                toggleLanguageDropdown();
-                
-                // إعادة تحميل البيانات حسب اللغة
-                updateDynamicContent();
-                updateBrands();
-                updateProducts();
-                updateSearchOptions();
+        // إعداد المستمعين للأحداث
+        function setupEventListeners() {
+            // نموذج البحث
+            const searchForm = document.getElementById('advancedSearchForm');
+            if (searchForm) {
+                searchForm.addEventListener('submit', handleSearch);
             }
+            
+            // التنقل عند التمرير
+            window.addEventListener('scroll', handleScroll);
+            
+            // تحديث تلقائي للبيانات
+            setInterval(async () => {
+                await loadSiteData();
+                initializePage();
+            }, 300000); // كل 5 دقائق
         }
 
-        // إخفاء شاشة التحميل
-        function hideLoadingScreen() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            if (loadingScreen) {
-                loadingScreen.style.opacity = '0';
-                
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    document.querySelector('.main-content').classList.add('visible');
-                    initScrollAnimations();
-                }, 500);
-            }
-        }
-
-        // تهيئة التنقل
-        function initNavigation() {
+        // إعداد التنقل
+        function setupNavigation() {
             const nav = document.querySelector('.main-nav');
+            const navLinks = document.querySelectorAll('.nav-links a');
             
+            // إضافة تأثير التمرير
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
+                if (window.scrollY > 100) {
                     nav.classList.add('scrolled');
                 } else {
                     nav.classList.remove('scrolled');
                 }
+                
+                // تحديث الروابط النشطة
+                updateActiveNavLink();
             });
-
+            
             // التنقل السلس
-            document.querySelectorAll('a.scroll-link').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            const offset = 80;
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - offset;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
                     }
                 });
             });
+        }
+
+        // تحديث الرابط النشط
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
             
-            // إغلاق قائمة اللغة عند النقر خارجها
-            document.addEventListener('click', (e) => {
-                const dropdown = document.getElementById('languageDropdown');
-                const button = document.querySelector('.language-selector button');
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
                 
-                if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.classList.remove('show');
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
                 }
             });
         }
 
-        // تهيئة رسوميات التمرير
-        function initScrollAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            document.querySelectorAll('.animate-on-scroll').forEach(element => {
-                observer.observe(element);
+        // معالجة البحث
+        function handleSearch(e) {
+            e.preventDefault();
+            
+            const brand = document.getElementById('searchBrand').value;
+            const model = document.getElementById('searchModel').value;
+            const year = document.getElementById('searchYear').value;
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            const type = document.getElementById('searchType').value;
+            const fuel = document.getElementById('searchFuel').value;
+            
+            let products = siteData.products || [];
+            
+            // تطبيق الفلاتر
+            if (brand) {
+                const brandName = siteData.brands?.find(b => b.id === brand)?.name;
+                if (brandName) {
+                    products = products.filter(p => p.brand === brandName);
+                }
+            }
+            
+            if (model) {
+                products = products.filter(p => 
+                    p.model?.toLowerCase().includes(model.toLowerCase())
+                );
+            }
+            
+            if (year) {
+                products = products.filter(p => p.year == year);
+            }
+            
+            if (minPrice) {
+                products = products.filter(p => p.price >= parseInt(minPrice));
+            }
+            
+            if (maxPrice) {
+                products = products.filter(p => p.price <= parseInt(maxPrice));
+            }
+            
+            if (type) {
+                products = products.filter(p => p.type === type);
+            }
+            
+            if (fuel) {
+                products = products.filter(p => p.fuel === fuel);
+            }
+            
+            // عرض النتائج
+            const container = document.getElementById('productsContainer');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-search"></i>
+                        <h3>لا توجد نتائج</h3>
+                        <p>لم نعثر على سيارات تطابق معايير البحث الخاصة بك. حاول استخدام معايير مختلفة.</p>
+                        <button class="search-button secondary" onclick="resetSearch()" style="margin-top: 1.5rem;">
+                            <i class="fas fa-redo"></i> إعادة تعيين البحث
+                        </button>
+                    </div>
+                `;
+                showToast('لم يتم العثور على سيارات تطابق بحثك', 'error');
+            } else {
+                container.innerHTML = products.map(product => {
+                    const typeText = getTypeText(product.type);
+                    const isFeatured = product.featured ? 'featured' : '';
+                    
+                    return `
+                    <div class="product-card animate-on-scroll ${isFeatured}">
+                        <div class="product-image-container">
+                            ${product.images && product.images.length > 0 ? 
+                                `<img src="${product.images[0]}" class="product-image" alt="${product.name?.ar || product.name}">` : 
+                                `<div style="width: 100%; height: 100%; background: linear-gradient(45deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
+                                    <i class="fas fa-car"></i>
+                                </div>`}
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name">${product.name?.ar || product.name || 'سيارة'}</h3>
+                                <span class="product-type">${typeText}</span>
+                            </div>
+                            
+                            <div class="product-price">
+                                ${product.oldPrice ? `
+                                    <span class="product-old-price">${product.oldPrice} ج.م</span>
+                                ` : ''}
+                                ${product.price || '0'} ج.م
+                            </div>
+                            
+                            <ul class="product-specs">
+                                ${product.brand ? `<li><strong>الماركة:</strong> ${product.brand}</li>` : ''}
+                                ${product.model ? `<li><strong>الموديل:</strong> ${product.model}</li>` : ''}
+                                ${product.year ? `<li><strong>السنة:</strong> ${product.year}</li>` : ''}
+                            </ul>
+                            
+                            <div class="product-actions">
+                                <button class="product-button primary" onclick="viewProductDetails('${product.id}')">
+                                    <i class="fas fa-eye"></i> عرض التفاصيل
+                                </button>
+                                <button class="product-button secondary" onclick="contactAboutProduct('${product.id}')">
+                                    <i class="fas fa-phone"></i> استفسار
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+                
+                showToast(`تم العثور على ${products.length} سيارة`, 'success');
+            }
+            
+            // التمرير إلى قسم المنتجات
+            document.getElementById('products').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
             });
         }
 
-        // عرض الإشعار
+        // إعادة تعيين البحث
+        function resetSearch() {
+            document.getElementById('advancedSearchForm').reset();
+            updateProducts('all');
+            showToast('تم إعادة تعيين البحث', 'success');
+        }
+
+        // تصفية حسب الماركة
+        function filterByBrand(brandId) {
+            const brand = siteData.brands?.find(b => b.id === brandId);
+            if (brand) {
+                document.getElementById('searchBrand').value = brandId;
+                document.getElementById('advancedSearchForm').dispatchEvent(new Event('submit'));
+            }
+        }
+
+        // تصفية المنتجات
+        function filterProducts(filter) {
+            updateProducts(filter);
+            
+            // التمرير إلى قسم المنتجات
+            setTimeout(() => {
+                document.getElementById('products').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+
+        // عرض تفاصيل المنتج
+        function viewProductDetails(productId) {
+            window.location.href = `product.html?id=${productId}`;
+        }
+
+        // الاتصال بخصوص المنتج
+        function contactAboutProduct(productId) {
+            const product = siteData.products?.find(p => p.id === productId);
+            if (product && siteData.site?.contact?.whatsapp) {
+                const message = `مرحباً، أريد الاستفسار عن السيارة: ${product.name?.ar || product.name}`;
+                const whatsappUrl = `https://wa.me/${siteData.site.contact.whatsapp}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            } else {
+                showToast('يرجى الاتصال بنا للاستفسار', 'error');
+            }
+        }
+
+        // الحصول على نص النوع
+        function getTypeText(type) {
+            switch(type) {
+                case 'new': return 'جديد';
+                case 'used': return 'مستعمل';
+                case 'electric': return 'كهربائي';
+                default: return 'غير محدد';
+            }
+        }
+
+        // الحصول على نص الفلتر
+        function getFilterText(filter) {
+            switch(filter) {
+                case 'all': return 'الكل';
+                case 'new': return 'جديد';
+                case 'used': return 'مستعمل';
+                case 'featured': return 'مميز';
+                default: return 'الكل';
+            }
+        }
+
+        // بدء تشغيل الفيديو
+        function startVideo() {
+            const video = document.getElementById('backgroundVideo');
+            if (video) {
+                video.play().catch(e => {
+                    console.log('Video autoplay prevented:', e);
+                });
+            }
+        }
+
+        // إظهار الإشعارات
         function showToast(message, type = 'info') {
+            // إزالة الإشعارات السابقة
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(toast => toast.remove());
+            
+            // إنشاء إشعار جديد
             const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            toast.style.background = type === 'error' ? '#e53e3e' : type === 'success' ? '#38a169' : '#3182ce';
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
             
             document.body.appendChild(toast);
             
+            // إزالة الإشعار بعد 5 ثواني
             setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
+                toast.style.transition = 'opacity 0.5s ease';
+                
                 setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 3000);
-        }
-
-        // عند تحميل الصفحة بالكامل
-        window.addEventListener('load', () => {
-            // إضافة رسوميات التمرير للعناصر المرئية
-            setTimeout(() => {
-                document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    if (el.getBoundingClientRect().top < window.innerHeight) {
-                        el.classList.add('visible');
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
                     }
-                });
-            }, 500);
-            
-            // بدء تشغيل الفيديو في الخلفية
-            const video = document.getElementById('backgroundVideo');
-            if (video) {
-                video.play().catch(e => console.log('Video autoplay prevented:', e));
-            }
-        });
-
-        // دالة لتحميل بيانات موقع من GitHub
-        async function loadSiteDataFromGitHub() {
-            try {
-                if (window.gitHubSync && window.gitHubSync.fetch) {
-                    siteData = await window.gitHubSync.fetch();
-                    updateDynamicContent();
-                    updateBrands();
-                    updateProducts();
-                    updateSearchOptions();
-                    showToast('تم تحديث البيانات', 'success');
-                }
-            } catch (error) {
-                console.error('Error loading from GitHub:', error);
-                showToast('فشل تحديث البيانات', 'error');
-            }
+                }, 500);
+            }, 5000);
         }
 
-        // تحديث تلقائي للبيانات كل 5 دقائق
-        setInterval(loadSiteDataFromGitHub, 5 * 60 * 1000);
+        // معالجة التمرير
+        function handleScroll() {
+            // إظهار العناصر عند التمرير
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // تحديث تلقائي عند تغيير البيانات
+        if (window.gitHubSync) {
+            window.addEventListener('githubSync:dataChanged', async (event) => {
+                console.log('Data changed, updating...');
+                siteData = event.detail;
+                initializePage();
+                showToast('تم تحديث البيانات', 'success');
+            });
+        }
     </script>
 </body>
 </html>

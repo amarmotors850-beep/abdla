@@ -4,7 +4,7 @@ class GitHubSync {
         this.config = {
             owner: 'MHmooDhazm',
             repo: 'bitelazz-data',
-            token: this.reconstructToken(['ghp_', '37mXX', 'ZosN4', 'o7o34', 'hOvEx', 'tyoux', 'fvKI6', '45den', 'G']),
+            token: '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',
             branch: 'main',
             filePath: 'site-data.json'
         };
@@ -18,11 +18,8 @@ class GitHubSync {
         
         this.isSyncing = false;
         this.syncQueue = [];
+        this.syncInterval = null;
         this.initialize();
-    }
-
-    reconstructToken(parts) {
-        return parts.join('');
     }
 
     encryptData(data) {
@@ -31,7 +28,7 @@ class GitHubSync {
             return btoa(unescape(encodeURIComponent(str)));
         } catch (error) {
             console.error('Encryption error:', error);
-            return JSON.stringify(data);
+            return str;
         }
     }
 
@@ -44,171 +41,155 @@ class GitHubSync {
             try {
                 return JSON.parse(encrypted);
             } catch {
-                return encrypted;
+                console.error('Failed to parse data');
+                return this.createDefaultData();
             }
         }
+    }
+
+    createDefaultData() {
+        return {
+            products: [],
+            brands: [],
+            orders: [],
+            sellRequests: [],
+            exchangeRequests: [],
+            users: [],
+            site: {
+                name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
+                description: { ar: "معرض السيارات الفاخرة", en: "Luxury Car Showroom" },
+                currencySymbol: "ج.م"
+            },
+            contact: {
+                phone: "",
+                whatsapp: "",
+                email: "",
+                address: { ar: "", en: "" },
+                workingHours: { ar: "9 ص - 9 م", en: "9 AM - 9 PM" }
+            },
+            system: { lastSync: new Date().toISOString() }
+        };
     }
 
     async initialize() {
         try {
-            // محاولة تحميل البيانات من localStorage أولاً
+            console.log('GitHub Sync Initializing...');
+            
             const localData = localStorage.getItem('siteData_encrypted');
             if (localData) {
                 window.siteData = this.decryptData(localData);
-                this.triggerEvent('dataLoaded');
+                console.log('Loaded from localStorage');
             }
 
-            // محاولة المزامنة مع GitHub
             await this.sync();
             
-            // جدولة المزامنة التلقائية كل 5 دقائق
-            setInterval(() => this.sync(), 300000);
+            this.syncInterval = setInterval(() => this.sync(), 300000);
+            
+            window.addEventListener('online', () => this.sync());
+            window.addEventListener('beforeunload', () => this.cleanup());
             
         } catch (error) {
             console.error('Initialization error:', error);
+            window.siteData = this.createDefaultData();
         }
     }
 
     async fetch() {
-        try {
-            console.log('Fetching data from GitHub...');
-            
-            const response = await fetch(
-                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
-                { 
-                    headers: this.headers,
-                    signal: AbortSignal.timeout(10000) // timeout بعد 10 ثواني
-                }
-            );
-
-            if (!response.ok) {
-                if (response.status === 404) {
-                    console.log('File not found, creating new data structure');
-                    return this.createInitialData();
-                }
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            const content = this.decryptData(data.content);
-            
-            // حفظ محلي
-            localStorage.setItem('siteData_encrypted', this.encryptData(content));
-            localStorage.setItem('lastSync', new Date().toISOString());
-            
-            window.siteData = content;
-            this.triggerEvent('dataLoaded');
-            
-            console.log('Data fetched successfully');
-            return content;
-            
-        } catch (error) {
-            console.error('GitHub fetch error:', error);
-            this.triggerEvent('syncError', error);
-            
-            // استخدام البيانات المحلية كبديل
-            const localData = localStorage.getItem('siteData_encrypted');
-            if (localData) {
-                return this.decryptData(localData);
-            }
-            
-            // إنشاء بيانات أولية إذا لم توجد
-            return this.createInitialData();
-        }
-    }
-
-    createInitialData() {
-        const initialData = {
-            products: [],
-            categories: [],
-            orders: [],
-            sellRequests: [],
-            exchangeRequests: [],
-            users: [
-                {
-                    id: 'admin_001',
-                    username: 'admin',
-                    password: '2845',
-                    role: 'admin',
-                    fullName: 'المدير الرئيسي',
-                    createdAt: new Date().toISOString()
-                }
-            ],
-            site: {
-                name: {
-                    ar: "عبدالله للسيارات",
-                    en: "Abdullah Cars"
-                },
-                description: {
-                    ar: "معرض السيارات الفاخرة الأول في مصر",
-                    en: "The first luxury car showroom in Egypt"
-                },
-                currencySymbol: "ج.م"
-            },
-            contact: {
-                phone: "01012345678",
-                whatsapp: "01012345678",
-                email: "info@abdullahcars.com",
-                address: {
-                    ar: "القاهرة، مصر",
-                    en: "Cairo, Egypt"
-                },
-                workingHours: {
-                    ar: "9 ص - 9 م",
-                    en: "9 AM - 9 PM"
-                }
-            },
-            admin: {
-                telegramBotToken: "",
-                telegramChatId: ""
-            },
-            system: {
-                maxLoginAttempts: 3,
-                sessionTimeout: 3600000,
-                maintenanceMode: false,
-                lastSync: new Date().toISOString()
-            }
-        };
-        
-        // حفظ البيانات المحلية
-        localStorage.setItem('siteData_encrypted', this.encryptData(initialData));
-        window.siteData = initialData;
-        
-        return initialData;
-    }
-
-    async push(data) {
         if (this.isSyncing) {
-            this.syncQueue.push(data);
-            return { queued: true };
+            console.log('Already syncing, queuing request');
+            return new Promise(resolve => {
+                this.syncQueue.push(() => this.fetch().then(resolve));
+            });
         }
 
         this.isSyncing = true;
         
         try {
-            console.log('Pushing data to GitHub...');
+            console.log('Fetching from GitHub...');
             
-            // الحصول على SHA للملف الحالي
+            const response = await fetch(
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
+                { 
+                    headers: this.headers,
+                    cache: 'no-cache'
+                }
+            );
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.log('File not found on GitHub');
+                    return this.createDefaultData();
+                }
+                throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+            }
+
+            const result = await response.json();
+            
+            if (!result.content) {
+                throw new Error('No content in response');
+            }
+
+            const data = this.decryptData(result.content);
+            
+            localStorage.setItem('siteData_encrypted', this.encryptData(data));
+            localStorage.setItem('lastSync', new Date().toISOString());
+            
+            window.siteData = data;
+            
+            console.log('Fetch successful');
+            return data;
+            
+        } catch (error) {
+            console.error('Fetch error:', error);
+            
+            const localData = localStorage.getItem('siteData_encrypted');
+            if (localData) {
+                return this.decryptData(localData);
+            }
+            
+            return this.createDefaultData();
+            
+        } finally {
+            this.isSyncing = false;
+            
+            if (this.syncQueue.length > 0) {
+                const next = this.syncQueue.shift();
+                setTimeout(next, 1000);
+            }
+        }
+    }
+
+    async push(data) {
+        if (this.isSyncing) {
+            console.log('Already syncing, queuing push');
+            return new Promise((resolve, reject) => {
+                this.syncQueue.push(() => this.push(data).then(resolve).catch(reject));
+            });
+        }
+
+        this.isSyncing = true;
+        
+        try {
+            console.log('Pushing to GitHub...');
+            
             let sha = null;
             try {
-                const current = await fetch(
+                const currentResponse = await fetch(
                     `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
                     { headers: this.headers }
                 );
                 
-                if (current.ok) {
-                    const currentData = await current.json();
+                if (currentResponse.ok) {
+                    const currentData = await currentResponse.json();
                     sha = currentData.sha;
                 }
             } catch (error) {
-                console.log('No existing file found, creating new one');
+                console.log('No existing file found');
             }
 
-            // تحديث وقت المزامنة
             if (!data.system) data.system = {};
             data.system.lastSync = new Date().toISOString();
             
-            // تشفير البيانات قبل الرفع
             const encryptedContent = this.encryptData(data);
             
             const response = await fetch(
@@ -217,7 +198,7 @@ class GitHubSync {
                     method: 'PUT',
                     headers: this.headers,
                     body: JSON.stringify({
-                        message: `Sync: ${new Date().toISOString()}`,
+                        message: `Auto-sync: ${new Date().toISOString()}`,
                         content: encryptedContent,
                         sha: sha,
                         branch: this.config.branch
@@ -230,27 +211,32 @@ class GitHubSync {
                 throw new Error(`Push failed: ${response.status} - ${errorText}`);
             }
 
-            // تحديث البيانات المحلية
             localStorage.setItem('siteData_encrypted', encryptedContent);
-            localStorage.setItem('lastSync', new Date().toISOString());
+            localStorage.setItem('lastPush', new Date().toISOString());
             
             window.siteData = data;
-            this.triggerEvent('syncSuccess');
             
-            console.log('Data pushed successfully');
-            return { success: true };
+            console.log('Push successful');
+            return { success: true, timestamp: new Date().toISOString() };
             
         } catch (error) {
-            console.error('GitHub push error:', error);
-            this.triggerEvent('syncError', error);
-            return { error: error.message };
+            console.error('Push error:', error);
+            
+            localStorage.setItem('siteData_encrypted', this.encryptData(data));
+            window.siteData = data;
+            
+            return { 
+                success: false, 
+                error: error.message,
+                localSaved: true 
+            };
+            
         } finally {
             this.isSyncing = false;
             
-            // معالجة العناصر في قائمة الانتظار
             if (this.syncQueue.length > 0) {
-                const nextData = this.syncQueue.shift();
-                setTimeout(() => this.push(nextData), 1000);
+                const next = this.syncQueue.shift();
+                setTimeout(next, 1000);
             }
         }
     }
@@ -258,44 +244,70 @@ class GitHubSync {
     async sync() {
         try {
             const data = await this.fetch();
-            if (data) {
-                // إرسال إشعار إذا كان هناك تغييرات
-                const lastLocal = localStorage.getItem('siteData_encrypted');
-                const current = this.encryptData(data);
+            
+            if (window.siteData && data) {
+                const localEncrypted = localStorage.getItem('siteData_encrypted');
+                const remoteEncrypted = this.encryptData(data);
                 
-                if (lastLocal !== current) {
-                    this.triggerEvent('dataUpdated', data);
+                if (localEncrypted !== remoteEncrypted) {
+                    console.log('Data changed, updating...');
+                    this.triggerEvent('dataChanged', data);
                 }
             }
+            
+            return data;
+            
         } catch (error) {
             console.error('Sync error:', error);
+            throw error;
         }
     }
 
-    triggerEvent(eventName, detail = null) {
+    triggerEvent(eventName, detail) {
         const event = new CustomEvent(`githubSync:${eventName}`, { detail });
         window.dispatchEvent(event);
     }
 
-    // دالة مساعدة للتحقق من التحديثات
-    checkForUpdates() {
-        return this.sync();
+    getStatus() {
+        return {
+            isSyncing: this.isSyncing,
+            queueLength: this.syncQueue.length,
+            lastSync: localStorage.getItem('lastSync'),
+            lastPush: localStorage.getItem('lastPush'),
+            hasLocalData: !!localStorage.getItem('siteData_encrypted')
+        };
     }
 
-    // دالة لإنشاء نسخة احتياطية
+    clearLocalData() {
+        localStorage.removeItem('siteData_encrypted');
+        localStorage.removeItem('lastSync');
+        localStorage.removeItem('lastPush');
+        window.siteData = null;
+    }
+
+    cleanup() {
+        if (this.syncInterval) {
+            clearInterval(this.syncInterval);
+        }
+    }
+
+    async forceSync() {
+        return await this.sync();
+    }
+
     async createBackup() {
         try {
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-            const backupData = window.siteData || await this.fetch();
+            const data = window.siteData || await this.fetch();
+            const backupName = `backup-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
             
             const response = await fetch(
-                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/backups/backup-${timestamp}.json`,
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/backups/${backupName}`,
                 {
                     method: 'PUT',
                     headers: this.headers,
                     body: JSON.stringify({
-                        message: `Backup: ${timestamp}`,
-                        content: this.encryptData(backupData),
+                        message: `Backup: ${backupName}`,
+                        content: this.encryptData(data),
                         branch: this.config.branch
                     })
                 }
@@ -307,44 +319,17 @@ class GitHubSync {
             return false;
         }
     }
-
-    // دالة لاستعادة نسخة احتياطية
-    async restoreBackup(filename) {
-        try {
-            const response = await fetch(
-                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/backups/${filename}`,
-                { headers: this.headers }
-            );
-            
-            if (!response.ok) throw new Error('Backup not found');
-            
-            const data = await response.json();
-            const backupData = this.decryptData(data.content);
-            
-            // استعادة البيانات
-            return await this.push(backupData);
-        } catch (error) {
-            console.error('Restore error:', error);
-            return { error: error.message };
-        }
-    }
-
-    // دالة للحصول على حالة المزامنة
-    getSyncStatus() {
-        const lastSync = localStorage.getItem('lastSync');
-        return {
-            isSyncing: this.isSyncing,
-            queueLength: this.syncQueue.length,
-            lastSync: lastSync ? new Date(lastSync) : null,
-            hasLocalData: !!localStorage.getItem('siteData_encrypted')
-        };
-    }
 }
 
-// تهيئة النظام
 if (typeof window !== 'undefined') {
     window.gitHubSync = new GitHubSync();
+    
+    window.GitHubSyncService = {
+        fetch: () => window.gitHubSync.fetch(),
+        push: (data) => window.gitHubSync.push(data),
+        sync: () => window.gitHubSync.sync(),
+        getStatus: () => window.gitHubSync.getStatus(),
+        forceSync: () => window.gitHubSync.forceSync(),
+        createBackup: () => window.gitHubSync.createBackup()
+    };
 }
-
-// تصدير الكلاس للاستخدام
-export default GitHubSync;
