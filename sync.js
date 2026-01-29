@@ -26,44 +26,68 @@ class GitHubSync {
     }
 
     encryptData(data) {
-        // تشفير بسيط للبيانات الحساسة
-        const str = JSON.stringify(data);
-        return btoa(unescape(encodeURIComponent(str)));
+        try {
+            const str = JSON.stringify(data);
+            return btoa(unescape(encodeURIComponent(str)));
+        } catch (error) {
+            console.error('Encryption error:', error);
+            return JSON.stringify(data);
+        }
     }
 
     decryptData(encrypted) {
-        // فك تشفير البيانات
         try {
             const str = decodeURIComponent(escape(atob(encrypted)));
             return JSON.parse(str);
-        } catch {
-            return encrypted;
+        } catch (error) {
+            console.error('Decryption error:', error);
+            try {
+                return JSON.parse(encrypted);
+            } catch {
+                return encrypted;
+            }
         }
     }
 
     async initialize() {
-        // محاولة تحميل البيانات من localStorage أولاً
-        const localData = localStorage.getItem('siteData_encrypted');
-        if (localData) {
-            window.siteData = this.decryptData(localData);
-            this.triggerEvent('dataLoaded');
-        }
+        try {
+            // محاولة تحميل البيانات من localStorage أولاً
+            const localData = localStorage.getItem('siteData_encrypted');
+            if (localData) {
+                window.siteData = this.decryptData(localData);
+                this.triggerEvent('dataLoaded');
+            }
 
-        // محاولة المزامنة مع GitHub
-        await this.sync();
-        
-        // جدولة المزامنة التلقائية
-        setInterval(() => this.sync(), 300000); // كل 5 دقائق
+            // محاولة المزامنة مع GitHub
+            await this.sync();
+            
+            // جدولة المزامنة التلقائية كل 5 دقائق
+            setInterval(() => this.sync(), 300000);
+            
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
     }
 
     async fetch() {
         try {
+            console.log('Fetching data from GitHub...');
+            
             const response = await fetch(
                 `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
-                { headers: this.headers }
+                { 
+                    headers: this.headers,
+                    signal: AbortSignal.timeout(10000) // timeout بعد 10 ثواني
+                }
             );
 
-            if (!response.ok) throw new Error('Failed to fetch data');
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.log('File not found, creating new data structure');
+                    return this.createInitialData();
+                }
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
 
             const data = await response.json();
             const content = this.decryptData(data.content);
@@ -75,7 +99,9 @@ class GitHubSync {
             window.siteData = content;
             this.triggerEvent('dataLoaded');
             
+            console.log('Data fetched successfully');
             return content;
+            
         } catch (error) {
             console.error('GitHub fetch error:', error);
             this.triggerEvent('syncError', error);
@@ -86,8 +112,69 @@ class GitHubSync {
                 return this.decryptData(localData);
             }
             
-            return null;
+            // إنشاء بيانات أولية إذا لم توجد
+            return this.createInitialData();
         }
+    }
+
+    createInitialData() {
+        const initialData = {
+            products: [],
+            categories: [],
+            orders: [],
+            sellRequests: [],
+            exchangeRequests: [],
+            users: [
+                {
+                    id: 'admin_001',
+                    username: 'admin',
+                    password: '2845',
+                    role: 'admin',
+                    fullName: 'المدير الرئيسي',
+                    createdAt: new Date().toISOString()
+                }
+            ],
+            site: {
+                name: {
+                    ar: "عبدالله للسيارات",
+                    en: "Abdullah Cars"
+                },
+                description: {
+                    ar: "معرض السيارات الفاخرة الأول في مصر",
+                    en: "The first luxury car showroom in Egypt"
+                },
+                currencySymbol: "ج.م"
+            },
+            contact: {
+                phone: "01012345678",
+                whatsapp: "01012345678",
+                email: "info@abdullahcars.com",
+                address: {
+                    ar: "القاهرة، مصر",
+                    en: "Cairo, Egypt"
+                },
+                workingHours: {
+                    ar: "9 ص - 9 م",
+                    en: "9 AM - 9 PM"
+                }
+            },
+            admin: {
+                telegramBotToken: "",
+                telegramChatId: ""
+            },
+            system: {
+                maxLoginAttempts: 3,
+                sessionTimeout: 3600000,
+                maintenanceMode: false,
+                lastSync: new Date().toISOString()
+            }
+        };
+        
+        // حفظ البيانات المحلية
+        localStorage.setItem('siteData_encrypted', this.encryptData(initialData));
+        window.siteData = initialData;
+        
+        return initialData;
     }
 
     async push(data) {
@@ -99,18 +186,28 @@ class GitHubSync {
         this.isSyncing = true;
         
         try {
-            // الحصول على SHA للملف الحالي
-            const current = await fetch(
-                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
-                { headers: this.headers }
-            );
+            console.log('Pushing data to GitHub...');
             
+            // الحصول على SHA للملف الحالي
             let sha = null;
-            if (current.ok) {
-                const currentData = await current.json();
-                sha = currentData.sha;
+            try {
+                const current = await fetch(
+                    `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
+                    { headers: this.headers }
+                );
+                
+                if (current.ok) {
+                    const currentData = await current.json();
+                    sha = currentData.sha;
+                }
+            } catch (error) {
+                console.log('No existing file found, creating new one');
             }
 
+            // تحديث وقت المزامنة
+            if (!data.system) data.system = {};
+            data.system.lastSync = new Date().toISOString();
+            
             // تشفير البيانات قبل الرفع
             const encryptedContent = this.encryptData(data);
             
@@ -128,7 +225,10 @@ class GitHubSync {
                 }
             );
 
-            if (!response.ok) throw new Error('Failed to push data');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Push failed: ${response.status} - ${errorText}`);
+            }
 
             // تحديث البيانات المحلية
             localStorage.setItem('siteData_encrypted', encryptedContent);
@@ -137,7 +237,9 @@ class GitHubSync {
             window.siteData = data;
             this.triggerEvent('syncSuccess');
             
+            console.log('Data pushed successfully');
             return { success: true };
+            
         } catch (error) {
             console.error('GitHub push error:', error);
             this.triggerEvent('syncError', error);
@@ -182,10 +284,10 @@ class GitHubSync {
 
     // دالة لإنشاء نسخة احتياطية
     async createBackup() {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const backupData = window.siteData;
-        
         try {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const backupData = window.siteData || await this.fetch();
+            
             const response = await fetch(
                 `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/backups/backup-${timestamp}.json`,
                 {
@@ -226,82 +328,22 @@ class GitHubSync {
             return { error: error.message };
         }
     }
+
+    // دالة للحصول على حالة المزامنة
+    getSyncStatus() {
+        const lastSync = localStorage.getItem('lastSync');
+        return {
+            isSyncing: this.isSyncing,
+            queueLength: this.syncQueue.length,
+            lastSync: lastSync ? new Date(lastSync) : null,
+            hasLocalData: !!localStorage.getItem('siteData_encrypted')
+        };
+    }
 }
 
 // تهيئة النظام
-window.gitHubSync = new GitHubSync();
-
-// إضافة الحماية من DDOS
-(function() {
-    let requestCount = {};
-    const MAX_REQUESTS = 100; // 100 طلب في الدقيقة
-    const TIME_WINDOW = 60000; // 1 دقيقة
-    
-    const originalFetch = window.fetch;
-    window.fetch = function(...args) {
-        const ip = 'user'; // في الواقع يجب الحصول على IP الحقيقي
-        
-        if (!requestCount[ip]) {
-            requestCount[ip] = { count: 1, timestamp: Date.now() };
-        } else {
-            const now = Date.now();
-            if (now - requestCount[ip].timestamp > TIME_WINDOW) {
-                requestCount[ip] = { count: 1, timestamp: now };
-            } else {
-                requestCount[ip].count++;
-                
-                if (requestCount[ip].count > MAX_REQUESTS) {
-                    console.warn(`Rate limit exceeded for IP: ${ip}`);
-                    return Promise.reject(new Error('Rate limit exceeded'));
-                }
-            }
-        }
-        
-        return originalFetch.apply(this, args);
-    };
-    
-    // تنظيف العداد كل ساعة
-    setInterval(() => {
-        const now = Date.now();
-        Object.keys(requestCount).forEach(ip => {
-            if (now - requestCount[ip].timestamp > 3600000) {
-                delete requestCount[ip];
-            }
-        });
-    }, 3600000);
-})();
-
-// حماية من F12 وفحص الكود
-(function() {
-    // منع فتح أدوات المطور
-    document.onkeydown = function(e) {
-        if (e.keyCode === 123 || // F12
-            (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
-            (e.ctrlKey && e.keyCode === 85) // Ctrl+U
-        ) {
-            e.preventDefault();
-            return false;
-        }
-    };
-    
-    // منع النقر الأيمن
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    
-    // منع السحب والإفلات
-    document.addEventListener('dragstart', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
-            return false;
-        }
-    });
-})();
-
-// إضافة خدمة Worker لحماية البيانات
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(console.error);
+if (typeof window !== 'undefined') {
+    window.gitHubSync = new GitHubSync();
 }
 
 // تصدير الكلاس للاستخدام

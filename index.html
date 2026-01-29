@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta Tags للسيو -->
+    <meta name="description" content="معرض عبدالله للسيارات - أفضل عروض السيارات الجديدة والمستعملة في مصر. تصفح أحدث الموديلات من جميع الماركات العالمية بأسعار تنافسية">
+    <meta name="keywords" content="سيارات للبيع, معرض سيارات مصر, سيارات جديدة, سيارات مستعملة, عبدالله للسيارات, تويوتا, نيسان, هوندا, مرسيدس, بي ام دبليو">
+    <meta name="author" content="عبدالله للسيارات">
+    <meta property="og:title" content="عبدالله للسيارات | معرض السيارات الفاخرة">
+    <meta property="og:description" content="أفضل عروض السيارات الجديدة والمستعملة في مصر">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="logo.png">
+    <meta name="robots" content="index, follow">
+    
     <title id="pageTitle">عبدالله للسيارات | معرض السيارات الفاخرة</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,10 +180,81 @@
             color: var(--primary);
         }
 
+        /* Search Bar فوق الفيديو */
+        .hero-search {
+            position: absolute;
+            top: 120px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 90%;
+            max-width: 800px;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--primary);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-group {
+            min-width: 180px;
+        }
+
+        .search-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .search-group select,
+        .search-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .search-group select:focus,
+        .search-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.1);
+        }
+
+        .search-submit {
+            padding: 0.7rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            height: 42px;
+        }
+
+        .search-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 48, 48, 0.3);
+        }
+
         /* Video Hero */
         .video-hero {
             position: relative;
-            height: 80vh;
+            height: 100vh;
             overflow: hidden;
             margin-top: 70px;
         }
@@ -194,7 +275,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, rgba(0,0,0,0.7) 0%, rgba(197,48,48,0.3) 100%);
+            background: linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(197,48,48,0.3) 100%);
             z-index: 1;
         }
 
@@ -378,7 +459,7 @@
             line-height: 1.6;
         }
 
-        /* Brands Section */
+        /* الفئات Section */
         .brands-section {
             background: var(--light);
             padding: 6rem 2rem;
@@ -436,57 +517,6 @@
             border-radius: 15px;
             margin-bottom: 3rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .search-group {
-            min-width: 200px;
-        }
-
-        .search-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .search-group select,
-        .search-group input {
-            width: 100%;
-            padding: 0.7rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            transition: var(--transition);
-        }
-
-        .search-group select:focus,
-        .search-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .search-submit {
-            padding: 0.7rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            height: 42px;
-        }
-
-        .search-submit:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
         }
 
         /* Products Grid */
@@ -813,9 +843,14 @@
                 justify-content: center;
             }
             
-            .search-bar {
-                width: 100%;
-                margin-left: 0;
+            .hero-search {
+                top: 100px;
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            .search-form {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .hero-title {
@@ -844,6 +879,22 @@
                 font-size: 1rem;
             }
             
+            .hero-search {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                width: 100%;
+                margin: 1rem auto;
+                border-radius: 0;
+                border-right: none;
+                border-left: none;
+            }
+            
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
             .hero-buttons {
                 flex-direction: column;
                 width: 100%;
@@ -853,14 +904,6 @@
             .hero-button {
                 width: 100%;
                 text-align: center;
-            }
-            
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-group {
-                min-width: 100%;
             }
             
             .action-buttons-grid {
@@ -1051,14 +1094,48 @@
                 <li><a href="#home" class="scroll-link" id="navHome">🏠 الرئيسية</a></li>
                 <li><a href="#actions" class="scroll-link" id="navActions">⚡ الخدمات</a></li>
                 <li><a href="#categories" class="scroll-link" id="navCategories">🚗 الأنواع</a></li>
-                <li><a href="#brands" class="scroll-link" id="navBrands">🏎️ الماركات</a></li>
+                <li><a href="#brands" class="scroll-link" id="navBrands">🏎️ الفئات</a></li>
                 <li><a href="#products" class="scroll-link" id="navProducts">🛒 السيارات</a></li>
                 <li><a href="#contact" class="scroll-link" id="navContact">📞  تواصل معنا </a></li>
             </ul>
         </nav>
 
-        <!-- Video Hero -->
+        <!-- Video Hero مع البحث -->
         <section id="home" class="video-hero">
+            <!-- شريط البحث فوق الفيديو -->
+            <div class="hero-search animate-on-scroll">
+                <form class="search-form" id="heroSearchForm">
+                    <div class="search-group">
+                        <label for="heroSearchType" id="heroSearchTypeLabel">النوع</label>
+                        <select id="heroSearchType">
+                            <option value="">جميع الأنواع</option>
+                            <option value="new">جديد</option>
+                            <option value="used">مستعمل</option>
+                            <option value="electric">كهربائي</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <label for="heroSearchCategory" id="heroSearchCategoryLabel">الفئة</label>
+                        <select id="heroSearchCategory">
+                            <option value="">جميع الفئات</option>
+                            <!-- سيتم تعبئة الفئات ديناميكياً -->
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <label for="heroSearchBrand" id="heroSearchBrandLabel">الماركة</label>
+                        <select id="heroSearchBrand">
+                            <option value="">جميع الماركات</option>
+                            <!-- سيتم تعبئة الماركات ديناميكياً -->
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <button type="submit" class="search-submit" id="heroSearchSubmit">
+                            <i class="fas fa-search"></i> بحث
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <video id="backgroundVideo" autoplay muted loop playsinline>
                 <source src="logo2.mp4" type="video/mp4">
                 <!-- إذا لم يتوفر الفيديو -->
@@ -1121,11 +1198,11 @@
             </div>
         </section>
 
-        <!-- Brands Section -->
+        <!-- الفئات Section -->
         <section id="brands" class="brands-section">
-            <h2 class="section-title animate-on-scroll" id="brandsTitle">تصفح حسب الماركة</h2>
+            <h2 class="section-title animate-on-scroll" id="brandsTitle">تصفح حسب الفئة</h2>
             <div class="brands-grid" id="brandsContainer">
-                <!-- سيتم تحميل الماركات ديناميكياً -->
+                <!-- سيتم تحميل الفئات ديناميكياً -->
             </div>
         </section>
 
@@ -1133,51 +1210,6 @@
         <section id="products" class="products-section">
             <h2 class="section-title animate-on-scroll" id="productsTitle">أحدث السيارات المتاحة</h2>
             
-            <!-- Advanced Search -->
-            <div class="advanced-search animate-on-scroll">
-                <form class="search-form" id="advancedSearchForm">
-                    <div class="search-group">
-                        <label for="searchCategory" id="searchCategoryLabel">القسم</label>
-                        <select id="searchCategory">
-                            <option value="">جميع الأقسام</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchType" id="searchTypeLabel">النوع</label>
-                        <select id="searchType">
-                            <option value="">جميع الأنواع</option>
-                            <option value="new">جديد</option>
-                            <option value="used">مستعمل</option>
-                            <option value="electric">كهربائي</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchBrand" id="searchBrandLabel">الماركة</label>
-                        <select id="searchBrand">
-                            <option value="">جميع الماركات</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchModel" id="searchModelLabel">الموديل</label>
-                        <select id="searchModel">
-                            <option value="">جميع الموديلات</option>
-                            <!-- سيتم تعبئة الموديلات من 2000 إلى 2026 -->
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <label for="searchMinPrice" id="searchMinPriceLabel">السعر من</label>
-                        <input type="number" id="searchMinPrice" placeholder="أقل سعر">
-                    </div>
-                    <div class="search-group">
-                        <label for="searchMaxPrice" id="searchMaxPriceLabel">السعر إلى</label>
-                        <input type="number" id="searchMaxPrice" placeholder="أعلى سعر">
-                    </div>
-                    <div class="search-group">
-                        <button type="submit" class="search-submit" id="searchSubmit">بحث</button>
-                    </div>
-                </form>
-            </div>
-
             <!-- Products Grid -->
             <div class="products-grid" id="productsContainer">
                 <!-- سيتم تحميل المنتجات ديناميكياً -->
@@ -1203,17 +1235,17 @@
                         <li><a href="#home" class="scroll-link" id="footerHome">🏠 الرئيسية</a></li>
                         <li><a href="#actions" class="scroll-link" id="footerActions">⚡ الخدمات</a></li>
                         <li><a href="#categories" class="scroll-link" id="footerCategories">🚗 الأنواع</a></li>
-                        <li><a href="#brands" class="scroll-link" id="footerBrands">🏎️ الماركات</a></li>
+                        <li><a href="#brands" class="scroll-link" id="footerBrands">🏎️ الفئات</a></li>
                         <li><a href="#products" class="scroll-link" id="footerProducts">🛒 السيارات</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h3 id="footerContactTitle">اتصل بنا</h3>
-                    <p id="footerPhone">📞 الهاتف: <span id="contactPhoneValue">---</span></p>
-                    <p id="footerWhatsapp">📱 واتساب: <span id="contactWhatsappValue">---</span></p>
-                    <p id="footerEmail">✉️ البريد: <span id="contactEmailValue">---</span></p>
-                    <p id="footerAddress">📍 العنوان: <span id="contactAddressValue">---</span></p>
-                    <p id="footerHours">⏰ ساعات العمل: <span id="contactHoursValue">---</span></p>
+                    <p id="footerPhone">📞 الهاتف: <span id="contactPhoneValue">01012345678</span></p>
+                    <p id="footerWhatsapp">📱 واتساب: <span id="contactWhatsappValue">01012345678</span></p>
+                    <p id="footerEmail">✉️ البريد: <span id="contactEmailValue">info@abdullahcars.com</span></p>
+                    <p id="footerAddress">📍 العنوان: <span id="contactAddressValue">القاهرة، مصر</span></p>
+                    <p id="footerHours">⏰ ساعات العمل: <span id="contactHoursValue">9 ص - 9 م</span></p>
                 </div>
             </div>
             <div class="copyright">
@@ -1223,8 +1255,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="sync.js"></script>
+    <script src="security.js"></script>
     <script>
         // نصوص اللغة
         const texts = {
@@ -1246,9 +1278,15 @@
                 navHome: "🏠 الرئيسية",
                 navActions: "⚡ الخدمات",
                 navCategories: "🚗 الأنواع",
-                navBrands: "🏎️ الماركات",
+                navBrands: "🏎️ الفئات",
                 navProducts: "🛒 السيارات",
                 navContact: "📞 اتصل بنا",
+                
+                // Search
+                heroSearchTypeLabel: "النوع",
+                heroSearchCategoryLabel: "الفئة",
+                heroSearchBrandLabel: "الماركة",
+                heroSearchSubmit: "بحث",
                 
                 // Actions
                 actionsTitle: "ما الذي تبحث عنه؟",
@@ -1261,7 +1299,7 @@
                 
                 // Sections
                 categoriesTitle: "تصفح حسب النوع",
-                brandsTitle: "تصفح حسب الماركة",
+                brandsTitle: "تصفح حسب الفئة",
                 productsTitle: "أحدث السيارات المتاحة",
                 
                 // Categories
@@ -1272,15 +1310,6 @@
                 electricCarsTitle: "سيارات كهربائية",
                 electricCarsDesc: "سيارات كهربائية صديقة للبيئة بتقنيات حديثة",
                 
-                // Search
-                searchCategoryLabel: "القسم",
-                searchTypeLabel: "النوع",
-                searchBrandLabel: "الماركة",
-                searchModelLabel: "الموديل",
-                searchMinPriceLabel: "السعر من",
-                searchMaxPriceLabel: "السعر إلى",
-                searchSubmit: "بحث",
-                
                 // Footer
                 footerAboutTitle: "عبدالله للسيارات",
                 footerAboutDesc: "معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.",
@@ -1288,7 +1317,7 @@
                 footerHome: "🏠 الرئيسية",
                 footerActions: "⚡ الخدمات",
                 footerCategories: "🚗 الأنواع",
-                footerBrands: "🏎️ الماركات",
+                footerBrands: "🏎️ الفئات",
                 footerProducts: "🛒 السيارات",
                 footerContactTitle: "اتصل بنا",
                 footerPhone: "📞 الهاتف:",
@@ -1323,9 +1352,15 @@
                 navHome: "🏠 Home",
                 navActions: "⚡ Services",
                 navCategories: "🚗 Types",
-                navBrands: "🏎️ Brands",
+                navBrands: "🏎️ Categories",
                 navProducts: "🛒 Cars",
                 navContact: "📞 Contact",
+                
+                // Search
+                heroSearchTypeLabel: "Type",
+                heroSearchCategoryLabel: "Category",
+                heroSearchBrandLabel: "Brand",
+                heroSearchSubmit: "Search",
                 
                 // Actions
                 actionsTitle: "What are you looking for?",
@@ -1338,7 +1373,7 @@
                 
                 // Sections
                 categoriesTitle: "Browse by Type",
-                brandsTitle: "Browse by Brand",
+                brandsTitle: "Browse by Category",
                 productsTitle: "Latest Available Cars",
                 
                 // Categories
@@ -1349,15 +1384,6 @@
                 electricCarsTitle: "Electric Cars",
                 electricCarsDesc: "Environmentally friendly electric cars with modern technology",
                 
-                // Search
-                searchCategoryLabel: "Category",
-                searchTypeLabel: "Type",
-                searchBrandLabel: "Brand",
-                searchModelLabel: "Model",
-                searchMinPriceLabel: "Price From",
-                searchMaxPriceLabel: "Price To",
-                searchSubmit: "Search",
-                
                 // Footer
                 footerAboutTitle: "Abdullah Cars",
                 footerAboutDesc: "The first luxury car showroom in Egypt, offering you the best services and finest cars with comprehensive warranty and premium service.",
@@ -1365,7 +1391,7 @@
                 footerHome: "🏠 Home",
                 footerActions: "⚡ Services",
                 footerCategories: "🚗 Types",
-                footerBrands: "🏎️ Brands",
+                footerBrands: "🏎️ Categories",
                 footerProducts: "🛒 Cars",
                 footerContactTitle: "Contact Us",
                 footerPhone: "📞 Phone:",
@@ -1411,21 +1437,37 @@
                     siteData = await window.gitHubSync.fetch();
                 } else {
                     // تحميل من localStorage
-                    const savedData = localStorage.getItem('siteData');
-                    if (savedData) {
-                        siteData = JSON.parse(savedData);
+                    const savedData = localStorage.getItem('siteData_encrypted');
+                    if (savedData && window.gitHubSync) {
+                        siteData = window.gitHubSync.decryptData(savedData);
+                    } else {
+                        const plainData = localStorage.getItem('siteData');
+                        if (plainData) {
+                            siteData = JSON.parse(plainData);
+                        }
                     }
                 }
                 
-                if (siteData) {
-                    // تحديث المحتوى الديناميكي
-                    updateDynamicContent();
-                    updateFooterInfo();
-                    updateBrands();
-                    updateProducts();
-                    updateSearchOptions();
-                    populateModelOptions();
+                if (!siteData) {
+                    // بيانات افتراضية
+                    siteData = {
+                        products: [],
+                        categories: [],
+                        site: {
+                            name: {
+                                ar: "عبدالله للسيارات",
+                                en: "Abdullah Cars"
+                            }
+                        }
+                    };
                 }
+                
+                // تحديث المحتوى الديناميكي
+                updateDynamicContent();
+                updateBrands();
+                updateProducts();
+                updateSearchOptions();
+                
             } catch (error) {
                 console.error('Error loading site data:', error);
                 showToast('حدث خطأ في تحميل البيانات', 'error');
@@ -1471,85 +1513,13 @@
             });
         }
 
-        // تعبئة خيارات الموديل
-        function populateModelOptions() {
-            const modelSelect = document.getElementById('searchModel');
-            if (!modelSelect) return;
-            
-            // مسح الخيارات الحالية
-            modelSelect.innerHTML = '<option value="">' + texts[currentLanguage].searchModelLabel + '</option>';
-            
-            // إضافة الموديلات من 2000 إلى 2026
-            for (let year = 2026; year >= 2000; year--) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                modelSelect.appendChild(option);
-            }
-        }
-
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            const dropdown = document.getElementById('languageDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // تغيير اللغة
-        function changeLanguage(lang) {
-            if (lang !== currentLanguage) {
-                applyLanguage(lang);
-                toggleLanguageDropdown();
-                
-                // إعادة تحميل البيانات حسب اللغة
-                updateDynamicContent();
-                updateBrands();
-                updateProducts();
-                populateModelOptions();
-            }
-        }
-
-        // إخفاء شاشة التحميل
-        function hideLoadingScreen() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            loadingScreen.style.opacity = '0';
-            
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-                document.querySelector('.main-content').classList.add('visible');
-                initScrollAnimations();
-            }, 500);
-        }
-
-        // تحديث المحتوى الديناميكي
-        function updateDynamicContent() {
-            if (!siteData) return;
-            
-            // تحديث اسم الموقع
-            if (siteData.site?.name) {
-                document.getElementById('siteName').innerHTML = 
-                    `${siteData.site.name[currentLanguage]} <span>${currentLanguage === 'ar' ? 'للسيارات' : 'Cars'}</span>`;
-                
-                document.getElementById('heroTitle').textContent = siteData.site.name[currentLanguage];
-            }
-            
-            // تحديث وصف الهيرو
-            if (siteData.hero?.description) {
-                document.getElementById('heroDescription').textContent = siteData.hero.description[currentLanguage];
-            }
-            
-            // تحديث زر CTA
-            if (siteData.hero?.ctaButton) {
-                document.getElementById('ctaButton').textContent = siteData.hero.ctaButton[currentLanguage];
-            }
-        }
-
-        // تحديث خيارات البحث المتقدم
+        // تحديث خيارات البحث
         function updateSearchOptions() {
-            const categorySelect = document.getElementById('searchCategory');
-            const brandSelect = document.getElementById('searchBrand');
+            const categorySelect = document.getElementById('heroSearchCategory');
+            const brandSelect = document.getElementById('heroSearchBrand');
             
-            categorySelect.innerHTML = '<option value="">' + texts[currentLanguage].searchCategoryLabel + '</option>';
-            brandSelect.innerHTML = '<option value="">' + texts[currentLanguage].searchBrandLabel + '</option>';
+            categorySelect.innerHTML = '<option value="">' + texts[currentLanguage].heroSearchCategoryLabel + '</option>';
+            brandSelect.innerHTML = '<option value="">' + texts[currentLanguage].heroSearchBrandLabel + '</option>';
             
             if (siteData?.categories) {
                 siteData.categories.forEach(category => {
@@ -1579,80 +1549,52 @@
             });
         }
 
-        // تحديث معلومات الفوتر
-        function updateFooterInfo() {
+        // تحديث المحتوى الديناميكي
+        function updateDynamicContent() {
             if (!siteData) return;
             
-            const contact = siteData.contact || {};
-            
-            // تحديث معلومات الاتصال
-            if (contact.phone) {
-                document.getElementById('contactPhoneValue').textContent = contact.phone;
-            }
-            
-            if (contact.whatsapp) {
-                document.getElementById('contactWhatsappValue').textContent = contact.whatsapp;
-            }
-            
-            if (contact.email) {
-                document.getElementById('contactEmailValue').textContent = contact.email;
-            }
-            
-            if (contact.address) {
-                const address = contact.address[currentLanguage] || contact.address;
-                if (address) {
-                    document.getElementById('contactAddressValue').textContent = address;
-                }
-            }
-            
-            if (contact.workingHours) {
-                const hours = contact.workingHours[currentLanguage] || contact.workingHours;
-                if (hours) {
-                    document.getElementById('contactHoursValue').textContent = hours;
-                }
+            // تحديث اسم الموقع
+            if (siteData.site?.name) {
+                document.getElementById('siteName').innerHTML = 
+                    `${siteData.site.name[currentLanguage]} <span>${currentLanguage === 'ar' ? 'للسيارات' : 'Cars'}</span>`;
+                
+                document.getElementById('heroTitle').textContent = siteData.site.name[currentLanguage];
             }
         }
 
-        // تحديث الماركات
+        // تحديث الفئات
         function updateBrands() {
             const container = document.getElementById('brandsContainer');
             if (!container) return;
             
-            // جمع الماركات الفريدة من المنتجات
-            const brandsSet = new Set();
-            if (siteData?.products) {
-                siteData.products.forEach(product => {
-                    if (product.brand) {
-                        brandsSet.add(product.brand);
-                    }
-                });
-            }
+            const categories = siteData?.categories || [];
             
-            const brands = Array.from(brandsSet);
-            
-            if (brands.length === 0) {
-                const defaultBrands = [
-                    { name: "Toyota", icon: "🚗" },
-                    { name: "Nissan", icon: "🚙" },
-                    { name: "Honda", icon: "🏎️" },
-                    { name: "Mercedes", icon: "🌟" },
-                    { name: "BMW", icon: "⚡" },
-                    { name: "Audi", icon: "🔷" },
-                    { name: "Kia", icon: "🚘" },
-                    { name: "Hyundai", icon: "🚔" }
+            if (categories.length === 0) {
+                const defaultCategories = [
+                    { name: "تويوتا", icon: "🚗" },
+                    { name: "نيسان", icon: "🚙" },
+                    { name: "هوندا", icon: "🏎️" },
+                    { name: "مرسيدس", icon: "🌟" },
+                    { name: "بي ام دبليو", icon: "⚡" },
+                    { name: "أودي", icon: "🔷" },
+                    { name: "كيا", icon: "🚘" },
+                    { name: "هيونداي", icon: "🚔" }
                 ];
                 
-                defaultBrands.forEach(brand => {
-                    brandsSet.add(brand.name);
-                });
+                container.innerHTML = defaultCategories.map(cat => `
+                    <a href="category.html?category=${encodeURIComponent(cat.name)}" class="brand-card animate-on-scroll">
+                        <div class="brand-icon">${cat.icon}</div>
+                        <div class="brand-name">${currentLanguage === 'ar' ? cat.name : cat.name}</div>
+                    </a>
+                `).join('');
+            } else {
+                container.innerHTML = categories.map(category => `
+                    <a href="category.html?category=${encodeURIComponent(category.id)}" class="brand-card animate-on-scroll">
+                        <div class="brand-icon">${category.icon || '🚗'}</div>
+                        <div class="brand-name">${category.name?.[currentLanguage] || category.name || 'فئة'}</div>
+                    </a>
+                `).join('');
             }
-            
-            container.innerHTML = Array.from(brandsSet).map(brand => `
-                <a href="category.html?brand=${encodeURIComponent(brand)}" class="brand-card animate-on-scroll">
-                    <div class="brand-icon">🚗</div>
-                    <div class="brand-name">${brand}</div>
-                </a>
-            `).join('');
         }
 
         // تحديث المنتجات
@@ -1682,27 +1624,27 @@
                 
                 return `
                 <div class="product-card animate-on-scroll ${product.featured ? 'featured' : ''}">
-                    <img src="${product.images?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'}" 
-                         alt="${product.name?.[currentLanguage] || 'Product'}" 
-                         class="product-image">
+                    <div style="width: 100%; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-car" style="font-size: 4rem; color: #666;"></i>
+                    </div>
                     <div class="product-info">
                         <div class="product-header">
-                            <h3 class="product-name">${product.name?.[currentLanguage] || 'Product'}</h3>
+                            <h3 class="product-name">${product.name?.[currentLanguage] || product.name || 'منتج'}</h3>
                             <span class="product-type">${typeText}</span>
                         </div>
                         <div class="product-price">
                             ${product.oldPrice ? `
-                                <span class="product-old-price">${product.oldPrice} ${siteData?.site?.currencySymbol || 'ج.م'}</span>
+                                <span class="product-old-price">${product.oldPrice} ج.م</span>
                             ` : ''}
-                            ${product.price || '0'} ${siteData?.site?.currencySymbol || 'ج.م'}
+                            ${product.price || '0'} ج.م
                         </div>
                         ${product.installment ? `
                             <div class="installment-badge">${texts[currentLanguage].installmentAvailable}</div>
                         ` : ''}
                         <ul class="product-specs">
-                            ${(product.specs || []).slice(0, 3).map(spec => `
-                                <li>${spec.name}: ${spec.value}</li>
-                            `).join('')}
+                            ${product.brand ? `<li>الماركة: ${product.brand}</li>` : ''}
+                            ${product.model ? `<li>الموديل: ${product.model}</li>` : ''}
+                            ${product.year ? `<li>السنة: ${product.year}</li>` : ''}
                         </ul>
                         <a href="product-details.html?id=${product.id}" class="product-button">
                             ${texts[currentLanguage].viewDetails}
@@ -1714,8 +1656,8 @@
 
         // تهيئة النظام
         function initializeSystem() {
-            // إعداد نموذج البحث المتقدم
-            document.getElementById('advancedSearchForm').addEventListener('submit', handleAdvancedSearch);
+            // إعداد نموذج البحث في الهيرو
+            document.getElementById('heroSearchForm').addEventListener('submit', handleHeroSearch);
             
             // إعداد التنقل
             initNavigation();
@@ -1724,26 +1666,23 @@
             setTimeout(hideLoadingScreen, 3000);
         }
 
-        // معالجة البحث المتقدم
-        function handleAdvancedSearch(e) {
+        // معالجة البحث في الهيرو
+        function handleHeroSearch(e) {
             e.preventDefault();
             
-            const category = document.getElementById('searchCategory').value;
-            const type = document.getElementById('searchType').value;
-            const brand = document.getElementById('searchBrand').value;
-            const model = document.getElementById('searchModel').value;
-            const minPrice = document.getElementById('searchMinPrice').value;
-            const maxPrice = document.getElementById('searchMaxPrice').value;
+            const type = document.getElementById('heroSearchType').value;
+            const category = document.getElementById('heroSearchCategory').value;
+            const brand = document.getElementById('heroSearchBrand').value;
             
             let filteredProducts = siteData?.products || [];
             
             // تطبيق الفلاتر
-            if (category) {
-                filteredProducts = filteredProducts.filter(p => p.categoryId === category);
-            }
-            
             if (type) {
                 filteredProducts = filteredProducts.filter(p => p.type === type);
+            }
+            
+            if (category) {
+                filteredProducts = filteredProducts.filter(p => p.categoryId === category);
             }
             
             if (brand) {
@@ -1752,25 +1691,54 @@
                 );
             }
             
-            if (model) {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.year && p.year.toString() === model
-                );
-            }
-            
-            if (minPrice) {
-                filteredProducts = filteredProducts.filter(p => p.price >= parseFloat(minPrice));
-            }
-            
-            if (maxPrice) {
-                filteredProducts = filteredProducts.filter(p => p.price <= parseFloat(maxPrice));
-            }
-            
             updateProducts(filteredProducts);
+            
+            // التنقل إلى قسم المنتجات
+            const productsSection = document.getElementById('products');
+            if (productsSection) {
+                window.scrollTo({
+                    top: productsSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
             
             // عرض رسالة إذا لم توجد نتائج
             if (filteredProducts.length === 0) {
                 showToast('لم يتم العثور على سيارات تطابق معايير البحث', 'info');
+            }
+        }
+
+        // تبديل قائمة اللغة
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // تغيير اللغة
+        function changeLanguage(lang) {
+            if (lang !== currentLanguage) {
+                applyLanguage(lang);
+                toggleLanguageDropdown();
+                
+                // إعادة تحميل البيانات حسب اللغة
+                updateDynamicContent();
+                updateBrands();
+                updateProducts();
+                updateSearchOptions();
+            }
+        }
+
+        // إخفاء شاشة التحميل
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    document.querySelector('.main-content').classList.add('visible');
+                    initScrollAnimations();
+                }, 500);
             }
         }
 
@@ -1833,11 +1801,6 @@
             });
         }
 
-        // تنسيق السعر
-        function formatPrice(price) {
-            return new Intl.NumberFormat('ar-EG').format(price);
-        }
-
         // عرض الإشعار
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
@@ -1880,11 +1843,9 @@
                 if (window.gitHubSync && window.gitHubSync.fetch) {
                     siteData = await window.gitHubSync.fetch();
                     updateDynamicContent();
-                    updateFooterInfo();
                     updateBrands();
                     updateProducts();
                     updateSearchOptions();
-                    populateModelOptions();
                     showToast('تم تحديث البيانات', 'success');
                 }
             } catch (error) {
@@ -1895,17 +1856,6 @@
 
         // تحديث تلقائي للبيانات كل 5 دقائق
         setInterval(loadSiteDataFromGitHub, 5 * 60 * 1000);
-
-        // تعطيل قائمة السياق
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // حماية من النسخ
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-            showToast('النصوص محمية من النسخ', 'error');
-        });
     </script>
 </body>
 </html>

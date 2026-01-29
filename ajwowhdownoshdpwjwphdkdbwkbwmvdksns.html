@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>لوحة المستخدم | عبدالله للسيارات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3182ce;
+            --primary-dark: #2c5282;
+            --secondary: #0a0a0a;
+            --light: #f7fafc;
+            --white: #ffffff;
+            --gray: #a0aec0;
+            --dark-gray: #4a5568;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .login-title {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .login-subtitle {
+            color: var(--dark-gray);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(49, 130, 206, 0.3);
+        }
+
+        .error-message {
+            color: var(--danger);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: var(--light);
+        }
+
+        .dashboard-header {
+            background: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .dashboard-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .dashboard-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .dashboard-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .nav-button {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .dashboard-content {
+            margin-top: 70px;
+            padding: 2rem;
+            min-height: calc(100vh - 70px);
+        }
+
+        .welcome-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-button {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .action-button:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(49, 130, 206, 0.1);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .action-text {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            animation: slideInUp 0.3s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .dashboard-header {
+                padding: 1rem;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+            
+            .welcome-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+            
+            .welcome-message {
+                font-size: 1rem;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-logo">
+            <img src="logo.png" alt="User Logo">
+        </div>
+        <h1 class="login-title">لوحة المستخدم</h1>
+        <p class="login-subtitle">عبدالله للسيارات</p>
+        
+        <div class="error-message" id="loginError">كلمة السر غير صحيحة</div>
+        
+        <input type="password" 
+               class="login-input" 
+               id="userPassword" 
+               placeholder="أدخل كلمة السر" 
+               autocomplete="off">
+        
+        <button class="login-button" onclick="login()">تسجيل الدخول</button>
+        
+        <div style="margin-top: 2rem; color: var(--gray); font-size: 0.8rem;">
+            © 2024 عبدالله للسيارات. جميع الحقوق محفوظة.
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <a href="#" class="dashboard-logo">
+                <img src="logo.png" alt="Logo">
+                <span class="dashboard-title">لوحة المستخدم</span>
+            </a>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">مستخدم</span>
+                <button class="nav-button" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> خروج
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <!-- Welcome Section -->
+            <div class="welcome-card">
+                <div class="welcome-icon">👋</div>
+                <h1 class="welcome-title" id="welcomeTitle">مرحباً بك</h1>
+                <p class="welcome-message" id="welcomeMessage">
+                    هذا هو لوحة تحكم المستخدم حيث يمكنك الاطلاع على المعلومات الأساسية والوصول إلى الميزات المحددة المتاحة لك.
+                </p>
+            </div>
+
+            <!-- User Info -->
+            <div class="info-card">
+                <h2 class="info-title">معلومات الحساب</h2>
+                <div class="info-item">
+                    <span class="info-label">اسم المستخدم:</span>
+                    <span class="info-value" id="infoUsername">---</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الدور:</span>
+                    <span class="info-value" id="infoRole">---</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">تاريخ التسجيل:</span>
+                    <span class="info-value" id="infoCreatedAt">---</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">آخر دخول:</span>
+                    <span class="info-value" id="infoLastLogin">---</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="info-card">
+                <h2 class="info-title">إجراءات سريعة</h2>
+                <div class="actions-grid">
+                    <a href="index.html" class="action-button">
+                        <div class="action-icon">🏠</div>
+                        <div class="action-text">الموقع الرئيسي</div>
+                    </a>
+                    <a href="sell.html" class="action-button">
+                        <div class="action-icon">💰</div>
+                        <div class="action-text">بيع سيارتك</div>
+                    </a>
+                    <a href="exchange.html" class="action-button">
+                        <div class="action-icon">🔄</div>
+                        <div class="action-text">استبدال سيارتك</div>
+                    </a>
+                    <a href="#contact" class="action-button">
+                        <div class="action-icon">📞</div>
+                        <div class="action-text">تواصل معنا</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="info-card">
+                <h2 class="info-title">ملاحظات مهمة</h2>
+                <div style="color: var(--dark-gray); line-height: 1.6;">
+                    <p>🔐 يرجى الحفاظ على سرية كلمة المرور الخاصة بك.</p>
+                    <p>📞 للاستفسارات، يمكنك التواصل مع الإدارة عبر صفحة اتصل بنا.</p>
+                    <p>🔄 يمكنك طلب تحديث صلاحياتك من المدير المسؤول.</p>
+                    <p>⚠️ أي محاولة للوصول إلى أقسام غير مصرح بها سوف تؤدي إلى إغلاق حسابك.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <script src="sync.js"></script>
+    <script>
+        let currentUser = null;
+        let isLoggedIn = false;
+
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', () => {
+            // التحقق من حالة الدخول
+            const savedSession = localStorage.getItem('userSession');
+            if (savedSession) {
+                try {
+                    const session = JSON.parse(savedSession);
+                    if (session.expires > Date.now()) {
+                        currentUser = session.user;
+                        isLoggedIn = true;
+                        showDashboard();
+                        loadUserData();
+                    } else {
+                        localStorage.removeItem('userSession');
+                    }
+                } catch (error) {
+                    localStorage.removeItem('userSession');
+                }
+            }
+        });
+
+        // تسجيل الدخول
+        function login() {
+            const password = document.getElementById('userPassword').value;
+            const errorElement = document.getElementById('loginError');
+
+            // تحميل بيانات المستخدمين
+            let siteData = null;
+            try {
+                const savedData = localStorage.getItem('siteData_encrypted');
+                if (savedData && window.gitHubSync) {
+                    siteData = window.gitHubSync.decryptData(savedData);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+
+            if (!siteData || !siteData.users) {
+                errorElement.textContent = 'لا توجد بيانات مستخدمين';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            // البحث عن المستخدم بكلمة السر المدخلة
+            const user = siteData.users.find(u => u.password === password);
+            
+            if (user) {
+                // تسجيل الدخول الناجح
+                currentUser = {
+                    id: user.id,
+                    username: user.username,
+                    role: user.role,
+                    fullName: user.fullName,
+                    createdAt: user.createdAt,
+                    loginTime: new Date().toISOString()
+                };
+
+                // حفظ الجلسة
+                const session = {
+                    user: currentUser,
+                    expires: Date.now() + (60 * 60 * 1000) // ساعة واحدة
+                };
+                localStorage.setItem('userSession', JSON.stringify(session));
+
+                isLoggedIn = true;
+                showDashboard();
+                loadUserData();
+                showToast('تم تسجيل الدخول بنجاح', 'success');
+            } else {
+                // فشل الدخول
+                errorElement.textContent = 'كلمة السر غير صحيحة';
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // عرض لوحة التحكم
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('userSession');
+                isLoggedIn = false;
+                currentUser = null;
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('userPassword').value = '';
+                document.getElementById('loginError').style.display = 'none';
+                showToast('تم تسجيل الخروج بنجاح', 'info');
+            }
+        }
+
+        // تحميل بيانات المستخدم
+        function loadUserData() {
+            if (!currentUser) return;
+
+            // تحديث المعلومات في الصفحة
+            document.getElementById('userName').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username[0]?.toUpperCase() || 'U';
+            
+            document.getElementById('welcomeTitle').textContent = `مرحباً ${currentUser.username}`;
+            document.getElementById('welcomeMessage').textContent = 
+                `نحن سعداء برؤيتك في لوحة تحكم المستخدم. هنا يمكنك الاطلاع على معلومات حسابك والوصول إلى الميزات المتاحة لك.`;
+            
+            document.getElementById('infoUsername').textContent = currentUser.username;
+            document.getElementById('infoRole').textContent = currentUser.role === 'admin' ? 'مدير' : 'مستخدم';
+            document.getElementById('infoCreatedAt').textContent = 
+                currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleDateString('ar-EG') : 'غير محدد';
+            document.getElementById('infoLastLogin').textContent = 
+                new Date(currentUser.loginTime).toLocaleString('ar-EG');
+        }
+
+        // عرض الإشعارات
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            
+            const colors = {
+                success: '#38a169',
+                error: '#e53e3e',
+                warning: '#d69e2e',
+                info: '#3182ce'
+            };
+            
+            toast.style.background = colors[type] || colors.info;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // تحديث الجلسة تلقائياً
+        setInterval(() => {
+            if (isLoggedIn) {
+                const session = localStorage.getItem('userSession');
+                if (session) {
+                    const parsed = JSON.parse(session);
+                    if (parsed.expires - Date.now() < 5 * 60 * 1000) { // 5 دقائق قبل الانتهاء
+                        parsed.expires = Date.now() + (60 * 60 * 1000);
+                        localStorage.setItem('userSession', JSON.stringify(parsed));
+                    }
+                }
+            }
+        }, 60 * 1000); // كل دقيقة
+    </script>
+</body>
+</html>
