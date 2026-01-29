@@ -1,10 +1,10 @@
+[file name]: sell.html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بيع سيارتك | عبدالله للسيارات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -12,13 +12,11 @@
             --primary-dark: #9b2c2c;
             --secondary: #0a0a0a;
             --light: #f7fafc;
+            --white: #ffffff;
             --gray: #a0aec0;
             --dark-gray: #4a5568;
-            --white: #ffffff;
             --success: #38a169;
-            --warning: #ed8936;
-            --danger: #e53e3e;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -28,377 +26,227 @@
         }
 
         body {
-            font-family: 'Cairo', sans-serif !important;
-            background-color: var(--white);
+            font-family: 'Cairo', sans-serif;
+            background: var(--light);
             color: var(--secondary);
-            overflow-x: hidden;
-            text-align: right;
+            line-height: 1.6;
         }
 
-        /* Loading Screen */
-        #loadingScreen {
-            position: fixed;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            z-index: 1000;
         }
 
-        #loadingVideo {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 2rem;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            padding: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .loading-bar-container {
-            width: 300px;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .loading-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            animation: loadingAnimation 2s ease-in-out forwards;
-        }
-
-        @keyframes loadingAnimation {
-            0% { width: 0%; }
-            50% { width: 60%; }
-            100% { width: 100%; }
-        }
-
-        /* Navigation */
-        .sell-nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 3rem;
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--primary);
         }
 
-        .back-button {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-family: 'Cairo', sans-serif !important;
-            font-weight: 600;
-        }
-
-        .back-button:hover {
-            background: rgba(197, 48, 48, 0.1);
-        }
-
-        .nav-logo-container {
+        .logo {
             display: flex;
             align-items: center;
             gap: 1rem;
             text-decoration: none;
+            color: var(--secondary);
         }
 
-        .nav-logo {
+        .logo img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px rgba(197, 48, 48, 0.2);
-            animation: pulseLogo 2s infinite;
-        }
-
-        @keyframes pulseLogo {
-            0%, 100% { 
-                box-shadow: 0 0 20px rgba(197, 48, 48, 0.3);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 40px rgba(197, 48, 48, 0.5);
-                transform: scale(1.05);
-            }
-        }
-
-        .nav-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .logo-text {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--secondary);
-            font-family: 'Cairo', sans-serif !important;
         }
 
         .logo-text span {
             color: var(--primary);
         }
 
-        /* Sell Container */
+        .back-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
         .sell-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 8rem 2rem 4rem;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         }
 
-        @media (max-width: 768px) {
-            .sell-container {
-                padding: 6rem 1rem 2rem;
-            }
-        }
-
-        /* Sell Header */
-        .sell-header {
-            text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
-            overflow: hidden;
-            padding: 3rem;
-            border-radius: 20px;
-            border: 2px solid transparent;
-            background: var(--light);
-            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
-        }
-
-        .sell-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid transparent;
-            border-radius: 20px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: rotateBorder 3s linear infinite;
-        }
-
-        @keyframes rotateBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        .sell-title {
-            font-size: 3rem;
-            font-weight: 700;
+        .page-title {
             color: var(--secondary);
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .sell-title {
-                font-size: 2rem;
-            }
-        }
-
-        .sell-subtitle {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Sell Form */
-        .sell-form {
-            background: var(--light);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 2px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .sell-form {
-                padding: 2rem;
-            }
-        }
-
-        .sell-form::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid transparent;
-            border-radius: 20px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: rotateBorder 3s linear infinite;
-        }
-
-        .form-title {
+            margin-bottom: 0.5rem;
             font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
+        }
+
+        .page-subtitle {
+            color: var(--gray);
             margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary);
-            position: relative;
-            z-index: 1;
+        }
+
+        .sell-form {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px dashed #e2e8f0;
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1.1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
             display: block;
-            font-weight: 600;
+            margin-bottom: 0.5rem;
             color: var(--secondary);
-            margin-bottom: 0.8rem;
-            font-size: 1rem;
+            font-weight: 600;
         }
 
         .form-input,
-        .form-textarea,
-        .form-select {
+        .form-select,
+        .form-textarea {
             width: 100%;
-            padding: 1rem;
-            background: var(--white);
+            padding: 0.8rem;
             border: 2px solid #e2e8f0;
-            color: var(--secondary);
-            font-family: 'Cairo', sans-serif !important;
-            font-size: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
             transition: var(--transition);
-            position: relative;
         }
 
         .form-input:focus,
-        .form-textarea:focus,
-        .form-select:focus {
+        .form-select:focus,
+        .form-textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(197, 48, 48, 0.2);
+            box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.1);
         }
 
         .form-textarea {
-            height: 120px;
+            min-height: 120px;
             resize: vertical;
         }
 
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c53030' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: left 1rem center;
-            padding-left: 3rem;
+        .radio-group {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
         }
 
-        .form-required {
-            color: var(--danger);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* File Upload */
-        .file-upload {
-            border: 2px dashed #cbd5e0;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 1rem;
         }
 
-        .file-upload:hover {
-            border-color: var(--primary);
+        .radio-label input {
+            margin: 0;
+        }
+
+        /* Image Upload */
+        .image-upload-section {
+            border: 2px dashed var(--primary);
             background: rgba(197, 48, 48, 0.05);
         }
 
-        .file-upload input {
-            display: none;
+        .upload-area {
+            text-align: center;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            background: rgba(197, 48, 48, 0.1);
         }
 
         .upload-icon {
             font-size: 3rem;
-            color: var(--gray);
+            color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .upload-text {
-            color: var(--dark-gray);
+        .upload-text h4 {
+            color: var(--secondary);
             margin-bottom: 0.5rem;
         }
 
-        .upload-hint {
+        .upload-text p {
             color: var(--gray);
             font-size: 0.9rem;
+        }
+
+        #carImages {
+            display: none;
         }
 
         .image-preview {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .preview-item {
             position: relative;
             border-radius: 8px;
             overflow: hidden;
-            border: 2px solid var(--primary);
+            height: 150px;
         }
 
-        .preview-image {
+        .preview-item img {
             width: 100%;
-            height: 150px;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -406,998 +254,853 @@
             position: absolute;
             top: 5px;
             left: 5px;
-            background: var(--danger);
+            background: var(--primary);
             color: white;
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 1.2rem;
         }
 
-        /* Contact Method */
+        /* Contact Methods */
         .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .method-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .method-card:hover,
+        .method-card.selected {
+            border-color: var(--primary);
+            background: rgba(197, 48, 48, 0.05);
+        }
+
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .method-name {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .method-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Form Actions */
+        .form-actions {
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
         }
 
-        .contact-method {
+        .btn-submit {
+            flex: 1;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--white);
-            border: 2px solid #e2e8f0;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.2);
+        }
+
+        .btn-cancel {
+            padding: 1rem 2rem;
+            background: var(--gray);
+            color: white;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .contact-method input {
-            display: none;
+        .btn-cancel:hover {
+            background: var(--dark-gray);
         }
 
-        .contact-method.selected {
-            background: rgba(197, 48, 48, 0.1);
-            border-color: var(--primary);
-        }
-
-        /* Form Buttons */
-        .form-buttons {
-            display: flex;
-            gap: 1rem;
+        /* Benefits */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--primary);
-            position: relative;
-            z-index: 1;
         }
 
-        @media (max-width: 768px) {
-            .form-buttons {
-                flex-direction: column;
-            }
-        }
-
-        .submit-button {
-            flex: 1;
-            padding: 1.2rem;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.2);
-            position: relative;
-            overflow: hidden;
-            font-family: 'Cairo', sans-serif !important;
-        }
-
-        .submit-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .submit-button:hover::before {
-            left: 100%;
-        }
-
-        .submit-button:hover:not(:disabled) {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.3);
-        }
-
-        .submit-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .reset-button {
-            padding: 1.2rem 2.5rem;
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Cairo', sans-serif !important;
-        }
-
-        .reset-button:hover {
-            background: rgba(197, 48, 48, 0.1);
-        }
-
-        /* Success Modal */
-        .success-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-        }
-
-        .success-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
+        .benefit-card {
             background: var(--white);
-            padding: 4rem;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            border: 2px solid var(--primary);
-            transform: scale(0.9);
-            transition: var(--transition);
-            box-shadow: 0 20px 50px rgba(197, 48, 48, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .modal-content {
-                padding: 2rem;
-            }
-        }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid transparent;
-            border-radius: 20px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: rotateBorder 3s linear infinite;
-        }
-
-        .success-modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .success-icon {
-            font-size: 6rem;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            animation: pulse 2s infinite;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .modal-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .modal-title {
-                font-size: 2rem;
-            }
-        }
-
-        .modal-message {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
-            margin-bottom: 3rem;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .modal-buttons {
-                flex-direction: column;
-            }
-        }
-
-        .modal-button {
-            padding: 1rem 2.5rem;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
+            padding: 1.5rem;
             border-radius: 10px;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Cairo', sans-serif !important;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .modal-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .modal-button:hover::before {
-            left: 100%;
-        }
-
-        .modal-button.primary {
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .modal-button.primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.3);
-        }
-
-        .modal-button.secondary {
-            background: transparent;
-            border: 2px solid var(--primary);
+        .benefit-icon {
+            font-size: 2.5rem;
             color: var(--primary);
+            margin-bottom: 1rem;
         }
 
-        .modal-button.secondary:hover {
-            background: rgba(197, 48, 48, 0.1);
+        .benefit-title {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
-        /* Error States */
-        .error-message {
-            color: var(--danger);
+        .benefit-desc {
+            color: var(--gray);
             font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
         }
 
-        .form-input.error,
-        .form-textarea.error,
-        .form-select.error {
-            border-color: var(--danger);
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        /* Toast Notification */
+        /* Toast */
         .toast {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem 2rem;
-            background: var(--primary);
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
             color: white;
-            border-radius: 10px;
-            z-index: 10000;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            animation: slideIn 0.3s ease;
-            display: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            animation: slideInUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .toast.show {
-            display: block;
-        }
-
-        @keyframes slideIn {
+        @keyframes slideInUp {
             from {
-                transform: translateX(-50%) translateY(-100%);
+                transform: translateY(100%);
                 opacity: 0;
             }
             to {
-                transform: translateX(-50%) translateY(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sell-nav {
+            .container {
                 padding: 1rem;
-                flex-wrap: wrap;
+            }
+            
+            .header-content {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .sell-container {
+                padding: 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .radio-group {
+                flex-direction: column;
                 gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loadingScreen">
-        <video id="loadingVideo" autoplay muted playsinline>
-            <source src="logo.mp4" type="video/mp4">
-        </video>
-        <div class="loading-bar-container">
-            <div class="loading-bar"></div>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="عبدالله للسيارات">
+                <div class="logo-text">عبدالله <span>للسيارات</span></div>
+            </a>
+            <button class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="sell-nav">
-        <a href="index.html" class="back-button">
-            <i class="fas fa-arrow-right"></i>
-            <span>العودة للرئيسية</span>
-        </a>
-        <a href="index.html" class="nav-logo-container">
-            <div class="nav-logo">
-                <img src="logo.png" alt="عبدالله للسيارات" onerror="this.src='https://via.placeholder.com/50'">
-            </div>
-            <div class="logo-text">عبدالله <span>للسيارات</span></div>
-        </a>
-    </nav>
+    <div class="container">
+        <div class="sell-container">
+            <h1 class="page-title">بيع سيارتك</h1>
+            <p class="page-subtitle">أدخل تفاصيل سيارتك وسنقوم بالتواصل معك خلال 24 ساعة</p>
 
-    <!-- Sell Container -->
-    <div class="sell-container">
-        <!-- Sell Header -->
-        <div class="sell-header">
-            <h1 class="sell-title">بيع سيارتك بسرعة وسهولة</h1>
-            <p class="sell-subtitle">املأ النموذج التالي وسنتصل بك في أقرب وقت ممكن لتقييم سيارتك وعرض أفضل سعر</p>
-        </div>
-
-        <!-- Sell Form -->
-        <form class="sell-form" id="sellForm">
-            <h2 class="form-title">معلومات السيارة</h2>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="carBrand" class="form-label">
-                        ماركة السيارة <span class="form-required">*</span>
-                    </label>
-                    <input type="text" id="carBrand" class="form-input" required 
-                           placeholder="مثال: تويوتا">
-                    <div class="error-message" id="brandError">الرجاء إدخال ماركة السيارة</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="carModel" class="form-label">
-                        موديل السيارة <span class="form-required">*</span>
-                    </label>
-                    <input type="text" id="carModel" class="form-input" required 
-                           placeholder="مثال: كورولا">
-                    <div class="error-message" id="modelError">الرجاء إدخال موديل السيارة</div>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="carYear" class="form-label">
-                        سنة الصنع <span class="form-required">*</span>
-                    </label>
-                    <input type="number" id="carYear" class="form-input" required 
-                           min="1950" max="2024" placeholder="مثال: 2020">
-                    <div class="error-message" id="yearError">الرجاء إدخال سنة صحيحة</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="carType" class="form-label">
-                        نوع السيارة <span class="form-required">*</span>
-                    </label>
-                    <select id="carType" class="form-select" required>
-                        <option value="">اختر النوع</option>
-                        <option value="sedan">سيدان</option>
-                        <option value="suv">SUV</option>
-                        <option value="hatchback">هاتشباك</option>
-                        <option value="coupe">كوبيه</option>
-                        <option value="convertible">كابريوليه</option>
-                        <option value="pickup">بيك أب</option>
-                        <option value="van">فان</option>
-                    </select>
-                    <div class="error-message" id="typeError">الرجاء اختيار نوع السيارة</div>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="carColor" class="form-label">
-                        لون السيارة
-                    </label>
-                    <input type="text" id="carColor" class="form-input" 
-                           placeholder="مثال: أبيض">
-                </div>
-
-                <div class="form-group">
-                    <label for="carKm" class="form-label">
-                        عدد الكيلومترات
-                    </label>
-                    <input type="number" id="carKm" class="form-input" 
-                           placeholder="مثال: 50000">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="carCondition" class="form-label">
-                    حالة السيارة <span class="form-required">*</span>
-                </label>
-                <select id="carCondition" class="form-select" required>
-                    <option value="">اختر الحالة</option>
-                    <option value="excellent">ممتازة</option>
-                    <option value="very_good">جيدة جداً</option>
-                    <option value="good">جيدة</option>
-                    <option value="fair">متوسطة</option>
-                </select>
-                <div class="error-message" id="conditionError">الرجاء اختيار حالة السيارة</div>
-            </div>
-
-            <div class="form-group">
-                <label for="expectedPrice" class="form-label">
-                    السعر المتوقع (ج.م) <span class="form-required">*</span>
-                </label>
-                <input type="number" id="expectedPrice" class="form-input" required 
-                       placeholder="مثال: 200000">
-                <div class="error-message" id="priceError">الرجاء إدخال سعر متوقع</div>
-            </div>
-
-            <div class="form-group">
-                <label for="carDetails" class="form-label">
-                    تفاصيل إضافية عن السيارة
-                </label>
-                <textarea id="carDetails" class="form-textarea" 
-                          placeholder="اكتب أي تفاصيل إضافية تريد إضافتها عن السيارة"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">
-                    صور السيارة (اختياري)
-                </label>
-                <div class="file-upload" id="carImagesUpload">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
+            <form class="sell-form" id="sellForm">
+                <!-- Car Information -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-car"></i>
+                        معلومات السيارة
+                    </h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الماركة</label>
+                            <input type="text" class="form-input" id="carBrand" placeholder="مثال: تويوتا" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">الموديل</label>
+                            <input type="text" class="form-input" id="carModel" placeholder="مثال: كورولا" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">سنة الصنع</label>
+                            <select class="form-select" id="carYear" required>
+                                <option value="">اختر السنة</option>
+                                <!-- سيتم تعبئتها بالجافاسكريبت -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">الفئة</label>
+                            <input type="text" class="form-input" id="carCategory" placeholder="مثال: SE" required>
+                        </div>
                     </div>
-                    <div class="upload-text">اسحب وأفلت صور السيارة هنا</div>
-                    <div class="upload-hint">أو انقر للاختيار (يمكن اختيار أكثر من صورة)</div>
-                    <input type="file" id="carImagesInput" accept="image/*" multiple>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">حالة السيارة</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="carCondition" value="new" required>
+                                    <span>جديدة</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="carCondition" value="used" required>
+                                    <span>مستعملة</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="carCondition" value="electric" required>
+                                    <span>كهربائية</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">عدد الكيلومترات</label>
+                            <input type="number" class="form-input" id="carMileage" placeholder="بالكيلومتر" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">السعر المتوقع</label>
+                            <input type="number" class="form-input" id="carPrice" placeholder="بالجنيه المصري" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">وصف السيارة</label>
+                        <textarea class="form-textarea" id="carDescription" 
+                                  placeholder="صف سيارتك بالتفصيل (المواصفات، الإضافات، الحالة الفنية، أي عيوب...)" 
+                                  required></textarea>
+                    </div>
                 </div>
-                <div class="image-preview" id="carImagesPreview"></div>
-            </div>
 
-            <h2 class="form-title" style="margin-top: 3rem;">معلومات التواصل</h2>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="sellerName" class="form-label">
-                        اسمك بالكامل <span class="form-required">*</span>
-                    </label>
-                    <input type="text" id="sellerName" class="form-input" required 
-                           placeholder="أدخل اسمك بالكامل">
-                    <div class="error-message" id="nameError">الرجاء إدخال اسم صحيح</div>
+                <!-- Images -->
+                <div class="form-section image-upload-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-images"></i>
+                        صور السيارة
+                    </h2>
+                    
+                    <div class="upload-area" onclick="document.getElementById('carImages').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>اسحب وأفلت الصور هنا</h4>
+                            <p>أو انقر لرفع صور السيارة (الحد الأقصى 10 صور)</p>
+                            <p style="font-size: 0.8rem; color: var(--primary);">يُفضل رفع صور واضحة من جميع الزوايا</p>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="carImages" multiple accept="image/*" style="display: none;" onchange="previewImages(event)">
+                    
+                    <div class="image-preview" id="imagePreview"></div>
                 </div>
 
-                <div class="form-group">
-                    <label for="sellerPhone" class="form-label">
-                        رقم الهاتف <span class="form-required">*</span>
-                    </label>
-                    <input type="tel" id="sellerPhone" class="form-input" required 
-                           placeholder="مثال: 01XXXXXXXXX">
-                    <div class="error-message" id="phoneError">الرجاء إدخال رقم هاتف صحيح</div>
+                <!-- Owner Information -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i>
+                        معلومات المالك
+                    </h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الاسم الثلاثي</label>
+                            <input type="text" class="form-input" id="ownerName" placeholder="الاسم كاملاً" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-input" id="ownerPhone" placeholder="01XXXXXXXXX" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-input" id="ownerEmail" placeholder="example@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">المدينة</label>
+                            <input type="text" class="form-input" id="ownerCity" placeholder="المدينة" required>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="sellerEmail" class="form-label">
-                    البريد الإلكتروني
-                </label>
-                <input type="email" id="sellerEmail" class="form-input" 
-                       placeholder="example@domain.com">
-                <div class="error-message" id="emailError">الرجاء إدخال بريد إلكتروني صحيح</div>
-            </div>
-
-            <div class="form-group">
-                <label for="sellerCity" class="form-label">
-                    المدينة <span class="form-required">*</span>
-                </label>
-                <select id="sellerCity" class="form-select" required>
-                    <option value="">اختر المدينة</option>
-                    <option value="القاهرة">القاهرة</option>
-                    <option value="الجيزة">الجيزة</option>
-                    <option value="الإسكندرية">الإسكندرية</option>
-                    <option value="بورسعيد">بورسعيد</option>
-                    <option value="السويس">السويس</option>
-                    <option value="أخرى">أخرى</option>
-                </select>
-                <div class="error-message" id="cityError">الرجاء اختيار المدينة</div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">
-                    طريقة التواصل المفضلة <span class="form-required">*</span>
-                </label>
-                <div class="contact-methods">
-                    <label class="contact-method" id="contactPhone">
-                        <input type="radio" name="contactMethod" value="phone" checked>
-                        <i class="fas fa-phone"></i>
-                        <span>مكالمة هاتفية</span>
-                    </label>
-                    <label class="contact-method" id="contactWhatsapp">
-                        <input type="radio" name="contactMethod" value="whatsapp">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>واتساب</span>
-                    </label>
-                    <label class="contact-method" id="contactEmail">
-                        <input type="radio" name="contactMethod" value="email">
-                        <i class="fas fa-envelope"></i>
-                        <span>البريد الإلكتروني</span>
-                    </label>
+                <!-- Contact Method -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-comments"></i>
+                        طريقة التواصل المفضلة
+                    </h2>
+                    
+                    <div class="contact-methods">
+                        <div class="method-card" onclick="selectContactMethod('whatsapp')">
+                            <div class="method-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="method-name">واتساب</div>
+                            <div class="method-desc">التواصل عبر واتساب</div>
+                            <input type="radio" name="contactMethod" value="whatsapp" style="display: none;">
+                        </div>
+                        
+                        <div class="method-card" onclick="selectContactMethod('phone')">
+                            <div class="method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="method-name">مكالمة هاتفية</div>
+                            <div class="method-desc">الاتصال على رقمك</div>
+                            <input type="radio" name="contactMethod" value="phone" style="display: none;">
+                        </div>
+                        
+                        <div class="method-card" onclick="selectContactMethod('email')">
+                            <div class="method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="method-name">بريد إلكتروني</div>
+                            <div class="method-desc">إرسال رسالة بريدية</div>
+                            <input type="radio" name="contactMethod" value="email" style="display: none;">
+                        </div>
+                        
+                        <div class="method-card" onclick="selectContactMethod('visit')">
+                            <div class="method-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="method-name">زيارة المعرض</div>
+                            <div class="method-desc">زيارتك في المعرض</div>
+                            <input type="radio" name="contactMethod" value="visit" style="display: none;">
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="bestTime" class="form-label">
-                    أفضل وقت للاتصال
-                </label>
-                <input type="text" id="bestTime" class="form-input" 
-                       placeholder="مثال: من 10 صباحاً إلى 4 مساءً">
-            </div>
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال طلب البيع
+                    </button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">إلغاء</button>
+                </div>
+            </form>
+        </div>
 
-            <div class="form-buttons">
-                <button type="submit" class="submit-button">
-                    <i class="fas fa-paper-plane"></i>
-                    إرسال طلب البيع
-                </button>
-                <button type="reset" class="reset-button">
-                    <i class="fas fa-redo"></i>
-                    مسح النموذج
-                </button>
+        <!-- Benefits Section -->
+        <div class="benefits">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="benefit-title">فحص مجاني</h3>
+                <p class="benefit-desc">فحص فني شامل مجاني لسيارتك</p>
             </div>
-        </form>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="success-modal" id="successModal">
-        <div class="modal-content">
-            <div class="success-icon">✓</div>
-            <h2 class="modal-title">تم استلام طلبك بنجاح!</h2>
-            <p class="modal-message">
-                شكراً لك على تقديم طلب بيع سيارتك. سيتم مراجعة بيانات سيارتك والتواصل معك في أقرب وقت ممكن لعرض أفضل سعر.
-            </p>
-            <div class="modal-buttons">
-                <a href="index.html" class="modal-button primary">العودة للرئيسية</a>
-                <button class="modal-button secondary" onclick="closeModal()">إغلاق</button>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3 class="benefit-title">أفضل سعر</h3>
+                <p class="benefit-desc">نضمن لك أفضل سعر في السوق</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="benefit-title">سرعة البيع</h3>
+                <p class="benefit-desc">بيع سريع خلال 24-48 ساعة</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="benefit-title">معاملات آمنة</h3>
+                <p class="benefit-desc">معاملات قانونية وآمنة 100%</p>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
 
     <script src="sync.js"></script>
     <script>
+        let selectedImages = [];
+        let selectedContactMethod = null;
+
         // التهيئة
-        document.addEventListener('DOMContentLoaded', () => {
-            startLoadingAnimation();
-            initializeForm();
+        document.addEventListener('DOMContentLoaded', function() {
+            // تعبئة سنوات الصنع
+            populateYearOptions();
+            
+            // إعداد سحب وإفلات الصور
+            setupDragAndDrop();
+            
+            // إعداد نموذج البيع
+            setupSellForm();
         });
 
-        // رسوميات التحميل
-        function startLoadingAnimation() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const loadingVideo = document.getElementById('loadingVideo');
-
-            const onLoadingComplete = () => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }, 500);
-            };
-
-            loadingVideo.addEventListener('ended', onLoadingComplete);
-            setTimeout(onLoadingComplete, 2000);
+        // تعبئة خيارات السنوات
+        function populateYearOptions() {
+            const yearSelect = document.getElementById('carYear');
+            const currentYear = new Date().getFullYear();
+            
+            for (let year = currentYear; year >= 2000; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
         }
 
-        // تهيئة النموذج
-        function initializeForm() {
-            const form = document.getElementById('sellForm');
-            const inputs = form.querySelectorAll('input, textarea, select');
-            
-            inputs.forEach(input => {
-                input.addEventListener('blur', validateField);
-                input.addEventListener('input', clearError);
-            });
-            
-            form.addEventListener('submit', handleSubmit);
-            
-            // إعداد رفع الصور
-            setupImageUpload();
-            
-            // إعداد طرق التواصل
-            setupContactMethods();
-            
-            // إعادة تعيين النموذج
-            document.querySelector('.reset-button').addEventListener('click', () => {
-                setTimeout(() => {
-                    clearAllErrors();
-                    document.getElementById('carImagesPreview').innerHTML = '';
-                    document.getElementById('contactPhone').classList.add('selected');
-                    document.getElementById('contactWhatsapp').classList.remove('selected');
-                    document.getElementById('contactEmail').classList.remove('selected');
-                }, 100);
-            });
-        }
+        // إعداد سحب وإفلات الصور
+        function setupDragAndDrop() {
+            const uploadArea = document.querySelector('.upload-area');
+            const fileInput = document.getElementById('carImages');
 
-        // إعداد رفع الصور
-        function setupImageUpload() {
-            const uploadArea = document.getElementById('carImagesUpload');
-            const input = document.getElementById('carImagesInput');
-            const preview = document.getElementById('carImagesPreview');
-            
-            uploadArea.addEventListener('click', () => input.click());
-            
-            uploadArea.addEventListener('dragover', (e) => {
+            // منع السلوك الافتراضي
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // إبراز منطقة السحب
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            // التعامل مع الملفات المسقطة
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function preventDefaults(e) {
                 e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight() {
+                uploadArea.style.background = 'rgba(197, 48, 48, 0.1)';
                 uploadArea.style.borderColor = 'var(--primary)';
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.style.borderColor = '#cbd5e0';
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = '#cbd5e0';
-                
-                const files = Array.from(e.dataTransfer.files);
-                files.forEach(file => handleImageUpload(file, preview));
-            });
-            
-            input.addEventListener('change', (e) => {
-                const files = Array.from(e.target.files);
-                files.forEach(file => handleImageUpload(file, preview));
-            });
+            }
+
+            function unhighlight() {
+                uploadArea.style.background = '';
+                uploadArea.style.borderColor = '';
+            }
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
         }
 
-        // التعامل مع رفع الصور
-        function handleImageUpload(file, previewElement) {
-            if (!file.type.startsWith('image/')) {
-                showToast('❌ الرجاء اختيار صور فقط', 'error');
+        // التعامل مع الملفات
+        function handleFiles(files) {
+            if (selectedImages.length + files.length > 10) {
+                showToast('الحد الأقصى هو 10 صور فقط', 'error');
                 return;
             }
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                previewElement.innerHTML += `
-                    <div class="preview-item">
-                        <img src="${e.target.result}" class="preview-image">
-                        <div class="remove-image" onclick="this.parentElement.remove()">×</div>
-                    </div>
-                `;
-            };
-            reader.readAsDataURL(file);
-        }
 
-        // إعداد طرق التواصل
-        function setupContactMethods() {
-            const contactMethods = document.querySelectorAll('.contact-method');
-            
-            contactMethods.forEach(method => {
-                method.addEventListener('click', function() {
-                    // إزالة التحديد من جميع العناصر
-                    contactMethods.forEach(m => m.classList.remove('selected'));
-                    
-                    // إضافة التحديد للعنصر المختار
-                    this.classList.add('selected');
-                    
-                    // تحديد زر الراديو
-                    const radio = this.querySelector('input[type="radio"]');
-                    radio.checked = true;
-                });
-            });
-            
-            // تحديد العنصر الأول تلقائياً
-            document.getElementById('contactPhone').classList.add('selected');
-        }
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
 
-        // التحقق من الحقل
-        function validateField(e) {
-            const field = e.target;
-            const value = field.value.trim();
-            const errorId = field.id + 'Error';
-            const errorElement = document.getElementById(errorId);
-            
-            let isValid = true;
-            let errorMessage = '';
-            
-            switch (field.id) {
-                case 'carBrand':
-                    if (value.length < 2) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال ماركة صحيحة';
-                    }
-                    break;
-                    
-                case 'carModel':
-                    if (value.length < 2) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال موديل صحيح';
-                    }
-                    break;
-                    
-                case 'carYear':
-                    const year = parseInt(value);
-                    if (isNaN(year) || year < 1950 || year > 2024) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال سنة صحيحة بين 1950 و 2024';
-                    }
-                    break;
-                    
-                case 'carType':
-                case 'carCondition':
-                case 'sellerCity':
-                    if (!value) {
-                        isValid = false;
-                        errorMessage = 'الرجاء اختيار قيمة';
-                    }
-                    break;
-                    
-                case 'expectedPrice':
-                    const price = parseFloat(value);
-                    if (isNaN(price) || price <= 0) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال سعر صحيح';
-                    }
-                    break;
-                    
-                case 'sellerName':
-                    if (value.length < 3) {
-                        isValid = false;
-                        errorMessage = 'الاسم يجب أن يكون 3 أحرف على الأقل';
-                    }
-                    break;
-                    
-                case 'sellerPhone':
-                    const phoneRegex = /^01[0125][0-9]{8}$/;
-                    if (!phoneRegex.test(value)) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال رقم هاتف مصري صحيح';
-                    }
-                    break;
-                    
-                case 'sellerEmail':
-                    if (value && !isValidEmail(value)) {
-                        isValid = false;
-                        errorMessage = 'الرجاء إدخال بريد إلكتروني صحيح';
-                    }
-                    break;
-            }
-            
-            if (!isValid) {
-                field.classList.add('error');
-                if (errorElement) {
-                    errorElement.textContent = errorMessage;
-                    errorElement.classList.add('show');
-                }
-            }
-            
-            return isValid;
-        }
-
-        // التحقق من البريد الإلكتروني
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // مسح الخطأ
-        function clearError(e) {
-            const field = e.target;
-            const errorId = field.id + 'Error';
-            const errorElement = document.getElementById(errorId);
-            
-            field.classList.remove('error');
-            if (errorElement) {
-                errorElement.classList.remove('show');
-            }
-        }
-
-        // مسح جميع الأخطاء
-        function clearAllErrors() {
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.classList.remove('show');
-            });
-            
-            document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(el => {
-                el.classList.remove('error');
-            });
-        }
-
-        // التعامل مع إرسال النموذج
-        async function handleSubmit(e) {
-            e.preventDefault();
-            
-            const form = e.target;
-            const requiredInputs = form.querySelectorAll('input[required], select[required]');
-            
-            let isValid = true;
-            requiredInputs.forEach(input => {
-                if (!validateField({ target: input })) {
-                    isValid = false;
-                }
-            });
-            
-            if (!isValid) {
-                showToast('❌ الرجاء تصحيح الأخطاء في النموذج', 'error');
-                return;
-            }
-            
-            const submitButton = form.querySelector('.submit-button');
-            const originalText = submitButton.innerHTML;
-            
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-            
-            try {
-                const formData = new FormData(form);
-                
-                // تجميع الصور
-                const images = [];
-                document.querySelectorAll('#carImagesPreview img').forEach(img => {
-                    images.push(img.src);
-                });
-                
-                // جمع بيانات النموذج
-                const sellData = {
-                    id: 'sell_' + Date.now(),
-                    date: new Date().toISOString(),
-                    car: {
-                        brand: formData.get('carBrand'),
-                        model: formData.get('carModel'),
-                        year: formData.get('carYear'),
-                        type: formData.get('carType'),
-                        color: formData.get('carColor'),
-                        km: formData.get('carKm'),
-                        condition: formData.get('carCondition'),
-                        expectedPrice: formData.get('expectedPrice'),
-                        details: formData.get('carDetails'),
-                        images: images
-                    },
-                    seller: {
-                        name: formData.get('sellerName'),
-                        phone: formData.get('sellerPhone'),
-                        email: formData.get('sellerEmail'),
-                        city: formData.get('sellerCity'),
-                        contactMethod: formData.get('contactMethod'),
-                        bestTime: formData.get('bestTime')
-                    },
-                    status: 'pending'
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImages.push({
+                        file: file,
+                        preview: e.target.result
+                    });
+                    updateImagePreview();
                 };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // معاينة الصور
+        function previewImages(event) {
+            const files = event.target.files;
+            handleFiles(files);
+        }
+
+        // تحديث معاينة الصور
+        function updateImagePreview() {
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+
+            selectedImages.forEach((image, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${image.preview}" alt="صورة السيارة">
+                    <div class="remove-image" onclick="removeImage(${index})">×</div>
+                `;
+                previewContainer.appendChild(previewItem);
+            });
+        }
+
+        // إزالة صورة
+        function removeImage(index) {
+            selectedImages.splice(index, 1);
+            updateImagePreview();
+        }
+
+        // اختيار طريقة التواصل
+        function selectContactMethod(method) {
+            selectedContactMethod = method;
+            
+            // إلغاء تحديد جميع البطاقات
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('selected');
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
+            });
+            
+            // تحديد البطاقة المختارة
+            const selectedCard = document.querySelector(`.method-card[onclick*="${method}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                const radio = selectedCard.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            }
+        }
+
+        // إعداد نموذج البيع
+        function setupSellForm() {
+            const form = document.getElementById('sellForm');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
                 
-                // تحميل البيانات الحالية
-                let siteData;
+                // التحقق من البيانات
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // إظهار حالة التحميل
+                const submitBtn = form.querySelector('.btn-submit');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+                submitBtn.disabled = true;
+                
                 try {
-                    if (window.gitHubSync && window.gitHubSync.fetch) {
-                        siteData = await window.gitHubSync.fetch();
-                    } else {
-                        const savedData = localStorage.getItem('siteData');
-                        siteData = savedData ? JSON.parse(savedData) : { sellRequests: [] };
-                    }
+                    // جمع بيانات النموذج
+                    const sellRequest = {
+                        id: 'sell_' + Date.now(),
+                        carBrand: document.getElementById('carBrand').value,
+                        carModel: document.getElementById('carModel').value,
+                        carYear: document.getElementById('carYear').value,
+                        carCategory: document.getElementById('carCategory').value,
+                        carCondition: document.querySelector('input[name="carCondition"]:checked').value,
+                        carMileage: document.getElementById('carMileage').value,
+                        carPrice: document.getElementById('carPrice').value,
+                        carDescription: document.getElementById('carDescription').value,
+                        ownerName: document.getElementById('ownerName').value,
+                        ownerPhone: document.getElementById('ownerPhone').value,
+                        ownerEmail: document.getElementById('ownerEmail').value,
+                        ownerCity: document.getElementById('ownerCity').value,
+                        contactMethod: selectedContactMethod,
+                        images: selectedImages.map(img => img.preview),
+                        status: 'pending',
+                        submittedAt: new Date().toISOString(),
+                        ip: await getClientIP()
+                    };
+                    
+                    // حفظ طلب البيع
+                    await saveSellRequest(sellRequest);
+                    
+                    // إرسال إشعار تيليجرام
+                    await sendTelegramNotification(sellRequest);
+                    
+                    // إظهار رسالة النجاح
+                    showSuccessMessage();
+                    
+                    // إعادة تعيين النموذج
+                    form.reset();
+                    selectedImages = [];
+                    updateImagePreview();
+                    selectedContactMethod = null;
+                    document.querySelectorAll('.method-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
                 } catch (error) {
+                    console.error('Error submitting form:', error);
+                    showToast('حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.', 'error');
+                } finally {
+                    // استعادة زر الإرسال
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // التحقق من صحة النموذج
+        function validateForm() {
+            // التحقق من طريقة التواصل
+            if (!selectedContactMethod) {
+                showToast('يرجى اختيار طريقة التواصل المفضلة', 'error');
+                return false;
+            }
+            
+            // التحقق من الصور
+            if (selectedImages.length === 0) {
+                showToast('يرجى رفع صور للسيارة', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // حفظ طلب البيع
+        async function saveSellRequest(sellRequest) {
+            try {
+                // تحميل البيانات الحالية
+                let siteData = null;
+                if (window.gitHubSync) {
+                    siteData = await window.gitHubSync.fetch();
+                } else {
+                    const localData = localStorage.getItem('siteData_encrypted');
+                    if (localData) {
+                        siteData = window.gitHubSync.decryptData(localData);
+                    }
+                }
+                
+                if (!siteData) {
                     siteData = { sellRequests: [] };
                 }
                 
-                // إضافة طلب البيع للبيانات
-                if (!siteData.sellRequests) siteData.sellRequests = [];
-                siteData.sellRequests.push(sellData);
+                if (!siteData.sellRequests) {
+                    siteData.sellRequests = [];
+                }
+                
+                // إضافة طلب البيع
+                siteData.sellRequests.push(sellRequest);
                 
                 // حفظ البيانات
-                if (window.gitHubSync && window.gitHubSync.push) {
-                    await window.gitHubSync.push(siteData, `طلب بيع جديد من ${sellData.seller.name}`);
+                if (window.gitHubSync) {
+                    await window.gitHubSync.push(siteData);
                 } else {
-                    localStorage.setItem('siteData', JSON.stringify(siteData));
+                    localStorage.setItem('siteData_encrypted', window.gitHubSync.encryptData(siteData));
                 }
                 
-                // إرسال إشعار التلجرام
-                if (window.gitHubSync && window.gitHubSync.sendTelegramNotification) {
-                    const telegramData = {
-                        customer: {
-                            fullName: sellData.seller.name,
-                            phone: sellData.seller.phone
-                        },
-                        product: {
-                            name: `${sellData.car.brand} ${sellData.car.model} ${sellData.car.year}`,
-                            price: sellData.car.expectedPrice
-                        },
-                        orderNumber: sellData.id,
-                        date: sellData.date
-                    };
-                    window.gitHubSync.sendTelegramNotification(telegramData);
-                }
-                
-                setTimeout(() => {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = originalText;
-                    
-                    showSuccessModal();
-                    form.reset();
-                    document.getElementById('carImagesPreview').innerHTML = '';
-                    document.getElementById('contactPhone').classList.add('selected');
-                    
-                    showToast('✅ تم إرسال طلب البيع بنجاح');
-                }, 500);
-                
+                return true;
             } catch (error) {
-                console.error('Error submitting form:', error);
-                
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalText;
-                
-                showToast('❌ حدث خطأ أثناء إرسال النموذج', 'error');
+                console.error('Error saving sell request:', error);
+                throw error;
             }
         }
 
-        // عرض نافذة النجاح
-        function showSuccessModal() {
-            const modal = document.getElementById('successModal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        // إرسال إشعار تيليجرام
+        async function sendTelegramNotification(sellRequest) {
+            try {
+                // تحميل بيانات الموقع للحصول على إعدادات التليجرام
+                let siteData = null;
+                if (window.gitHubSync) {
+                    siteData = await window.gitHubSync.fetch();
+                }
+                
+                if (!siteData?.admin?.telegramBotToken || !siteData?.admin?.telegramChatId) {
+                    return;
+                }
+                
+                const botToken = siteData.admin.telegramBotToken;
+                const chatId = siteData.admin.telegramChatId;
+                
+                const message = `
+🚗 *طلب بيع سيارة جديد*
+────────────────────
+👤 *الاسم:* ${sellRequest.ownerName}
+📞 *الهاتف:* ${sellRequest.ownerPhone}
+🏙️ *المدينة:* ${sellRequest.ownerCity}
+────────────────────
+🚗 *السيارة:* ${sellRequest.carBrand} ${sellRequest.carModel}
+📅 *السنة:* ${sellRequest.carYear}
+💰 *السعر المتوقع:* ${sellRequest.carPrice} ج.م
+🔄 *الحالة:* ${sellRequest.carCondition === 'new' ? 'جديدة' : sellRequest.carCondition === 'used' ? 'مستعملة' : 'كهربائية'}
+📊 *الكيلومترات:* ${sellRequest.carMileage} كم
+────────────────────
+📝 *الوصف:*
+${sellRequest.carDescription}
+────────────────────
+📱 *طريقة التواصل:* ${getContactMethodText(sellRequest.contactMethod)}
+🌐 *IP:* ${sellRequest.ip}
+🕒 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
+                `;
+                
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+            } catch (error) {
+                console.error('Error sending Telegram notification:', error);
+            }
         }
 
-        // إغلاق النافذة المنبثقة
-        function closeModal() {
-            const modal = document.getElementById('successModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
+        // الحصول على نص طريقة التواصل
+        function getContactMethodText(method) {
+            const methods = {
+                whatsapp: 'واتساب',
+                phone: 'مكالمة هاتفية',
+                email: 'بريد إلكتروني',
+                visit: 'زيارة المعرض'
+            };
+            return methods[method] || method;
         }
 
-        // عرض الإشعار
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
+        // إظهار رسالة النجاح
+        function showSuccessMessage() {
+            showToast('تم إرسال طلب البيع بنجاح! سنتصل بك خلال 24 ساعة.', 'success');
             
-            toast.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--primary)';
-            toast.classList.add('show');
+            // إظهار نافذة تأكيد إضافية
+            setTimeout(() => {
+                const confirmation = confirm(`
+✅ تم استلام طلبك بنجاح!
+
+تفاصيل طلبك:
+- سيتم التواصل معك خلال 24 ساعة
+- عبر ${getContactMethodText(selectedContactMethod)}
+- على الرقم: ${document.getElementById('ownerPhone').value}
+
+هل تريد العودة للصفحة الرئيسية؟
+                `);
+                
+                if (confirmation) {
+                    window.location.href = 'index.html';
+                }
+            }, 1000);
+        }
+
+        // عرض الإشعارات
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: '#38a169',
+                error: '#e53e3e',
+                info: '#3182ce'
+            };
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <span>${icons[type]}</span>
+                <span>${message}</span>
+            `;
+            toast.style.background = colors[type] || colors.info;
+            
+            document.getElementById('toastContainer').appendChild(toast);
             
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+        }
+
+        // الحصول على IP العميل
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'غير معروف';
+            }
         }
     </script>
 </body>
