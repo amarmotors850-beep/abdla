@@ -4,7 +4,7 @@ class GitHubSync {
         this.config = {
             owner: 'MHmooDhazm',
             repo: 'bitelazz-data',
-            token: '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',
+            token: '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',
             branch: 'main',
             filePath: 'site-data.json'
         };
