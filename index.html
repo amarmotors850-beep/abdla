@@ -3,52 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚗 سيارات عبدالله | لوکسري كار شو</title>
+    <title>🚀 سيارات عبدالله | نظام متكامل للبيع والشراء</title>
     
     <!-- Meta Tags -->
-    <meta name="description" content="أفضل عروض السيارات الفاخرة الجديدة والمستعملة - تجربة شراء استثنائية">
-    <meta name="keywords" content="سيارات فاخرة, مرسيدس, BMW, أودي, تويوتا, نيسان, سيارات مصر">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1489824904134-891ab64532f1">
+    <meta name="description" content="نظام متكامل لبيع وشراء واستبدال السيارات - سيارات عبدالله">
+    <meta name="keywords" content="بيع سيارات, شراء سيارات, استبدال سيارات, سيارات مصر">
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Splide Slider -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
     
     <style>
         /* ============ CSS Variables ============ */
         :root {
-            /* Color Palette - Premium Luxury */
-            --gold: #D4AF37;
-            --gold-light: #FFD700;
-            --gold-dark: #B8860B;
-            --carbon: #1a1a1a;
-            --carbon-light: #2d2d2d;
-            --steel: #e8e8e8;
-            --steel-dark: #a0a0a0;
-            --racing-red: #ff2e2e;
-            --ocean-blue: #2a9df4;
-            --emerald: #00b894;
+            /* Primary Colors - White, Red, Black */
+            --primary-white: #ffffff;
+            --primary-red: #dc2626;
+            --primary-black: #000000;
+            --primary-gray: #4b5563;
+            --primary-light: #f9fafb;
+            --primary-dark: #1f2937;
             
             /* Gradients */
-            --gradient-gold: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-            --gradient-carbon: linear-gradient(135deg, var(--carbon) 0%, #000000 100%);
-            --gradient-premium: linear-gradient(135deg, var(--carbon) 0%, var(--gold-dark) 100%);
+            --gradient-red: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            --gradient-dark: linear-gradient(135deg, #000000 0%, #1f2937 100%);
+            --gradient-white: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
             
             /* Shadows */
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.2);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.3);
-            --shadow-gold: 0 0 30px rgba(212, 175, 55, 0.3);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
             
             /* Transitions */
-            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --transition-fast: all 0.2s ease;
+            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             
             /* Border Radius */
             --radius-sm: 8px;
@@ -67,368 +59,179 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 100px;
+            scroll-padding-top: 80px;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--carbon);
-            color: var(--steel);
+            background: var(--primary-white);
+            color: var(--primary-black);
+            line-height: 1.6;
             overflow-x: hidden;
-            line-height: 1.8;
         }
 
-        ::selection {
-            background: var(--gold);
-            color: var(--carbon);
-        }
-
-        /* ============ Premium Loading Screen ============ */
-        .premium-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-carbon);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease;
-        }
-
-        .logo-animation {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 2rem;
-        }
-
-        .logo-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid transparent;
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
-        }
-
-        .logo-ring:nth-child(2) {
-            border-top-color: var(--gold-light);
-            animation-delay: 0.5s;
-        }
-
-        .logo-ring:nth-child(3) {
-            border-top-color: var(--racing-red);
-            animation-delay: 1s;
-        }
-
-        .logo-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: var(--gold);
-            font-weight: 900;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        .loading-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--steel);
-            letter-spacing: 2px;
-            position: relative;
-        }
-
-        .loading-text::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--gradient-gold);
-            transform: scaleX(0);
-            animation: loadingLine 2s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes loadingLine {
-            0%, 100% { transform: scaleX(0); }
-            50% { transform: scaleX(1); }
-        }
-
-        /* ============ Premium Navigation ============ */
-        .premium-nav {
+        /* ============ Header & Navigation ============ */
+        .main-header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.2rem 3rem;
+            background: var(--primary-white);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            transition: var(--transition-smooth);
+            padding: 1rem 0;
         }
 
-        .premium-nav.scrolled {
-            padding: 0.8rem 3rem;
-            background: rgba(26, 26, 26, 0.98);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .nav-logo {
+        .logo {
             display: flex;
             align-items: center;
             gap: 1rem;
             text-decoration: none;
-            position: relative;
         }
 
-        .logo-mark {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-gold);
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-red);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition-smooth);
-        }
-
-        .logo-mark::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: conic-gradient(transparent, var(--gold), transparent);
-            animation: rotate 4s linear infinite;
-        }
-
-        .logo-mark span {
-            position: relative;
-            z-index: 2;
-            background: var(--gradient-carbon);
-            width: 90%;
-            height: 90%;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 1.8rem;
+            color: var(--primary-white);
             font-weight: 900;
-            font-family: 'Cairo', sans-serif;
+            font-size: 1.5rem;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-main {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            color: var(--primary-black);
         }
 
-        .logo-sub {
-            font-size: 0.8rem;
-            color: var(--steel-dark);
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        .logo-text span {
+            color: var(--primary-red);
         }
 
-        .nav-links {
+        .main-nav ul {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
         }
 
-        .nav-link {
-            color: var(--steel);
+        .main-nav a {
             text-decoration: none;
+            color: var(--primary-black);
             font-weight: 600;
-            font-size: 1.1rem;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: var(--transition-smooth);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
         }
 
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--gold);
-        }
-
-        .nav-link:hover::before {
-            width: 100%;
+        .main-nav a:hover,
+        .main-nav a.active {
+            background: var(--gradient-red);
+            color: var(--primary-white);
         }
 
         .nav-actions {
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        .nav-button {
-            padding: 0.8rem 2rem;
-            background: var(--gradient-gold);
-            color: var(--carbon);
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: var(--radius-full);
-            font-weight: 700;
+            border-radius: var(--radius-md);
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition-smooth);
+            transition: var(--transition-normal);
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
         }
 
-        .nav-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-gold);
+        .nav-btn.primary {
+            background: var(--gradient-red);
+            color: var(--primary-white);
+        }
+
+        .nav-btn.secondary {
+            background: var(--primary-light);
+            color: var(--primary-black);
+            border: 2px solid var(--primary-gray);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .mobile-menu {
             display: none;
             background: none;
             border: none;
-            color: var(--gold);
             font-size: 1.5rem;
+            color: var(--primary-black);
             cursor: pointer;
         }
 
-        /* ============ Hero Video Section ============ */
-        .video-hero {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .hero-video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .hero-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.7);
-        }
-
-        .video-controls {
-            position: absolute;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 10;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .video-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(26, 26, 26, 0.8);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            color: var(--gold);
-            cursor: pointer;
+        /* ============ Hero Section ============ */
+        .hero-section {
+            min-height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1489824904134-891ab64532f1');
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition-smooth);
-        }
-
-        .video-btn:hover {
-            background: var(--gold);
-            color: var(--carbon);
-            transform: scale(1.1);
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                45deg,
-                rgba(0,0,0,0.9) 0%,
-                rgba(212,175,55,0.2) 100%
-            );
+            text-align: center;
+            color: var(--primary-white);
+            padding: 6rem 2rem 2rem;
+            margin-top: 80px;
         }
 
         .hero-content {
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 2rem;
-            z-index: 2;
+            max-width: 800px;
         }
 
         .hero-title {
-            font-size: 5rem;
+            font-size: 3.5rem;
             font-weight: 900;
-            color: var(--white);
             margin-bottom: 1.5rem;
-            line-height: 1.1;
-            text-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            line-height: 1.2;
         }
 
         .hero-title span {
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: block;
+            color: var(--primary-red);
         }
 
         .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--steel);
-            max-width: 800px;
+            font-size: 1.2rem;
             margin-bottom: 3rem;
             opacity: 0.9;
         }
 
         .hero-stats {
             display: flex;
-            gap: 4rem;
+            justify-content: center;
+            gap: 3rem;
             margin-bottom: 3rem;
+            flex-wrap: wrap;
         }
 
         .stat-item {
@@ -436,102 +239,38 @@
         }
 
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--gold);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-red);
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: var(--steel-dark);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 1rem;
+            opacity: 0.8;
         }
 
-        .hero-cta {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .cta-button {
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: none;
-            border-radius: var(--radius-full);
-            cursor: pointer;
-            transition: var(--transition-bounce);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-
-        .cta-button.primary {
-            background: var(--gradient-gold);
-            color: var(--carbon);
-            box-shadow: var(--shadow-gold);
-        }
-
-        .cta-button.secondary {
-            background: transparent;
-            border: 2px solid var(--gold);
-            color: var(--gold);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: var(--shadow-xl);
-        }
-
-        /* ============ Advanced Search ============ */
-        .advanced-search {
-            position: relative;
-            margin-top: -100px;
-            z-index: 100;
+        /* ============ Quick Search ============ */
+        .quick-search {
+            max-width: 1200px;
+            margin: -50px auto 2rem;
             padding: 0 2rem;
-        }
-
-        .search-container {
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: var(--radius-lg);
-            padding: 3rem;
-            box-shadow: var(--shadow-xl);
-        }
-
-        .search-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .search-title {
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
             position: relative;
-            display: inline-block;
+            z-index: 100;
         }
 
-        .search-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: var(--gradient-gold);
-            border-radius: 2px;
+        .search-box {
+            background: var(--primary-white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
         }
 
         .search-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .search-group {
@@ -540,267 +279,185 @@
 
         .search-label {
             display: block;
-            margin-bottom: 0.8rem;
-            color: var(--steel);
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: var(--primary-black);
         }
 
-        .search-label i {
-            color: var(--gold);
-        }
-
-        .search-select, .search-input {
+        .search-input {
             width: 100%;
-            padding: 1.2rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 0.8rem 1rem;
+            border: 2px solid #e5e7eb;
             border-radius: var(--radius-md);
-            color: var(--steel);
             font-family: 'Cairo', sans-serif;
             font-size: 1rem;
-            transition: var(--transition-smooth);
+            transition: var(--transition-fast);
         }
 
-        .search-select:focus, .search-input:focus {
+        .search-input:focus {
             outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
 
         .search-actions {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .search-button {
-            padding: 1.2rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: none;
-            border-radius: var(--radius-lg);
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .search-button.primary {
-            background: var(--gradient-gold);
-            color: var(--carbon);
-        }
-
-        .search-button.secondary {
-            background: transparent;
-            border: 2px solid var(--steel-dark);
-            color: var(--steel);
-        }
-
-        .search-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* ============ Featured Videos ============ */
-        .featured-videos {
-            padding: 8rem 2rem;
-            position: relative;
-            overflow: hidden;
+        /* ============ Services Grid ============ */
+        .services-section {
+            padding: 5rem 2rem;
+            background: var(--primary-light);
         }
 
         .section-title {
             text-align: center;
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 5rem;
-            position: relative;
+            margin-bottom: 3rem;
+            color: var(--primary-black);
         }
 
         .section-title span {
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-red);
         }
 
-        .videos-container {
-            max-width: 1400px;
+        .services-grid {
+            max-width: 1200px;
             margin: 0 auto;
-        }
-
-        .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
         }
 
-        .video-card {
-            position: relative;
+        .service-card {
+            background: var(--primary-white);
             border-radius: var(--radius-lg);
-            overflow: hidden;
-            transition: var(--transition-smooth);
-            cursor: pointer;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
         }
 
-        .video-card:hover {
-            transform: translateY(-15px);
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-red);
             box-shadow: var(--shadow-xl);
         }
 
-        .video-thumbnail {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .video-card:hover .video-thumbnail {
-            transform: scale(1.1);
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 2rem;
-        }
-
-        .video-play {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .service-icon {
             width: 80px;
             height: 80px;
-            background: var(--gold);
+            background: var(--gradient-red);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary-white);
             font-size: 2rem;
-            color: var(--carbon);
-            opacity: 0;
-            transition: var(--transition-smooth);
         }
 
-        .video-card:hover .video-play {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .video-title {
-            color: var(--white);
+        .service-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
         }
 
-        .video-duration {
-            color: var(--steel-dark);
-            font-size: 0.9rem;
+        .service-description {
+            color: var(--primary-gray);
+            margin-bottom: 1.5rem;
         }
 
-        /* ============ Products Showcase ============ */
-        .products-showcase {
-            padding: 8rem 2rem;
-            background: var(--carbon-light);
+        .service-btn {
+            padding: 0.8rem 2rem;
+            background: var(--gradient-red);
+            color: var(--primary-white);
+            text-decoration: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-normal);
+        }
+
+        .service-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============ Products Grid ============ */
+        .products-section {
+            padding: 5rem 2rem;
         }
 
         .products-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4rem;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
         }
 
         .products-filter {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 0.8rem 2rem;
-            background: transparent;
-            border: 2px solid var(--steel-dark);
-            color: var(--steel);
+            padding: 0.6rem 1.5rem;
+            background: var(--primary-light);
+            border: 2px solid #e5e7eb;
             border-radius: var(--radius-full);
-            cursor: pointer;
             font-weight: 600;
-            transition: var(--transition-smooth);
+            cursor: pointer;
+            transition: var(--transition-fast);
         }
 
         .filter-btn.active {
-            background: var(--gradient-gold);
-            border-color: var(--gold);
-            color: var(--carbon);
+            background: var(--gradient-red);
+            color: var(--primary-white);
+            border-color: var(--primary-red);
         }
 
         .filter-btn:hover:not(.active) {
-            border-color: var(--gold);
-            color: var(--gold);
+            border-color: var(--primary-red);
+            color: var(--primary-red);
         }
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
+        .products-container {
             max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .product-card {
-            background: var(--carbon);
+            background: var(--primary-white);
             border-radius: var(--radius-lg);
             overflow: hidden;
-            transition: var(--transition-bounce);
-            position: relative;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            border: 1px solid #e5e7eb;
         }
 
         .product-card:hover {
-            transform: translateY(-20px) scale(1.02);
-            border-color: var(--gold);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-xl);
-        }
-
-        .product-card.featured::before {
-            content: 'مميز';
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--gradient-gold);
-            color: var(--carbon);
-            padding: 0.5rem 1.5rem;
-            border-radius: var(--radius-full);
-            font-weight: 700;
-            font-size: 0.9rem;
-            z-index: 2;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         .product-image {
             width: 100%;
-            height: 250px;
+            height: 200px;
             position: relative;
             overflow: hidden;
         }
@@ -809,7 +466,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            transition: transform 0.5s ease;
         }
 
         .product-card:hover .product-image img {
@@ -818,93 +475,78 @@
 
         .product-badge {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: var(--racing-red);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-sm);
+            top: 15px;
+            right: 15px;
+            background: var(--primary-red);
+            color: var(--primary-white);
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-full);
             font-size: 0.8rem;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .product-info {
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .product-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .product-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--steel);
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-black);
+            margin-bottom: 0.3rem;
         }
 
         .product-category {
-            color: var(--steel-dark);
+            color: var(--primary-gray);
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .product-price {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 900;
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            color: var(--primary-red);
+            margin-bottom: 1rem;
         }
 
-        .product-old-price {
-            font-size: 1.2rem;
-            color: var(--steel-dark);
+        .product-price .old-price {
+            font-size: 1rem;
+            color: var(--primary-gray);
             text-decoration: line-through;
+            margin-left: 0.5rem;
         }
 
         .product-specs {
             list-style: none;
-            margin: 1.5rem 0;
+            margin-bottom: 1.5rem;
         }
 
         .product-specs li {
-            color: var(--steel);
-            margin-bottom: 0.8rem;
-            padding-right: 1.5rem;
-            position: relative;
+            padding: 0.3rem 0;
+            color: var(--primary-gray);
             display: flex;
             justify-content: space-between;
         }
 
-        .product-specs li::before {
-            content: '•';
-            color: var(--gold);
-            position: absolute;
-            right: 0;
-            font-size: 1.5rem;
-        }
-
         .product-actions {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 0.8rem;
         }
 
         .product-btn {
             flex: 1;
-            padding: 1rem;
-            font-size: 1rem;
-            font-weight: 700;
+            padding: 0.8rem;
             border: none;
             border-radius: var(--radius-md);
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition-smooth);
+            transition: var(--transition-fast);
             text-align: center;
             text-decoration: none;
             display: flex;
@@ -914,271 +556,499 @@
         }
 
         .product-btn.primary {
-            background: var(--gradient-gold);
-            color: var(--carbon);
+            background: var(--gradient-red);
+            color: var(--primary-white);
         }
 
         .product-btn.secondary {
-            background: transparent;
-            border: 2px solid var(--steel-dark);
-            color: var(--steel);
+            background: var(--primary-light);
+            color: var(--primary-black);
+            border: 2px solid #e5e7eb;
         }
 
         .product-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
 
-        /* ============ Categories Grid ============ */
-        .categories-grid {
-            padding: 8rem 2rem;
+        /* ============ Color Selection ============ */
+        .color-selection {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
         }
 
-        .categories-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .color-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
         }
 
-        .category-card {
-            position: relative;
-            height: 400px;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
+        .color-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
+            transition: var(--transition-fast);
+            border: 3px solid transparent;
         }
 
-        .category-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .category-card:hover .category-bg {
+        .color-option:hover {
             transform: scale(1.1);
         }
 
-        .category-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 3rem;
+        .color-option.active {
+            border-color: var(--primary-black);
+            transform: scale(1.1);
         }
 
-        .category-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            color: var(--carbon);
+        .color-white {
+            background: var(--primary-white);
+            border: 2px solid #e5e7eb;
         }
 
-        .category-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--white);
-            margin-bottom: 1rem;
+        .color-red {
+            background: var(--primary-red);
         }
 
-        .category-count {
-            color: var(--gold);
-            font-size: 1.1rem;
-            font-weight: 600;
+        .color-black {
+            background: var(--primary-black);
         }
 
-        /* ============ Footer ============ */
-        .premium-footer {
-            background: var(--carbon-light);
+        /* ============ Product Details Page ============ */
+        .product-details-page {
             padding: 6rem 2rem 2rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        .product-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
         }
 
-        .footer-logo {
+        @media (max-width: 992px) {
+            .product-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-gallery {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .thumbnail {
+            height: 80px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition-fast);
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+            border: 2px solid var(--primary-red);
+        }
+
+        .thumbnail:hover {
+            opacity: 1;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 2rem;
+        }
+
+        .product-main-title {
             font-size: 2.5rem;
             font-weight: 900;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            color: var(--primary-black);
         }
 
-        .footer-text {
-            color: var(--steel-dark);
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        .rating-text {
+            color: var(--primary-gray);
+        }
+
+        .product-price-large {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-description {
+            color: var(--primary-gray);
             line-height: 1.8;
+            margin-bottom: 2rem;
         }
 
-        .social-links {
+        .product-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: var(--primary-black);
+            margin-bottom: 0.3rem;
+        }
+
+        .spec-value {
+            color: var(--primary-gray);
+        }
+
+        /* ============ Transaction Options ============ */
+        .transaction-options {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--primary-light);
+            border-radius: var(--radius-lg);
+        }
+
+        .transaction-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .transaction-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .transaction-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.5rem;
+            background: var(--primary-white);
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .transaction-btn:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .transaction-btn.active {
+            border-color: var(--primary-red);
+            background: var(--gradient-red);
+            color: var(--primary-white);
+        }
+
+        .transaction-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .transaction-label {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .transaction-desc {
+            font-size: 0.9rem;
+            color: var(--primary-gray);
+        }
+
+        /* ============ Forms ============ */
+        .transaction-form {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--primary-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-black);
+        }
+
+        .form-label .required {
+            color: var(--primary-red);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius-md);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-actions {
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
         }
 
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 50%;
+        .form-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-normal);
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--steel);
-            text-decoration: none;
-            transition: var(--transition-smooth);
+            gap: 0.5rem;
         }
 
-        .social-link:hover {
-            background: var(--gold);
-            color: var(--carbon);
-            transform: translateY(-5px);
+        .form-btn.primary {
+            background: var(--gradient-red);
+            color: var(--primary-white);
         }
 
-        .footer-links h3 {
-            color: var(--gold);
+        .form-btn.secondary {
+            background: var(--primary-light);
+            color: var(--primary-black);
+            border: 2px solid #e5e7eb;
+        }
+
+        .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============ Footer ============ */
+        .main-footer {
+            background: var(--primary-dark);
+            color: var(--primary-white);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-col h3 {
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 1rem;
+            color: var(--primary-white);
         }
 
-        .footer-links h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 60px;
-            height: 2px;
-            background: var(--gradient-gold);
+        .footer-col p {
+            color: #9ca3af;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
         }
 
-        .footer-links ul {
+        .footer-links {
             list-style: none;
         }
 
         .footer-links li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .footer-links a {
-            color: var(--steel);
+            color: #9ca3af;
             text-decoration: none;
-            transition: var(--transition-smooth);
+            transition: var(--transition-fast);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .footer-links a:hover {
-            color: var(--gold);
-            transform: translateX(-10px);
+            color: var(--primary-red);
+            transform: translateX(-5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #374151;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-white);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .social-link:hover {
+            background: var(--primary-red);
+            transform: translateY(-3px);
         }
 
         .copyright {
             text-align: center;
             margin-top: 4rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: var(--steel-dark);
+            border-top: 1px solid #374151;
+            color: #9ca3af;
             font-size: 0.9rem;
         }
 
-        /* ============ Video Modal ============ */
-        .video-modal {
+        /* ============ Sync Status ============ */
+        .sync-status {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .video-modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            width: 90%;
-            max-width: 1000px;
-            position: relative;
-        }
-
-        .modal-video {
-            width: 100%;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-white);
             border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
         }
 
-        .modal-close {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: var(--gold);
-            color: var(--carbon);
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .sync-icon {
             width: 40px;
             height: 40px;
+            background: var(--gradient-red);
             border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition-smooth);
+            color: var(--primary-white);
+            animation: spin 2s linear infinite;
         }
 
-        .modal-close:hover {
-            transform: rotate(90deg);
+        .sync-info h4 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .sync-info p {
+            font-size: 0.9rem;
+            color: var(--primary-gray);
         }
 
         /* ============ Responsive Design ============ */
         @media (max-width: 1200px) {
             .hero-title {
-                font-size: 4rem;
+                font-size: 3rem;
             }
             
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            .products-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
 
         @media (max-width: 992px) {
-            .nav-links {
+            .main-nav ul {
                 display: none;
             }
             
@@ -1187,62 +1057,67 @@
             }
             
             .hero-title {
-                font-size: 3rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .premium-nav {
-                padding: 1rem;
-            }
-            
-            .hero-title {
                 font-size: 2.5rem;
             }
             
             .hero-stats {
-                flex-direction: column;
                 gap: 2rem;
             }
             
-            .hero-cta {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .transaction-buttons {
                 flex-direction: column;
             }
             
-            .advanced-search {
-                margin-top: -50px;
+            .transaction-btn {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header {
                 padding: 0 1rem;
             }
             
-            .search-container {
-                padding: 2rem;
+            .hero-section {
+                padding: 5rem 1rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
             }
             
             .search-grid {
                 grid-template-columns: 1fr;
             }
             
-            .products-header {
-                flex-direction: column;
-                gap: 2rem;
-                text-align: center;
+            .services-grid {
+                grid-template-columns: 1fr;
             }
             
-            .products-filter {
-                flex-wrap: wrap;
-                justify-content: center;
+            .products-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-details {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .product-specs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
             }
             
             .footer-content {
@@ -1252,23 +1127,26 @@
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
-            .section-title {
-                font-size: 2rem;
+            .nav-actions {
+                flex-direction: column;
+                width: 100%;
             }
             
-            .video-grid {
-                grid-template-columns: 1fr;
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
             }
             
-            .products-grid {
-                grid-template-columns: 1fr;
+            .search-actions,
+            .form-actions {
+                flex-direction: column;
             }
             
-            .category-card {
-                height: 300px;
+            .product-actions {
+                flex-direction: column;
             }
         }
 
@@ -1278,245 +1156,215 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--carbon);
+            background: #f1f1f1;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--gradient-gold);
+            background: var(--primary-red);
             border-radius: var(--radius-full);
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-light);
+            background: #b91c1c;
         }
     </style>
 </head>
 <body>
-    <!-- Premium Loading Animation -->
-    <div class="premium-loader" id="loader">
-        <div class="logo-animation">
-            <div class="logo-ring"></div>
-            <div class="logo-ring"></div>
-            <div class="logo-ring"></div>
-            <div class="logo-center">ع</div>
-        </div>
-        <div class="loading-text">جاري تحميل التجربة الفاخرة...</div>
-    </div>
-
-    <!-- Premium Navigation -->
-    <nav class="premium-nav" id="navbar">
-        <a href="#" class="nav-logo">
-            <div class="logo-mark">
-                <span>ع</span>
-            </div>
-            <div class="logo-text">
-                <div class="logo-main">سيارات عبدالله</div>
-                <div class="logo-sub">LUXURY CARS</div>
-            </div>
-        </a>
-
-        <button class="mobile-menu" id="mobileMenu">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <ul class="nav-links">
-            <li><a href="#home" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="#videos" class="nav-link"><i class="fas fa-play-circle"></i> الفيديوهات</a></li>
-            <li><a href="#products" class="nav-link"><i class="fas fa-car"></i> السيارات</a></li>
-            <li><a href="#categories" class="nav-link"><i class="fas fa-tags"></i> الأقسام</a></li>
-            <li><a href="#search" class="nav-link"><i class="fas fa-search"></i> بحث متقدم</a></li>
-            <li><a href="#contact" class="nav-link"><i class="fas fa-phone"></i> اتصل بنا</a></li>
-        </ul>
-
-        <div class="nav-actions">
-            <a href="tel:01121811110" class="nav-button">
-                <i class="fas fa-phone"></i> اتصل الآن
+    <!-- Header -->
+    <header class="main-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-circle">ع</div>
+                <div class="logo-text">سيارات <span>عبدالله</span></div>
             </a>
-        </div>
-    </nav>
 
-    <!-- Hero Video Section -->
-    <section id="home" class="video-hero">
-        <div class="hero-video-container">
-            <video class="hero-video" autoplay muted loop playsinline id="heroVideo">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-sports-car-racing-3441-large.mp4" type="video/mp4">
-                <!-- Fallback video -->
-                <source src="car-showcase.mp4" type="video/mp4">
-            </video>
-            <div class="video-controls">
-                <button class="video-btn" id="playBtn">
-                    <i class="fas fa-play"></i>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="active">🏠 الرئيسية</a></li>
+                    <li><a href="#services">⚡ الخدمات</a></li>
+                    <li><a href="#products">🚗 السيارات</a></li>
+                    <li><a href="#sell">💰 بيع سيارتك</a></li>
+                    <li><a href="#exchange">🔄 استبدال</a></li>
+                    <li><a href="#contact">📞 اتصل بنا</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="nav-btn primary" onclick="window.location.href='#sell'">
+                    <i class="fas fa-plus"></i> أضف إعلان
                 </button>
-                <button class="video-btn" id="soundBtn">
-                    <i class="fas fa-volume-mute"></i>
+                <button class="nav-btn secondary" onclick="syncData()">
+                    <i class="fas fa-sync-alt"></i> تحديث
                 </button>
             </div>
+
+            <button class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        
-        <div class="hero-overlay"></div>
-        
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
         <div class="hero-content">
             <h1 class="hero-title">
-                رحلة في عالم <span>السيارات الفاخرة</span>
+                سيارات <span>عبدالله</span> <br> تجربة فاخرة في عالم السيارات
             </h1>
             <p class="hero-subtitle">
-                اكتشف مجموعة سياراتنا الحصرية التي تجمع بين الأناقة، الأداء، والابتكار. 
-                حيث تتحقق الأحلام على أربع عجلات.
+                بيع، شراء، واستبدال السيارات بكل سهولة وأمان. اكتشف مجموعة واسعة من السيارات 
+                الجديدة والمستعملة بأفضل الأسعار.
             </p>
             
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-number" id="carsCount">0</div>
+                    <div class="stat-number" id="totalCars">0</div>
                     <div class="stat-label">سيارة متاحة</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="brandsCount">0</div>
+                    <div class="stat-number" id="totalBrands">0</div>
                     <div class="stat-label">ماركة عالمية</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="yearsCount">30+</div>
+                    <div class="stat-number">30+</div>
                     <div class="stat-label">سنة خبرة</div>
                 </div>
-            </div>
-            
-            <div class="hero-cta">
-                <a href="#products" class="cta-button primary">
-                    <i class="fas fa-eye"></i> استعرض السيارات
-                </a>
-                <a href="#search" class="cta-button secondary">
-                    <i class="fas fa-search"></i> بحث متقدم
-                </a>
+                <div class="stat-item">
+                    <div class="stat-number" id="satisfiedCustomers">0</div>
+                    <div class="stat-label">عميل راضٍ</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Advanced Search Section -->
-    <section id="search" class="advanced-search">
-        <div class="search-container">
-            <div class="search-header">
-                <h2 class="search-title">بحث متقدم</h2>
-                <p>ابحث عن سيارتك المثالية باستخدام أدوات البحث المتقدمة</p>
-            </div>
-            
-            <form id="searchForm">
-                <div class="search-grid">
-                    <div class="search-group">
-                        <label class="search-label">
-                            <i class="fas fa-tag"></i> الماركة
-                        </label>
-                        <select class="search-select" id="brandSelect">
-                            <option value="">جميع الماركات</option>
-                            <option value="mercedes">مرسيدس</option>
-                            <option value="bmw">بي إم دبليو</option>
-                            <option value="audi">أودي</option>
-                            <option value="toyota">تويوتا</option>
-                            <option value="nissan">نيسان</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-group">
-                        <label class="search-label">
-                            <i class="fas fa-car"></i> الموديل
-                        </label>
-                        <input type="text" class="search-input" id="modelInput" placeholder="أدخل اسم الموديل">
-                    </div>
-                    
-                    <div class="search-group">
-                        <label class="search-label">
-                            <i class="fas fa-calendar"></i> السنة
-                        </label>
-                        <select class="search-select" id="yearSelect">
-                            <option value="">جميع السنوات</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-group">
-                        <label class="search-label">
-                            <i class="fas fa-money-bill-wave"></i> نطاق السعر
-                        </label>
-                        <div style="display: flex; gap: 1rem;">
-                            <input type="number" class="search-input" placeholder="الحد الأدنى" id="minPrice">
-                            <input type="number" class="search-input" placeholder="الحد الأقصى" id="maxPrice">
-                        </div>
-                    </div>
+    <!-- Quick Search -->
+    <div class="quick-search" id="search">
+        <div class="search-box">
+            <div class="search-grid">
+                <div class="search-group">
+                    <label class="search-label">الماركة</label>
+                    <select class="search-input" id="searchBrand">
+                        <option value="">جميع الماركات</option>
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </select>
                 </div>
                 
-                <div class="search-actions">
-                    <button type="submit" class="search-button primary">
-                        <i class="fas fa-search"></i> بحث متقدم
-                    </button>
-                    <button type="button" class="search-button secondary" id="resetSearch">
-                        <i class="fas fa-redo"></i> إعادة تعيين
-                    </button>
+                <div class="search-group">
+                    <label class="search-label">الموديل</label>
+                    <input type="text" class="search-input" id="searchModel" placeholder="ابحث بالموديل">
                 </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Featured Videos Section -->
-    <section id="videos" class="featured-videos">
-        <h2 class="section-title">عرض <span>حصري</span> للسيارات</h2>
-        
-        <div class="videos-container">
-            <div class="video-grid" id="videoGrid">
-                <!-- Videos will be loaded dynamically -->
+                
+                <div class="search-group">
+                    <label class="search-label">السنة</label>
+                    <select class="search-input" id="searchYear">
+                        <option value="">جميع السنوات</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+                
+                <div class="search-group">
+                    <label class="search-label">نطاق السعر</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="number" class="search-input" placeholder="من" id="minPrice">
+                        <input type="number" class="search-input" placeholder="إلى" id="maxPrice">
+                    </div>
+                </div>
             </div>
             
-            <div style="text-align: center;">
-                <button class="cta-button primary" id="loadMoreVideos">
-                    <i class="fas fa-play-circle"></i> مشاهدة المزيد
+            <div class="search-actions">
+                <button class="nav-btn primary" onclick="performSearch()">
+                    <i class="fas fa-search"></i> بحث متقدم
+                </button>
+                <button class="nav-btn secondary" onclick="resetSearch()">
+                    <i class="fas fa-redo"></i> إعادة تعيين
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Services -->
+    <section class="services-section" id="services">
+        <h2 class="section-title">خدماتنا <span>المتميزة</span></h2>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 class="service-title">شراء سيارة</h3>
+                <p class="service-description">
+                    ابحث عن سيارتك المثالية من بين مجموعة واسعة من السيارات الجديدة والمستعملة
+                </p>
+                <a href="#products" class="service-btn">
+                    <i class="fas fa-search"></i> تصفح السيارات
+                </a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3 class="service-title">بيع سيارة</h3>
+                <p class="service-description">
+                    بيع سيارتك بأفضل سعر مع تقييم عادل وضمان الدفع الفوري
+                </p>
+                <a href="product-details.html?action=sell" class="service-btn">
+                    <i class="fas fa-tag"></i> أضف إعلان بيع
+                </a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3 class="service-title">استبدال سيارة</h3>
+                <p class="service-description">
+                    استبدل سيارتك الحالية بسيارة أخرى جديدة مع تقييم عادل
+                </p>
+                <a href="product-details.html?action=exchange" class="service-btn">
+                    <i class="fas fa-sync-alt"></i> طلب استبدال
+                </a>
+            </div>
+        </div>
     </section>
 
-    <!-- Products Showcase -->
-    <section id="products" class="products-showcase">
+    <!-- Products -->
+    <section class="products-section" id="products">
         <div class="products-header">
-            <h2 class="section-title">معرض <span>السيارات</span></h2>
+            <h2 class="section-title">أحدث <span>السيارات</span></h2>
             <div class="products-filter">
-                <button class="filter-btn active" data-filter="all">الكل</button>
-                <button class="filter-btn" data-filter="new">جديد</button>
-                <button class="filter-btn" data-filter="used">مستعمل</button>
-                <button class="filter-btn" data-filter="featured">مميز</button>
+                <button class="filter-btn active" onclick="filterProducts('all')">الكل</button>
+                <button class="filter-btn" onclick="filterProducts('new')">جديد</button>
+                <button class="filter-btn" onclick="filterProducts('used')">مستعمل</button>
+                <button class="filter-btn" onclick="filterProducts('featured')">مميز</button>
             </div>
         </div>
         
-        <div class="products-grid" id="productsGrid">
-            <!-- Products will be loaded dynamically -->
+        <div class="products-container" id="productsContainer">
+            <!-- سيتم ملؤها ديناميكياً -->
         </div>
     </section>
 
-    <!-- Categories Grid -->
-    <section id="categories" class="categories-grid">
-        <h2 class="section-title">تصفح حسب <span>النوع</span></h2>
-        
-        <div class="categories-container" id="categoriesContainer">
-            <!-- Categories will be loaded dynamically -->
+    <!-- Sync Status -->
+    <div class="sync-status" id="syncStatus" style="display: none;">
+        <div class="sync-icon">
+            <i class="fas fa-sync-alt"></i>
         </div>
-    </section>
-
-    <!-- Video Modal -->
-    <div class="video-modal" id="videoModal">
-        <div class="modal-content">
-            <video class="modal-video" controls id="modalVideo">
-                <!-- Video source will be set dynamically -->
-            </video>
-            <button class="modal-close" id="closeModal">×</button>
+        <div class="sync-info">
+            <h4>جاري المزامنة</h4>
+            <p id="syncMessage">...</p>
         </div>
     </div>
 
-    <!-- Premium Footer -->
-    <footer class="premium-footer" id="contact">
+    <!-- Footer -->
+    <footer class="main-footer" id="contact">
         <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">سيارات عبدالله</div>
-                <p class="footer-text">
-                    نخبة من السيارات الفاخرة التي تلبي أعلى معايير الجودة والأناقة. 
-                    نقدم تجربة شراء استثنائية مع ضمان الجودة والتميز.
+            <div class="footer-col">
+                <h3>سيارات عبدالله</h3>
+                <p>
+                    معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات
+                    مع ضمان شامل وخدمة مميزة.
                 </p>
                 <div class="social-links">
                     <a href="https://facebook.com" class="social-link" target="_blank">
@@ -1525,29 +1373,26 @@
                     <a href="https://instagram.com" class="social-link" target="_blank">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://twitter.com" class="social-link" target="_blank">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://youtube.com" class="social-link" target="_blank">
-                        <i class="fab fa-youtube"></i>
+                    <a href="https://whatsapp.com" class="social-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
             </div>
             
-            <div class="footer-links">
+            <div class="footer-col">
                 <h3>روابط سريعة</h3>
-                <ul>
+                <ul class="footer-links">
                     <li><a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
-                    <li><a href="#videos"><i class="fas fa-chevron-left"></i> الفيديوهات</a></li>
+                    <li><a href="#services"><i class="fas fa-chevron-left"></i> الخدمات</a></li>
                     <li><a href="#products"><i class="fas fa-chevron-left"></i> السيارات</a></li>
-                    <li><a href="#categories"><i class="fas fa-chevron-left"></i> الأقسام</a></li>
-                    <li><a href="#search"><i class="fas fa-chevron-left"></i> بحث متقدم</a></li>
+                    <li><a href="#sell"><i class="fas fa-chevron-left"></i> بيع سيارتك</a></li>
+                    <li><a href="#exchange"><i class="fas fa-chevron-left"></i> استبدال</a></li>
                 </ul>
             </div>
             
-            <div class="footer-links">
+            <div class="footer-col">
                 <h3>اتصل بنا</h3>
-                <ul>
+                <ul class="footer-links">
                     <li>
                         <a href="tel:01121811110">
                             <i class="fas fa-phone"></i> 01121811110
@@ -1563,57 +1408,518 @@
                             <i class="fas fa-envelope"></i> amarmotors850@gmail.com
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-map-marker-alt"></i> القاهرة، مصر
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
             <p>© 2024 سيارات عبدالله. جميع الحقوق محفوظة.</p>
-            <p style="margin-top: 0.5rem; color: var(--gold); font-size: 0.8rem;">
-                مصمم بكل ❤️ لتجربة فاخرة
-            </p>
         </div>
     </footer>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    
+    <!-- Product Details Page Template (منفصل) -->
+    <script type="text/template" id="productDetailsTemplate">
+        <div class="product-details-page">
+            <div class="product-details">
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img id="mainProductImage" src="" alt="">
+                    </div>
+                    <div class="thumbnails" id="productThumbnails">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                </div>
+                
+                <div class="product-content">
+                    <h1 class="product-main-title" id="productTitle"></h1>
+                    
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-text">(4.5 من 5)</span>
+                    </div>
+                    
+                    <div class="product-price-large" id="productPrice"></div>
+                    
+                    <div class="product-description" id="productDescription"></div>
+                    
+                    <!-- Color Selection -->
+                    <div class="color-selection">
+                        <div class="color-title">اختر اللون:</div>
+                        <div class="color-options">
+                            <div class="color-option color-white active" data-color="white"></div>
+                            <div class="color-option color-red" data-color="red"></div>
+                            <div class="color-option color-black" data-color="black"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Specs -->
+                    <div class="product-specs-grid" id="productSpecs">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                    
+                    <!-- Transaction Options -->
+                    <div class="transaction-options">
+                        <div class="transaction-title">اختر طريقة التعامل:</div>
+                        <div class="transaction-buttons">
+                            <div class="transaction-btn active" data-action="buy">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="transaction-label">شراء</div>
+                                <div class="transaction-desc">شراء السيارة مباشرة</div>
+                            </div>
+                            
+                            <div class="transaction-btn" data-action="sell">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="transaction-label">بيع</div>
+                                <div class="transaction-desc">بيع سيارتك لنا</div>
+                            </div>
+                            
+                            <div class="transaction-btn" data-action="exchange">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-label">استبدال</div>
+                                <div class="transaction-desc">استبدال سيارتك بهذه السيارة</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transaction Form -->
+                    <div class="transaction-form" id="transactionForm">
+                        <!-- سيتم تغييرها حسب نوع التعامل -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script src="sync.js"></script>
     <script>
-        // ============ System Initialization ============
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Premium Car Showcase Initializing...');
+        // ============ System Variables ============
+        let siteData = null;
+        let currentFilter = 'all';
+        let currentTransactionType = 'buy';
+
+        // ============ Initialization ============
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 جاري تحميل النظام...');
             
-            // Initialize components
-            initializeLoader();
-            initializeNavigation();
-            initializeVideoControls();
-            initializeSearch();
-            loadSampleData();
+            // Setup mobile menu
+            document.getElementById('mobileMenu').addEventListener('click', () => {
+                const nav = document.querySelector('.main-nav ul');
+                nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Load data
+            await loadData();
+            
+            // Initialize UI
+            updateUI();
             setupEventListeners();
             
-            console.log('✅ Premium Car Showcase Ready!');
+            console.log('✅ النظام جاهز للعمل');
         });
 
-        // ============ Premium Loader ============
-        function initializeLoader() {
-            const loader = document.getElementById('loader');
+        // ============ Data Loading ============
+        async function loadData() {
+            showSyncStatus('جاري تحميل البيانات...');
             
-            // Simulate loading process
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
+            try {
+                // Try GitHub sync first
+                if (window.gitHubSync && window.gitHubSync.isInitialized) {
+                    const data = await window.gitHubSync.sync();
+                    if (data) {
+                        siteData = data;
+                        window.siteData = data;
+                        console.log('✅ تم تحميل البيانات من GitHub');
+                        hideSyncStatus();
+                        return true;
+                    }
+                }
+                
+                // Fallback to local storage
+                const localData = localStorage.getItem('abdullah_cars_data');
+                if (localData) {
+                    siteData = JSON.parse(localData);
+                    window.siteData = siteData;
+                    console.log('📦 استخدام البيانات المحلية');
+                    hideSyncStatus();
+                    return true;
+                }
+                
+                // Create default data
+                siteData = createDefaultData();
+                window.siteData = siteData;
+                console.log('🆕 إنشاء بيانات افتراضية');
+                hideSyncStatus();
+                return true;
+                
+            } catch (error) {
+                console.error('❌ خطأ في تحميل البيانات:', error);
+                showSyncStatus('فشل تحميل البيانات', 'error');
+                return false;
+            }
+        }
+
+        function createDefaultData() {
+            return {
+                version: "3.0.0",
+                lastUpdated: new Date().toISOString(),
+                site: {
+                    name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
+                    description: { 
+                        ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
+                        en: "Best offers for new and used cars in Egypt" 
+                    }
+                },
+                contact: {
+                    phone: "01121811110",
+                    whatsapp: "01121811110",
+                    email: "amarmotors850@gmail.com",
+                    address: "القاهرة، مصر"
+                },
+                users: [],
+                brands: [],
+                categories: [],
+                products: []
+            };
+        }
+
+        // ============ UI Update ============
+        function updateUI() {
+            if (!siteData) return;
+            
+            // Update stats
+            document.getElementById('totalCars').textContent = siteData.products?.length || 0;
+            
+            const brands = siteData.brands?.length || 0;
+            document.getElementById('totalBrands').textContent = brands;
+            
+            // Update products grid
+            updateProductsGrid();
+            
+            // Update search options
+            updateSearchOptions();
+            
+            // Update brands in search
+            updateBrandsDropdown();
+        }
+
+        function updateProductsGrid() {
+            const container = document.getElementById('productsContainer');
+            if (!container) return;
+            
+            const products = siteData.products || [];
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+                        <i class="fas fa-car" style="font-size: 4rem; color: #dc2626; margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary-black); margin-bottom: 1rem;">لا توجد سيارات متاحة</h3>
+                        <p style="color: var(--primary-gray);">سيتم إضافة السيارات قريباً</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(product => `
+                <div class="product-card" data-id="${product.id}" 
+                     data-brand="${product.brand || ''}"
+                     data-model="${product.model || ''}"
+                     data-year="${product.year || ''}"
+                     data-price="${product.price || 0}"
+                     data-type="${product.type || 'new'}">
                     
-                    // Animate stats counter
-                    animateCounter('carsCount', 0, 156, 2000);
-                    animateCounter('brandsCount', 0, 24, 2500);
-                }, 500);
-            }, 3000);
+                    ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
+                    
+                    <div class="product-image">
+                        <img src="${product.image || 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b'}" 
+                             alt="${product.name?.ar || product.name}">
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-header">
+                            <div>
+                                <h3 class="product-title">${product.name?.ar || product.name}</h3>
+                                <div class="product-category">${product.brand || ''} • ${product.model || ''}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="product-price">
+                            ${product.price ? `${formatPrice(product.price)} ج.م` : 'السعر عند الطلب'}
+                            ${product.oldPrice ? `<span class="old-price">${formatPrice(product.oldPrice)} ج.م</span>` : ''}
+                        </div>
+                        
+                        <ul class="product-specs">
+                            ${product.year ? `<li><span>السنة:</span> <span>${product.year}</span></li>` : ''}
+                            ${product.fuel ? `<li><span>الوقود:</span> <span>${product.fuel}</span></li>` : ''}
+                            ${product.engine ? `<li><span>المحرك:</span> <span>${product.engine}</span></li>` : ''}
+                        </ul>
+                        
+                        <div class="product-actions">
+                            <a href="product-details.html?id=${product.id}" class="product-btn primary">
+                                <i class="fas fa-eye"></i> التفاصيل
+                            </a>
+                            <button class="product-btn secondary" onclick="contactAboutProduct('${product.id}')">
+                                <i class="fas fa-phone"></i> استفسار
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateSearchOptions() {
+            const brandSelect = document.getElementById('searchBrand');
+            if (!brandSelect) return;
+            
+            const brands = siteData.brands || [];
+            brandSelect.innerHTML = '<option value="">جميع الماركات</option>';
+            
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand.id;
+                option.textContent = brand.name?.ar || brand.name;
+                brandSelect.appendChild(option);
+            });
+        }
+
+        function updateBrandsDropdown() {
+            const brands = siteData.brands || [];
+            const statsElement = document.getElementById('totalBrands');
+            if (statsElement) {
+                statsElement.textContent = brands.length;
+            }
+        }
+
+        // ============ Search Functions ============
+        function performSearch() {
+            const brand = document.getElementById('searchBrand').value;
+            const model = document.getElementById('searchModel').value.toLowerCase();
+            const year = document.getElementById('searchYear').value;
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            
+            const products = siteData.products || [];
+            const filteredProducts = products.filter(product => {
+                let matches = true;
+                
+                if (brand) {
+                    const productBrand = siteData.brands?.find(b => b.id === product.brandId);
+                    if (!productBrand || productBrand.id !== brand) {
+                        matches = false;
+                    }
+                }
+                
+                if (model && !(product.name?.ar || product.name || '').toLowerCase().includes(model)) {
+                    matches = false;
+                }
+                
+                if (year && product.year !== year) {
+                    matches = false;
+                }
+                
+                if (product.price) {
+                    const price = parseFloat(product.price);
+                    if (price < minPrice || price > maxPrice) {
+                        matches = false;
+                    }
+                }
+                
+                return matches;
+            });
+            
+            displaySearchResults(filteredProducts);
+        }
+
+        function displaySearchResults(products) {
+            const container = document.getElementById('productsContainer');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #dc2626; margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary-black); margin-bottom: 1rem;">لا توجد نتائج</h3>
+                        <p style="color: var(--primary-gray);">لم نعثر على سيارات تطابق معايير البحث الخاصة بك</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
+                    
+                    <div class="product-image">
+                        <img src="${product.image || 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b'}" 
+                             alt="${product.name?.ar || product.name}">
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-header">
+                            <div>
+                                <h3 class="product-title">${product.name?.ar || product.name}</h3>
+                                <div class="product-category">${product.brand || ''} • ${product.model || ''}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="product-price">
+                            ${product.price ? `${formatPrice(product.price)} ج.م` : 'السعر عند الطلب'}
+                        </div>
+                        
+                        <div class="product-actions">
+                            <a href="product-details.html?id=${product.id}" class="product-btn primary">
+                                <i class="fas fa-eye"></i> التفاصيل
+                            </a>
+                            <button class="product-btn secondary" onclick="contactAboutProduct('${product.id}')">
+                                <i class="fas fa-phone"></i> استفسار
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function resetSearch() {
+            document.getElementById('searchForm').reset();
+            updateProductsGrid();
+        }
+
+        function filterProducts(filter) {
+            currentFilter = filter;
+            
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const products = siteData.products || [];
+            let filteredProducts = products;
+            
+            switch(filter) {
+                case 'new':
+                    filteredProducts = products.filter(p => p.type === 'new');
+                    break;
+                case 'used':
+                    filteredProducts = products.filter(p => p.type === 'used');
+                    break;
+                case 'featured':
+                    filteredProducts = products.filter(p => p.featured);
+                    break;
+            }
+            
+            displaySearchResults(filteredProducts);
+        }
+
+        // ============ Sync Functions ============
+        async function syncData() {
+            showSyncStatus('جاري المزامنة مع GitHub...');
+            
+            try {
+                if (window.gitHubSync && window.gitHubSync.isInitialized) {
+                    const result = await window.gitHubSync.sync();
+                    if (result) {
+                        siteData = result;
+                        window.siteData = result;
+                        updateUI();
+                        showSyncStatus('تمت المزامنة بنجاح', 'success');
+                    } else {
+                        throw new Error('فشلت المزامنة');
+                    }
+                } else {
+                    throw new Error('نظام المزامنة غير متوفر');
+                }
+            } catch (error) {
+                console.error('❌ خطأ في المزامنة:', error);
+                showSyncStatus('فشلت المزامنة: ' + error.message, 'error');
+            }
+        }
+
+        function showSyncStatus(message, type = 'info') {
+            const status = document.getElementById('syncStatus');
+            const messageEl = document.getElementById('syncMessage');
+            
+            if (!status || !messageEl) return;
+            
+            messageEl.textContent = message;
+            status.style.display = 'flex';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            } else if (type === 'error') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function hideSyncStatus() {
+            const status = document.getElementById('syncStatus');
+            if (status) {
+                status.style.display = 'none';
+            }
+        }
+
+        // ============ Utility Functions ============
+        function formatPrice(price) {
+            if (!price && price !== 0) return '0';
+            return new Intl.NumberFormat('ar-EG').format(price);
+        }
+
+        function contactAboutProduct(productId) {
+            const product = siteData.products?.find(p => p.id === productId);
+            if (product) {
+                const message = `مرحباً، أريد الاستفسار عن السيارة: ${product.name?.ar || product.name}`;
+                const whatsapp = siteData.contact?.whatsapp || '01121811110';
+                window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
+            }
+        }
+
+        // ============ Event Listeners ============
+        function setupEventListeners() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Auto-save data every 10 minutes
+            setInterval(async () => {
+                try {
+                    if (siteData && window.gitHubSync && window.gitHubSync.isInitialized) {
+                        await window.gitHubSync.save(siteData);
+                        console.log('💾 تم الحفظ التلقائي');
+                    }
+                } catch (error) {
+                    console.error('❌ خطأ في الحفظ التلقائي:', error);
+                }
+            }, 10 * 60 * 1000);
+            
+            // Update stats animation
+            setTimeout(() => {
+                animateCounter('satisfiedCustomers', 0, 5000, 3000);
+            }, 1000);
         }
 
         function animateCounter(elementId, start, end, duration) {
@@ -1625,7 +1931,7 @@
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 const value = Math.floor(progress * (end - start) + start);
-                element.textContent = value;
+                element.textContent = value.toLocaleString('ar-EG');
                 
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
@@ -1634,398 +1940,12 @@
             window.requestAnimationFrame(step);
         }
 
-        // ============ Navigation System ============
-        function initializeNavigation() {
-            const nav = document.getElementById('navbar');
-            const mobileMenu = document.getElementById('mobileMenu');
-            
-            // Scroll effect
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
-                }
-            });
-            
-            // Mobile menu toggle
-            mobileMenu.addEventListener('click', () => {
-                const navLinks = document.querySelector('.nav-links');
-                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            });
-            
-            // Smooth scroll for nav links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        }
-
-        // ============ Video Controls ============
-        function initializeVideoControls() {
-            const heroVideo = document.getElementById('heroVideo');
-            const playBtn = document.getElementById('playBtn');
-            const soundBtn = document.getElementById('soundBtn');
-            const videoModal = document.getElementById('videoModal');
-            const modalVideo = document.getElementById('modalVideo');
-            const closeModal = document.getElementById('closeModal');
-            
-            // Play/Pause button
-            playBtn.addEventListener('click', () => {
-                if (heroVideo.paused) {
-                    heroVideo.play();
-                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    heroVideo.pause();
-                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            });
-            
-            // Sound toggle
-            soundBtn.addEventListener('click', () => {
-                heroVideo.muted = !heroVideo.muted;
-                soundBtn.innerHTML = heroVideo.muted ? 
-                    '<i class="fas fa-volume-mute"></i>' : 
-                    '<i class="fas fa-volume-up"></i>';
-            });
-            
-            // Video modal
-            window.playVideo = (videoUrl) => {
-                modalVideo.src = videoUrl;
-                videoModal.classList.add('active');
-                modalVideo.play();
-            };
-            
-            closeModal.addEventListener('click', () => {
-                videoModal.classList.remove('active');
-                modalVideo.pause();
-            });
-            
-            videoModal.addEventListener('click', (e) => {
-                if (e.target === videoModal) {
-                    videoModal.classList.remove('active');
-                    modalVideo.pause();
-                }
-            });
-        }
-
-        // ============ Search System ============
-        function initializeSearch() {
-            const searchForm = document.getElementById('searchForm');
-            const resetBtn = document.getElementById('resetSearch');
-            
-            searchForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                performSearch();
-            });
-            
-            resetBtn.addEventListener('click', () => {
-                searchForm.reset();
-                document.querySelectorAll('.product-card').forEach(card => {
-                    card.style.display = 'block';
-                });
-            });
-            
-            function performSearch() {
-                const brand = document.getElementById('brandSelect').value;
-                const model = document.getElementById('modelInput').value.toLowerCase();
-                const year = document.getElementById('yearSelect').value;
-                const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
-                const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
-                
-                document.querySelectorAll('.product-card').forEach(card => {
-                    const cardBrand = card.dataset.brand || '';
-                    const cardModel = card.dataset.model || '';
-                    const cardYear = card.dataset.year || '';
-                    const cardPrice = parseFloat(card.dataset.price) || 0;
-                    
-                    let matches = true;
-                    
-                    if (brand && cardBrand !== brand) matches = false;
-                    if (model && !cardModel.includes(model)) matches = false;
-                    if (year && cardYear !== year) matches = false;
-                    if (cardPrice < minPrice || cardPrice > maxPrice) matches = false;
-                    
-                    card.style.display = matches ? 'block' : 'none';
-                });
-            }
-        }
-
-        // ============ Sample Data Loading ============
-        function loadSampleData() {
-            // Load videos
-            const videos = [
-                {
-                    id: 1,
-                    title: "مرسيدس G-Class 2024",
-                    thumbnail: "https://images.unsplash.com/photo-1553440569-bcc63803a83d",
-                    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-white-sports-car-driving-3452-large.mp4",
-                    duration: "2:45"
-                },
-                {
-                    id: 2,
-                    title: "بي إم دبليو X7",
-                    thumbnail: "https://images.unsplash.com/photo-1555212697-194d092e3b8f",
-                    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-close-up-of-the-rear-of-a-sports-car-3449-large.mp4",
-                    duration: "3:20"
-                },
-                {
-                    id: 3,
-                    title: "أودي RS7",
-                    thumbnail: "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-                    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-sports-car-driving-in-a-small-town-3450-large.mp4",
-                    duration: "4:15"
-                }
-            ];
-            
-            const videoGrid = document.getElementById('videoGrid');
-            videos.forEach(video => {
-                videoGrid.innerHTML += `
-                    <div class="video-card" onclick="playVideo('${video.videoUrl}')">
-                        <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
-                        <div class="video-overlay">
-                            <div class="video-play">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <h3 class="video-title">${video.title}</h3>
-                            <span class="video-duration">${video.duration}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Load products
-            const products = [
-                {
-                    id: 1,
-                    title: "مرسيدس S-Class 2024",
-                    category: "سيارات فاخرة",
-                    price: "3,500,000",
-                    oldPrice: "3,800,000",
-                    image: "https://images.unsplash.com/photo-1563720223487-62e5e56ee6d3",
-                    brand: "mercedes",
-                    model: "s-class",
-                    year: "2024",
-                    featured: true,
-                    specs: [
-                        { label: "المحرك", value: "4.0L V8" },
-                        { label: "القوة", value: "496 حصان" },
-                        { label: "ناقل الحركة", value: "أوتوماتيك" },
-                        { label: "الوقود", value: "بنزين" }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "بي إم دبليو i8",
-                    category: "سيارات رياضية",
-                    price: "2,800,000",
-                    image: "https://images.unsplash.com/photo-1555212697-194d092e3b8f",
-                    brand: "bmw",
-                    model: "i8",
-                    year: "2023",
-                    specs: [
-                        { label: "المحرك", value: "1.5L هايبرد" },
-                        { label: "القوة", value: "369 حصان" },
-                        { label: "التسارع", value: "4.4 ثانية" }
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "أودي A7",
-                    category: "سيارات سيدان",
-                    price: "1,950,000",
-                    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-                    brand: "audi",
-                    model: "a7",
-                    year: "2024",
-                    specs: [
-                        { label: "المحرك", value: "3.0L V6" },
-                        { label: "القوة", value: "335 حصان" }
-                    ]
-                }
-            ];
-            
-            const productsGrid = document.getElementById('productsGrid');
-            products.forEach(product => {
-                const specsHtml = product.specs.map(spec => `
-                    <li>
-                        <span>${spec.label}:</span>
-                        <span>${spec.value}</span>
-                    </li>
-                `).join('');
-                
-                productsGrid.innerHTML += `
-                    <div class="product-card ${product.featured ? 'featured' : ''}" 
-                         data-brand="${product.brand}"
-                         data-model="${product.model}"
-                         data-year="${product.year}"
-                         data-price="${product.price.replace(/,/g, '')}">
-                        <div class="product-image">
-                            <img src="${product.image}" alt="${product.title}">
-                            <div class="product-badge">جديد</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-header">
-                                <div>
-                                    <h3 class="product-title">${product.title}</h3>
-                                    <div class="product-category">${product.category}</div>
-                                </div>
-                            </div>
-                            <div class="product-price">
-                                ${product.oldPrice ? `<span class="product-old-price">${product.oldPrice} ج.م</span>` : ''}
-                                ${product.price} ج.م
-                            </div>
-                            <ul class="product-specs">
-                                ${specsHtml}
-                            </ul>
-                            <div class="product-actions">
-                                <button class="product-btn primary">
-                                    <i class="fas fa-eye"></i> عرض التفاصيل
-                                </button>
-                                <button class="product-btn secondary">
-                                    <i class="fas fa-phone"></i> استفسار
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Load categories
-            const categories = [
-                {
-                    title: "سيارات فاخرة",
-                    count: "48 سيارة",
-                    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341",
-                    icon: "fas fa-crown"
-                },
-                {
-                    title: "سيارات رياضية",
-                    count: "32 سيارة",
-                    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-                    icon: "fas fa-bolt"
-                },
-                {
-                    title: "سيارات عائلية",
-                    count: "24 سيارة",
-                    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b",
-                    icon: "fas fa-users"
-                },
-                {
-                    title: "سيارات كهربائية",
-                    count: "16 سيارة",
-                    image: "https://images.unsplash.com/photo-1560958089-b8a1929cea89",
-                    icon: "fas fa-charging-station"
-                }
-            ];
-            
-            const categoriesContainer = document.getElementById('categoriesContainer');
-            categories.forEach(category => {
-                categoriesContainer.innerHTML += `
-                    <div class="category-card" onclick="filterByCategory('${category.title}')">
-                        <img src="${category.image}" alt="${category.title}" class="category-bg">
-                        <div class="category-overlay">
-                            <div class="category-icon">
-                                <i class="${category.icon}"></i>
-                            </div>
-                            <h3 class="category-title">${category.title}</h3>
-                            <div class="category-count">${category.count}</div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // ============ Filter System ============
-        function setupEventListeners() {
-            // Product filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const filter = this.dataset.filter;
-                    filterProducts(filter);
-                });
-            });
-            
-            // Load more videos
-            document.getElementById('loadMoreVideos').addEventListener('click', () => {
-                // Simulate loading more videos
-                alert('جاري تحميل المزيد من الفيديوهات...');
-            });
-        }
-
-        function filterProducts(filter) {
-            const products = document.querySelectorAll('.product-card');
-            
-            products.forEach(product => {
-                switch(filter) {
-                    case 'all':
-                        product.style.display = 'block';
-                        break;
-                    case 'new':
-                        product.style.display = product.classList.contains('featured') ? 'block' : 'none';
-                        break;
-                    case 'used':
-                        // Logic for used cars
-                        product.style.display = 'block';
-                        break;
-                    case 'featured':
-                        product.style.display = product.classList.contains('featured') ? 'block' : 'none';
-                        break;
-                }
-            });
-        }
-
-        function filterByCategory(category) {
-            // Filter products by category
-            alert(`جاري تصفية السيارات في قسم: ${category}`);
-        }
-
-        // ============ GitHub Sync Integration ============
-        // This function will sync with your existing GitHub system
-        async function syncWithGitHub() {
-            if (window.gitHubSync && window.gitHubSync.isInitialized) {
-                try {
-                    const data = await window.gitHubSync.sync();
-                    if (data) {
-                        console.log('✅ تمت مزامنة البيانات من GitHub');
-                        updateUIWithData(data);
-                    }
-                } catch (error) {
-                    console.error('❌ خطأ في المزامنة:', error);
-                }
-            }
-        }
-
-        function updateUIWithData(data) {
-            // Update products, videos, etc. from GitHub data
-            if (data.products && data.products.length > 0) {
-                // Update products count
-                document.getElementById('carsCount').textContent = data.products.length;
-                
-                // Update brands count
-                const uniqueBrands = [...new Set(data.products.map(p => p.brand))];
-                document.getElementById('brandsCount').textContent = uniqueBrands.length;
-            }
-        }
-
-        // Initialize sync on page load
-        setTimeout(() => {
-            syncWithGitHub();
-        }, 2000);
+        // ============ Global Functions ============
+        window.performSearch = performSearch;
+        window.resetSearch = resetSearch;
+        window.filterProducts = filterProducts;
+        window.syncData = syncData;
+        window.contactAboutProduct = contactAboutProduct;
     </script>
 </body>
 </html>
