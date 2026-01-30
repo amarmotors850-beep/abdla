@@ -1888,30 +1888,50 @@
             showLoading('جاري تحميل البيانات...');
             
             try {
-                if (window.gitHubSync) {
-                    adminData = await window.gitHubSync.fetch();
-                    console.log('📊 بيانات الإدارة المحملة:', {
-                        products: adminData.products?.length || 0,
-                        brands: adminData.brands?.length || 0,
-                        users: adminData.users?.length || 0
-                    });
-                } else {
-                    throw new Error('نظام المزامنة غير متوفر');
+                if (window.gitHubSync && window.gitHubSync.isInitialized) {
+                    console.log('📥 محاولة تحميل من GitHub...');
+                    const result = await window.gitHubSync.sync();
+                    
+                    if (result) {
+                        adminData = result;
+                        console.log('✅ تم تحميل البيانات من GitHub');
+                    } else {
+                        throw new Error('فشل تحميل من GitHub');
+                    }
                 }
                 
+                if (!adminData) {
+                    // استخدام البيانات المحلية
+                    const localData = localStorage.getItem('siteData');
+                    if (localData) {
+                        adminData = JSON.parse(localData);
+                        console.log('📦 استخدام البيانات المحلية');
+                    } else {
+                        // إنشاء بيانات افتراضية
+                        adminData = createDefaultData();
+                        console.log('🆕 إنشاء بيانات افتراضية');
+                    }
+                }
+                
+                // تخزين البيانات في المتغير العام
+                window.siteData = adminData;
+                
+                return true;
+                
             } catch (error) {
-                console.error('❌ خطأ في تحميل بيانات الإدارة:', error);
+                console.error('❌ خطأ في تحميل البيانات:', error);
                 
                 // استخدام البيانات المحلية
                 const localData = localStorage.getItem('siteData');
                 if (localData) {
                     adminData = JSON.parse(localData);
-                    console.log('📦 استخدام البيانات المحلية');
                 } else {
-                    // إنشاء بيانات افتراضية
                     adminData = createDefaultData();
-                    console.log('🆕 إنشاء بيانات افتراضية');
                 }
+                
+                window.siteData = adminData;
+                
+                return false;
                 
             } finally {
                 hideLoading();
@@ -1920,26 +1940,11 @@
 
         function createDefaultData() {
             return {
-                products: [],
-                brands: [],
-                orders: [],
-                sellRequests: [],
-                exchangeRequests: [],
-                users: [
-                    {
-                        "id": "admin_001",
-                        "username": "admin",
-                        "password": "2845",
-                        "role": "ADMIN",
-                        "fullName": "المدير الرئيسي",
-                        "permissions": ["all"],
-                        "createdAt": new Date().toISOString()
-                    }
-                ],
+                version: "1.0.0",
+                lastUpdated: new Date().toISOString(),
                 site: {
                     name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
-                    description: { ar: "معرض السيارات الفاخرة", en: "Luxury Car Showroom" },
-                    currencySymbol: "ج.م"
+                    description: { ar: "معرض السيارات الفاخرة", en: "Luxury Car Showroom" }
                 },
                 contact: {
                     phone: "01121811110",
@@ -1951,14 +1956,97 @@
                 social: {
                     facebook: "https://www.facebook.com/share/1SdkvcBynu/?mibextid=wwXIfr",
                     instagram: "https://www.instagram.com/abdullah_auto_?igsh=Nm5hNnJtMjM2ZDEw&utm_source=qr",
-                    tiktok: "https://www.tiktok.com/@abdullah.auto0?_r=1&_t=ZS-93NEKHAJ5TJ",
-                    youtube: ""
+                    tiktok: "https://www.tiktok.com/@abdullah.auto0?_r=1&_t=ZS-93NEKHAJ5TJ"
                 },
-                system: {
-                    lastSync: new Date().toISOString(),
-                    version: "1.0.0"
-                }
+                users: [
+                    {
+                        id: "admin_001",
+                        username: "admin",
+                        password: "2845",
+                        role: "ADMIN",
+                        fullName: "المدير الرئيسي",
+                        permissions: ["all"],
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    }
+                ],
+                brands: [],
+                products: [],
+                settings: {}
             };
+        }
+
+        // ============ حفظ البيانات ============
+        async function saveAdminData() {
+            showLoading('جاري حفظ البيانات...');
+            
+            try {
+                if (!adminData) {
+                    throw new Error('لا توجد بيانات للحفظ');
+                }
+                
+                // تحديث وقت آخر تعديل
+                adminData.lastUpdated = new Date().toISOString();
+                
+                console.log('💾 محاولة حفظ البيانات...', {
+                    products: adminData.products?.length || 0,
+                    brands: adminData.brands?.length || 0
+                });
+                
+                // المحاولة 1: الحفظ على GitHub
+                let githubSuccess = false;
+                
+                if (window.gitHubSync && window.gitHubSync.isInitialized) {
+                    try {
+                        console.log('⬆️ محاولة الرفع إلى GitHub...');
+                        const result = await window.gitHubSync.pushToGitHub(adminData);
+                        
+                        if (result && result.success) {
+                            githubSuccess = true;
+                            console.log('✅ تم الرفع إلى GitHub');
+                        } else {
+                            console.warn('⚠️ فشل الرفع إلى GitHub:', result?.error);
+                        }
+                    } catch (githubError) {
+                        console.error('❌ خطأ في الرفع إلى GitHub:', githubError.message);
+                    }
+                } else {
+                    console.warn('⚠️ نظام GitHub Sync غير متوفر أو غير مهيئ');
+                }
+                
+                // المحاولة 2: الحفظ محلياً (دائماً)
+                try {
+                    const jsonStr = JSON.stringify(adminData, null, 2);
+                    localStorage.setItem('siteData', jsonStr);
+                    localStorage.setItem('lastUpdate', new Date().toISOString());
+                    localStorage.setItem('dataSource', githubSuccess ? 'github' : 'local');
+                    
+                    window.siteData = adminData;
+                    
+                    console.log('💾 تم الحفظ محلياً');
+                    
+                    return {
+                        success: true,
+                        github: githubSuccess,
+                        local: true,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                } catch (localError) {
+                    console.error('❌ خطأ في الحفظ المحلي:', localError);
+                    throw new Error('فشل الحفظ المحلي');
+                }
+                
+            } catch (error) {
+                console.error('❌ خطأ في حفظ البيانات:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+                
+            } finally {
+                hideLoading();
+            }
         }
 
         // ============ تحديث لوحة التحكم ============
@@ -2415,7 +2503,7 @@
                     description: document.getElementById('productDescription').value,
                     featured: document.getElementById('productFeatured').checked,
                     installment: document.getElementById('productInstallment').checked,
-                    createdAt: new Date().toISOString(),
+                    createdAt: adminData.products.find(p => p.id === productId)?.createdAt || new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 };
                 
@@ -2437,11 +2525,20 @@
                 }
                 
                 // حفظ البيانات
-                await saveAdminData();
+                const saveResult = await saveAdminData();
                 
-                closeModal('productModal');
-                updateDashboard();
-                showToast('تم حفظ السيارة بنجاح', 'success');
+                if (saveResult.success) {
+                    closeModal('productModal');
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حفظ السيارة والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حفظ السيارة محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حفظ المنتج:', error);
@@ -2458,10 +2555,20 @@
             
             try {
                 adminData.products = adminData.products.filter(p => p.id !== productId);
-                await saveAdminData();
                 
-                updateDashboard();
-                showToast('تم حذف السيارة بنجاح', 'success');
+                const saveResult = await saveAdminData();
+                
+                if (saveResult.success) {
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حذف السيارة والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حذف السيارة محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات بعد الحذف');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حذف المنتج:', error);
@@ -2526,7 +2633,7 @@
                         en: document.getElementById('brandNameEn').value
                     },
                     description: document.getElementById('brandDescription').value,
-                    createdAt: new Date().toISOString(),
+                    createdAt: adminData.brands.find(b => b.id === brandId)?.createdAt || new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 };
                 
@@ -2547,11 +2654,20 @@
                 }
                 
                 // حفظ البيانات
-                await saveAdminData();
+                const saveResult = await saveAdminData();
                 
-                closeModal('brandModal');
-                updateDashboard();
-                showToast('تم حفظ الماركة بنجاح', 'success');
+                if (saveResult.success) {
+                    closeModal('brandModal');
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حفظ الماركة والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حفظ الماركة محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حفظ الماركة:', error);
@@ -2576,10 +2692,20 @@
             
             try {
                 adminData.brands = adminData.brands.filter(b => b.id !== brandId);
-                await saveAdminData();
                 
-                updateDashboard();
-                showToast('تم حذف الماركة بنجاح', 'success');
+                const saveResult = await saveAdminData();
+                
+                if (saveResult.success) {
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حذف الماركة والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حذف الماركة محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات بعد الحذف');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حذف الماركة:', error);
@@ -2664,11 +2790,20 @@
                 }
                 
                 // حفظ البيانات
-                await saveAdminData();
+                const saveResult = await saveAdminData();
                 
-                closeModal('userModal');
-                updateDashboard();
-                showToast('تم حفظ المستخدم بنجاح', 'success');
+                if (saveResult.success) {
+                    closeModal('userModal');
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حفظ المستخدم والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حفظ المستخدم محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حفظ المستخدم:', error);
@@ -2690,10 +2825,20 @@
             
             try {
                 adminData.users = adminData.users.filter(u => u.id !== userId);
-                await saveAdminData();
                 
-                updateDashboard();
-                showToast('تم حذف المستخدم بنجاح', 'success');
+                const saveResult = await saveAdminData();
+                
+                if (saveResult.success) {
+                    updateDashboard();
+                    
+                    if (saveResult.github) {
+                        showToast('تم حذف المستخدم والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حذف المستخدم محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات بعد الحذف');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حذف المستخدم:', error);
@@ -2737,9 +2882,17 @@
                 adminData.social.youtube = document.getElementById('siteYoutube').value;
                 
                 // حفظ البيانات
-                await saveAdminData();
+                const saveResult = await saveAdminData();
                 
-                showToast('تم حفظ الإعدادات بنجاح', 'success');
+                if (saveResult.success) {
+                    if (saveResult.github) {
+                        showToast('تم حفظ الإعدادات والمزامنة مع GitHub', 'success');
+                    } else {
+                        showToast('تم حفظ الإعدادات محلياً', 'warning');
+                    }
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
                 
             } catch (error) {
                 console.error('خطأ في حفظ الإعدادات:', error);
@@ -2749,39 +2902,30 @@
             }
         }
 
-        // ============ حفظ البيانات العامة ============
-        async function saveAdminData() {
-            try {
-                if (window.gitHubSync) {
-                    const result = await window.gitHubSync.push(adminData);
-                    
-                    if (result.success) {
-                        console.log('تم حفظ البيانات بنجاح');
-                        return true;
-                    } else {
-                        throw new Error(result.error || 'خطأ غير معروف');
-                    }
-                } else {
-                    localStorage.setItem('siteData', JSON.stringify(adminData));
-                    return true;
-                }
-            } catch (error) {
-                console.error('خطأ في حفظ البيانات:', error);
-                throw error;
-            }
-        }
-
         // ============ المزامنة ============
         async function syncData() {
             showLoading('جاري مزامنة البيانات...');
             
             try {
-                await loadAdminData();
-                updateDashboard();
-                showToast('تمت المزامنة بنجاح', 'success');
+                if (window.gitHubSync) {
+                    const result = await window.gitHubSync.sync();
+                    
+                    if (result) {
+                        adminData = result;
+                        window.siteData = adminData;
+                        
+                        updateDashboard();
+                        showToast('تمت المزامنة بنجاح مع GitHub', 'success');
+                    } else {
+                        throw new Error('فشلت المزامنة');
+                    }
+                } else {
+                    throw new Error('نظام المزامنة غير متوفر');
+                }
+                
             } catch (error) {
                 console.error('خطأ في المزامنة:', error);
-                showToast('فشلت المزامنة', 'error');
+                showToast('فشلت المزامنة: ' + error.message, 'error');
             } finally {
                 hideLoading();
             }
@@ -2820,7 +2964,7 @@
 
         // ============ أدوات مساعدة ============
         function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
         }
 
         function formatPrice(price) {
@@ -2932,12 +3076,17 @@
                 }
             });
             
-            // تحديث تلقائي للبيانات كل دقيقة
+            // تحديث تلقائي للبيانات كل 5 دقائق
             setInterval(async () => {
                 if (currentUser) {
-                    await syncData();
+                    try {
+                        await loadAdminData();
+                        updateDashboard();
+                    } catch (error) {
+                        console.error('خطأ في التحديث التلقائي:', error);
+                    }
                 }
-            }, 60000);
+            }, 300000);
         }
 
         // تعديل المنتج

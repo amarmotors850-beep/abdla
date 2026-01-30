@@ -78,14 +78,17 @@ class GitHubSync {
             console.log('🔍 حالة الاتصال:', response.status);
             
             if (response.status === 401 || response.status === 403) {
+                console.error('❌ التوكن غير صالح أو انتهت صلاحيته');
                 throw new Error('التوكن غير صالح أو منتهي الصلاحية. يرجى تحديث التوكن.');
             }
             
             if (response.status === 404) {
+                console.error('❌ المستودع غير موجود');
                 throw new Error('المستودع غير موجود. يرجى التحقق من اسم المستودع.');
             }
             
             if (!response.ok) {
+                console.error('❌ خطأ في الاتصال:', response.status, response.statusText);
                 throw new Error(`خطأ في الاتصال: ${response.status} - ${response.statusText}`);
             }
             
@@ -94,7 +97,8 @@ class GitHubSync {
             
         } catch (error) {
             console.error('❌ فشل اختبار الاتصال:', error.message);
-            throw error;
+            this.dispatchEvent('connectionError', { error: error.message });
+            return false;
         }
     }
 
@@ -109,6 +113,9 @@ class GitHubSync {
                 console.log('✅ تم تحميل البيانات من GitHub');
                 this.saveDataLocally(cloudData, 'github');
                 return cloudData;
+            } else {
+                console.log('📝 الملف غير موجود على GitHub، سيتم إنشاؤه');
+                return null;
             }
             
         } catch (error) {
@@ -148,7 +155,7 @@ class GitHubSync {
             console.log('🔍 حالة جلب البيانات:', response.status);
             
             if (response.status === 404) {
-                console.log('📝 الملف غير موجود، سيتم إنشاؤه لاحقاً');
+                console.log('📝 الملف غير موجود على GitHub');
                 return null;
             }
 
@@ -178,6 +185,11 @@ class GitHubSync {
     }
 
     async pushToGitHub(data) {
+        if (this.isSyncing) {
+            console.log('⏳ المزامنة قيد التشغيل بالفعل...');
+            return { success: false, error: 'مشغول حالياً' };
+        }
+        
         this.isSyncing = true;
         
         try {
@@ -203,6 +215,7 @@ class GitHubSync {
                 if (currentResponse.ok) {
                     const currentData = await currentResponse.json();
                     sha = currentData.sha;
+                    console.log('📝 تحديث الملف الحالي');
                 }
             } catch (error) {
                 console.log('📝 سيتم إنشاء ملف جديد');
@@ -429,6 +442,11 @@ class GitHubSync {
                 address: "القاهرة، مصر",
                 workingHours: "9 ص - 9 م"
             },
+            social: {
+                facebook: "https://www.facebook.com/share/1SdkvcBynu/?mibextid=wwXIfr",
+                instagram: "https://www.instagram.com/abdullah_auto_?igsh=Nm5hNnJtMjM2ZDEw&utm_source=qr",
+                tiktok: "https://www.tiktok.com/@abdullah.auto0?_r=1&_t=ZS-93NEKHAJ5TJ"
+            },
             users: [
                 {
                     id: "admin_001",
@@ -443,7 +461,6 @@ class GitHubSync {
             ],
             brands: [],
             products: [],
-            categories: [],
             settings: {
                 theme: "default",
                 mainColor: "#c53030",
@@ -544,6 +561,8 @@ if (typeof window !== 'undefined') {
     // تأخير التهيئة قليلاً لضمان تحميل الصفحة
     setTimeout(() => {
         try {
+            console.log('🎉 تحميل نظام المزامنة...');
+            
             window.gitHubSync = new GitHubSync();
             
             // الانتظار للتأكد من التهيئة
@@ -551,7 +570,7 @@ if (typeof window !== 'undefined') {
                 if (!window.gitHubSync.isInitialized) {
                     console.warn('⚠️ لم يتم تهيئة النظام، استخدام البيانات المحلية');
                     
-                    // إنشاء بيانات محلية
+                    // استخدام البيانات المحلية
                     const sync = new GitHubSync();
                     const localData = sync.createNewData();
                     sync.saveDataLocally(localData, 'fallback');
@@ -559,7 +578,7 @@ if (typeof window !== 'undefined') {
                     window.siteData = localData;
                     window.gitHubSync = sync;
                 }
-            }, 2000);
+            }, 3000);
             
         } catch (error) {
             console.error('❌ خطأ في إنشاء النظام:', error);
