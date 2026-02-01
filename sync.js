@@ -248,7 +248,7 @@ class AdvancedGitHubSync {
             
             // تحديث البيانات
             data.lastUpdated = new Date().toISOString();
-            data.version = data.version || "2.0.0";
+            data.version = data.version || "3.0.0";
             
             // التحقق من البيانات
             this.validateData(data);
@@ -546,6 +546,13 @@ class AdvancedGitHubSync {
             changes.push(`المستخدمين: ${oldUsers} → ${newUsers}`);
         }
         
+        // تعداد الأسئلة
+        const oldFaq = oldData?.faq?.questions?.length || 0;
+        const newFaq = newData?.faq?.questions?.length || 0;
+        if (newFaq !== oldFaq) {
+            changes.push(`الأسئلة: ${oldFaq} → ${newFaq}`);
+        }
+        
         return changes.length > 0 ? changes.join(' | ') : 'تحديثات طفيفة';
     }
     
@@ -661,7 +668,8 @@ class AdvancedGitHubSync {
                 items: {
                     products: this.cache.data?.products?.length || 0,
                     brands: this.cache.data?.brands?.length || 0,
-                    users: this.cache.data?.users?.length || 0
+                    users: this.cache.data?.users?.length || 0,
+                    faq: this.cache.data?.faq?.questions?.length || 0
                 }
             }
         };
@@ -670,24 +678,92 @@ class AdvancedGitHubSync {
     // ============ إنشاء بيانات افتراضية ============
     createDefaultData() {
         return {
-            version: "2.0.0",
+            version: "3.0.0",
             lastUpdated: new Date().toISOString(),
             site: {
                 name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
                 description: { 
-                    ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
-                    en: "Best offers for new and used cars in Egypt" 
+                    ar: "ريادة وخبرة في عالم السيارات منذ 1993", 
+                    en: "Leadership and experience in the world of cars since 1993" 
                 },
-                logo: "",
+                logo: "logo.png",
+                videoLogo: "logo.mp4",
+                heroVideo: "logo2.mp4",
                 language: "ar",
                 timezone: "Africa/Cairo",
                 currency: "EGP"
+            },
+            company: {
+                bio: {
+                    ar: "سيارات عبد الله هي شركة متخصصة في تجارة وبيع السيارات مقرها مدينة الجيزة - جمهورية مصر العربية، وتتمتع بخبرة م 1993 راسخة تمتد لأكثر من ثلاثة عقود منذ تأسيسها عام",
+                    en: "Abdullah Cars is a specialized company in car trade and sales located in Giza - Arab Republic of Egypt, with solid experience since 1993 extending over three decades since its establishment"
+                },
+                about: {
+                    ar: "انطلقت سيارات عبد الله برؤية واضحة تهدف إلى تقديم تجربة بيع وشراء سيارات قائمة على الثقة والمصداقية، بعيدا عن التعقيد. وقد مكنتها خبرتها الطويلة وفهمها العميق للسوق من بناء علاقات طويلة الأمد مع عملائها، قائمة على الاحترام المتبادل والقيمة الحقيقية",
+                    en: "Abdullah Cars started with a clear vision aiming to provide a car buying and selling experience based on trust and credibility, away from complexity. Its long experience and deep understanding of the market have enabled it to build long-term relationships with its customers, based on mutual respect and real value"
+                },
+                services: [
+                    {
+                        ar: "بيع السيارات الجديدة والمستعملة",
+                        en: "Selling new and used cars"
+                    },
+                    {
+                        ar: "شراء السيارات من الأفراد بأفضل تقييم عادل",
+                        en: "Buying cars from individuals with the best fair evaluation"
+                    },
+                    {
+                        ar: "خدمة الاستبدال سيارتك الحالية مقابل سيارة أخرى",
+                        en: "Exchange service: your current car for another car"
+                    },
+                    {
+                        ar: "تقديم استشارات احترافية لاختيار السيارة الأنسب",
+                        en: "Providing professional consultations to choose the most suitable car"
+                    },
+                    {
+                        ar: "فحص شامل ودقيق للسيارات قبل البيع",
+                        en: "Comprehensive and accurate inspection of cars before sale"
+                    }
+                ],
+                vision: {
+                    ar: "أن تكون من الشركات الرائدة في تجارة السيارات داخل جمهورية مصر العربية، وأن تمثل الخيار الأول للعملاء الباحثين عن الجودة، الثقة، والخدمة المتميزة",
+                    en: "To be among the leading companies in car trade within the Arab Republic of Egypt, and to represent the first choice for customers looking for quality, trust, and distinguished service"
+                },
+                mission: {
+                    ar: "تقديم سيارات موثوقة بمعايير عالية، وخدمة احترافية ترتكز على النزاهة والشفافية، مع السعي المستمر لبناء علاقات طويلة الأمد مع عملائنا وشركائنا",
+                    en: "Providing reliable cars with high standards, and professional service based on integrity and transparency, with continuous effort to build long-term relationships with our customers and partners"
+                },
+                values: [
+                    {
+                        ar: "الصدق والمصداقية",
+                        en: "Honesty and credibility"
+                    },
+                    {
+                        ar: "الجودة والالتزام",
+                        en: "Quality and commitment"
+                    },
+                    {
+                        ar: "الاحترافية في الأداء",
+                        en: "Professionalism in performance"
+                    },
+                    {
+                        ar: "رضا العميل أولا",
+                        en: "Customer satisfaction first"
+                    }
+                ],
+                established: "1993",
+                location: "الجيزة، مصر",
+                experience: "30+ سنة"
+            },
+            faq: {
+                questions: []
             },
             contact: {
                 phone: "01121811110",
                 whatsapp: "01121811110",
                 email: "amarmotors850@gmail.com",
-                address: "القاهرة، مصر"
+                address: "الجيزة، مصر",
+                workHours: "9 ص - 9 م",
+                workDays: ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"]
             },
             social: {
                 facebook: "https://www.facebook.com/share/1SdkvcBynu",
@@ -702,14 +778,23 @@ class AdvancedGitHubSync {
                     fullName: "المدير الرئيسي",
                     email: "admin@abdullah-cars.com",
                     role: "admin",
+                    avatar: "",
+                    phone: "",
                     permissions: ["all"],
                     active: true,
                     createdAt: new Date().toISOString()
                 }
             ],
+            roles: [
+                { id: "admin", name: "مدير", permissions: ["all"] },
+                { id: "editor", name: "محرر", permissions: ["view", "create", "edit"] },
+                { id: "sales", name: "مبيعات", permissions: ["view", "create"] },
+                { id: "viewer", name: "مشاهد", permissions: ["view"] }
+            ],
             brands: [],
             categories: [],
-            products: []
+            products: [],
+            settings: {}
         };
     }
 }

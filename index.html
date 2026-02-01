@@ -6,8 +6,8 @@
     <title>🚗 سيارات عبدالله | أفضل عروض السيارات في مصر</title>
     
     <!-- Meta Tags -->
-    <meta name="description" content="أفضل عروض السيارات الجديدة والمستعملة في مصر - بيع، شراء، استبدال - سيارات عبدالله">
-    <meta name="keywords" content="سيارات, بيع سيارات, شراء سيارات, استبدال سيارات, سيارات مصر, سيارات عبدالله">
+    <meta name="description" content="ريادة وخبرة في عالم السيارات منذ 1993 - أفضل عروض السيارات الجديدة والمستعملة في مصر - بيع، شراء، استبدال - سيارات عبدالله">
+    <meta name="keywords" content="سيارات, بيع سيارات, شراء سيارات, استبدال سيارات, سيارات مصر, سيارات عبدالله, الجيزة">
     <meta name="author" content="سيارات عبدالله">
     
     <!-- Fonts -->
@@ -252,7 +252,7 @@
             transition: var(--transition);
         }
 
-        .logo-circle video {
+        .logo-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -621,15 +621,15 @@
             margin-top: var(--space-xl);
         }
 
-        /* ============ Services Section ============ */
-        .services-section {
+        /* ============ Company Bio Section ============ */
+        .company-section {
             padding: var(--space-3xl) var(--space-lg);
             background: var(--light-gradient);
             position: relative;
             overflow: hidden;
         }
 
-        .services-section::before {
+        .company-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -643,9 +643,112 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        .company-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .company-header h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: var(--space-md);
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .company-header p {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .company-timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-2xl) 0;
+        }
+
+        .company-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: var(--radius-full);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: var(--space-xl);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .timeline-item:nth-child(odd) {
+            right: 0;
+            padding-right: var(--space-3xl);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            right: 50%;
+            padding-left: var(--space-3xl);
+            text-align: left;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            left: -10px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            right: -10px;
+        }
+
+        .timeline-year {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .timeline-content h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: var(--space-sm);
+            color: var(--gray-900);
+        }
+
+        .timeline-content p {
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+
+        /* ============ Services Section ============ */
+        .services-section {
+            padding: var(--space-3xl) var(--space-lg);
+            background: var(--white);
+            position: relative;
         }
 
         .section-title {
@@ -792,6 +895,127 @@
         .service-btn:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
+        }
+
+        /* ============ FAQ Section ============ */
+        .faq-section {
+            padding: var(--space-3xl) var(--space-lg);
+            background: var(--light-gradient);
+            position: relative;
+        }
+
+        .faq-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .faq-question {
+            padding: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--white);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .faq-question.active {
+            background: rgba(102, 126, 234, 0.05);
+            border-bottom-color: var(--primary);
+        }
+
+        .faq-question h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .faq-question.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 var(--space-lg);
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .faq-answer.active {
+            padding: var(--space-lg);
+            max-height: 1000px;
+        }
+
+        .faq-answer p {
+            color: var(--gray-600);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .ask-question {
+            margin-top: var(--space-2xl);
+            text-align: center;
+        }
+
+        .ask-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         /* ============ Products Section ============ */
@@ -1302,6 +1526,23 @@
             .products-filter {
                 justify-content: center;
             }
+            
+            .company-timeline::before {
+                right: 0;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                right: 0 !important;
+                padding-right: var(--space-3xl) !important;
+                text-align: right !important;
+                padding-left: var(--space-lg) !important;
+            }
+            
+            .timeline-item::before {
+                left: 0 !important;
+                right: auto !important;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1388,6 +1629,10 @@
             
             .service-card {
                 padding: var(--space-lg);
+            }
+            
+            .company-header h2 {
+                font-size: 2rem;
             }
         }
 
@@ -1510,10 +1755,7 @@
             <div class="loading-logo-container">
                 <div class="loading-logo-circle"></div>
                 <div class="loading-logo-video">
-                    <video autoplay muted loop playsinline>
-                        <source src="logo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
             </div>
             <div class="loading-text" id="loadingText">جاري تحميل البيانات...</div>
@@ -1525,24 +1767,21 @@
         <div class="nav-container">
             <a href="#home" class="logo">
                 <div class="logo-circle">
-                    <video autoplay muted loop playsinline>
-                        <source src="logo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <div class="logo-text">
                     <div class="logo-title">سيارات عبدالله</div>
-                    <div class="logo-subtitle">أفضل عروض السيارات في مصر</div>
+                    <div class="logo-subtitle">ريادة وخبرة منذ 1993</div>
                 </div>
             </a>
 
             <nav class="main-nav">
                 <ul id="mainNav">
                     <li><a href="#home" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#company"><i class="fas fa-building"></i> عن الشركة</a></li>
                     <li><a href="#services"><i class="fas fa-cogs"></i> الخدمات</a></li>
                     <li><a href="#products"><i class="fas fa-car"></i> السيارات</a></li>
-                    <li><a href="#sell"><i class="fas fa-money-bill-wave"></i> بيع سيارتك</a></li>
-                    <li><a href="#exchange"><i class="fas fa-exchange-alt"></i> استبدال</a></li>
+                    <li><a href="#faq"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
                     <li><a href="#contact"><i class="fas fa-phone"></i> اتصل بنا</a></li>
                 </ul>
             </nav>
@@ -1580,9 +1819,8 @@
         <div class="hero-content">
             <h1 class="hero-title fade-in">سيارات <span>عبدالله</span></h1>
             <p class="hero-subtitle fade-in delay-1">
-                تجربة فاخرة في عالم السيارات الجديدة والمستعملة. 
-                بيع، شراء، واستبدال السيارات بكل سهولة وأمان. 
-                اكتشف مجموعة واسعة من السيارات بأفضل الأسعار والضمانات.
+                ريادة وخبرة في عالم السيارات منذ 1993. نقدم لكم أفضل الخدمات وأجود السيارات
+                مع ضمان شامل وخدمة مميزة وثقة تامة لعملائنا الكرام.
             </p>
             
             <div class="hero-stats">
@@ -1595,7 +1833,7 @@
                     <div class="stat-label">ماركة عالمية</div>
                 </div>
                 <div class="stat-item fade-in delay-2">
-                    <div class="stat-number">30+</div>
+                    <div class="stat-number" id="experienceYears">30+</div>
                     <div class="stat-label">سنة خبرة</div>
                 </div>
                 <div class="stat-item fade-in delay-3">
@@ -1660,6 +1898,89 @@
         </div>
     </div>
 
+    <!-- Company Bio Section -->
+    <section class="company-section" id="company">
+        <div class="company-header">
+            <h2 class="fade-in">ريادة وخبرة منذ <span>1993</span></h2>
+            <p class="fade-in delay-1">
+                شركة سيارات عبدالله هي شركة متخصصة في تجارة وبيع السيارات مقرها مدينة الجيزة - جمهورية مصر العربية، 
+                وتتمتع بخبرة راسخة تمتد لأكثر من ثلاثة عقود منذ تأسيسها عام 1993.
+            </p>
+        </div>
+
+        <div class="company-timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-year">1993</div>
+                <div class="timeline-content">
+                    <h3>التأسيس</h3>
+                    <p>انطلاقة الشركة برؤية واضحة تهدف إلى تقديم تجربة بيع وشراء سيارات قائمة على الثقة والمصداقية.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in delay-1">
+                <div class="timeline-year">2000</div>
+                <div class="timeline-content">
+                    <h3>التوسع</h3>
+                    <p>توسعة نطاق العمل ليشمل مجموعة واسعة من الماركات العالمية والخدمات المتكاملة.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in delay-2">
+                <div class="timeline-year">2010</div>
+                <div class="timeline-content">
+                    <h3>التميز</h3>
+                    <p>ترسيخ مكانة الشركة كاسم موثوق في سوق السيارات المصري من خلال الالتزام بأعلى معايير الجودة.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in delay-3">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h3>التجديد</h3>
+                    <p>تحديث المنظومة واعتماد التقنيات الحديثة لتقديم أفضل تجربة للعملاء.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vision & Mission -->
+        <div class="services-grid" style="margin-top: var(--space-3xl);">
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3 class="service-title">رؤيتنا</h3>
+                <p class="service-description">
+                    أن تكون من الشركات الرائدة في تجارة السيارات داخل جمهورية مصر العربية، 
+                    وأن تمثل الخيار الأول للعملاء الباحثين عن الجودة، الثقة، والخدمة المتميزة.
+                </p>
+            </div>
+            
+            <div class="service-card fade-in delay-1">
+                <div class="service-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3 class="service-title">رسالتنا</h3>
+                <p class="service-description">
+                    تقديم سيارات موثوقة بمعايير عالية، وخدمة احترافية ترتكز على النزاهة والشفافية، 
+                    مع السعي المستمر لبناء علاقات طويلة الأمد مع عملائنا وشركائنا.
+                </p>
+            </div>
+            
+            <div class="service-card fade-in delay-2">
+                <div class="service-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3 class="service-title">قيمنا</h3>
+                <ul class="service-description" style="text-align: right; list-style: none;">
+                    <li>• الصدق والمصداقية</li>
+                    <li>• الجودة والالتزام</li>
+                    <li>• الاحترافية في الأداء</li>
+                    <li>• رضا العميل أولاً</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <!-- Services Section -->
     <section class="services-section" id="services">
         <h2 class="section-title fade-in">خدماتنا <span>المتميزة</span></h2>
@@ -1712,6 +2033,37 @@
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <h2 class="section-title fade-in">الأسئلة <span>الشائعة</span></h2>
+        
+        <div class="faq-container" id="faqContainer">
+            <!-- سيتم ملؤها ديناميكياً -->
+        </div>
+
+        <div class="ask-question fade-in delay-3">
+            <h3 style="text-align: center; margin-bottom: var(--space-lg);">هل لديك سؤال آخر؟</h3>
+            <div class="ask-form">
+                <div class="form-group">
+                    <label for="questionName">الاسم</label>
+                    <input type="text" id="questionName" placeholder="اسمك الكريم">
+                </div>
+                <div class="form-group">
+                    <label for="questionEmail">البريد الإلكتروني</label>
+                    <input type="email" id="questionEmail" placeholder="بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="questionText">سؤالك</label>
+                    <textarea id="questionText" rows="4" placeholder="اكتب سؤالك هنا..."></textarea>
+                </div>
+                <button class="service-btn" onclick="submitQuestion()">
+                    <span>إرسال السؤال</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
     <!-- Products Section -->
     <section class="products-section" id="products">
         <div class="products-header">
@@ -1735,17 +2087,20 @@
             <div class="footer-col">
                 <h3>سيارات عبدالله</h3>
                 <p>
-                    معرض السيارات الفاخرة الأول في مصر، نقدم لكم أفضل الخدمات وأجود السيارات
+                    ريادة وخبرة في عالم السيارات منذ 1993، نقدم لكم أفضل الخدمات وأجود السيارات
                     مع ضمان شامل وخدمة مميزة وثقة تامة لعملائنا الكرام.
                 </p>
                 <div class="social-links">
-                    <a href="https://facebook.com" class="social-link" target="_blank">
+                    <a href="https://facebook.com/share/1SdkvcBynu" class="social-link" target="_blank">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="https://instagram.com" class="social-link" target="_blank">
+                    <a href="https://www.instagram.com/abdullah_auto_" class="social-link" target="_blank">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://whatsapp.com" class="social-link" target="_blank">
+                    <a href="https://www.tiktok.com/@abdullah.auto0" class="social-link" target="_blank">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://wa.me/201121811110" class="social-link" target="_blank">
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
@@ -1755,10 +2110,10 @@
                 <h3>روابط سريعة</h3>
                 <ul class="footer-links">
                     <li><a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
+                    <li><a href="#company"><i class="fas fa-chevron-left"></i> عن الشركة</a></li>
                     <li><a href="#services"><i class="fas fa-chevron-left"></i> الخدمات</a></li>
                     <li><a href="#products"><i class="fas fa-chevron-left"></i> السيارات</a></li>
-                    <li><a href="#sell"><i class="fas fa-chevron-left"></i> بيع سيارتك</a></li>
-                    <li><a href="#exchange"><i class="fas fa-chevron-left"></i> استبدال</a></li>
+                    <li><a href="#faq"><i class="fas fa-chevron-left"></i> الأسئلة الشائعة</a></li>
                 </ul>
             </div>
             
@@ -1780,12 +2135,18 @@
                             <i class="fas fa-envelope"></i> amarmotors850@gmail.com
                         </a>
                     </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-map-marker-alt"></i> الجيزة، مصر
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>© 2024 سيارات عبدالله. جميع الحقوق محفوظة.</p>
+            <p>© 1993-2024 سيارات عبدالله. جميع الحقوق محفوظة.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">ريادة وخبرة في عالم السيارات منذ 1993</p>
         </div>
     </footer>
 
@@ -1924,6 +2285,97 @@
             document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
                 observer.observe(el);
             });
+
+            // Animate timeline items
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                timelineObserver.observe(item);
+            });
+        }
+
+        // ============ FAQ Functions ============
+        function setupFAQ() {
+            const faqContainer = document.getElementById('faqContainer');
+            const questions = siteData?.faq?.questions || [];
+            
+            if (questions.length === 0) {
+                faqContainer.innerHTML = `
+                    <div style="text-align: center; padding: var(--space-xl);" class="fade-in">
+                        <div style="width: 120px; height: 120px; background: var(--gray-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+                            <i class="fas fa-question-circle" style="font-size: 3rem; color: var(--gray-400);"></i>
+                        </div>
+                        <h3 style="color: var(--gray-900); margin-bottom: var(--space-md); font-size: 1.5rem;">
+                            لا توجد أسئلة شائعة حالياً
+                        </h3>
+                        <p style="color: var(--gray-600); max-width: 400px; margin: 0 auto;">
+                            يمكنك إضافة أسئلتك باستخدام النموذج أدناه.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            faqContainer.innerHTML = questions.map((faq, index) => `
+                <div class="faq-item fade-in ${index < 3 ? '' : 'delay-' + (index % 3 + 1)}">
+                    <div class="faq-question" onclick="toggleFAQ(${index})">
+                        <h3>${faq.question}</h3>
+                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer" id="faqAnswer${index}">
+                        <p>${faq.answer}</p>
+                        ${faq.details ? `<p style="color: var(--gray-500); font-size: 0.9rem;">${faq.details}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`faqAnswer${index}`);
+            const question = answer.previousElementSibling;
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                question.classList.remove('active');
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(el => {
+                    el.classList.remove('active');
+                    el.previousElementSibling.classList.remove('active');
+                });
+                
+                // Open this FAQ
+                answer.classList.add('active');
+                question.classList.add('active');
+            }
+        }
+
+        function submitQuestion() {
+            const name = document.getElementById('questionName').value;
+            const email = document.getElementById('questionEmail').value;
+            const text = document.getElementById('questionText').value;
+            
+            if (!name || !email || !text) {
+                alert('الرجاء ملء جميع الحقول');
+                return;
+            }
+            
+            // In a real app, you would send this to your server
+            alert('شكراً على سؤالك! سنتواصل معك قريباً.');
+            
+            // Reset form
+            document.getElementById('questionName').value = '';
+            document.getElementById('questionEmail').value = '';
+            document.getElementById('questionText').value = '';
         }
 
         // ============ Data Management ============
@@ -1989,20 +2441,92 @@
 
         function createEmptyData() {
             return {
-                version: "2.0.0",
+                version: "3.0.0",
                 lastUpdated: new Date().toISOString(),
                 site: {
                     name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
                     description: { 
-                        ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
-                        en: "Best offers for new and used cars in Egypt" 
-                    }
+                        ar: "ريادة وخبرة في عالم السيارات منذ 1993", 
+                        en: "Leadership and experience in the world of cars since 1993" 
+                    },
+                    logo: "logo.png",
+                    videoLogo: "logo.mp4",
+                    heroVideo: "logo2.mp4"
+                },
+                company: {
+                    bio: {
+                        ar: "سيارات عبد الله هي شركة متخصصة في تجارة وبيع السيارات مقرها مدينة الجيزة - جمهورية مصر العربية، وتتمتع بخبرة م 1993 راسخة تمتد لأكثر من ثلاثة عقود منذ تأسيسها عام",
+                        en: "Abdullah Cars is a specialized company in car trade and sales located in Giza - Arab Republic of Egypt, with solid experience since 1993 extending over three decades since its establishment"
+                    },
+                    about: {
+                        ar: "انطلقت سيارات عبد الله برؤية واضحة تهدف إلى تقديم تجربة بيع وشراء سيارات قائمة على الثقة والمصداقية، بعيدا عن التعقيد. وقد مكنتها خبرتها الطويلة وفهمها العميق للسوق من بناء علاقات طويلة الأمد مع عملائها، قائمة على الاحترام المتبادل والقيمة الحقيقية",
+                        en: "Abdullah Cars started with a clear vision aiming to provide a car buying and selling experience based on trust and credibility, away from complexity. Its long experience and deep understanding of the market have enabled it to build long-term relationships with its customers, based on mutual respect and real value"
+                    },
+                    services: [
+                        {
+                            ar: "بيع السيارات الجديدة والمستعملة",
+                            en: "Selling new and used cars"
+                        },
+                        {
+                            ar: "شراء السيارات من الأفراد بأفضل تقييم عادل",
+                            en: "Buying cars from individuals with the best fair evaluation"
+                        },
+                        {
+                            ar: "خدمة الاستبدال سيارتك الحالية مقابل سيارة أخرى",
+                            en: "Exchange service: your current car for another car"
+                        },
+                        {
+                            ar: "تقديم استشارات احترافية لاختيار السيارة الأنسب",
+                            en: "Providing professional consultations to choose the most suitable car"
+                        },
+                        {
+                            ar: "فحص شامل ودقيق للسيارات قبل البيع",
+                            en: "Comprehensive and accurate inspection of cars before sale"
+                        }
+                    ],
+                    vision: {
+                        ar: "أن تكون من الشركات الرائدة في تجارة السيارات داخل جمهورية مصر العربية، وأن تمثل الخيار الأول للعملاء الباحثين عن الجودة، الثقة، والخدمة المتميزة",
+                        en: "To be among the leading companies in car trade within the Arab Republic of Egypt, and to represent the first choice for customers looking for quality, trust, and distinguished service"
+                    },
+                    mission: {
+                        ar: "تقديم سيارات موثوقة بمعايير عالية، وخدمة احترافية ترتكز على النزاهة والشفافية، مع السعي المستمر لبناء علاقات طويلة الأمد مع عملائنا وشركائنا",
+                        en: "Providing reliable cars with high standards, and professional service based on integrity and transparency, with continuous effort to build long-term relationships with our customers and partners"
+                    },
+                    values: [
+                        {
+                            ar: "الصدق والمصداقية",
+                            en: "Honesty and credibility"
+                        },
+                        {
+                            ar: "الجودة والالتزام",
+                            en: "Quality and commitment"
+                        },
+                        {
+                            ar: "الاحترافية في الأداء",
+                            en: "Professionalism in performance"
+                        },
+                        {
+                            ar: "رضا العميل أولا",
+                            en: "Customer satisfaction first"
+                        }
+                    ],
+                    established: "1993",
+                    location: "الجيزة، مصر",
+                    experience: "30+ سنة"
+                },
+                faq: {
+                    questions: []
                 },
                 contact: {
                     phone: "01121811110",
                     whatsapp: "01121811110",
                     email: "amarmotors850@gmail.com",
-                    address: "القاهرة، مصر"
+                    address: "الجيزة، مصر"
+                },
+                social: {
+                    facebook: "https://www.facebook.com/share/1SdkvcBynu",
+                    instagram: "https://www.instagram.com/abdullah_auto_",
+                    tiktok: "https://www.tiktok.com/@abdullah.auto0"
                 },
                 users: [],
                 brands: [],
@@ -2018,6 +2542,7 @@
             // Update stats with animation
             animateCounter('totalCars', siteData.products?.length || 0);
             animateCounter('totalBrands', siteData.brands?.length || 0);
+            animateCounter('experienceYears', calculateExperienceYears());
             animateCounter('satisfiedCustomers', calculateSatisfiedCustomers());
             
             // Update products grid
@@ -2025,6 +2550,26 @@
             
             // Update search options
             updateSearchOptions();
+            
+            // Update FAQ
+            setupFAQ();
+            
+            // Update company info
+            updateCompanyInfo();
+        }
+
+        function updateCompanyInfo() {
+            const experienceElement = document.getElementById('experienceYears');
+            if (experienceElement && siteData.company?.experience) {
+                experienceElement.textContent = siteData.company.experience;
+            }
+        }
+
+        function calculateExperienceYears() {
+            const established = siteData.company?.established || "1993";
+            const currentYear = new Date().getFullYear();
+            const startYear = parseInt(established);
+            return `${currentYear - startYear}+`;
         }
 
         function calculateSatisfiedCustomers() {
@@ -2468,6 +3013,8 @@
         window.scrollToSection = scrollToSection;
         window.showSellForm = showSellForm;
         window.showExchangeForm = showExchangeForm;
+        window.toggleFAQ = toggleFAQ;
+        window.submitQuestion = submitQuestion;
     </script>
 </body>
 </html>
