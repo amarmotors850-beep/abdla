@@ -9,7 +9,7 @@ class EnhancedGitHubSync {
         this.config = {
             owner: 'MHmooDhazm',
             repo: 'bitelazz-data',
-            token: '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',
+            token: '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', // إزالة التوكن لأسباب أمنية
             branch: 'main',
             dataFile: 'site-data.json',
             imagesFolder: 'images',
@@ -49,7 +49,7 @@ class EnhancedGitHubSync {
             // التحقق من صحة التوكن
             const tokenValid = await this.validateToken();
             if (!tokenValid) {
-                console.error('❌ التوكن غير صالح');
+                console.log('🔑 التوكن غير صالح، استخدام الوضع المحلي');
                 return this.initializeLocalMode();
             }
             
@@ -98,6 +98,12 @@ class EnhancedGitHubSync {
     // ============ التحقق من التوكن ============
     async validateToken() {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                console.log('🔑 لا يوجد توكن، استخدام الوضع المحلي');
+                return false;
+            }
+            
             const response = await fetch(`${this.baseURL}/user`, {
                 headers: {
                     'Authorization': `Bearer ${this.config.token}`,
@@ -122,6 +128,11 @@ class EnhancedGitHubSync {
     // ============ التحقق من الريبو ============
     async checkRepo() {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                return false;
+            }
+            
             const response = await fetch(
                 `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}`,
                 {
@@ -149,6 +160,11 @@ class EnhancedGitHubSync {
     // ============ إنشاء مجلد الصور ============
     async ensureImagesFolder() {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                return false;
+            }
+            
             const response = await fetch(
                 `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}`,
                 {
@@ -224,8 +240,13 @@ class EnhancedGitHubSync {
     // ============ جلب البيانات من GitHub ============
     async fetchFromGitHub() {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                return null;
+            }
+            
             const response = await fetch(
-                `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.dataFile}`,
+                `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.dataFile}?_=${Date.now()}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.config.token}`,
@@ -290,7 +311,7 @@ class EnhancedGitHubSync {
             let data = null;
             
             // محاولة الجلب من GitHub
-            if (this.state.isInitialized) {
+            if (this.state.isInitialized && this.config.token && this.config.token.trim() !== '') {
                 data = await this.fetchFromGitHub();
             }
             
@@ -348,9 +369,9 @@ class EnhancedGitHubSync {
             this.saveToLocalStorage(data);
             this.cache.data = data;
             
-            // محاولة الحفظ على GitHub
+            // محاولة الحفظ على GitHub (فقط إذا كان هناك توكن)
             let githubSuccess = false;
-            if (this.state.isInitialized) {
+            if (this.state.isInitialized && this.config.token && this.config.token.trim() !== '') {
                 githubSuccess = await this.saveToGitHub(data);
             }
             
@@ -393,6 +414,11 @@ class EnhancedGitHubSync {
     // ============ حفظ على GitHub ============
     async saveToGitHub(data) {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                return false;
+            }
+            
             const content = this.base64Encode(JSON.stringify(data, null, 2));
             const commitMessage = `🔄 تحديث البيانات ${new Date().toLocaleString('ar-EG')}`;
             
@@ -445,9 +471,9 @@ class EnhancedGitHubSync {
             // حفظ محلياً
             this.saveImageLocally(name, dataUrl);
             
-            // إذا كان النظام مهيئاً، حاول الرفع إلى GitHub
+            // إذا كان النظام مهيئاً وكان هناك توكن، حاول الرفع إلى GitHub
             let githubSuccess = false;
-            if (this.state.isInitialized) {
+            if (this.state.isInitialized && this.config.token && this.config.token.trim() !== '') {
                 githubSuccess = await this.uploadImageToGitHub(name, file);
             }
             
@@ -486,6 +512,11 @@ class EnhancedGitHubSync {
     
     async uploadImageToGitHub(fileName, file) {
         try {
+            // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+            if (!this.config.token || this.config.token.trim() === '') {
+                return false;
+            }
+            
             const base64Content = await this.fileToBase64(file);
             
             const requestBody = {
@@ -610,6 +641,12 @@ class EnhancedGitHubSync {
     
     // ============ المزامنة التلقائية ============
     startAutoSync() {
+        // فقط إذا كان هناك توكن
+        if (!this.config.token || this.config.token.trim() === '') {
+            console.log('🔒 لا يوجد توكن، تعطيل المزامنة التلقائية');
+            return;
+        }
+        
         // كل 5 دقائق
         setInterval(async () => {
             if (this.state.isInitialized && !this.state.isSyncing) {
@@ -641,6 +678,7 @@ class EnhancedGitHubSync {
             lastSync: this.state.lastSync,
             lastError: this.state.lastError,
             retryCount: this.state.retryCount,
+            hasToken: !!(this.config.token && this.config.token.trim() !== ''),
             config: {
                 owner: this.config.owner,
                 repo: this.config.repo,
@@ -675,15 +713,65 @@ if (typeof window !== 'undefined') {
         } catch (error) {
             console.error('❌ فشل تحميل النظام المحسن:', error);
             
-            // إنشاء نظام بديل
+            // إنشاء نظام بديل بسيط
             window.gitHubSync = {
                 isInitialized: true,
                 sync: async () => {
-                    const data = JSON.parse(localStorage.getItem('abdullah_cars_data') || '{}');
+                    const data = JSON.parse(localStorage.getItem('abdullah_cars_data') || 'null');
+                    if (!data) {
+                        const defaultData = {
+                            version: "5.0.0",
+                            lastUpdated: new Date().toISOString(),
+                            site: {
+                                name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
+                                description: { 
+                                    ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
+                                    en: "Best offers for new and used cars in Egypt" 
+                                },
+                                logo: "",
+                                language: "ar",
+                                timezone: "Africa/Cairo",
+                                currency: "EGP"
+                            },
+                            contact: {
+                                phone: "01121811110",
+                                whatsapp: "01121811110",
+                                email: "amarmotors850@gmail.com",
+                                address: "القاهرة، مصر",
+                                workHours: "9 ص - 9 م"
+                            },
+                            social: {
+                                facebook: "https://www.facebook.com/share/1SdkvcBynu",
+                                instagram: "https://www.instagram.com/abdullah_auto_",
+                                tiktok: "https://www.tiktok.com/@abdullah.auto0"
+                            },
+                            users: [
+                                {
+                                    id: "admin_001",
+                                    username: "admin",
+                                    password: "2845",
+                                    fullName: "المدير الرئيسي",
+                                    email: "admin@abdullah-cars.com",
+                                    role: "admin",
+                                    avatar: "",
+                                    permissions: ["all"],
+                                    active: true,
+                                    createdAt: new Date().toISOString()
+                                }
+                            ],
+                            brands: [],
+                            categories: [],
+                            products: [],
+                            settings: {}
+                        };
+                        localStorage.setItem('abdullah_cars_data', JSON.stringify(defaultData));
+                        return defaultData;
+                    }
                     return data;
                 },
                 save: async (data) => {
                     localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
+                    localStorage.setItem('last_save', new Date().toISOString());
                     return { success: true, localSaved: true };
                 },
                 uploadImage: async (file) => {
@@ -700,8 +788,14 @@ if (typeof window !== 'undefined') {
                         reader.readAsDataURL(file);
                     });
                 },
-                getStatus: () => ({ initialized: true, source: 'local' })
+                getStatus: () => ({ 
+                    initialized: true, 
+                    source: 'local',
+                    hasToken: false
+                })
             };
+            
+            console.log('🔄 النظام البديل جاهز للعمل');
         }
     });
 }

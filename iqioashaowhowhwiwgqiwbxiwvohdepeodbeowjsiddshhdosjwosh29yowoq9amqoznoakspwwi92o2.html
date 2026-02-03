@@ -2906,9 +2906,6 @@
                 }, 500);
             }, 2000);
             
-            // Initialize GitHub Sync
-            await initializeGitHubSync();
-            
             // Check for existing session
             if (checkSession()) {
                 await initializeDashboard();
@@ -2948,7 +2945,7 @@
             const config = {
                 owner: 'MHmooDhazm',
                 repo: 'bitelazz-data',
-                token: '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',
+                token: '',
                 branch: 'main',
                 dataFile: 'site-data.json',
                 imagesFolder: 'images'
@@ -2962,6 +2959,19 @@
                 async initialize() {
                     try {
                         console.log('🔧 جاري تهيئة نظام المزامنة...');
+                        
+                        // التحقق من الإنترنت
+                        if (!navigator.onLine) {
+                            console.log('🌐 غير متصل بالإنترنت');
+                            return false;
+                        }
+                        
+                        // إذا لم يكن هناك توكن، استخدام الوضع المحلي
+                        if (!this.config.token) {
+                            console.log('🔑 لا يوجد توكن، استخدام الوضع المحلي');
+                            return false;
+                        }
+                        
                         this.isInitialized = true;
                         return true;
                     } catch (error) {
@@ -2979,7 +2989,7 @@
                         
                         try {
                             const response = await fetch(
-                                `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.dataFile}`,
+                                `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.dataFile}?_=${Date.now()}`,
                                 {
                                     headers: {
                                         'Authorization': `Bearer ${this.config.token}`,
@@ -3018,6 +3028,11 @@
                         localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
                         localStorage.setItem('last_sync', new Date().toISOString());
                         
+                        // تحديث الواجهة
+                        if (currentUser) {
+                            updateDashboard();
+                        }
+                        
                         return data;
                         
                     } catch (error) {
@@ -3043,50 +3058,47 @@
                         siteData = data;
                         window.siteData = data;
                         
-                        // محاولة الحفظ على GitHub
-                        try {
-                            const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                            const commitMessage = `🔄 تحديث البيانات ${new Date().toLocaleString('ar-EG')}`;
-                            
-                            const response = await fetch(
-                                `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
-                                {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Authorization': `Bearer ${this.config.token}`,
-                                        'Accept': 'application/vnd.github.v3+json',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        message: commitMessage,
-                                        content: content,
-                                        branch: this.config.branch
-                                    })
+                        // إذا كان هناك توكن، حاول الحفظ على GitHub
+                        let githubSuccess = false;
+                        if (this.config.token && this.isInitialized) {
+                            try {
+                                const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+                                const commitMessage = `🔄 تحديث البيانات ${new Date().toLocaleString('ar-EG')}`;
+                                
+                                const response = await fetch(
+                                    `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
+                                    {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Authorization': `Bearer ${this.config.token}`,
+                                            'Accept': 'application/vnd.github.v3+json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            message: commitMessage,
+                                            content: content,
+                                            branch: this.config.branch
+                                        })
+                                    }
+                                );
+                                
+                                if (response.ok) {
+                                    console.log('✅ تم الحفظ على GitHub بنجاح');
+                                    githubSuccess = true;
+                                } else {
+                                    throw new Error(`فشل الحفظ على GitHub: ${response.status}`);
                                 }
-                            );
-                            
-                            if (response.ok) {
-                                console.log('✅ تم الحفظ على GitHub بنجاح');
-                                return {
-                                    success: true,
-                                    github: true,
-                                    local: true,
-                                    timestamp: new Date().toISOString()
-                                };
-                            } else {
-                                throw new Error(`فشل الحفظ على GitHub: ${response.status}`);
+                            } catch (githubError) {
+                                console.error('❌ فشل الحفظ على GitHub:', githubError);
                             }
-                        } catch (githubError) {
-                            console.error('❌ فشل الحفظ على GitHub:', githubError);
-                            
-                            return {
-                                success: true,
-                                github: false,
-                                local: true,
-                                timestamp: new Date().toISOString(),
-                                message: 'تم الحفظ محلياً فقط'
-                            };
                         }
+                        
+                        return {
+                            success: true,
+                            github: githubSuccess,
+                            local: true,
+                            timestamp: new Date().toISOString()
+                        };
                         
                     } catch (error) {
                         console.error('❌ فشل الحفظ:', error);
@@ -3196,13 +3208,14 @@
                         avatar: '',
                         email: 'admin@abdullah-cars.com',
                         permissions: ['all'],
+                        active: true,
                         createdAt: new Date().toISOString()
                     };
                 } else {
                     // Check in users list
                     const users = adminData?.users || [];
                     const foundUser = users.find(user => 
-                        user.username === username && user.password === password
+                        user.username === username && user.password === password && user.active !== false
                     );
                     
                     if (!foundUser) {
@@ -3253,6 +3266,12 @@
                 updateDashboard();
                 showSection('overview');
                 
+                // Initialize Select2
+                $('.select2').select2({
+                    dir: 'rtl',
+                    language: 'ar'
+                });
+                
                 console.log('✅ تم تهيئة لوحة التحكم بنجاح');
                 
             } catch (error) {
@@ -3267,7 +3286,7 @@
             
             try {
                 // Try GitHub sync first
-                if (window.gitHubSync && window.gitHubSync.isInitialized) {
+                if (window.gitHubSync) {
                     const result = await window.gitHubSync.sync();
                     if (result) {
                         adminData = result;
@@ -3323,7 +3342,7 @@
                 if (window.gitHubSync && window.gitHubSync.isInitialized) {
                     try {
                         const result = await window.gitHubSync.save(adminData);
-                        githubSuccess = result.success;
+                        githubSuccess = result.github;
                         console.log('✅ تم الحفظ بنجاح');
                     } catch (error) {
                         console.error('❌ خطأ في الحفظ:', error);
@@ -3410,9 +3429,88 @@
                     { id: "sales", name: "مبيعات", permissions: ["view", "create"] },
                     { id: "viewer", name: "مشاهد", permissions: ["view"] }
                 ],
-                brands: [],
-                categories: [],
-                products: [],
+                brands: [
+                    {
+                        id: "brand_001",
+                        name: { ar: "تويوتا", en: "Toyota" },
+                        description: "ماركة يابانية مشهورة",
+                        logo: "",
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: "brand_002",
+                        name: { ar: "هيونداي", en: "Hyundai" },
+                        description: "ماركة كورية رائدة",
+                        logo: "",
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    }
+                ],
+                categories: [
+                    {
+                        id: "cat_001",
+                        name: { ar: "سيدان", en: "Sedan" },
+                        description: "سيارات سيدان عائلية",
+                        image: "",
+                        active: true,
+                        featured: false,
+                        parent: "",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: "cat_002",
+                        name: { ar: "كروس أوفر", en: "Crossover" },
+                        description: "سيارات كروس أوفر رياضية",
+                        image: "",
+                        active: true,
+                        featured: true,
+                        parent: "",
+                        createdAt: new Date().toISOString()
+                    }
+                ],
+                products: [
+                    {
+                        id: "prod_001",
+                        name: { ar: "تويوتا كورولا 2023", en: "Toyota Corolla 2023" },
+                        brand: "brand_001",
+                        category: "cat_001",
+                        model: "Corolla",
+                        year: 2023,
+                        price: 650000,
+                        oldPrice: 700000,
+                        type: "new",
+                        fuel: "gasoline",
+                        engine: "1.8 لتر",
+                        colors: ["أبيض", "أسود"],
+                        description: "تويوتا كورولا 2023 موديل حديث كامل المواصفات",
+                        images: [],
+                        featured: true,
+                        installment: true,
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: "prod_002",
+                        name: { ar: "هيونداي توسان 2022", en: "Hyundai Tucson 2022" },
+                        brand: "brand_002",
+                        category: "cat_002",
+                        model: "Tucson",
+                        year: 2022,
+                        price: 750000,
+                        oldPrice: 800000,
+                        type: "used",
+                        fuel: "diesel",
+                        engine: "2.0 لتر",
+                        colors: ["رمادي", "أزرق"],
+                        description: "هيونداي توسان 2022 مستعمل بحالة جيدة جداً",
+                        images: [],
+                        featured: false,
+                        installment: true,
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    }
+                ],
                 settings: {}
             };
         }
@@ -3450,24 +3548,441 @@
             document.getElementById('usersCount').textContent = adminData.users?.length || 0;
         }
         
+        function updateStatistics() {
+            const statsContainer = document.getElementById('statsContainer');
+            if (!statsContainer) return;
+            
+            const productsCount = adminData.products?.length || 0;
+            const brandsCount = adminData.brands?.length || 0;
+            const categoriesCount = adminData.categories?.length || 0;
+            const usersCount = adminData.users?.length || 0;
+            
+            const totalValue = adminData.products?.reduce((sum, product) => sum + (product.price || 0), 0) || 0;
+            
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>${productsCount}</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>${productsCount}</h3>
+                        <p>إجمالي السيارات</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: var(--secondary-gradient);">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>${brandsCount}</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>${brandsCount}</h3>
+                        <p>الماركات المتاحة</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: var(--success-gradient);">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>${(totalValue / 1000000).toFixed(1)}M</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>${formatCurrency(totalValue)}</h3>
+                        <p>إجمالي قيمة المخزون</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: var(--warning-gradient);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>${usersCount}</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>${usersCount}</h3>
+                        <p>المستخدمين النشطين</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function updateProductsTable() {
+            const tableBody = document.getElementById('productsTableBody');
+            if (!tableBody) return;
+            
+            const products = adminData.products || [];
+            
+            let html = '';
+            products.forEach(product => {
+                const brand = adminData.brands?.find(b => b.id === product.brand);
+                const category = adminData.categories?.find(c => c.id === product.category);
+                const mainImage = product.images?.[0] || '';
+                
+                html += `
+                    <tr>
+                        <td>
+                            ${mainImage ? `<img src="${mainImage}" class="table-image" alt="${product.name.ar}">` : '<div class="table-image"><i class="fas fa-car"></i></div>'}
+                        </td>
+                        <td>${product.name.ar}</td>
+                        <td>${brand?.name.ar || 'غير محدد'}</td>
+                        <td>${formatCurrency(product.price)}</td>
+                        <td>
+                            <span class="status-badge ${product.type === 'new' ? 'status-active' : 'status-pending'}">
+                                ${product.type === 'new' ? 'جديد' : 'مستعمل'}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${product.active ? 'status-active' : 'status-inactive'}">
+                                ${product.active ? 'نشط' : 'غير نشط'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="table-btn view" onclick="viewProduct('${product.id}')" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="table-btn edit" onclick="editProduct('${product.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteProduct('${product.id}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html || '<tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد سيارات</td></tr>';
+        }
+        
+        function updateRecentProducts() {
+            const container = document.getElementById('recentProducts');
+            if (!container) return;
+            
+            const products = [...(adminData.products || [])]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 5);
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3 class="empty-state-title">لا توجد سيارات</h3>
+                        <p class="empty-state-text">لم تتم إضافة أي سيارات بعد</p>
+                        <button class="btn btn-primary" onclick="showProductModal()">
+                            <i class="fas fa-plus"></i> إضافة أول سيارة
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="table-container"><table class="data-table"><thead><tr>';
+            html += '<th>الصورة</th><th>الاسم</th><th>الماركة</th><th>السعر</th><th>التاريخ</th><th>الإجراءات</th></tr></thead><tbody>';
+            
+            products.forEach(product => {
+                const brand = adminData.brands?.find(b => b.id === product.brand);
+                const mainImage = product.images?.[0] || '';
+                const date = new Date(product.createdAt).toLocaleDateString('ar-EG');
+                
+                html += `
+                    <tr>
+                        <td>
+                            ${mainImage ? `<img src="${mainImage}" class="table-image" alt="${product.name.ar}">` : '<div class="table-image"><i class="fas fa-car"></i></div>'}
+                        </td>
+                        <td>${product.name.ar}</td>
+                        <td>${brand?.name.ar || 'غير محدد'}</td>
+                        <td>${formatCurrency(product.price)}</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="table-btn view" onclick="viewProduct('${product.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+        
+        function updateBrandsGrid() {
+            const grid = document.getElementById('brandsGrid');
+            if (!grid) return;
+            
+            const brands = adminData.brands || [];
+            
+            if (brands.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h3 class="empty-state-title">لا توجد ماركات</h3>
+                        <p class="empty-state-text">لم تتم إضافة أي ماركات بعد</p>
+                        <button class="btn btn-primary" onclick="showBrandModal()">
+                            <i class="fas fa-plus"></i> إضافة أول ماركة
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="brands-list">';
+            brands.forEach(brand => {
+                const productsCount = adminData.products?.filter(p => p.brand === brand.id).length || 0;
+                
+                html += `
+                    <div class="brand-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
+                        ${brand.logo ? `<img src="${brand.logo}" style="width: 60px; height: 60px; object-fit: contain;" alt="${brand.name.ar}">` : '<div style="width: 60px; height: 60px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; border-radius: var(--radius);"><i class="fas fa-tag"></i></div>'}
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 0.5rem 0; color: var(--gray-900);">${brand.name.ar}</h4>
+                            <p style="margin: 0 0 0.5rem 0; color: var(--gray-600); font-size: 0.9rem;">${brand.description || 'لا يوجد وصف'}</p>
+                            <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--gray-500);">
+                                <span><i class="fas fa-car"></i> ${productsCount} سيارة</span>
+                                <span><i class="fas fa-circle" style="color: ${brand.active ? '#48bb78' : '#a0aec0'}; font-size: 0.7rem;"></i> ${brand.active ? 'نشط' : 'غير نشط'}</span>
+                            </div>
+                        </div>
+                        <div class="table-actions">
+                            <button class="table-btn edit" onclick="editBrand('${brand.id}')" title="تعديل">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="table-btn delete" onclick="deleteBrand('${brand.id}')" title="حذف">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            grid.innerHTML = html;
+        }
+        
+        function updateCategoriesTable() {
+            const tableBody = document.getElementById('categoriesTableBody');
+            if (!tableBody) return;
+            
+            const categories = adminData.categories || [];
+            
+            let html = '';
+            categories.forEach(category => {
+                const productsCount = adminData.products?.filter(p => p.category === category.id).length || 0;
+                const parentCategory = category.parent ? adminData.categories?.find(c => c.id === category.parent) : null;
+                
+                html += `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                ${category.image ? `<img src="${category.image}" style="width: 40px; height: 40px; border-radius: var(--radius); object-fit: cover;" alt="${category.name.ar}">` : '<i class="fas fa-folder"></i>'}
+                                <div>
+                                    <div style="font-weight: 600;">${category.name.ar}</div>
+                                    <div style="font-size: 0.85rem; color: var(--gray-500);">${category.name.en}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${category.description || 'لا يوجد وصف'}</td>
+                        <td>
+                            <span class="status-badge status-active">${productsCount} سيارة</span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${category.active ? 'status-active' : 'status-inactive'}">
+                                ${category.active ? 'نشط' : 'غير نشط'}
+                            </span>
+                            ${category.featured ? '<span class="status-badge status-pending" style="margin-right: 0.5rem;">مميز</span>' : ''}
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="table-btn edit" onclick="editCategory('${category.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteCategory('${category.id}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html || '<tr><td colspan="5" style="text-align: center; padding: 2rem;">لا توجد أقسام</td></tr>';
+        }
+        
+        function updateUsersTable() {
+            const tableBody = document.getElementById('usersTableBody');
+            if (!tableBody) return;
+            
+            const users = adminData.users || [];
+            
+            let html = '';
+            users.forEach(user => {
+                const date = new Date(user.createdAt).toLocaleDateString('ar-EG');
+                
+                html += `
+                    <tr>
+                        <td>
+                            ${user.avatar ? `<img src="${user.avatar}" class="table-image" alt="${user.fullName}">` : '<div class="table-image" style="background: ' + (UserRoles[user.role]?.color || '#667eea') + ';">' + (user.fullName?.charAt(0) || user.username?.charAt(0) || 'م') + '</div>'}
+                        </td>
+                        <td>${user.fullName}</td>
+                        <td>${user.username}</td>
+                        <td>
+                            <span class="status-badge" style="background: ${UserRoles[user.role]?.color || '#667eea'}; color: white;">
+                                ${UserRoles[user.role]?.name || user.role}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${user.active ? 'status-active' : 'status-inactive'}">
+                                ${user.active ? 'نشط' : 'غير نشط'}
+                            </span>
+                        </td>
+                        <td>${date}</td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="table-btn edit" onclick="editUser('${user.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteUser('${user.id}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html || '<tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد مستخدمين</td></tr>';
+        }
+        
+        function updateRolesGrid() {
+            const grid = document.getElementById('rolesGrid');
+            if (!grid) return;
+            
+            const roles = adminData.roles || [];
+            
+            let html = '<div class="roles-list">';
+            roles.forEach(role => {
+                const usersCount = adminData.users?.filter(u => u.role === role.id).length || 0;
+                
+                html += `
+                    <div class="role-card" style="border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                            <h4 style="margin: 0; color: var(--gray-900);">${role.name}</h4>
+                            <span style="background: var(--gray-100); color: var(--gray-700); padding: 0.3rem 0.8rem; border-radius: var(--radius-full); font-size: 0.85rem;">
+                                ${usersCount} مستخدم
+                            </span>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <h5 style="margin: 0 0 0.5rem 0; color: var(--gray-700); font-size: 0.9rem;">الصلاحيات:</h5>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                ${role.permissions.map(perm => `
+                                    <span style="background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); font-size: 0.8rem;">
+                                        ${getPermissionName(perm)}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-sm btn-secondary" onclick="editRolePermissions('${role.id}')">
+                                <i class="fas fa-edit"></i> تعديل الصلاحيات
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            grid.innerHTML = html;
+        }
+        
+        function updateSelectOptions() {
+            // Update brand select options
+            const brandSelect = document.getElementById('productBrand');
+            const filterBrand = document.getElementById('filterBrand');
+            const brandOptions = adminData.brands || [];
+            
+            if (brandSelect) {
+                let options = '<option value="">اختر الماركة</option>';
+                brandOptions.forEach(brand => {
+                    options += `<option value="${brand.id}">${brand.name.ar}</option>`;
+                });
+                brandSelect.innerHTML = options;
+            }
+            
+            if (filterBrand) {
+                let options = '<option value="">كل الماركات</option>';
+                brandOptions.forEach(brand => {
+                    options += `<option value="${brand.id}">${brand.name.ar}</option>`;
+                });
+                filterBrand.innerHTML = options;
+            }
+            
+            // Update category select options
+            const categorySelect = document.getElementById('productCategory');
+            const categoryOptions = adminData.categories || [];
+            
+            if (categorySelect) {
+                let options = '<option value="">اختر القسم</option>';
+                categoryOptions.forEach(category => {
+                    options += `<option value="${category.id}">${category.name.ar}</option>`;
+                });
+                categorySelect.innerHTML = options;
+            }
+            
+            // Update year select options
+            const yearSelect = document.getElementById('productYear');
+            if (yearSelect) {
+                let options = '<option value="">اختر السنة</option>';
+                const currentYear = new Date().getFullYear();
+                for (let year = currentYear + 1; year >= 2000; year--) {
+                    options += `<option value="${year}">${year}</option>`;
+                }
+                yearSelect.innerHTML = options;
+            }
+        }
+        
         // ============ Sync Functions ============
         async function syncData() {
             showLoading('جاري مزامنة البيانات...');
             
             try {
-                if (window.gitHubSync && window.gitHubSync.isInitialized) {
-                    const result = await window.gitHubSync.sync();
-                    if (result) {
-                        adminData = result;
-                        siteData = result;
-                        window.siteData = result;
-                        updateDashboard();
-                        showToast('تمت المزامنة بنجاح', 'success');
-                    } else {
-                        throw new Error('فشلت المزامنة');
-                    }
+                // Initialize GitHub sync if not already
+                if (!window.gitHubSync) {
+                    await initializeGitHubSync();
+                }
+                
+                const result = await window.gitHubSync.sync();
+                if (result) {
+                    adminData = result;
+                    siteData = result;
+                    window.siteData = result;
+                    updateDashboard();
+                    showToast('تمت المزامنة بنجاح', 'success');
                 } else {
-                    throw new Error('نظام المزامنة غير متوفر');
+                    throw new Error('فشلت المزامنة');
                 }
             } catch (error) {
                 console.error('خطأ في المزامنة:', error);
@@ -3477,8 +3992,985 @@
             }
         }
         
-        // ============ بقية الدوال كما هي ============
-        // ... (بقية الدوال من الكود السابق مثل updateStatistics, updateProductsTable, etc.)
+        // ============ UI Functions ============
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId + '-section');
+            if (section) {
+                section.classList.add('active');
+                currentSection = sectionId;
+                
+                // Update menu item
+                const menuItem = document.querySelector(`.menu-link[onclick*="${sectionId}"]`);
+                if (menuItem) {
+                    menuItem.classList.add('active');
+                }
+                
+                // Load section data
+                switch(sectionId) {
+                    case 'overview':
+                        updateStatistics();
+                        updateRecentProducts();
+                        break;
+                    case 'products':
+                        updateProductsTable();
+                        updateSelectOptions();
+                        break;
+                    case 'brands':
+                        updateBrandsGrid();
+                        break;
+                    case 'categories':
+                        updateCategoriesTable();
+                        break;
+                    case 'users':
+                        updateUsersTable();
+                        break;
+                    case 'roles':
+                        updateRolesGrid();
+                        break;
+                    case 'siteSettings':
+                        loadSiteSettings();
+                        break;
+                    case 'social':
+                        loadSocialSettings();
+                        break;
+                    case 'contact':
+                        loadContactSettings();
+                        break;
+                    case 'profile':
+                        loadProfile();
+                        break;
+                }
+                
+                // Close sidebar on mobile
+                if (window.innerWidth <= 992) {
+                    toggleSidebar(false);
+                }
+            }
+        }
+        
+        function toggleSidebar(force) {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (force !== undefined) {
+                if (force) {
+                    sidebar.classList.add('active');
+                    mainContent.classList.add('expanded');
+                } else {
+                    sidebar.classList.remove('active');
+                    mainContent.classList.remove('expanded');
+                }
+            } else {
+                sidebar.classList.toggle('active');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+        
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-menu')) {
+                const dropdown = document.getElementById('userDropdown');
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        // ============ Modal Functions ============
+        function showProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            const form = document.getElementById('productForm');
+            
+            form.reset();
+            document.getElementById('productId').value = '';
+            
+            if (productId) {
+                // Edit mode
+                title.textContent = 'تعديل السيارة';
+                const product = adminData.products?.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('productNameAr').value = product.name.ar;
+                    document.getElementById('productNameEn').value = product.name.en;
+                    document.getElementById('productBrand').value = product.brand;
+                    document.getElementById('productCategory').value = product.category;
+                    document.getElementById('productModel').value = product.model;
+                    document.getElementById('productYear').value = product.year;
+                    document.getElementById('productPrice').value = product.price;
+                    document.getElementById('productOldPrice').value = product.oldPrice || '';
+                    document.getElementById('productType').value = product.type;
+                    document.getElementById('productFuel').value = product.fuel || '';
+                    document.getElementById('productEngine').value = product.engine || '';
+                    document.getElementById('productDescription').value = product.description;
+                    document.getElementById('productFeatured').checked = product.featured || false;
+                    document.getElementById('productInstallment').checked = product.installment || false;
+                    document.getElementById('productActive').checked = product.active !== false;
+                    
+                    // Handle images
+                    if (product.images && product.images.length > 0) {
+                        const preview = document.getElementById('productImagesPreview');
+                        preview.innerHTML = '';
+                        product.images.forEach(img => {
+                            const imgEl = document.createElement('img');
+                            imgEl.src = img;
+                            imgEl.style.width = '100px';
+                            imgEl.style.height = '100px';
+                            imgEl.style.objectFit = 'cover';
+                            imgEl.style.margin = '5px';
+                            imgEl.style.borderRadius = '5px';
+                            preview.appendChild(imgEl);
+                        });
+                        document.getElementById('productImagesUrls').value = product.images.join(',');
+                    }
+                    
+                    // Handle colors
+                    if (product.colors && product.colors.length > 0) {
+                        $('#productColors').val(product.colors).trigger('change');
+                    }
+                }
+            } else {
+                // Add mode
+                title.textContent = 'إضافة سيارة جديدة';
+            }
+            
+            modal.classList.add('active');
+            updateSelectOptions();
+            
+            // Reinitialize Select2
+            setTimeout(() => {
+                $('.select2').select2({
+                    dir: 'rtl',
+                    language: 'ar'
+                });
+            }, 100);
+        }
+        
+        function showBrandModal(brandId = null) {
+            const modal = document.getElementById('brandModal');
+            const title = document.getElementById('brandModalTitle');
+            const form = document.getElementById('brandForm');
+            
+            form.reset();
+            document.getElementById('brandId').value = '';
+            
+            if (brandId) {
+                title.textContent = 'تعديل الماركة';
+                const brand = adminData.brands?.find(b => b.id === brandId);
+                if (brand) {
+                    document.getElementById('brandId').value = brand.id;
+                    document.getElementById('brandNameAr').value = brand.name.ar;
+                    document.getElementById('brandNameEn').value = brand.name.en;
+                    document.getElementById('brandDescription').value = brand.description || '';
+                    document.getElementById('brandActive').checked = brand.active !== false;
+                    
+                    if (brand.logo) {
+                        const preview = document.getElementById('brandLogoPreview');
+                        preview.innerHTML = `<img src="${brand.logo}" alt="Brand logo">`;
+                        document.getElementById('brandLogoUrl').value = brand.logo;
+                    }
+                }
+            } else {
+                title.textContent = 'إضافة ماركة جديدة';
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        function showCategoryModal(categoryId = null) {
+            const modal = document.getElementById('categoryModal');
+            const title = document.getElementById('categoryModalTitle');
+            const form = document.getElementById('categoryForm');
+            
+            form.reset();
+            document.getElementById('categoryId').value = '';
+            
+            if (categoryId) {
+                title.textContent = 'تعديل القسم';
+                const category = adminData.categories?.find(c => c.id === categoryId);
+                if (category) {
+                    document.getElementById('categoryId').value = category.id;
+                    document.getElementById('categoryNameAr').value = category.name.ar;
+                    document.getElementById('categoryNameEn').value = category.name.en;
+                    document.getElementById('categoryDescription').value = category.description || '';
+                    document.getElementById('categoryParent').value = category.parent || '';
+                    document.getElementById('categoryActive').checked = category.active !== false;
+                    document.getElementById('categoryFeatured').checked = category.featured || false;
+                    
+                    if (category.image) {
+                        const preview = document.getElementById('categoryImagePreview');
+                        preview.innerHTML = `<img src="${category.image}" alt="Category image">`;
+                        document.getElementById('categoryImageUrl').value = category.image;
+                    }
+                }
+            } else {
+                title.textContent = 'إضافة قسم جديد';
+            }
+            
+            modal.classList.add('active');
+            
+            // Update parent categories select
+            const parentSelect = document.getElementById('categoryParent');
+            const categories = adminData.categories || [];
+            let options = '<option value="">بدون قسم رئيسي</option>';
+            categories.forEach(cat => {
+                if (cat.id !== categoryId) { // Don't allow self as parent
+                    options += `<option value="${cat.id}">${cat.name.ar}</option>`;
+                }
+            });
+            parentSelect.innerHTML = options;
+            
+            // Reinitialize Select2
+            setTimeout(() => {
+                $('.select2').select2({
+                    dir: 'rtl',
+                    language: 'ar'
+                });
+            }, 100);
+        }
+        
+        function showUserModal(userId = null) {
+            const modal = document.getElementById('userModal');
+            const title = document.getElementById('userModalTitle');
+            const form = document.getElementById('userForm');
+            
+            form.reset();
+            document.getElementById('userId').value = '';
+            document.getElementById('userPassword').required = true;
+            
+            if (userId) {
+                title.textContent = 'تعديل المستخدم';
+                const user = adminData.users?.find(u => u.id === userId);
+                if (user) {
+                    document.getElementById('userId').value = user.id;
+                    document.getElementById('userFullName').value = user.fullName;
+                    document.getElementById('userUsername').value = user.username;
+                    document.getElementById('userEmail').value = user.email;
+                    document.getElementById('userRole').value = user.role;
+                    document.getElementById('userPhone').value = user.phone || '';
+                    document.getElementById('permView').checked = user.permissions?.includes('view') || false;
+                    document.getElementById('permCreate').checked = user.permissions?.includes('create') || false;
+                    document.getElementById('permEdit').checked = user.permissions?.includes('edit') || false;
+                    document.getElementById('permDelete').checked = user.permissions?.includes('delete') || false;
+                    document.getElementById('userActive').checked = user.active !== false;
+                    document.getElementById('userPassword').required = false;
+                    document.getElementById('userPassword').placeholder = 'اترك فارغاً للحفاظ على كلمة المرور الحالية';
+                    
+                    if (user.avatar) {
+                        const preview = document.getElementById('userAvatarPreview');
+                        preview.innerHTML = `<img src="${user.avatar}" alt="User avatar">`;
+                        document.getElementById('userAvatarUrl').value = user.avatar;
+                    }
+                }
+            } else {
+                title.textContent = 'إضافة مستخدم جديد';
+            }
+            
+            modal.classList.add('active');
+            
+            // Reinitialize Select2
+            setTimeout(() => {
+                $('.select2').select2({
+                    dir: 'rtl',
+                    language: 'ar'
+                });
+            }, 100);
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+        }
+        
+        // ============ Form Handlers ============
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveProduct();
+        });
+        
+        document.getElementById('brandForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveBrand();
+        });
+        
+        document.getElementById('categoryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveCategory();
+        });
+        
+        document.getElementById('userForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveUser();
+        });
+        
+        document.getElementById('siteSettingsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveSiteSettings();
+        });
+        
+        document.getElementById('socialForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveSocialSettings();
+        });
+        
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveContactSettings();
+        });
+        
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveProfile();
+        });
+        
+        // ============ CRUD Operations ============
+        async function saveProduct() {
+            try {
+                const id = document.getElementById('productId').value || 'prod_' + Date.now();
+                const nameAr = document.getElementById('productNameAr').value;
+                const nameEn = document.getElementById('productNameEn').value;
+                const brand = document.getElementById('productBrand').value;
+                const category = document.getElementById('productCategory').value;
+                const model = document.getElementById('productModel').value;
+                const year = parseInt(document.getElementById('productYear').value);
+                const price = parseFloat(document.getElementById('productPrice').value);
+                const oldPrice = document.getElementById('productOldPrice').value ? parseFloat(document.getElementById('productOldPrice').value) : null;
+                const type = document.getElementById('productType').value;
+                const fuel = document.getElementById('productFuel').value || null;
+                const engine = document.getElementById('productEngine').value || null;
+                const colors = $('#productColors').val() || [];
+                const description = document.getElementById('productDescription').value;
+                const images = document.getElementById('productImagesUrls').value ? document.getElementById('productImagesUrls').value.split(',') : [];
+                const featured = document.getElementById('productFeatured').checked;
+                const installment = document.getElementById('productInstallment').checked;
+                const active = document.getElementById('productActive').checked;
+                
+                const product = {
+                    id,
+                    name: { ar: nameAr, en: nameEn },
+                    brand,
+                    category,
+                    model,
+                    year,
+                    price,
+                    oldPrice,
+                    type,
+                    fuel,
+                    engine,
+                    colors,
+                    description,
+                    images,
+                    featured,
+                    installment,
+                    active,
+                    createdAt: id.startsWith('prod_') ? new Date().toISOString() : adminData.products?.find(p => p.id === id)?.createdAt || new Date().toISOString()
+                };
+                
+                // Update or add product
+                if (!adminData.products) adminData.products = [];
+                
+                const index = adminData.products.findIndex(p => p.id === id);
+                if (index > -1) {
+                    adminData.products[index] = product;
+                } else {
+                    adminData.products.push(product);
+                }
+                
+                // Save data
+                const result = await saveData();
+                if (result.success) {
+                    closeModal('productModal');
+                    updateDashboard();
+                    showToast('تم حفظ السيارة بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ السيارة:', error);
+                showToast('حدث خطأ في حفظ السيارة', 'error');
+            }
+        }
+        
+        async function saveBrand() {
+            try {
+                const id = document.getElementById('brandId').value || 'brand_' + Date.now();
+                const nameAr = document.getElementById('brandNameAr').value;
+                const nameEn = document.getElementById('brandNameEn').value;
+                const description = document.getElementById('brandDescription').value || '';
+                const logo = document.getElementById('brandLogoUrl').value || '';
+                const active = document.getElementById('brandActive').checked;
+                
+                const brand = {
+                    id,
+                    name: { ar: nameAr, en: nameEn },
+                    description,
+                    logo,
+                    active,
+                    createdAt: id.startsWith('brand_') ? new Date().toISOString() : adminData.brands?.find(b => b.id === id)?.createdAt || new Date().toISOString()
+                };
+                
+                // Update or add brand
+                if (!adminData.brands) adminData.brands = [];
+                
+                const index = adminData.brands.findIndex(b => b.id === id);
+                if (index > -1) {
+                    adminData.brands[index] = brand;
+                } else {
+                    adminData.brands.push(brand);
+                }
+                
+                // Save data
+                const result = await saveData();
+                if (result.success) {
+                    closeModal('brandModal');
+                    updateDashboard();
+                    showToast('تم حفظ الماركة بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ الماركة:', error);
+                showToast('حدث خطأ في حفظ الماركة', 'error');
+            }
+        }
+        
+        async function saveCategory() {
+            try {
+                const id = document.getElementById('categoryId').value || 'cat_' + Date.now();
+                const nameAr = document.getElementById('categoryNameAr').value;
+                const nameEn = document.getElementById('categoryNameEn').value;
+                const description = document.getElementById('categoryDescription').value || '';
+                const image = document.getElementById('categoryImageUrl').value || '';
+                const parent = document.getElementById('categoryParent').value || '';
+                const active = document.getElementById('categoryActive').checked;
+                const featured = document.getElementById('categoryFeatured').checked;
+                
+                const category = {
+                    id,
+                    name: { ar: nameAr, en: nameEn },
+                    description,
+                    image,
+                    parent,
+                    active,
+                    featured,
+                    createdAt: id.startsWith('cat_') ? new Date().toISOString() : adminData.categories?.find(c => c.id === id)?.createdAt || new Date().toISOString()
+                };
+                
+                // Update or add category
+                if (!adminData.categories) adminData.categories = [];
+                
+                const index = adminData.categories.findIndex(c => c.id === id);
+                if (index > -1) {
+                    adminData.categories[index] = category;
+                } else {
+                    adminData.categories.push(category);
+                }
+                
+                // Save data
+                const result = await saveData();
+                if (result.success) {
+                    closeModal('categoryModal');
+                    updateDashboard();
+                    showToast('تم حفظ القسم بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ القسم:', error);
+                showToast('حدث خطأ في حفظ القسم', 'error');
+            }
+        }
+        
+        async function saveUser() {
+            try {
+                const id = document.getElementById('userId').value || 'user_' + Date.now();
+                const fullName = document.getElementById('userFullName').value;
+                const username = document.getElementById('userUsername').value;
+                const email = document.getElementById('userEmail').value;
+                const password = document.getElementById('userPassword').value;
+                const role = document.getElementById('userRole').value;
+                const phone = document.getElementById('userPhone').value || '';
+                const avatar = document.getElementById('userAvatarUrl').value || '';
+                const active = document.getElementById('userActive').checked;
+                
+                // Collect permissions
+                const permissions = [];
+                if (document.getElementById('permView').checked) permissions.push('view');
+                if (document.getElementById('permCreate').checked) permissions.push('create');
+                if (document.getElementById('permEdit').checked) permissions.push('edit');
+                if (document.getElementById('permDelete').checked) permissions.push('delete');
+                
+                // Check if username already exists (for new users)
+                if (!id.startsWith('user_')) {
+                    const existingUser = adminData.users?.find(u => u.username === username && u.id !== id);
+                    if (existingUser) {
+                        throw new Error('اسم المستخدم موجود بالفعل');
+                    }
+                }
+                
+                const user = {
+                    id,
+                    username,
+                    fullName,
+                    email,
+                    role,
+                    phone,
+                    avatar,
+                    permissions,
+                    active,
+                    createdAt: id.startsWith('user_') ? new Date().toISOString() : adminData.users?.find(u => u.id === id)?.createdAt || new Date().toISOString()
+                };
+                
+                // Only update password if provided
+                if (password) {
+                    user.password = password;
+                } else if (id.startsWith('user_')) {
+                    // New user must have password
+                    throw new Error('كلمة المرور مطلوبة للمستخدم الجديد');
+                } else {
+                    // Keep existing password for updates
+                    const existingUser = adminData.users?.find(u => u.id === id);
+                    if (existingUser) {
+                        user.password = existingUser.password;
+                    }
+                }
+                
+                // Update or add user
+                if (!adminData.users) adminData.users = [];
+                
+                const index = adminData.users.findIndex(u => u.id === id);
+                if (index > -1) {
+                    adminData.users[index] = user;
+                } else {
+                    adminData.users.push(user);
+                }
+                
+                // Save data
+                const result = await saveData();
+                if (result.success) {
+                    closeModal('userModal');
+                    updateDashboard();
+                    
+                    // If editing current user, update session
+                    if (currentUser && currentUser.id === id) {
+                        currentUser = user;
+                        updateUserInfo();
+                    }
+                    
+                    showToast('تم حفظ المستخدم بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ المستخدم:', error);
+                showToast(error.message || 'حدث خطأ في حفظ المستخدم', 'error');
+            }
+        }
+        
+        async function saveSiteSettings() {
+            try {
+                const nameAr = document.getElementById('siteNameAr').value;
+                const nameEn = document.getElementById('siteNameEn').value;
+                const descAr = document.getElementById('siteDescAr').value;
+                const descEn = document.getElementById('siteDescEn').value;
+                const language = document.getElementById('siteLanguage').value;
+                const timezone = document.getElementById('siteTimezone').value;
+                const currency = document.getElementById('siteCurrency').value;
+                const logo = document.getElementById('siteLogoUrl').value || '';
+                const primaryColor = document.getElementById('primaryColor').value;
+                const secondaryColor = document.getElementById('secondaryColor').value;
+                const background = document.getElementById('siteBackground').value;
+                
+                adminData.site = {
+                    name: { ar: nameAr, en: nameEn },
+                    description: { ar: descAr, en: descEn },
+                    logo,
+                    language,
+                    timezone,
+                    currency,
+                    primaryColor,
+                    secondaryColor,
+                    background
+                };
+                
+                const result = await saveData();
+                if (result.success) {
+                    showToast('تم حفظ إعدادات الموقع بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ إعدادات الموقع:', error);
+                showToast('حدث خطأ في حفظ الإعدادات', 'error');
+            }
+        }
+        
+        async function saveSocialSettings() {
+            try {
+                adminData.social = {
+                    facebook: document.getElementById('facebookUrl').value || '',
+                    twitter: document.getElementById('twitterUrl').value || '',
+                    instagram: document.getElementById('instagramUrl').value || '',
+                    youtube: document.getElementById('youtubeUrl').value || '',
+                    tiktok: document.getElementById('tiktokUrl').value || '',
+                    linkedin: document.getElementById('linkedinUrl').value || ''
+                };
+                
+                const result = await saveData();
+                if (result.success) {
+                    showToast('تم حفظ روابط التواصل الاجتماعي بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ روابط التواصل:', error);
+                showToast('حدث خطأ في حفظ الروابط', 'error');
+            }
+        }
+        
+        async function saveContactSettings() {
+            try {
+                adminData.contact = {
+                    phone: document.getElementById('phoneNumber').value,
+                    whatsapp: document.getElementById('whatsappNumber').value,
+                    email: document.getElementById('emailAddress').value,
+                    address: document.getElementById('siteAddress').value,
+                    workFrom: document.getElementById('workFrom').value,
+                    workTo: document.getElementById('workTo').value,
+                    workDays: Array.from(document.getElementById('workDays').selectedOptions).map(opt => opt.value)
+                };
+                
+                const result = await saveData();
+                if (result.success) {
+                    showToast('تم حفظ معلومات الاتصال بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حفظ البيانات');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في حفظ معلومات الاتصال:', error);
+                showToast('حدث خطأ في حفظ المعلومات', 'error');
+            }
+        }
+        
+        async function saveProfile() {
+            try {
+                if (!currentUser) return;
+                
+                const fullName = document.getElementById('profileName').value;
+                const email = document.getElementById('profileEmail').value;
+                const avatar = document.getElementById('avatarUrl').value || '';
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Update user in adminData
+                const userIndex = adminData.users?.findIndex(u => u.id === currentUser.id);
+                if (userIndex > -1) {
+                    adminData.users[userIndex].fullName = fullName;
+                    adminData.users[userIndex].email = email;
+                    adminData.users[userIndex].avatar = avatar;
+                    
+                    // Update password if provided
+                    if (currentPassword && newPassword && confirmPassword) {
+                        if (newPassword !== confirmPassword) {
+                            throw new Error('كلمات المرور الجديدة غير متطابقة');
+                        }
+                        
+                        // Verify current password
+                        if (adminData.users[userIndex].password !== currentPassword) {
+                            throw new Error('كلمة المرور الحالية غير صحيحة');
+                        }
+                        
+                        adminData.users[userIndex].password = newPassword;
+                    }
+                    
+                    // Update current user
+                    currentUser = adminData.users[userIndex];
+                    updateUserInfo();
+                    saveSession();
+                    
+                    const result = await saveData();
+                    if (result.success) {
+                        showToast('تم تحديث الملف الشخصي بنجاح', 'success');
+                        document.getElementById('currentPassword').value = '';
+                        document.getElementById('newPassword').value = '';
+                        document.getElementById('confirmPassword').value = '';
+                    } else {
+                        throw new Error('فشل حفظ البيانات');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('خطأ في تحديث الملف الشخصي:', error);
+                showToast(error.message || 'حدث خطأ في تحديث الملف الشخصي', 'error');
+            }
+        }
+        
+        // ============ Load Settings ============
+        function loadSiteSettings() {
+            if (!adminData.site) return;
+            
+            document.getElementById('siteNameAr').value = adminData.site.name.ar || '';
+            document.getElementById('siteNameEn').value = adminData.site.name.en || '';
+            document.getElementById('siteDescAr').value = adminData.site.description.ar || '';
+            document.getElementById('siteDescEn').value = adminData.site.description.en || '';
+            document.getElementById('siteLanguage').value = adminData.site.language || 'ar';
+            document.getElementById('siteTimezone').value = adminData.site.timezone || 'Africa/Cairo';
+            document.getElementById('siteCurrency').value = adminData.site.currency || 'EGP';
+            document.getElementById('primaryColor').value = adminData.site.primaryColor || '#667eea';
+            document.getElementById('secondaryColor').value = adminData.site.secondaryColor || '#764ba2';
+            document.getElementById('siteBackground').value = adminData.site.background || 'light';
+            
+            if (adminData.site.logo) {
+                const preview = document.getElementById('siteLogoPreview');
+                preview.innerHTML = `<img src="${adminData.site.logo}" alt="Site logo">`;
+                document.getElementById('siteLogoUrl').value = adminData.site.logo;
+            }
+        }
+        
+        function loadSocialSettings() {
+            if (!adminData.social) return;
+            
+            document.getElementById('facebookUrl').value = adminData.social.facebook || '';
+            document.getElementById('twitterUrl').value = adminData.social.twitter || '';
+            document.getElementById('instagramUrl').value = adminData.social.instagram || '';
+            document.getElementById('youtubeUrl').value = adminData.social.youtube || '';
+            document.getElementById('tiktokUrl').value = adminData.social.tiktok || '';
+            document.getElementById('linkedinUrl').value = adminData.social.linkedin || '';
+        }
+        
+        function loadContactSettings() {
+            if (!adminData.contact) return;
+            
+            document.getElementById('phoneNumber').value = adminData.contact.phone || '';
+            document.getElementById('whatsappNumber').value = adminData.contact.whatsapp || '';
+            document.getElementById('emailAddress').value = adminData.contact.email || '';
+            document.getElementById('siteAddress').value = adminData.contact.address || '';
+            document.getElementById('workFrom').value = adminData.contact.workFrom || '09:00';
+            document.getElementById('workTo').value = adminData.contact.workTo || '21:00';
+            
+            if (adminData.contact.workDays) {
+                const select = document.getElementById('workDays');
+                Array.from(select.options).forEach(option => {
+                    option.selected = adminData.contact.workDays.includes(option.value);
+                });
+            }
+        }
+        
+        function loadProfile() {
+            if (!currentUser) return;
+            
+            document.getElementById('profileName').value = currentUser.fullName || '';
+            document.getElementById('profileUsername').value = currentUser.username || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            
+            if (currentUser.avatar) {
+                const preview = document.getElementById('avatarPreview');
+                preview.innerHTML = `<img src="${currentUser.avatar}" alt="Profile avatar">`;
+                document.getElementById('avatarUrl').value = currentUser.avatar;
+            }
+        }
+        
+        // ============ Edit Functions ============
+        function editProduct(productId) {
+            showProductModal(productId);
+        }
+        
+        function editBrand(brandId) {
+            showBrandModal(brandId);
+        }
+        
+        function editCategory(categoryId) {
+            showCategoryModal(categoryId);
+        }
+        
+        function editUser(userId) {
+            showUserModal(userId);
+        }
+        
+        // ============ View Functions ============
+        function viewProduct(productId) {
+            const product = adminData.products?.find(p => p.id === productId);
+            if (!product) return;
+            
+            const brand = adminData.brands?.find(b => b.id === product.brand);
+            const category = adminData.categories?.find(c => c.id === product.category);
+            
+            let message = `
+                اسم السيارة: ${product.name.ar} (${product.name.en})\n
+                الماركة: ${brand?.name.ar || 'غير محدد'}\n
+                القسم: ${category?.name.ar || 'غير محدد'}\n
+                الموديل: ${product.model}\n
+                السنة: ${product.year}\n
+                السعر: ${formatCurrency(product.price)}\n
+                ${product.oldPrice ? `السعر القديم: ${formatCurrency(product.oldPrice)}\n` : ''}
+                النوع: ${product.type === 'new' ? 'جديد' : 'مستعمل'}\n
+                ${product.fuel ? `نوع الوقود: ${getFuelName(product.fuel)}\n` : ''}
+                ${product.engine ? `المحرك: ${product.engine}\n` : ''}
+                ${product.colors?.length > 0 ? `الألوان: ${product.colors.join(', ')}\n` : ''}
+                الوصف: ${product.description}\n
+                الحالة: ${product.active ? 'نشط' : 'غير نشط'}\n
+                ${product.featured ? '🚗 سيارة مميزة\n' : ''}
+                ${product.installment ? '💳 التقسيط متاح\n' : ''}
+            `;
+            
+            alert(message);
+        }
+        
+        // ============ Delete Functions ============
+        async function deleteProduct(productId) {
+            if (!confirm('هل أنت متأكد من حذف هذه السيارة؟')) return;
+            
+            try {
+                adminData.products = adminData.products?.filter(p => p.id !== productId) || [];
+                
+                const result = await saveData();
+                if (result.success) {
+                    updateDashboard();
+                    showToast('تم حذف السيارة بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حذف البيانات');
+                }
+            } catch (error) {
+                console.error('خطأ في حذف السيارة:', error);
+                showToast('حدث خطأ في حذف السيارة', 'error');
+            }
+        }
+        
+        async function deleteBrand(brandId) {
+            // Check if brand is used in products
+            const productsUsingBrand = adminData.products?.filter(p => p.brand === brandId) || [];
+            if (productsUsingBrand.length > 0) {
+                alert(`لا يمكن حذف هذه الماركة لأنها مستخدمة في ${productsUsingBrand.length} سيارة. يرجى تغيير ماركة هذه السيارات أولاً.`);
+                return;
+            }
+            
+            if (!confirm('هل أنت متأكد من حذف هذه الماركة؟')) return;
+            
+            try {
+                adminData.brands = adminData.brands?.filter(b => b.id !== brandId) || [];
+                
+                const result = await saveData();
+                if (result.success) {
+                    updateDashboard();
+                    showToast('تم حذف الماركة بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حذف البيانات');
+                }
+            } catch (error) {
+                console.error('خطأ في حذف الماركة:', error);
+                showToast('حدث خطأ في حذف الماركة', 'error');
+            }
+        }
+        
+        async function deleteCategory(categoryId) {
+            // Check if category is used in products
+            const productsUsingCategory = adminData.products?.filter(p => p.category === categoryId) || [];
+            if (productsUsingCategory.length > 0) {
+                alert(`لا يمكن حذف هذا القسم لأنه مستخدم في ${productsUsingCategory.length} سيارة. يرجى تغيير قسم هذه السيارات أولاً.`);
+                return;
+            }
+            
+            // Check if category has children
+            const childrenCategories = adminData.categories?.filter(c => c.parent === categoryId) || [];
+            if (childrenCategories.length > 0) {
+                alert(`لا يمكن حذف هذا القسم لأنه يحتوي على ${childrenCategories.length} قسم فرعي. يرجى حذف الأقسام الفرعية أولاً.`);
+                return;
+            }
+            
+            if (!confirm('هل أنت متأكد من حذف هذا القسم؟')) return;
+            
+            try {
+                adminData.categories = adminData.categories?.filter(c => c.id !== categoryId) || [];
+                
+                const result = await saveData();
+                if (result.success) {
+                    updateDashboard();
+                    showToast('تم حذف القسم بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حذف البيانات');
+                }
+            } catch (error) {
+                console.error('خطأ في حذف القسم:', error);
+                showToast('حدث خطأ في حذف القسم', 'error');
+            }
+        }
+        
+        async function deleteUser(userId) {
+            // Don't allow deleting self
+            if (currentUser && currentUser.id === userId) {
+                alert('لا يمكنك حذف حسابك الخاص');
+                return;
+            }
+            
+            if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+            
+            try {
+                adminData.users = adminData.users?.filter(u => u.id !== userId) || [];
+                
+                const result = await saveData();
+                if (result.success) {
+                    updateDashboard();
+                    showToast('تم حذف المستخدم بنجاح', 'success');
+                } else {
+                    throw new Error('فشل حذف البيانات');
+                }
+            } catch (error) {
+                console.error('خطأ في حذف المستخدم:', error);
+                showToast('حدث خطأ في حذف المستخدم', 'error');
+            }
+        }
+        
+        // ============ Utility Functions ============
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ar-EG', {
+                style: 'currency',
+                currency: 'EGP',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function getFuelName(fuel) {
+            const fuels = {
+                gasoline: 'بنزين',
+                diesel: 'ديزل',
+                electric: 'كهرباء',
+                hybrid: 'هايبرد'
+            };
+            return fuels[fuel] || fuel;
+        }
+        
+        function getPermissionName(perm) {
+            const permissions = {
+                all: 'جميع الصلاحيات',
+                view: 'عرض',
+                create: 'إضافة',
+                edit: 'تعديل',
+                delete: 'حذف'
+            };
+            return permissions[perm] || perm;
+        }
         
         // ============ Image Upload Functions ============
         async function handleImageUpload(event, previewId, urlInputId, multiple = false) {
@@ -3564,8 +5056,244 @@
             });
         }
         
-        // ============ بقية الدوال ============
-        // ... (بقية الدوال كما هي)
+        function clearImage(previewId, urlInputId) {
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = `
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>انقر لرفع الصورة</span>
+                </div>
+            `;
+            document.getElementById(urlInputId).value = '';
+        }
+        
+        // ============ Setup Event Listeners ============
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await login();
+            });
+            
+            // Close modals when clicking outside
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                        modal.classList.remove('active');
+                    });
+                }
+            });
+            
+            // Initialize GitHub sync
+            window.addEventListener('load', async () => {
+                await initializeGitHubSync();
+            });
+            
+            // Handle offline/online status
+            window.addEventListener('online', () => {
+                showToast('تم استعادة الاتصال بالإنترنت', 'success');
+            });
+            
+            window.addEventListener('offline', () => {
+                showToast('تم فقد الاتصال بالإنترنت، النظام يعمل في الوضع المحلي', 'warning');
+            });
+        }
+        
+        // ============ Loading & Toast Functions ============
+        function showLoading(message = 'جاري التحميل...') {
+            document.getElementById('loadingText').textContent = message;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="${icons[type] || icons.info}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+        
+        // ============ Export Functions ============
+        function exportProducts() {
+            try {
+                const products = adminData.products || [];
+                if (products.length === 0) {
+                    showToast('لا توجد بيانات للتصدير', 'warning');
+                    return;
+                }
+                
+                const csv = convertToCSV(products);
+                downloadCSV(csv, 'سيارات_عبدالله.csv');
+                showToast('تم تصدير البيانات بنجاح', 'success');
+            } catch (error) {
+                console.error('خطأ في تصدير البيانات:', error);
+                showToast('حدث خطأ في تصدير البيانات', 'error');
+            }
+        }
+        
+        function exportReports() {
+            try {
+                const reportData = {
+                    إجمالي_السيارات: adminData.products?.length || 0,
+                    إجمالي_الماركات: adminData.brands?.length || 0,
+                    إجمالي_الأقسام: adminData.categories?.length || 0,
+                    إجمالي_المستخدمين: adminData.users?.length || 0,
+                    تاريخ_التصدير: new Date().toLocaleString('ar-EG')
+                };
+                
+                const csv = convertObjectToCSV(reportData);
+                downloadCSV(csv, 'تقارير_سيارات_عبدالله.csv');
+                showToast('تم تصدير التقارير بنجاح', 'success');
+            } catch (error) {
+                console.error('خطأ في تصدير التقارير:', error);
+                showToast('حدث خطأ في تصدير التقارير', 'error');
+            }
+        }
+        
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
+            
+            const headers = ['الاسم', 'الماركة', 'الموديل', 'السنة', 'السعر', 'النوع', 'الحالة'];
+            const rows = data.map(item => {
+                const brand = adminData.brands?.find(b => b.id === item.brand);
+                return [
+                    `"${item.name.ar}"`,
+                    `"${brand?.name.ar || ''}"`,
+                    `"${item.model}"`,
+                    item.year,
+                    item.price,
+                    item.type === 'new' ? 'جديد' : 'مستعمل',
+                    item.active ? 'نشط' : 'غير نشط'
+                ];
+            });
+            
+            return [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+        }
+        
+        function convertObjectToCSV(obj) {
+            const headers = Object.keys(obj);
+            const values = Object.values(obj);
+            return [headers.join(','), values.join(',')].join('\n');
+        }
+        
+        function downloadCSV(csv, filename) {
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+        
+        // ============ Other Functions ============
+        function refreshProducts() {
+            updateProductsTable();
+            showToast('تم تحديث قائمة السيارات', 'success');
+        }
+        
+        function filterProducts() {
+            const brand = document.getElementById('filterBrand').value;
+            const type = document.getElementById('filterType').value;
+            const status = document.getElementById('filterStatus').value;
+            
+            const filteredProducts = (adminData.products || []).filter(product => {
+                if (brand && product.brand !== brand) return false;
+                if (type && product.type !== type) return false;
+                if (status) {
+                    if (status === 'active' && !product.active) return false;
+                    if (status === 'inactive' && product.active !== false) return false;
+                }
+                return true;
+            });
+            
+            const tableBody = document.getElementById('productsTableBody');
+            if (!tableBody) return;
+            
+            let html = '';
+            filteredProducts.forEach(product => {
+                const brandObj = adminData.brands?.find(b => b.id === product.brand);
+                const mainImage = product.images?.[0] || '';
+                
+                html += `
+                    <tr>
+                        <td>
+                            ${mainImage ? `<img src="${mainImage}" class="table-image" alt="${product.name.ar}">` : '<div class="table-image"><i class="fas fa-car"></i></div>'}
+                        </td>
+                        <td>${product.name.ar}</td>
+                        <td>${brandObj?.name.ar || 'غير محدد'}</td>
+                        <td>${formatCurrency(product.price)}</td>
+                        <td>
+                            <span class="status-badge ${product.type === 'new' ? 'status-active' : 'status-pending'}">
+                                ${product.type === 'new' ? 'جديد' : 'مستعمل'}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${product.active ? 'status-active' : 'status-inactive'}">
+                                ${product.active ? 'نشط' : 'غير نشط'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="table-btn view" onclick="viewProduct('${product.id}')" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="table-btn edit" onclick="editProduct('${product.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteProduct('${product.id}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html || '<tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد سيارات تطابق معايير البحث</td></tr>';
+        }
+        
+        function editRolePermissions(roleId) {
+            showToast('ميزة تعديل الصلاحيات قيد التطوير', 'info');
+        }
         
         // ============ Make Functions Global ============
         window.showSection = showSection;
@@ -3593,6 +5321,7 @@
         window.filterProducts = filterProducts;
         window.handleImageUpload = handleImageUpload;
         window.clearImage = clearImage;
+        window.editRolePermissions = editRolePermissions;
     </script>
 </body>
 </html>
