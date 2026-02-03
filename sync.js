@@ -1,7 +1,7 @@
 /**
  * نظام مزامنة GitHub المحسن - سيارات عبدالله
- * يدعم تخزين الصور على GitHub وعمليات CRUD الكاملة
- * إصدار 4.0.0
+ * يدعم تخزين البيانات والصور على GitHub
+ * إصدار 5.0.0 - مع تحديثات الأمان
  */
 
 class EnhancedGitHubSync {
@@ -29,7 +29,7 @@ class EnhancedGitHubSync {
             lastSync: null,
             lastError: null,
             retryCount: 0,
-            maxRetries: 3
+            maxRetries: 5
         };
         
         this.cache = {
@@ -38,10 +38,7 @@ class EnhancedGitHubSync {
             images: {}
         };
         
-        this.imageCache = new Map();
-        this.pendingUploads = [];
-        
-        console.log('🚀 GitHub Sync Enhanced جاري التحميل...');
+        console.log('🚀 GitHub Sync Enhanced v5.0.0 جاري التحميل...');
     }
     
     // ============ التهيئة ============
@@ -49,20 +46,30 @@ class EnhancedGitHubSync {
         try {
             console.log('🔧 جاري تهيئة النظام المحسن...');
             
-            // التحقق من التوكن
-            const isValid = await this.validateToken();
-            if (!isValid) {
-                throw new Error('التوكن غير صالح أو انتهت صلاحيته');
+            // التحقق من صحة التوكن
+            const tokenValid = await this.validateToken();
+            if (!tokenValid) {
+                console.error('❌ التوكن غير صالح');
+                return this.initializeLocalMode();
             }
             
-            // جلب البيانات
-            await this.loadFullData();
+            // التحقق من وجود الريبو
+            const repoExists = await this.checkRepo();
+            if (!repoExists) {
+                console.error('❌ الريبو غير موجود');
+                return this.initializeLocalMode();
+            }
+            
+            // إنشاء مجلد الصور إذا لم يكن موجوداً
+            await this.ensureImagesFolder();
+            
+            // جلب البيانات الأولية
+            await this.loadInitialData();
             
             this.state.isInitialized = true;
             this.state.lastSync = new Date().toISOString();
             
             console.log('✅ تم تهيئة النظام بنجاح');
-            this.dispatchEvent('initialized', { success: true });
             
             // بدء المزامنة التلقائية
             this.startAutoSync();
@@ -71,208 +78,307 @@ class EnhancedGitHubSync {
             
         } catch (error) {
             console.error('❌ فشل التهيئة:', error);
-            this.state.lastError = error.message;
+            return this.initializeLocalMode();
+        }
+    }
+    
+    async initializeLocalMode() {
+        console.log('🔄 التحويل إلى الوضع المحلي...');
+        
+        // تهيئة البيانات المحلية
+        await this.loadLocalData();
+        
+        this.state.isInitialized = true;
+        this.state.lastSync = new Date().toISOString();
+        
+        console.log('✅ تم التهيئة في الوضع المحلي');
+        return false;
+    }
+    
+    // ============ التحقق من التوكن ============
+    async validateToken() {
+        try {
+            const response = await fetch(`${this.baseURL}/user`, {
+                headers: {
+                    'Authorization': `Bearer ${this.config.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
             
-            // استخدام البيانات المحلية
-            await this.loadFromLocalStorage();
-            this.state.isInitialized = true;
+            if (!response.ok) {
+                console.error(`❌ خطأ في التحقق من التوكن: ${response.status}`);
+                return false;
+            }
             
+            console.log('✅ التوكن صالح');
+            return true;
+            
+        } catch (error) {
+            console.error('❌ فشل التحقق من التوكن:', error);
             return false;
         }
     }
     
-    // ============ جلب البيانات الكاملة ============
-    async loadFullData() {
+    // ============ التحقق من الريبو ============
+    async checkRepo() {
         try {
-            // جلب البيانات الرئيسية
-            const data = await this.fetchData();
+            const response = await fetch(
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}`,
+                {
+                    headers: this.headers
+                }
+            );
             
-            // جلب الصور المخزنة
-            await this.loadStoredImages();
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.error('❌ الريبو غير موجود');
+                    return false;
+                }
+                throw new Error(`خطأ في التحقق من الريبو: ${response.status}`);
+            }
             
-            // تحديث الكاش
-            this.cache.data = data;
-            window.siteData = data;
-            
-            // حفظ محلياً
-            this.saveToLocalStorage(data);
-            
-            return data;
+            console.log('✅ الريبو موجود');
+            return true;
             
         } catch (error) {
-            console.error('❌ فشل تحميل البيانات الكاملة:', error);
+            console.error('❌ فشل التحقق من الريبو:', error);
+            return false;
+        }
+    }
+    
+    // ============ إنشاء مجلد الصور ============
+    async ensureImagesFolder() {
+        try {
+            const response = await fetch(
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}`,
+                {
+                    headers: this.headers
+                }
+            );
+            
+            if (response.status === 404) {
+                console.log('📁 جاري إنشاء مجلد الصور...');
+                
+                // إنشاء ملف README في المجلد
+                const readmeContent = this.base64Encode('# مجلد الصور\nسيتم تخزين جميع الصور هنا.');
+                
+                const createResponse = await fetch(
+                    `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/README.md`,
+                    {
+                        method: 'PUT',
+                        headers: this.headers,
+                        body: JSON.stringify({
+                            message: '📁 إنشاء مجلد الصور',
+                            content: readmeContent,
+                            branch: this.config.branch
+                        })
+                    }
+                );
+                
+                if (createResponse.ok) {
+                    console.log('✅ تم إنشاء مجلد الصور');
+                    return true;
+                }
+            }
+            
+            return true;
+            
+        } catch (error) {
+            console.error('❌ فشل إنشاء مجلد الصور:', error);
+            return false;
+        }
+    }
+    
+    // ============ جلب البيانات الأولية ============
+    async loadInitialData() {
+        try {
+            // محاولة جلب البيانات من GitHub
+            const githubData = await this.fetchFromGitHub();
+            if (githubData) {
+                this.cache.data = githubData;
+                this.saveToLocalStorage(githubData);
+                console.log('✅ تم تحميل البيانات من GitHub');
+                return;
+            }
+            
+            // إذا فشل، جلب البيانات المحلية
+            const localData = await this.loadLocalData();
+            if (localData) {
+                this.cache.data = localData;
+                console.log('✅ تم تحميل البيانات المحلية');
+                return;
+            }
+            
+            // إنشاء بيانات افتراضية
+            const defaultData = this.createDefaultData();
+            this.cache.data = defaultData;
+            this.saveToLocalStorage(defaultData);
+            console.log('✅ تم إنشاء بيانات افتراضية');
+            
+        } catch (error) {
+            console.error('❌ فشل تحميل البيانات الأولية:', error);
             throw error;
         }
     }
     
-    // ============ جلب البيانات ============
-    async fetchData() {
-        this.state.isSyncing = true;
-        this.dispatchEvent('syncStart', { type: 'fetch' });
-        
+    // ============ جلب البيانات من GitHub ============
+    async fetchFromGitHub() {
         try {
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`
-            );
-            
-            if (response.status === 404) {
-                console.log('📝 إنشاء ملف بيانات جديد...');
-                const defaultData = this.createDefaultData();
-                const created = await this.createFile(this.config.dataFile, defaultData);
-                
-                if (created) {
-                    return defaultData;
+            const response = await fetch(
+                `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.dataFile}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${this.config.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
                 }
-                throw new Error('فشل إنشاء الملف');
-            }
-            
-            if (!response.ok) {
-                throw new Error(`فشل الجلب: ${response.status}`);
-            }
-            
-            const result = await response.json();
-            const decodedContent = this.base64Decode(result.content);
-            const data = JSON.parse(decodedContent);
-            
-            this.cache.sha = result.sha;
-            
-            return data;
-            
-        } catch (error) {
-            console.error('❌ فشل جلب البيانات:', error);
-            
-            // استخدام البيانات المحلية
-            const localData = await this.loadFromLocalStorage();
-            if (localData) return localData;
-            
-            // استخدام بيانات افتراضية
-            return this.createDefaultData();
-            
-        } finally {
-            this.state.isSyncing = false;
-            this.state.lastSync = new Date().toISOString();
-        }
-    }
-    
-    // ============ تحميل الصور المخزنة ============
-    async loadStoredImages() {
-        try {
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}`
             );
             
             if (response.ok) {
-                const files = await response.json();
+                const data = await response.json();
                 
-                // تحميل كل صورة
-                for (const file of files) {
-                    if (file.type === 'file' && this.isImageFile(file.name)) {
-                        const imageResponse = await fetch(file.download_url);
-                        const blob = await imageResponse.blob();
-                        const dataUrl = await this.blobToDataURL(blob);
-                        
-                        this.cache.images[file.name] = dataUrl;
+                // الحصول على SHA للملف
+                const shaResponse = await fetch(
+                    `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
+                    {
+                        headers: this.headers
                     }
+                );
+                
+                if (shaResponse.ok) {
+                    const shaData = await shaResponse.json();
+                    this.cache.sha = shaData.sha;
                 }
                 
-                console.log(`✅ تم تحميل ${Object.keys(this.cache.images).length} صورة`);
+                return data;
             }
+            
+            return null;
+            
         } catch (error) {
-            console.log('⚠️ لا يوجد مجلد صور أو خطأ في التحميل');
+            console.error('❌ فشل جلب البيانات من GitHub:', error);
+            return null;
+        }
+    }
+    
+    // ============ جلب البيانات المحلية ============
+    async loadLocalData() {
+        try {
+            const dataStr = localStorage.getItem('abdullah_cars_data');
+            if (dataStr) {
+                return JSON.parse(dataStr);
+            }
+            return null;
+        } catch (error) {
+            console.error('❌ خطأ في قراءة البيانات المحلية:', error);
+            return null;
+        }
+    }
+    
+    // ============ المزامنة ============
+    async sync() {
+        if (this.state.isSyncing) {
+            console.log('⚠️ المزامنة جارية بالفعل...');
+            return this.cache.data;
+        }
+        
+        this.state.isSyncing = true;
+        
+        try {
+            console.log('🔄 بدء المزامنة...');
+            
+            let data = null;
+            
+            // محاولة الجلب من GitHub
+            if (this.state.isInitialized) {
+                data = await this.fetchFromGitHub();
+            }
+            
+            // إذا فشل، استخدام البيانات المحلية
+            if (!data) {
+                data = await this.loadLocalData();
+                if (!data) {
+                    data = this.createDefaultData();
+                }
+            }
+            
+            // تحديث الكاش
+            this.cache.data = data;
+            
+            // حفظ محلياً
+            this.saveToLocalStorage(data);
+            
+            this.state.lastSync = new Date().toISOString();
+            this.state.retryCount = 0;
+            
+            console.log('✅ تمت المزامنة بنجاح');
+            return data;
+            
+        } catch (error) {
+            console.error('❌ فشل المزامنة:', error);
+            this.state.lastError = error.message;
+            this.state.retryCount++;
+            
+            // استخدام البيانات المحلية كبديل
+            const localData = await this.loadLocalData();
+            if (localData) {
+                this.cache.data = localData;
+                return localData;
+            }
+            
+            throw error;
+            
+        } finally {
+            this.state.isSyncing = false;
         }
     }
     
     // ============ حفظ البيانات ============
     async save(data) {
-        if (this.state.isSyncing) {
-            return await this.queueOperation(() => this.saveData(data));
-        }
-        
-        return await this.saveData(data);
-    }
-    
-    async saveData(data) {
         this.state.isSyncing = true;
-        this.dispatchEvent('syncStart', { type: 'save' });
         
         try {
+            console.log('💾 بدء حفظ البيانات...');
+            
             // تحديث البيانات
             data.lastUpdated = new Date().toISOString();
-            data.version = data.version || "3.0.0";
+            data.version = data.version || "5.0.0";
             
-            // التحقق من البيانات
-            this.validateData(data);
+            // حفظ محلياً أولاً
+            this.saveToLocalStorage(data);
+            this.cache.data = data;
             
-            // رفع الصور المعلقة أولاً
-            await this.processPendingUploads();
-            
-            // حفظ البيانات
-            const commitMessage = this.generateCommitMessage(data);
-            const content = this.base64Encode(JSON.stringify(data, null, 2));
-            
-            const requestBody = {
-                message: commitMessage,
-                content: content,
-                branch: this.config.branch,
-                sha: this.cache.sha
-            };
-            
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
-                {
-                    method: 'PUT',
-                    body: JSON.stringify(requestBody)
-                }
-            );
-            
-            if (!response.ok) {
-                throw new Error('فشل الحفظ على GitHub');
+            // محاولة الحفظ على GitHub
+            let githubSuccess = false;
+            if (this.state.isInitialized) {
+                githubSuccess = await this.saveToGitHub(data);
             }
             
-            const result = await response.json();
+            this.state.lastSync = new Date().toISOString();
             
-            // تحديث الكاش
-            this.cache.data = data;
-            this.cache.sha = result.content.sha;
-            window.siteData = data;
-            
-            // حفظ محلياً
-            this.saveToLocalStorage(data);
-            
-            console.log('✅ تم الحفظ بنجاح');
-            
-            this.dispatchEvent('syncComplete', {
-                type: 'save',
-                data: data
-            });
+            console.log('✅ تم حفظ البيانات بنجاح');
             
             return {
                 success: true,
-                github: true,
+                github: githubSuccess,
                 local: true,
                 timestamp: new Date().toISOString()
             };
             
         } catch (error) {
-            console.error('❌ فشل الحفظ:', error);
+            console.error('❌ فشل حفظ البيانات:', error);
             
             // حفظ محلي كبديل
             try {
                 this.saveToLocalStorage(data);
-                this.cache.data = data;
-                window.siteData = data;
-                
-                console.log('💾 تم الحفظ محلياً');
-                
                 return {
                     success: true,
                     github: false,
                     local: true,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    error: 'تم الحفظ محلياً فقط'
                 };
-                
             } catch (localError) {
-                console.error('❌ فشل الحفظ المحلي:', localError);
                 return {
                     success: false,
                     error: 'فشل الحفظ تماماً'
@@ -281,7 +387,48 @@ class EnhancedGitHubSync {
             
         } finally {
             this.state.isSyncing = false;
-            this.state.lastSync = new Date().toISOString();
+        }
+    }
+    
+    // ============ حفظ على GitHub ============
+    async saveToGitHub(data) {
+        try {
+            const content = this.base64Encode(JSON.stringify(data, null, 2));
+            const commitMessage = `🔄 تحديث البيانات ${new Date().toLocaleString('ar-EG')}`;
+            
+            const requestBody = {
+                message: commitMessage,
+                content: content,
+                branch: this.config.branch
+            };
+            
+            // إذا كان هناك SHA، أضفه للطلب
+            if (this.cache.sha) {
+                requestBody.sha = this.cache.sha;
+            }
+            
+            const response = await fetch(
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
+                {
+                    method: 'PUT',
+                    headers: this.headers,
+                    body: JSON.stringify(requestBody)
+                }
+            );
+            
+            if (!response.ok) {
+                throw new Error(`فشل الحفظ: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            this.cache.sha = result.content.sha;
+            
+            console.log('✅ تم الحفظ على GitHub');
+            return true;
+            
+        } catch (error) {
+            console.error('❌ فشل الحفظ على GitHub:', error);
+            return false;
         }
     }
     
@@ -292,41 +439,53 @@ class EnhancedGitHubSync {
                 throw new Error('الملف ليس صورة');
             }
             
-            const name = fileName || `${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '-')}`;
+            const name = fileName || `image-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '-')}`;
             const dataUrl = await this.fileToDataURL(file);
             
-            // تخزين مؤقت
-            this.imageCache.set(name, dataUrl);
+            // حفظ محلياً
+            this.saveImageLocally(name, dataUrl);
             
-            // إضافة للقائمة المعلقة
-            this.pendingUploads.push({
-                name: name,
-                dataUrl: dataUrl,
-                file: file
-            });
-            
-            // رفع فوري
-            await this.uploadImageToGitHub(name, file);
+            // إذا كان النظام مهيئاً، حاول الرفع إلى GitHub
+            let githubSuccess = false;
+            if (this.state.isInitialized) {
+                githubSuccess = await this.uploadImageToGitHub(name, file);
+            }
             
             return {
                 success: true,
-                url: this.getImageUrl(name),
+                url: dataUrl,
                 name: name,
-                dataUrl: dataUrl
+                github: githubSuccess,
+                local: true
             };
             
         } catch (error) {
             console.error('❌ فشل رفع الصورة:', error);
-            return {
-                success: false,
-                error: error.message
-            };
+            
+            // محاولة بديلة: استخدام Data URL فقط
+            try {
+                const dataUrl = await this.fileToDataURL(file);
+                const name = `image-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '-')}`;
+                this.saveImageLocally(name, dataUrl);
+                
+                return {
+                    success: true,
+                    url: dataUrl,
+                    name: name,
+                    github: false,
+                    local: true
+                };
+            } catch (fallbackError) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
         }
     }
     
     async uploadImageToGitHub(fileName, file) {
         try {
-            // تحويل إلى base64
             const base64Content = await this.fileToBase64(file);
             
             const requestBody = {
@@ -335,10 +494,11 @@ class EnhancedGitHubSync {
                 branch: this.config.branch
             };
             
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`,
+            const response = await fetch(
+                `${this.baseURL}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`,
                 {
                     method: 'PUT',
+                    headers: this.headers,
                     body: JSON.stringify(requestBody)
                 }
             );
@@ -352,131 +512,23 @@ class EnhancedGitHubSync {
             
         } catch (error) {
             console.error(`❌ فشل رفع الصورة ${fileName}:`, error);
-            throw error;
-        }
-    }
-    
-    async uploadMultipleImages(files) {
-        const results = [];
-        
-        for (const file of files) {
-            try {
-                const result = await this.uploadImage(file);
-                results.push(result);
-            } catch (error) {
-                results.push({
-                    success: false,
-                    fileName: file.name,
-                    error: error.message
-                });
-            }
-        }
-        
-        return results;
-    }
-    
-    async processPendingUploads() {
-        if (this.pendingUploads.length === 0) return;
-        
-        console.log(`📤 جاري رفع ${this.pendingUploads.length} صورة...`);
-        
-        const uploads = [...this.pendingUploads];
-        this.pendingUploads = [];
-        
-        for (const upload of uploads) {
-            try {
-                await this.uploadImageToGitHub(upload.name, upload.file);
-            } catch (error) {
-                console.error(`❌ فشل رفع ${upload.name}:`, error);
-            }
-        }
-    }
-    
-    // ============ الحصول على رابط الصورة ============
-    getImageUrl(fileName) {
-        if (this.imageCache.has(fileName)) {
-            return this.imageCache.get(fileName);
-        }
-        
-        if (this.cache.images[fileName]) {
-            return this.cache.images[fileName];
-        }
-        
-        // رابط GitHub المباشر
-        return `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.imagesFolder}/${fileName}`;
-    }
-    
-    // ============ حذف الصورة ============
-    async deleteImage(fileName) {
-        try {
-            // الحصول على SHA للصورة
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`
-            );
-            
-            if (!response.ok) {
-                throw new Error('الصورة غير موجودة');
-            }
-            
-            const fileInfo = await response.json();
-            
-            const deleteBody = {
-                message: `🗑️ حذف صورة: ${fileName}`,
-                sha: fileInfo.sha,
-                branch: this.config.branch
-            };
-            
-            const deleteResponse = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`,
-                {
-                    method: 'DELETE',
-                    body: JSON.stringify(deleteBody)
-                }
-            );
-            
-            if (!deleteResponse.ok) {
-                throw new Error('فشل حذف الصورة');
-            }
-            
-            // إزالة من الكاش
-            this.imageCache.delete(fileName);
-            delete this.cache.images[fileName];
-            
-            console.log(`✅ تم حذف الصورة: ${fileName}`);
-            return true;
-            
-        } catch (error) {
-            console.error('❌ فشل حذف الصورة:', error);
             return false;
         }
     }
     
-    // ============ المزامنة ============
-    async sync() {
+    // ============ أدوات مساعدة ============
+    saveImageLocally(name, dataUrl) {
         try {
-            const data = await this.fetchData();
-            
-            // تحديث الكاش
-            this.cache.data = data;
-            window.siteData = data;
-            
-            // تحميل الصور الجديدة
-            await this.loadStoredImages();
-            
-            this.dispatchEvent('dataChanged', {
-                type: 'sync',
-                data: data
-            });
-            
-            return data;
-            
+            const images = JSON.parse(localStorage.getItem('uploaded_images') || '{}');
+            images[name] = dataUrl;
+            localStorage.setItem('uploaded_images', JSON.stringify(images));
+            return true;
         } catch (error) {
-            console.error('❌ فشل المزامنة:', error);
-            throw error;
+            console.error('❌ فشل حفظ الصورة محلياً:', error);
+            return false;
         }
     }
     
-    // ============ أدوات مساعدة ============
     async fileToDataURL(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -488,71 +540,14 @@ class EnhancedGitHubSync {
     
     async fileToBase64(file) {
         const dataUrl = await this.fileToDataURL(file);
-        return dataUrl.split(',')[1]; // إزالة البادئة
-    }
-    
-    async blobToDataURL(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
+        return dataUrl.split(',')[1];
     }
     
     base64Encode(str) {
         return btoa(unescape(encodeURIComponent(str)));
     }
     
-    base64Decode(str) {
-        return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
-    }
-    
-    isImageFile(fileName) {
-        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
-        return imageExtensions.some(ext => fileName.toLowerCase().endsWith(ext));
-    }
-    
-    // ============ إنشاء ملف جديد ============
-    async createFile(filePath, data) {
-        try {
-            const content = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-            
-            const requestBody = {
-                message: '🚀 إنشاء ملف جديد',
-                content: this.base64Encode(content),
-                branch: this.config.branch
-            };
-            
-            const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${filePath}`,
-                {
-                    method: 'PUT',
-                    body: JSON.stringify(requestBody)
-                }
-            );
-            
-            return response.ok;
-            
-        } catch (error) {
-            console.error('❌ فشل إنشاء الملف:', error);
-            return false;
-        }
-    }
-    
-    // ============ إدارة الكاش ============
-    async loadFromLocalStorage() {
-        try {
-            const dataStr = localStorage.getItem('abdullah_cars_data');
-            if (dataStr) {
-                return JSON.parse(dataStr);
-            }
-        } catch (error) {
-            console.error('❌ خطأ في قراءة البيانات المحلية:', error);
-        }
-        return null;
-    }
-    
+    // ============ حفظ البيانات المحلية ============
     saveToLocalStorage(data) {
         try {
             localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
@@ -564,144 +559,10 @@ class EnhancedGitHubSync {
         }
     }
     
-    clearCache() {
-        this.cache = {
-            data: null,
-            sha: null,
-            images: {}
-        };
-        this.imageCache.clear();
-        localStorage.removeItem('abdullah_cars_data');
-        console.log('🗑️ تم مسح الكاش');
-    }
-    
-    // ============ أدوات مساعدة ============
-    validateData(data) {
-        const requiredSections = ['site', 'products', 'brands', 'categories', 'users'];
-        const missing = requiredSections.filter(section => !data[section]);
-        
-        if (missing.length > 0) {
-            console.warn('⚠️ أقسام مفقودة في البيانات:', missing);
-        }
-        
-        return true;
-    }
-    
-    generateCommitMessage(data) {
-        const changes = [];
-        
-        if (data.products) changes.push(`${data.products.length} منتج`);
-        if (data.brands) changes.push(`${data.brands.length} ماركة`);
-        if (data.categories) changes.push(`${data.categories.length} قسم`);
-        if (data.users) changes.push(`${data.users.length} مستخدم`);
-        
-        return `🔄 تحديث البيانات: ${changes.join(' | ')}\n\nالتاريخ: ${new Date().toLocaleString('ar-EG')}`;
-    }
-    
-    async queueOperation(operation) {
-        return new Promise((resolve) => {
-            const attempt = async () => {
-                if (!this.state.isSyncing) {
-                    const result = await operation();
-                    resolve(result);
-                } else {
-                    setTimeout(attempt, 500);
-                }
-            };
-            attempt();
-        });
-    }
-    
-    async request(endpoint, options = {}) {
-        const url = this.baseURL + endpoint;
-        const config = {
-            headers: { ...this.headers, ...options.headers },
-            ...options
-        };
-        
-        try {
-            const response = await fetch(url, config);
-            
-            if (response.status === 429) {
-                this.state.retryCount++;
-                if (this.state.retryCount <= this.state.maxRetries) {
-                    const waitTime = Math.pow(2, this.state.retryCount) * 1000;
-                    await this.delay(waitTime);
-                    return this.request(endpoint, options);
-                }
-            }
-            
-            return response;
-            
-        } catch (error) {
-            console.error('❌ خطأ في الطلب:', error);
-            throw error;
-        }
-    }
-    
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
-    // ============ المزامنة التلقائية ============
-    startAutoSync() {
-        // كل 10 دقائق
-        setInterval(async () => {
-            if (this.state.isInitialized && !this.state.isSyncing) {
-                try {
-                    await this.sync();
-                } catch (error) {
-                    console.error('❌ فشل المزامنة التلقائية:', error);
-                }
-            }
-        }, 10 * 60 * 1000);
-        
-        // عند التركيز على الصفحة
-        window.addEventListener('focus', async () => {
-            if (this.state.isInitialized && !this.state.isSyncing) {
-                try {
-                    await this.sync();
-                } catch (error) {
-                    console.error('❌ فشل المزامنة عند التركيز:', error);
-                }
-            }
-        });
-    }
-    
-    // ============ الأحداث ============
-    on(event, callback) {
-        window.addEventListener(`githubSync:${event}`, (e) => callback(e.detail));
-    }
-    
-    dispatchEvent(event, data) {
-        const customEvent = new CustomEvent(`githubSync:${event}`, {
-            detail: data
-        });
-        window.dispatchEvent(customEvent);
-    }
-    
-    // ============ معلومات النظام ============
-    getStatus() {
-        return {
-            initialized: this.state.isInitialized,
-            syncing: this.state.isSyncing,
-            lastSync: this.state.lastSync,
-            lastError: this.state.lastError,
-            cache: {
-                data: !!this.cache.data,
-                products: this.cache.data?.products?.length || 0,
-                brands: this.cache.data?.brands?.length || 0,
-                categories: this.cache.data?.categories?.length || 0,
-                users: this.cache.data?.users?.length || 0,
-                images: Object.keys(this.cache.images).length
-            }
-        };
-    }
-    
     // ============ إنشاء بيانات افتراضية ============
     createDefaultData() {
         return {
-            version: "3.0.0",
+            version: "5.0.0",
             lastUpdated: new Date().toISOString(),
             site: {
                 name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
@@ -746,6 +607,47 @@ class EnhancedGitHubSync {
             settings: {}
         };
     }
+    
+    // ============ المزامنة التلقائية ============
+    startAutoSync() {
+        // كل 5 دقائق
+        setInterval(async () => {
+            if (this.state.isInitialized && !this.state.isSyncing) {
+                try {
+                    await this.sync();
+                } catch (error) {
+                    console.error('❌ فشل المزامنة التلقائية:', error);
+                }
+            }
+        }, 5 * 60 * 1000);
+        
+        // عند التركيز على الصفحة
+        window.addEventListener('focus', async () => {
+            if (this.state.isInitialized && !this.state.isSyncing) {
+                try {
+                    await this.sync();
+                } catch (error) {
+                    console.error('❌ فشل المزامنة عند التركيز:', error);
+                }
+            }
+        });
+    }
+    
+    // ============ الحصول على حالة النظام ============
+    getStatus() {
+        return {
+            initialized: this.state.isInitialized,
+            syncing: this.state.isSyncing,
+            lastSync: this.state.lastSync,
+            lastError: this.state.lastError,
+            retryCount: this.state.retryCount,
+            config: {
+                owner: this.config.owner,
+                repo: this.config.repo,
+                branch: this.config.branch
+            }
+        };
+    }
 }
 
 // ============ التهيئة التلقائية ============
@@ -756,22 +658,32 @@ if (typeof window !== 'undefined') {
         console.log('🎉 بدء تحميل نظام المزامنة المحسن...');
         
         try {
-            await window.gitHubSync.initialize();
-            console.log('🚀 النظام المحسن جاهز للعمل');
+            const initialized = await window.gitHubSync.initialize();
+            
+            if (initialized) {
+                console.log('🚀 النظام المحسن جاهز للعمل مع GitHub');
+            } else {
+                console.log('💾 النظام المحسن جاهز للعمل محلياً');
+            }
+            
+            // إرسال حدث أن النظام جاهز
+            const event = new CustomEvent('githubSync:ready', {
+                detail: { success: true, initialized: initialized }
+            });
+            window.dispatchEvent(event);
+            
         } catch (error) {
             console.error('❌ فشل تحميل النظام المحسن:', error);
             
-            // بديل محلي
+            // إنشاء نظام بديل
             window.gitHubSync = {
                 isInitialized: true,
                 sync: async () => {
                     const data = JSON.parse(localStorage.getItem('abdullah_cars_data') || '{}');
-                    window.siteData = data;
                     return data;
                 },
                 save: async (data) => {
                     localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
-                    window.siteData = data;
                     return { success: true, localSaved: true };
                 },
                 uploadImage: async (file) => {
@@ -781,7 +693,8 @@ if (typeof window !== 'undefined') {
                             resolve({
                                 success: true,
                                 url: reader.result,
-                                name: file.name
+                                name: file.name,
+                                local: true
                             });
                         };
                         reader.readAsDataURL(file);
