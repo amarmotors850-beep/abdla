@@ -1,17 +1,18 @@
 /**
- * نظام مزامنة GitHub المتقدم - سيارات عبدالله
- * نظام متكامل للقراءة، الكتابة، التعديل، والحذف مع GitHub
- * إصدار 3.0.0
+ * نظام مزامنة GitHub المحسن - سيارات عبدالله
+ * يدعم تخزين الصور على GitHub وعمليات CRUD الكاملة
+ * إصدار 4.0.0
  */
 
-class AdvancedGitHubSync {
+class EnhancedGitHubSync {
     constructor(config = {}) {
         this.config = {
             owner: 'MHmooDhazm',
             repo: 'bitelazz-data',
             token: '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',
             branch: 'main',
-            filePath: 'site-data.json',
+            dataFile: 'site-data.json',
+            imagesFolder: 'images',
             ...config
         };
         
@@ -34,23 +35,19 @@ class AdvancedGitHubSync {
         this.cache = {
             data: null,
             sha: null,
-            etag: null
+            images: {}
         };
         
-        this.events = {
-            onSyncStart: [],
-            onSyncComplete: [],
-            onSyncError: [],
-            onDataChanged: []
-        };
+        this.imageCache = new Map();
+        this.pendingUploads = [];
         
-        console.log('🚀 GitHub Sync Pro جاري التحميل...');
+        console.log('🚀 GitHub Sync Enhanced جاري التحميل...');
     }
     
     // ============ التهيئة ============
     async initialize() {
         try {
-            console.log('🔧 جاري تهيئة النظام المتقدم...');
+            console.log('🔧 جاري تهيئة النظام المحسن...');
             
             // التحقق من التوكن
             const isValid = await this.validateToken();
@@ -58,8 +55,8 @@ class AdvancedGitHubSync {
                 throw new Error('التوكن غير صالح أو انتهت صلاحيته');
             }
             
-            // جلب البيانات الأولية
-            await this.fetchData();
+            // جلب البيانات
+            await this.loadFullData();
             
             this.state.isInitialized = true;
             this.state.lastSync = new Date().toISOString();
@@ -76,21 +73,35 @@ class AdvancedGitHubSync {
             console.error('❌ فشل التهيئة:', error);
             this.state.lastError = error.message;
             
-            // محاولة استخدام البيانات المحلية
+            // استخدام البيانات المحلية
             await this.loadFromLocalStorage();
+            this.state.isInitialized = true;
             
             return false;
         }
     }
     
-    // ============ التحقق من التوكن ============
-    async validateToken() {
+    // ============ جلب البيانات الكاملة ============
+    async loadFullData() {
         try {
-            const response = await this.request('/user');
-            return response.ok;
+            // جلب البيانات الرئيسية
+            const data = await this.fetchData();
+            
+            // جلب الصور المخزنة
+            await this.loadStoredImages();
+            
+            // تحديث الكاش
+            this.cache.data = data;
+            window.siteData = data;
+            
+            // حفظ محلياً
+            this.saveToLocalStorage(data);
+            
+            return data;
+            
         } catch (error) {
-            console.error('❌ خطأ في التحقق من التوكن:', error);
-            return false;
+            console.error('❌ فشل تحميل البيانات الكاملة:', error);
+            throw error;
         }
     }
     
@@ -100,112 +111,19 @@ class AdvancedGitHubSync {
         this.dispatchEvent('syncStart', { type: 'fetch' });
         
         try {
-            console.log('📥 جاري جلب البيانات من GitHub...');
-            
-            // المحاولة 1: جلب من GitHub
-            const githubData = await this.fetchFromGitHub();
-            
-            if (githubData) {
-                this.cache.data = githubData.data;
-                this.cache.sha = githubData.sha;
-                this.cache.etag = githubData.etag;
-                
-                // حفظ محلياً
-                this.saveToLocalStorage(githubData.data);
-                
-                console.log('✅ تم جلب البيانات من GitHub:', {
-                    products: githubData.data.products?.length || 0,
-                    brands: githubData.data.brands?.length || 0,
-                    users: githubData.data.users?.length || 0
-                });
-                
-                this.dispatchEvent('syncComplete', {
-                    type: 'fetch',
-                    source: 'github',
-                    data: githubData.data
-                });
-                
-                return githubData.data;
-            }
-            
-            // المحاولة 2: إنشاء ملف جديد
-            console.log('📝 إنشاء ملف بيانات جديد...');
-            const defaultData = this.createDefaultData();
-            const created = await this.createFile(defaultData);
-            
-            if (created) {
-                this.cache.data = defaultData;
-                this.saveToLocalStorage(defaultData);
-                
-                console.log('✅ تم إنشاء ملف جديد على GitHub');
-                
-                this.dispatchEvent('syncComplete', {
-                    type: 'create',
-                    source: 'github',
-                    data: defaultData
-                });
-                
-                return defaultData;
-            }
-            
-            throw new Error('فشل في جلب أو إنشاء البيانات');
-            
-        } catch (error) {
-            console.error('❌ فشل جلب البيانات:', error);
-            
-            // المحاولة 3: استخدام البيانات المحلية
-            const localData = await this.loadFromLocalStorage();
-            if (localData) {
-                this.cache.data = localData;
-                
-                this.dispatchEvent('syncComplete', {
-                    type: 'fetch',
-                    source: 'local',
-                    data: localData,
-                    warning: 'استخدام البيانات المحلية'
-                });
-                
-                return localData;
-            }
-            
-            // المحاولة 4: استخدام بيانات افتراضية
-            const defaultData = this.createDefaultData();
-            this.cache.data = defaultData;
-            this.saveToLocalStorage(defaultData);
-            
-            this.dispatchEvent('syncError', {
-                type: 'fetch',
-                error: error.message,
-                fallback: 'default'
-            });
-            
-            return defaultData;
-            
-        } finally {
-            this.state.isSyncing = false;
-            this.state.lastSync = new Date().toISOString();
-        }
-    }
-    
-    async fetchFromGitHub() {
-        try {
             const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
-                {
-                    headers: {
-                        'If-None-Match': this.cache.etag || ''
-                    }
-                }
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`
             );
             
-            if (response.status === 304) {
-                console.log('📦 البيانات لم تتغير (304)');
-                return null;
-            }
-            
             if (response.status === 404) {
-                console.log('📝 الملف غير موجود على GitHub');
-                return null;
+                console.log('📝 إنشاء ملف بيانات جديد...');
+                const defaultData = this.createDefaultData();
+                const created = await this.createFile(this.config.dataFile, defaultData);
+                
+                if (created) {
+                    return defaultData;
+                }
+                throw new Error('فشل إنشاء الملف');
             }
             
             if (!response.ok) {
@@ -213,39 +131,71 @@ class AdvancedGitHubSync {
             }
             
             const result = await response.json();
-            
-            if (!result.content) {
-                throw new Error('لا يوجد محتوى في الملف');
-            }
-            
-            // فك الترميز
             const decodedContent = this.base64Decode(result.content);
             const data = JSON.parse(decodedContent);
             
-            return {
-                data: data,
-                sha: result.sha,
-                etag: response.headers.get('etag')
-            };
+            this.cache.sha = result.sha;
+            
+            return data;
             
         } catch (error) {
-            console.error('❌ خطأ في جلب البيانات من GitHub:', error);
-            return null;
+            console.error('❌ فشل جلب البيانات:', error);
+            
+            // استخدام البيانات المحلية
+            const localData = await this.loadFromLocalStorage();
+            if (localData) return localData;
+            
+            // استخدام بيانات افتراضية
+            return this.createDefaultData();
+            
+        } finally {
+            this.state.isSyncing = false;
+            this.state.lastSync = new Date().toISOString();
+        }
+    }
+    
+    // ============ تحميل الصور المخزنة ============
+    async loadStoredImages() {
+        try {
+            const response = await this.request(
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}`
+            );
+            
+            if (response.ok) {
+                const files = await response.json();
+                
+                // تحميل كل صورة
+                for (const file of files) {
+                    if (file.type === 'file' && this.isImageFile(file.name)) {
+                        const imageResponse = await fetch(file.download_url);
+                        const blob = await imageResponse.blob();
+                        const dataUrl = await this.blobToDataURL(blob);
+                        
+                        this.cache.images[file.name] = dataUrl;
+                    }
+                }
+                
+                console.log(`✅ تم تحميل ${Object.keys(this.cache.images).length} صورة`);
+            }
+        } catch (error) {
+            console.log('⚠️ لا يوجد مجلد صور أو خطأ في التحميل');
         }
     }
     
     // ============ حفظ البيانات ============
     async save(data) {
         if (this.state.isSyncing) {
-            return await this.queueSave(data);
+            return await this.queueOperation(() => this.saveData(data));
         }
         
+        return await this.saveData(data);
+    }
+    
+    async saveData(data) {
         this.state.isSyncing = true;
         this.dispatchEvent('syncStart', { type: 'save' });
         
         try {
-            console.log('💾 جاري حفظ البيانات على GitHub...');
-            
             // تحديث البيانات
             data.lastUpdated = new Date().toISOString();
             data.version = data.version || "3.0.0";
@@ -253,24 +203,22 @@ class AdvancedGitHubSync {
             // التحقق من البيانات
             this.validateData(data);
             
-            // إعداد طلب الحفظ
-            const commitMessage = `🔄 تحديث البيانات: ${new Date().toLocaleString('ar-EG')}
+            // رفع الصور المعلقة أولاً
+            await this.processPendingUploads();
             
-تم التحديث بواسطة: ${currentUser?.fullName || 'النظام'}
-الوقت: ${new Date().toLocaleString('ar-EG')}
-التغييرات: ${this.getChangesSummary(this.cache.data, data)}`;
+            // حفظ البيانات
+            const commitMessage = this.generateCommitMessage(data);
+            const content = this.base64Encode(JSON.stringify(data, null, 2));
             
             const requestBody = {
                 message: commitMessage,
-                content: this.base64Encode(JSON.stringify(data, null, 2)),
+                content: content,
                 branch: this.config.branch,
                 sha: this.cache.sha
             };
             
-            // إرسال الطلب
-            console.log('📤 جاري رفع البيانات...');
             const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.dataFile}`,
                 {
                     method: 'PUT',
                     body: JSON.stringify(requestBody)
@@ -278,8 +226,7 @@ class AdvancedGitHubSync {
             );
             
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'فشل الحفظ');
+                throw new Error('فشل الحفظ على GitHub');
             }
             
             const result = await response.json();
@@ -292,17 +239,10 @@ class AdvancedGitHubSync {
             // حفظ محلياً
             this.saveToLocalStorage(data);
             
-            console.log('✅ تم الحفظ على GitHub بنجاح');
+            console.log('✅ تم الحفظ بنجاح');
             
             this.dispatchEvent('syncComplete', {
                 type: 'save',
-                source: 'github',
-                data: data,
-                commit: result.commit
-            });
-            
-            this.dispatchEvent('dataChanged', {
-                type: 'update',
                 data: data
             });
             
@@ -310,12 +250,11 @@ class AdvancedGitHubSync {
                 success: true,
                 github: true,
                 local: true,
-                commit: result.commit,
                 timestamp: new Date().toISOString()
             };
             
         } catch (error) {
-            console.error('❌ فشل الحفظ على GitHub:', error);
+            console.error('❌ فشل الحفظ:', error);
             
             // حفظ محلي كبديل
             try {
@@ -323,19 +262,7 @@ class AdvancedGitHubSync {
                 this.cache.data = data;
                 window.siteData = data;
                 
-                console.log('💾 تم الحفظ محلياً كبديل');
-                
-                this.dispatchEvent('syncComplete', {
-                    type: 'save',
-                    source: 'local',
-                    data: data,
-                    warning: 'تم الحفظ محلياً فقط'
-                });
-                
-                this.dispatchEvent('dataChanged', {
-                    type: 'update',
-                    data: data
-                });
+                console.log('💾 تم الحفظ محلياً');
                 
                 return {
                     success: true,
@@ -346,112 +273,259 @@ class AdvancedGitHubSync {
                 
             } catch (localError) {
                 console.error('❌ فشل الحفظ المحلي:', localError);
-                
-                this.dispatchEvent('syncError', {
-                    type: 'save',
-                    error: `${error.message} | ${localError.message}`,
-                    data: data
-                });
-                
                 return {
                     success: false,
-                    error: 'فشل الحفظ على GitHub والمحلي'
+                    error: 'فشل الحفظ تماماً'
                 };
             }
             
         } finally {
             this.state.isSyncing = false;
             this.state.lastSync = new Date().toISOString();
-            this.state.retryCount = 0;
         }
     }
     
-    async queueSave(data) {
-        return new Promise((resolve) => {
-            const attemptSave = async () => {
-                if (!this.state.isSyncing) {
-                    const result = await this.save(data);
-                    resolve(result);
-                } else {
-                    setTimeout(attemptSave, 1000);
-                }
-            };
-            attemptSave();
-        });
-    }
-    
-    // ============ المزامنة ============
-    async sync() {
-        console.log('🔄 جاري المزامنة...');
-        
+    // ============ رفع الصور ============
+    async uploadImage(file, fileName = null) {
         try {
-            // جلب البيانات من GitHub
-            const githubData = await this.fetchFromGitHub();
-            
-            if (!githubData) {
-                console.log('⚠️ لا توجد بيانات على GitHub');
-                return this.cache.data || await this.loadFromLocalStorage();
+            if (!file || !file.type.startsWith('image/')) {
+                throw new Error('الملف ليس صورة');
             }
             
-            // مقارنة البيانات
-            const localData = this.cache.data || await this.loadFromLocalStorage();
+            const name = fileName || `${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '-')}`;
+            const dataUrl = await this.fileToDataURL(file);
             
-            if (localData) {
-                const githubTime = new Date(githubData.data.lastUpdated || 0).getTime();
-                const localTime = new Date(localData.lastUpdated || 0).getTime();
-                
-                // إذا كانت البيانات المحلية أحدث
-                if (localTime > githubTime) {
-                    console.log('⬆️ البيانات المحلية أحدث، جاري الرفع...');
-                    const saveResult = await this.save(localData);
-                    
-                    if (saveResult.success) {
-                        return localData;
-                    }
-                }
-            }
+            // تخزين مؤقت
+            this.imageCache.set(name, dataUrl);
             
-            // استخدام بيانات GitHub
-            this.cache.data = githubData.data;
-            this.cache.sha = githubData.sha;
-            this.cache.etag = githubData.etag;
-            
-            window.siteData = githubData.data;
-            this.saveToLocalStorage(githubData.data);
-            
-            console.log('✅ تمت المزامنة بنجاح');
-            
-            this.dispatchEvent('dataChanged', {
-                type: 'sync',
-                data: githubData.data
+            // إضافة للقائمة المعلقة
+            this.pendingUploads.push({
+                name: name,
+                dataUrl: dataUrl,
+                file: file
             });
             
-            return githubData.data;
+            // رفع فوري
+            await this.uploadImageToGitHub(name, file);
+            
+            return {
+                success: true,
+                url: this.getImageUrl(name),
+                name: name,
+                dataUrl: dataUrl
+            };
             
         } catch (error) {
-            console.error('❌ فشل المزامنة:', error);
-            
-            const localData = await this.loadFromLocalStorage();
-            if (localData) {
-                this.cache.data = localData;
-                return localData;
-            }
-            
-            throw error;
+            console.error('❌ فشل رفع الصورة:', error);
+            return {
+                success: false,
+                error: error.message
+            };
         }
     }
     
-    // ============ إنشاء ملف جديد ============
-    async createFile(data) {
+    async uploadImageToGitHub(fileName, file) {
         try {
+            // تحويل إلى base64
+            const base64Content = await this.fileToBase64(file);
+            
             const requestBody = {
-                message: '🚀 إنشاء ملف البيانات الأولي - سيارات عبدالله\n\nتم الإنشاء بواسطة النظام الآلي',
-                content: this.base64Encode(JSON.stringify(data, null, 2)),
+                message: `📸 إضافة صورة: ${fileName}`,
+                content: base64Content,
                 branch: this.config.branch
             };
             
             const response = await this.request(
-                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`,
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify(requestBody)
+                }
+            );
+            
+            if (!response.ok) {
+                throw new Error('فشل رفع الصورة');
+            }
+            
+            console.log(`✅ تم رفع الصورة: ${fileName}`);
+            return true;
+            
+        } catch (error) {
+            console.error(`❌ فشل رفع الصورة ${fileName}:`, error);
+            throw error;
+        }
+    }
+    
+    async uploadMultipleImages(files) {
+        const results = [];
+        
+        for (const file of files) {
+            try {
+                const result = await this.uploadImage(file);
+                results.push(result);
+            } catch (error) {
+                results.push({
+                    success: false,
+                    fileName: file.name,
+                    error: error.message
+                });
+            }
+        }
+        
+        return results;
+    }
+    
+    async processPendingUploads() {
+        if (this.pendingUploads.length === 0) return;
+        
+        console.log(`📤 جاري رفع ${this.pendingUploads.length} صورة...`);
+        
+        const uploads = [...this.pendingUploads];
+        this.pendingUploads = [];
+        
+        for (const upload of uploads) {
+            try {
+                await this.uploadImageToGitHub(upload.name, upload.file);
+            } catch (error) {
+                console.error(`❌ فشل رفع ${upload.name}:`, error);
+            }
+        }
+    }
+    
+    // ============ الحصول على رابط الصورة ============
+    getImageUrl(fileName) {
+        if (this.imageCache.has(fileName)) {
+            return this.imageCache.get(fileName);
+        }
+        
+        if (this.cache.images[fileName]) {
+            return this.cache.images[fileName];
+        }
+        
+        // رابط GitHub المباشر
+        return `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}/${this.config.imagesFolder}/${fileName}`;
+    }
+    
+    // ============ حذف الصورة ============
+    async deleteImage(fileName) {
+        try {
+            // الحصول على SHA للصورة
+            const response = await this.request(
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`
+            );
+            
+            if (!response.ok) {
+                throw new Error('الصورة غير موجودة');
+            }
+            
+            const fileInfo = await response.json();
+            
+            const deleteBody = {
+                message: `🗑️ حذف صورة: ${fileName}`,
+                sha: fileInfo.sha,
+                branch: this.config.branch
+            };
+            
+            const deleteResponse = await this.request(
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.imagesFolder}/${fileName}`,
+                {
+                    method: 'DELETE',
+                    body: JSON.stringify(deleteBody)
+                }
+            );
+            
+            if (!deleteResponse.ok) {
+                throw new Error('فشل حذف الصورة');
+            }
+            
+            // إزالة من الكاش
+            this.imageCache.delete(fileName);
+            delete this.cache.images[fileName];
+            
+            console.log(`✅ تم حذف الصورة: ${fileName}`);
+            return true;
+            
+        } catch (error) {
+            console.error('❌ فشل حذف الصورة:', error);
+            return false;
+        }
+    }
+    
+    // ============ المزامنة ============
+    async sync() {
+        try {
+            const data = await this.fetchData();
+            
+            // تحديث الكاش
+            this.cache.data = data;
+            window.siteData = data;
+            
+            // تحميل الصور الجديدة
+            await this.loadStoredImages();
+            
+            this.dispatchEvent('dataChanged', {
+                type: 'sync',
+                data: data
+            });
+            
+            return data;
+            
+        } catch (error) {
+            console.error('❌ فشل المزامنة:', error);
+            throw error;
+        }
+    }
+    
+    // ============ أدوات مساعدة ============
+    async fileToDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    async fileToBase64(file) {
+        const dataUrl = await this.fileToDataURL(file);
+        return dataUrl.split(',')[1]; // إزالة البادئة
+    }
+    
+    async blobToDataURL(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
+    
+    base64Encode(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+    
+    base64Decode(str) {
+        return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
+    }
+    
+    isImageFile(fileName) {
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+        return imageExtensions.some(ext => fileName.toLowerCase().endsWith(ext));
+    }
+    
+    // ============ إنشاء ملف جديد ============
+    async createFile(filePath, data) {
+        try {
+            const content = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+            
+            const requestBody = {
+                message: '🚀 إنشاء ملف جديد',
+                content: this.base64Encode(content),
+                branch: this.config.branch
+            };
+            
+            const response = await this.request(
+                `/repos/${this.config.owner}/${this.config.repo}/contents/${filePath}`,
                 {
                     method: 'PUT',
                     body: JSON.stringify(requestBody)
@@ -471,9 +545,7 @@ class AdvancedGitHubSync {
         try {
             const dataStr = localStorage.getItem('abdullah_cars_data');
             if (dataStr) {
-                const data = JSON.parse(dataStr);
-                console.log('📦 تحميل البيانات من التخزين المحلي');
-                return data;
+                return JSON.parse(dataStr);
             }
         } catch (error) {
             console.error('❌ خطأ في قراءة البيانات المحلية:', error);
@@ -496,67 +568,50 @@ class AdvancedGitHubSync {
         this.cache = {
             data: null,
             sha: null,
-            etag: null
+            images: {}
         };
+        this.imageCache.clear();
         localStorage.removeItem('abdullah_cars_data');
         console.log('🗑️ تم مسح الكاش');
     }
     
     // ============ أدوات مساعدة ============
-    base64Encode(str) {
-        return btoa(unescape(encodeURIComponent(str)));
-    }
-    
-    base64Decode(str) {
-        return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
-    }
-    
     validateData(data) {
-        const requiredFields = ['site', 'products', 'brands', 'users'];
-        const missingFields = requiredFields.filter(field => !data[field]);
+        const requiredSections = ['site', 'products', 'brands', 'categories', 'users'];
+        const missing = requiredSections.filter(section => !data[section]);
         
-        if (missingFields.length > 0) {
-            throw new Error(`بيانات غير كاملة. الحقول المفقودة: ${missingFields.join(', ')}`);
+        if (missing.length > 0) {
+            console.warn('⚠️ أقسام مفقودة في البيانات:', missing);
         }
         
         return true;
     }
     
-    getChangesSummary(oldData, newData) {
+    generateCommitMessage(data) {
         const changes = [];
         
-        // تعداد المنتجات
-        const oldProducts = oldData?.products?.length || 0;
-        const newProducts = newData?.products?.length || 0;
-        if (newProducts !== oldProducts) {
-            changes.push(`المنتجات: ${oldProducts} → ${newProducts}`);
-        }
+        if (data.products) changes.push(`${data.products.length} منتج`);
+        if (data.brands) changes.push(`${data.brands.length} ماركة`);
+        if (data.categories) changes.push(`${data.categories.length} قسم`);
+        if (data.users) changes.push(`${data.users.length} مستخدم`);
         
-        // تعداد الماركات
-        const oldBrands = oldData?.brands?.length || 0;
-        const newBrands = newData?.brands?.length || 0;
-        if (newBrands !== oldBrands) {
-            changes.push(`الماركات: ${oldBrands} → ${newBrands}`);
-        }
-        
-        // تعداد المستخدمين
-        const oldUsers = oldData?.users?.length || 0;
-        const newUsers = newData?.users?.length || 0;
-        if (newUsers !== oldUsers) {
-            changes.push(`المستخدمين: ${oldUsers} → ${newUsers}`);
-        }
-        
-        // تعداد الأسئلة
-        const oldFaq = oldData?.faq?.questions?.length || 0;
-        const newFaq = newData?.faq?.questions?.length || 0;
-        if (newFaq !== oldFaq) {
-            changes.push(`الأسئلة: ${oldFaq} → ${newFaq}`);
-        }
-        
-        return changes.length > 0 ? changes.join(' | ') : 'تحديثات طفيفة';
+        return `🔄 تحديث البيانات: ${changes.join(' | ')}\n\nالتاريخ: ${new Date().toLocaleString('ar-EG')}`;
     }
     
-    // ============ الطلبات ============
+    async queueOperation(operation) {
+        return new Promise((resolve) => {
+            const attempt = async () => {
+                if (!this.state.isSyncing) {
+                    const result = await operation();
+                    resolve(result);
+                } else {
+                    setTimeout(attempt, 500);
+                }
+            };
+            attempt();
+        });
+    }
+    
     async request(endpoint, options = {}) {
         const url = this.baseURL + endpoint;
         const config = {
@@ -567,13 +622,11 @@ class AdvancedGitHubSync {
         try {
             const response = await fetch(url, config);
             
-            // تحديث معدل المحاولات
             if (response.status === 429) {
                 this.state.retryCount++;
                 if (this.state.retryCount <= this.state.maxRetries) {
-                    const retryAfter = parseInt(response.headers.get('Retry-After') || '60');
-                    console.log(`⏳ معدل الطلبات تجاوز الحد، إعادة المحاولة بعد ${retryAfter} ثانية`);
-                    await this.delay(retryAfter * 1000);
+                    const waitTime = Math.pow(2, this.state.retryCount) * 1000;
+                    await this.delay(waitTime);
                     return this.request(endpoint, options);
                 }
             }
@@ -592,7 +645,7 @@ class AdvancedGitHubSync {
     
     // ============ المزامنة التلقائية ============
     startAutoSync() {
-        // مزامنة كل 5 دقائق
+        // كل 10 دقائق
         setInterval(async () => {
             if (this.state.isInitialized && !this.state.isSyncing) {
                 try {
@@ -601,9 +654,9 @@ class AdvancedGitHubSync {
                     console.error('❌ فشل المزامنة التلقائية:', error);
                 }
             }
-        }, 5 * 60 * 1000); // 5 دقائق
+        }, 10 * 60 * 1000);
         
-        // مزامنة عند التركيز على النافذة
+        // عند التركيز على الصفحة
         window.addEventListener('focus', async () => {
             if (this.state.isInitialized && !this.state.isSyncing) {
                 try {
@@ -613,45 +666,18 @@ class AdvancedGitHubSync {
                 }
             }
         });
-        
-        console.log('⏰ تم تفعيل المزامنة التلقائية');
     }
     
     // ============ الأحداث ============
     on(event, callback) {
-        if (!this.events[event]) {
-            this.events[event] = [];
-        }
-        this.events[event].push(callback);
-    }
-    
-    off(event, callback) {
-        if (this.events[event]) {
-            this.events[event] = this.events[event].filter(cb => cb !== callback);
-        }
+        window.addEventListener(`githubSync:${event}`, (e) => callback(e.detail));
     }
     
     dispatchEvent(event, data) {
-        if (this.events[event]) {
-            this.events[event].forEach(callback => {
-                try {
-                    callback(data);
-                } catch (error) {
-                    console.error(`❌ خطأ في معالج الحدث ${event}:`, error);
-                }
-            });
-        }
-        
-        // إرسال حدث DOM
-        try {
-            const customEvent = new CustomEvent(`githubSync:${event}`, {
-                bubbles: true,
-                detail: data
-            });
-            window.dispatchEvent(customEvent);
-        } catch (error) {
-            console.error('❌ خطأ في إرسال حدث DOM:', error);
-        }
+        const customEvent = new CustomEvent(`githubSync:${event}`, {
+            detail: data
+        });
+        window.dispatchEvent(customEvent);
     }
     
     // ============ معلومات النظام ============
@@ -661,16 +687,13 @@ class AdvancedGitHubSync {
             syncing: this.state.isSyncing,
             lastSync: this.state.lastSync,
             lastError: this.state.lastError,
-            retryCount: this.state.retryCount,
             cache: {
-                hasData: !!this.cache.data,
-                dataSize: this.cache.data ? JSON.stringify(this.cache.data).length : 0,
-                items: {
-                    products: this.cache.data?.products?.length || 0,
-                    brands: this.cache.data?.brands?.length || 0,
-                    users: this.cache.data?.users?.length || 0,
-                    faq: this.cache.data?.faq?.questions?.length || 0
-                }
+                data: !!this.cache.data,
+                products: this.cache.data?.products?.length || 0,
+                brands: this.cache.data?.brands?.length || 0,
+                categories: this.cache.data?.categories?.length || 0,
+                users: this.cache.data?.users?.length || 0,
+                images: Object.keys(this.cache.images).length
             }
         };
     }
@@ -683,87 +706,20 @@ class AdvancedGitHubSync {
             site: {
                 name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
                 description: { 
-                    ar: "ريادة وخبرة في عالم السيارات منذ 1993", 
-                    en: "Leadership and experience in the world of cars since 1993" 
+                    ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
+                    en: "Best offers for new and used cars in Egypt" 
                 },
-                logo: "logo.png",
-                videoLogo: "logo.mp4",
-                heroVideo: "logo2.mp4",
+                logo: "",
                 language: "ar",
                 timezone: "Africa/Cairo",
                 currency: "EGP"
-            },
-            company: {
-                bio: {
-                    ar: "سيارات عبد الله هي شركة متخصصة في تجارة وبيع السيارات مقرها مدينة الجيزة - جمهورية مصر العربية، وتتمتع بخبرة م 1993 راسخة تمتد لأكثر من ثلاثة عقود منذ تأسيسها عام",
-                    en: "Abdullah Cars is a specialized company in car trade and sales located in Giza - Arab Republic of Egypt, with solid experience since 1993 extending over three decades since its establishment"
-                },
-                about: {
-                    ar: "انطلقت سيارات عبد الله برؤية واضحة تهدف إلى تقديم تجربة بيع وشراء سيارات قائمة على الثقة والمصداقية، بعيدا عن التعقيد. وقد مكنتها خبرتها الطويلة وفهمها العميق للسوق من بناء علاقات طويلة الأمد مع عملائها، قائمة على الاحترام المتبادل والقيمة الحقيقية",
-                    en: "Abdullah Cars started with a clear vision aiming to provide a car buying and selling experience based on trust and credibility, away from complexity. Its long experience and deep understanding of the market have enabled it to build long-term relationships with its customers, based on mutual respect and real value"
-                },
-                services: [
-                    {
-                        ar: "بيع السيارات الجديدة والمستعملة",
-                        en: "Selling new and used cars"
-                    },
-                    {
-                        ar: "شراء السيارات من الأفراد بأفضل تقييم عادل",
-                        en: "Buying cars from individuals with the best fair evaluation"
-                    },
-                    {
-                        ar: "خدمة الاستبدال سيارتك الحالية مقابل سيارة أخرى",
-                        en: "Exchange service: your current car for another car"
-                    },
-                    {
-                        ar: "تقديم استشارات احترافية لاختيار السيارة الأنسب",
-                        en: "Providing professional consultations to choose the most suitable car"
-                    },
-                    {
-                        ar: "فحص شامل ودقيق للسيارات قبل البيع",
-                        en: "Comprehensive and accurate inspection of cars before sale"
-                    }
-                ],
-                vision: {
-                    ar: "أن تكون من الشركات الرائدة في تجارة السيارات داخل جمهورية مصر العربية، وأن تمثل الخيار الأول للعملاء الباحثين عن الجودة، الثقة، والخدمة المتميزة",
-                    en: "To be among the leading companies in car trade within the Arab Republic of Egypt, and to represent the first choice for customers looking for quality, trust, and distinguished service"
-                },
-                mission: {
-                    ar: "تقديم سيارات موثوقة بمعايير عالية، وخدمة احترافية ترتكز على النزاهة والشفافية، مع السعي المستمر لبناء علاقات طويلة الأمد مع عملائنا وشركائنا",
-                    en: "Providing reliable cars with high standards, and professional service based on integrity and transparency, with continuous effort to build long-term relationships with our customers and partners"
-                },
-                values: [
-                    {
-                        ar: "الصدق والمصداقية",
-                        en: "Honesty and credibility"
-                    },
-                    {
-                        ar: "الجودة والالتزام",
-                        en: "Quality and commitment"
-                    },
-                    {
-                        ar: "الاحترافية في الأداء",
-                        en: "Professionalism in performance"
-                    },
-                    {
-                        ar: "رضا العميل أولا",
-                        en: "Customer satisfaction first"
-                    }
-                ],
-                established: "1993",
-                location: "الجيزة، مصر",
-                experience: "30+ سنة"
-            },
-            faq: {
-                questions: []
             },
             contact: {
                 phone: "01121811110",
                 whatsapp: "01121811110",
                 email: "amarmotors850@gmail.com",
-                address: "الجيزة، مصر",
-                workHours: "9 ص - 9 م",
-                workDays: ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"]
+                address: "القاهرة، مصر",
+                workHours: "9 ص - 9 م"
             },
             social: {
                 facebook: "https://www.facebook.com/share/1SdkvcBynu",
@@ -779,17 +735,10 @@ class AdvancedGitHubSync {
                     email: "admin@abdullah-cars.com",
                     role: "admin",
                     avatar: "",
-                    phone: "",
                     permissions: ["all"],
                     active: true,
                     createdAt: new Date().toISOString()
                 }
-            ],
-            roles: [
-                { id: "admin", name: "مدير", permissions: ["all"] },
-                { id: "editor", name: "محرر", permissions: ["view", "create", "edit"] },
-                { id: "sales", name: "مبيعات", permissions: ["view", "create"] },
-                { id: "viewer", name: "مشاهد", permissions: ["view"] }
             ],
             brands: [],
             categories: [],
@@ -801,100 +750,50 @@ class AdvancedGitHubSync {
 
 // ============ التهيئة التلقائية ============
 if (typeof window !== 'undefined') {
-    window.gitHubSync = new AdvancedGitHubSync();
+    window.gitHubSync = new EnhancedGitHubSync();
     
-    // بدء التهيئة بعد تحميل الصفحة
     window.addEventListener('load', async () => {
-        setTimeout(async () => {
-            console.log('🎉 بدء تحميل نظام المزامنة المتقدم...');
+        console.log('🎉 بدء تحميل نظام المزامنة المحسن...');
+        
+        try {
+            await window.gitHubSync.initialize();
+            console.log('🚀 النظام المحسن جاهز للعمل');
+        } catch (error) {
+            console.error('❌ فشل تحميل النظام المحسن:', error);
             
-            try {
-                await window.gitHubSync.initialize();
-                console.log('🚀 النظام المتقدم جاهز للعمل');
-            } catch (error) {
-                console.error('❌ فشل تحميل النظام المتقدم:', error);
-                
-                // بديل محلي
-                window.gitHubSync = {
-                    isInitialized: true,
-                    sync: async () => {
-                        const data = JSON.parse(localStorage.getItem('abdullah_cars_data') || '{}');
-                        window.siteData = data;
-                        return data;
-                    },
-                    save: async (data) => {
-                        localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
-                        window.siteData = data;
-                        return { success: true, localSaved: true };
-                    },
-                    getStatus: () => ({ initialized: true, source: 'local' })
-                };
-            }
-        }, 1000);
-    });
-    
-    // ============ واجهة API ============
-    window.GitHubSyncAPI = {
-        // القراءة
-        getData: () => {
-            return window.siteData || window.gitHubSync?.cache?.data || {};
-        },
-        
-        // الكتابة
-        save: async (data) => {
-            if (window.gitHubSync && window.gitHubSync.isInitialized) {
-                return await window.gitHubSync.save(data);
-            }
-            return { success: false, error: 'النظام غير جاهز' };
-        },
-        
-        // المزامنة
-        sync: async () => {
-            if (window.gitHubSync) {
-                return await window.gitHubSync.sync();
-            }
-            return null;
-        },
-        
-        // الحالة
-        getStatus: () => {
-            if (window.gitHubSync) {
-                return window.gitHubSync.getStatus();
-            }
-            return { initialized: false };
-        },
-        
-        // الإدارة
-        clearCache: () => {
-            if (window.gitHubSync) {
-                window.gitHubSync.clearCache();
-                return true;
-            }
-            return false;
-        },
-        
-        // الأحداث
-        on: (event, callback) => {
-            if (window.gitHubSync) {
-                window.gitHubSync.on(event, callback);
-                return true;
-            }
-            return false;
-        },
-        
-        off: (event, callback) => {
-            if (window.gitHubSync) {
-                window.gitHubSync.off(event, callback);
-                return true;
-            }
-            return false;
+            // بديل محلي
+            window.gitHubSync = {
+                isInitialized: true,
+                sync: async () => {
+                    const data = JSON.parse(localStorage.getItem('abdullah_cars_data') || '{}');
+                    window.siteData = data;
+                    return data;
+                },
+                save: async (data) => {
+                    localStorage.setItem('abdullah_cars_data', JSON.stringify(data));
+                    window.siteData = data;
+                    return { success: true, localSaved: true };
+                },
+                uploadImage: async (file) => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            resolve({
+                                success: true,
+                                url: reader.result,
+                                name: file.name
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                },
+                getStatus: () => ({ initialized: true, source: 'local' })
+            };
         }
-    };
-    
-    console.log('🎯 واجهة API المتقدمة جاهزة');
+    });
 }
 
 // ============ تصدير للنود جي إس ============
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AdvancedGitHubSync;
+    module.exports = EnhancedGitHubSync;
 }

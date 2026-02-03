@@ -2128,7 +2128,7 @@
                                                 <span>انقر لرفع الشعار</span>
                                             </div>
                                         </div>
-                                        <input type="file" id="siteLogoInput" accept="image/*" style="display: none;">
+                                        <input type="file" id="siteLogoInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'siteLogoPreview', 'siteLogoUrl')">
                                         <input type="hidden" id="siteLogoUrl">
                                         <div class="upload-buttons">
                                             <button type="button" class="btn btn-sm btn-secondary">
@@ -2365,7 +2365,7 @@
                                                 <span>انقر لرفع الصورة</span>
                                             </div>
                                         </div>
-                                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                                        <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'avatarPreview', 'avatarUrl')">
                                         <input type="hidden" id="avatarUrl">
                                         <div class="upload-buttons">
                                             <button type="button" class="btn btn-sm btn-secondary">
@@ -2569,7 +2569,7 @@
                                         <span>انقر لرفع الصور</span>
                                     </div>
                                 </div>
-                                <input type="file" id="productImagesInput" accept="image/*" multiple style="display: none;">
+                                <input type="file" id="productImagesInput" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event, 'productImagesPreview', 'productImagesUrls', true)">
                                 <input type="hidden" id="productImagesUrls">
                                 <div class="upload-buttons">
                                     <button type="button" class="btn btn-sm btn-secondary">
@@ -2641,7 +2641,7 @@
                                         <span>انقر لرفع الشعار</span>
                                     </div>
                                 </div>
-                                <input type="file" id="brandLogoInput" accept="image/*" style="display: none;">
+                                <input type="file" id="brandLogoInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'brandLogoPreview', 'brandLogoUrl')">
                                 <input type="hidden" id="brandLogoUrl">
                                 <div class="upload-buttons">
                                     <button type="button" class="btn btn-sm btn-secondary">
@@ -2705,7 +2705,7 @@
                                         <span>انقر لرفع الصورة</span>
                                     </div>
                                 </div>
-                                <input type="file" id="categoryImageInput" accept="image/*" style="display: none;">
+                                <input type="file" id="categoryImageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'categoryImagePreview', 'categoryImageUrl')">
                                 <input type="hidden" id="categoryImageUrl">
                                 <div class="upload-buttons">
                                     <button type="button" class="btn btn-sm btn-secondary">
@@ -2767,7 +2767,7 @@
                                         <span>انقر لرفع الصورة</span>
                                     </div>
                                 </div>
-                                <input type="file" id="userAvatarInput" accept="image/*" style="display: none;">
+                                <input type="file" id="userAvatarInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'userAvatarPreview', 'userAvatarUrl')">
                                 <input type="hidden" id="userAvatarUrl">
                                 <div class="upload-buttons">
                                     <button type="button" class="btn btn-sm btn-secondary">
@@ -2861,18 +2861,11 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        // Initialize Select2
-        $(document).ready(function() {
-            $('.select2').select2({
-                dir: 'rtl',
-                language: 'ar'
-            });
-        });
-    </script>
+    
+    <!-- Enhanced GitHub Sync -->
+    <script src="sync.js"></script>
 
     <!-- Custom JavaScript -->
-    <script src="sync.js"></script>
     <script>
         // ============ System Variables ============
         let adminData = null;
@@ -3141,97 +3134,36 @@
         
         function createDefaultData() {
             return {
-                version: "2.0.0",
+                version: "3.0.0",
                 lastUpdated: new Date().toISOString(),
                 site: {
                     name: { ar: "سيارات عبدالله", en: "Abdullah Cars" },
                     description: { 
-                        ar: "ريادة وخبرة في عالم السيارات منذ 1993", 
-                        en: "Leadership and experience in the world of cars since 1993" 
+                        ar: "أفضل عروض السيارات الجديدة والمستعملة في مصر", 
+                        en: "Best offers for new and used cars in Egypt" 
                     },
-                    logo: "logo.png",
-                    videoLogo: "logo.mp4",
-                    heroVideo: "logo2.mp4",
+                    logo: "",
                     language: "ar",
                     timezone: "Africa/Cairo",
-                    currency: "EGP"
-                },
-                company: {
-                    bio: {
-                        ar: "سيارات عبد الله هي شركة متخصصة في تجارة وبيع السيارات مقرها مدينة الجيزة - جمهورية مصر العربية، وتتمتع بخبرة م 1993 راسخة تمتد لأكثر من ثلاثة عقود منذ تأسيسها عام",
-                        en: "Abdullah Cars is a specialized company in car trade and sales located in Giza - Arab Republic of Egypt, with solid experience since 1993 extending over three decades since its establishment"
-                    },
-                    about: {
-                        ar: "انطلقت سيارات عبد الله برؤية واضحة تهدف إلى تقديم تجربة بيع وشراء سيارات قائمة على الثقة والمصداقية، بعيدا عن التعقيد. وقد مكنتها خبرتها الطويلة وفهمها العميق للسوق من بناء علاقات طويلة الأمد مع عملائها، قائمة على الاحترام المتبادل والقيمة الحقيقية",
-                        en: "Abdullah Cars started with a clear vision aiming to provide a car buying and selling experience based on trust and credibility, away from complexity. Its long experience and deep understanding of the market have enabled it to build long-term relationships with its customers, based on mutual respect and real value"
-                    },
-                    services: [
-                        {
-                            ar: "بيع السيارات الجديدة والمستعملة",
-                            en: "Selling new and used cars"
-                        },
-                        {
-                            ar: "شراء السيارات من الأفراد بأفضل تقييم عادل",
-                            en: "Buying cars from individuals with the best fair evaluation"
-                        },
-                        {
-                            ar: "خدمة الاستبدال سيارتك الحالية مقابل سيارة أخرى",
-                            en: "Exchange service: your current car for another car"
-                        },
-                        {
-                            ar: "تقديم استشارات احترافية لاختيار السيارة الأنسب",
-                            en: "Providing professional consultations to choose the most suitable car"
-                        },
-                        {
-                            ar: "فحص شامل ودقيق للسيارات قبل البيع",
-                            en: "Comprehensive and accurate inspection of cars before sale"
-                        }
-                    ],
-                    vision: {
-                        ar: "أن تكون من الشركات الرائدة في تجارة السيارات داخل جمهورية مصر العربية، وأن تمثل الخيار الأول للعملاء الباحثين عن الجودة، الثقة، والخدمة المتميزة",
-                        en: "To be among the leading companies in car trade within the Arab Republic of Egypt, and to represent the first choice for customers looking for quality, trust, and distinguished service"
-                    },
-                    mission: {
-                        ar: "تقديم سيارات موثوقة بمعايير عالية، وخدمة احترافية ترتكز على النزاهة والشفافية، مع السعي المستمر لبناء علاقات طويلة الأمد مع عملائنا وشركائنا",
-                        en: "Providing reliable cars with high standards, and professional service based on integrity and transparency, with continuous effort to build long-term relationships with our customers and partners"
-                    },
-                    values: [
-                        {
-                            ar: "الصدق والمصداقية",
-                            en: "Honesty and credibility"
-                        },
-                        {
-                            ar: "الجودة والالتزام",
-                            en: "Quality and commitment"
-                        },
-                        {
-                            ar: "الاحترافية في الأداء",
-                            en: "Professionalism in performance"
-                        },
-                        {
-                            ar: "رضا العميل أولا",
-                            en: "Customer satisfaction first"
-                        }
-                    ],
-                    established: "1993",
-                    location: "الجيزة، مصر",
-                    experience: "30+ سنة"
-                },
-                faq: {
-                    questions: []
+                    currency: "EGP",
+                    primaryColor: "#667eea",
+                    secondaryColor: "#764ba2"
                 },
                 contact: {
                     phone: "01121811110",
                     whatsapp: "01121811110",
                     email: "amarmotors850@gmail.com",
-                    address: "الجيزة، مصر",
+                    address: "القاهرة، مصر",
                     workHours: "9 ص - 9 م",
-                    workDays: ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"]
+                    workDays: ["0", "1", "2", "3", "4", "5"]
                 },
                 social: {
                     facebook: "https://www.facebook.com/share/1SdkvcBynu",
                     instagram: "https://www.instagram.com/abdullah_auto_",
-                    tiktok: "https://www.tiktok.com/@abdullah.auto0"
+                    twitter: "",
+                    youtube: "",
+                    tiktok: "https://www.tiktok.com/@abdullah.auto0",
+                    linkedin: ""
                 },
                 users: [
                     {
@@ -3285,12 +3217,73 @@
             updateUsersTable();
             updateRolesGrid();
             updateRecentProducts();
+            updateSelectOptions();
             
             // Update sidebar counts
             document.getElementById('productsCount').textContent = adminData.products?.length || 0;
             document.getElementById('brandsCount').textContent = adminData.brands?.length || 0;
             document.getElementById('categoriesCount').textContent = adminData.categories?.length || 0;
             document.getElementById('usersCount').textContent = adminData.users?.length || 0;
+        }
+        
+        function updateSelectOptions() {
+            // Update brand select options
+            const brandSelects = [
+                document.getElementById('productBrand'),
+                document.getElementById('filterBrand')
+            ];
+            
+            brandSelects.forEach(select => {
+                if (select) {
+                    // Clear existing options except first
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Add brands
+                    adminData.brands?.forEach(brand => {
+                        if (brand.active !== false) {
+                            const option = document.createElement('option');
+                            option.value = brand.id;
+                            option.textContent = brand.name?.ar || brand.name;
+                            select.appendChild(option);
+                        }
+                    });
+                }
+            });
+            
+            // Update category select options
+            const categorySelects = [
+                document.getElementById('productCategory'),
+                document.getElementById('categoryParent')
+            ];
+            
+            categorySelects.forEach(select => {
+                if (select) {
+                    // Clear existing options except first
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Add categories
+                    adminData.categories?.forEach(category => {
+                        if (category.active !== false) {
+                            const option = document.createElement('option');
+                            option.value = category.id;
+                            option.textContent = category.name?.ar || category.name;
+                            select.appendChild(option);
+                        }
+                    });
+                }
+            });
+            
+            // Initialize Select2
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $('.select2').select2({
+                    dir: 'rtl',
+                    language: 'ar'
+                });
+            }
         }
         
         function updateStatistics() {
@@ -3369,37 +3362,45 @@
                 return;
             }
             
-            tbody.innerHTML = products.map(product => `
-                <tr>
-                    <td>
-                        ${product.image ? 
-                            `<img src="${product.image}" class="table-image" alt="${product.name?.ar}">` : 
-                            `<div class="table-image-placeholder"><i class="fas fa-car"></i></div>`}
-                    </td>
-                    <td>
-                        <strong>${product.name?.ar || product.name}</strong><br>
-                        <small class="text-muted">${product.model || ''}</small>
-                    </td>
-                    <td>${product.brand || 'غير محدد'}</td>
-                    <td><strong>${formatPrice(product.price || 0)}</strong></td>
-                    <td>${getProductTypeText(product.type)}</td>
-                    <td>
-                        <span class="status-badge ${product.active !== false ? 'status-active' : 'status-inactive'}">
-                            ${product.active !== false ? 'نشط' : 'غير نشط'}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="table-actions">
-                            <button class="table-btn edit" onclick="editProduct('${product.id}')" title="تعديل">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="table-btn delete" onclick="deleteProduct('${product.id}')" title="حذف">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = products.map(product => {
+                const brand = adminData.brands?.find(b => b.id === product.brandId);
+                const category = adminData.categories?.find(c => c.id === product.categoryId);
+                
+                return `
+                    <tr>
+                        <td>
+                            ${product.image ? 
+                                `<img src="${product.image}" class="table-image" alt="${product.name?.ar}">` : 
+                                `<div class="table-image-placeholder"><i class="fas fa-car"></i></div>`}
+                        </td>
+                        <td>
+                            <strong>${product.name?.ar || product.name}</strong><br>
+                            <small class="text-muted">${product.model || ''}</small>
+                        </td>
+                        <td>${brand?.name?.ar || product.brand || 'غير محدد'}</td>
+                        <td><strong>${formatPrice(product.price || 0)}</strong></td>
+                        <td>${getProductTypeText(product.type)}</td>
+                        <td>
+                            <span class="status-badge ${product.active !== false ? 'status-active' : 'status-inactive'}">
+                                ${product.active !== false ? 'نشط' : 'غير نشط'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="table-btn edit" onclick="editProduct('${product.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteProduct('${product.id}')" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="table-btn view" onclick="viewProduct('${product.id}')" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
         
         function updateBrandsGrid() {
@@ -3419,15 +3420,78 @@
                 return;
             }
             
+            // Create CSS for brand grid if not exists
+            if (!document.querySelector('#brand-grid-styles')) {
+                const style = document.createElement('style');
+                style.id = 'brand-grid-styles';
+                style.textContent = `
+                    .brands-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                        gap: 1.5rem;
+                    }
+                    .brand-card {
+                        background: white;
+                        border-radius: var(--radius-lg);
+                        padding: 1.5rem;
+                        box-shadow: var(--shadow);
+                        transition: var(--transition);
+                        border: 2px solid var(--gray-200);
+                    }
+                    .brand-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--shadow-md);
+                        border-color: var(--primary);
+                    }
+                    .brand-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                    }
+                    .brand-logo {
+                        width: 60px;
+                        height: 60px;
+                        border-radius: var(--radius);
+                        overflow: hidden;
+                        background: var(--gray-100);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .brand-logo img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                    .brand-info h3 {
+                        font-size: 1.2rem;
+                        margin-bottom: 0.3rem;
+                    }
+                    .brand-info p {
+                        color: var(--gray-600);
+                        font-size: 0.9rem;
+                    }
+                    .brand-actions {
+                        display: flex;
+                        gap: 0.5rem;
+                        margin-top: 1rem;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
             container.innerHTML = brands.map(brand => {
-                const productCount = adminData.products?.filter(p => p.brandId === brand.id || p.brand === brand.name?.ar).length || 0;
+                const productCount = adminData.products?.filter(p => p.brandId === brand.id).length || 0;
                 
                 return `
                     <div class="brand-card">
                         <div class="brand-header">
-                            ${brand.logo ? 
-                                `<img src="${brand.logo}" class="brand-logo" alt="${brand.name?.ar}">` : 
-                                `<div class="brand-logo-placeholder"><i class="fas fa-tag"></i></div>`}
+                            <div class="brand-logo">
+                                ${brand.logo ? 
+                                    `<img src="${brand.logo}" alt="${brand.name?.ar}">` : 
+                                    `<i class="fas fa-tag"></i>`}
+                            </div>
                             <div class="brand-info">
                                 <h3>${brand.name?.ar || brand.name}</h3>
                                 <p>${productCount} سيارة</p>
@@ -3562,22 +3626,82 @@
             
             const roles = adminData.roles || [];
             
-            container.innerHTML = roles.map(role => `
-                <div class="role-card" style="border-color: ${UserRoles[role.id]?.color || '#667eea'}">
-                    <div class="role-header">
-                        <div class="role-icon" style="background: ${UserRoles[role.id]?.color || '#667eea'}">
-                            <i class="fas fa-user-shield"></i>
+            if (!document.querySelector('#roles-grid-styles')) {
+                const style = document.createElement('style');
+                style.id = 'roles-grid-styles';
+                style.textContent = `
+                    .roles-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                        gap: 1rem;
+                    }
+                    .role-card {
+                        background: white;
+                        border-radius: var(--radius-lg);
+                        padding: 1.5rem;
+                        border: 2px solid;
+                        box-shadow: var(--shadow);
+                        transition: var(--transition);
+                    }
+                    .role-card:hover {
+                        transform: translateY(-3px);
+                        box-shadow: var(--shadow-md);
+                    }
+                    .role-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                    }
+                    .role-icon {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: var(--radius);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 1.2rem;
+                    }
+                    .role-info h3 {
+                        font-size: 1.1rem;
+                        margin-bottom: 0.3rem;
+                    }
+                    .role-info p {
+                        color: var(--gray-600);
+                        font-size: 0.85rem;
+                    }
+                    .role-users {
+                        text-align: center;
+                        padding-top: 1rem;
+                        border-top: 1px solid var(--gray-200);
+                        color: var(--gray-500);
+                        font-size: 0.9rem;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            container.innerHTML = roles.map(role => {
+                const userCount = adminData.users?.filter(u => u.role === role.id).length || 0;
+                
+                return `
+                    <div class="role-card" style="border-color: ${UserRoles[role.id]?.color || '#667eea'}">
+                        <div class="role-header">
+                            <div class="role-icon" style="background: ${UserRoles[role.id]?.color || '#667eea'}">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="role-info">
+                                <h3>${role.name}</h3>
+                                <p>${getPermissionsText(role.permissions)}</p>
+                            </div>
                         </div>
-                        <div class="role-info">
-                            <h3>${role.name}</h3>
-                            <p>${getPermissionsText(role.permissions)}</p>
+                        <div class="role-users">
+                            <span>${userCount} مستخدم</span>
                         </div>
                     </div>
-                    <div class="role-users">
-                        <span>${adminData.users?.filter(u => u.role === role.id).length || 0} مستخدم</span>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         function updateRecentProducts() {
@@ -3597,22 +3721,88 @@
                 return;
             }
             
-            container.innerHTML = recentProducts.map(product => `
-                <div class="recent-product">
-                    <div class="product-image">
-                        ${product.image ? 
-                            `<img src="${product.image}" alt="${product.name?.ar}">` : 
-                            `<i class="fas fa-car"></i>`}
+            if (!document.querySelector('#recent-products-styles')) {
+                const style = document.createElement('style');
+                style.id = 'recent-products-styles';
+                style.textContent = `
+                    #recentProducts {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+                    .recent-product {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        padding: 1rem;
+                        background: var(--gray-50);
+                        border-radius: var(--radius);
+                        border: 1px solid var(--gray-200);
+                        transition: var(--transition);
+                    }
+                    .recent-product:hover {
+                        background: white;
+                        border-color: var(--primary);
+                        transform: translateX(-5px);
+                    }
+                    .product-image {
+                        width: 60px;
+                        height: 60px;
+                        border-radius: var(--radius);
+                        overflow: hidden;
+                        background: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .product-image img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .product-image i {
+                        font-size: 1.5rem;
+                        color: var(--gray-400);
+                    }
+                    .product-info {
+                        flex: 1;
+                    }
+                    .product-info h4 {
+                        font-size: 1rem;
+                        margin-bottom: 0.3rem;
+                    }
+                    .product-info p {
+                        color: var(--gray-600);
+                        font-size: 0.85rem;
+                    }
+                    .product-price {
+                        font-weight: 700;
+                        color: var(--primary);
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            container.innerHTML = recentProducts.map(product => {
+                const brand = adminData.brands?.find(b => b.id === product.brandId);
+                
+                return `
+                    <div class="recent-product">
+                        <div class="product-image">
+                            ${product.image ? 
+                                `<img src="${product.image}" alt="${product.name?.ar}">` : 
+                                `<i class="fas fa-car"></i>`}
+                        </div>
+                        <div class="product-info">
+                            <h4>${product.name?.ar || product.name}</h4>
+                            <p>${brand?.name?.ar || ''} • ${product.model || ''}</p>
+                        </div>
+                        <div class="product-price">
+                            <strong>${formatPrice(product.price || 0)}</strong>
+                        </div>
                     </div>
-                    <div class="product-info">
-                        <h4>${product.name?.ar || product.name}</h4>
-                        <p>${product.brand || ''} • ${product.model || ''}</p>
-                    </div>
-                    <div class="product-price">
-                        <strong>${formatPrice(product.price || 0)}</strong>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         // ============ Section Management ============
@@ -3685,6 +3875,21 @@
                     document.getElementById('productId').value = product.id;
                     document.getElementById('productNameAr').value = product.name?.ar || product.name || '';
                     document.getElementById('productNameEn').value = product.name?.en || '';
+                    
+                    // Set brand
+                    if (product.brandId) {
+                        setTimeout(() => {
+                            $('#productBrand').val(product.brandId).trigger('change');
+                        }, 100);
+                    }
+                    
+                    // Set category
+                    if (product.categoryId) {
+                        setTimeout(() => {
+                            $('#productCategory').val(product.categoryId).trigger('change');
+                        }, 100);
+                    }
+                    
                     document.getElementById('productModel').value = product.model || '';
                     document.getElementById('productYear').value = product.year || '';
                     document.getElementById('productPrice').value = product.price || '';
@@ -3704,11 +3909,25 @@
                         `;
                         document.getElementById('productImagesUrls').value = product.image;
                     }
+                    
+                    // Set colors
+                    if (product.colors && Array.isArray(product.colors)) {
+                        setTimeout(() => {
+                            $('#productColors').val(product.colors).trigger('change');
+                        }, 100);
+                    }
                 }
             } else {
                 title.textContent = 'إضافة سيارة جديدة';
                 document.getElementById('productForm').reset();
                 document.getElementById('productId').value = '';
+                
+                // Reset Select2
+                setTimeout(() => {
+                    $('#productBrand').val('').trigger('change');
+                    $('#productCategory').val('').trigger('change');
+                    $('#productColors').val('').trigger('change');
+                }, 100);
             }
             
             modal.classList.add('active');
@@ -3759,6 +3978,13 @@
                     document.getElementById('categoryActive').checked = category.active !== false;
                     document.getElementById('categoryFeatured').checked = category.featured || false;
                     
+                    // Set parent category
+                    if (category.parentId) {
+                        setTimeout(() => {
+                            $('#categoryParent').val(category.parentId).trigger('change');
+                        }, 100);
+                    }
+                    
                     if (category.image) {
                         document.getElementById('categoryImagePreview').innerHTML = `
                             <img src="${category.image}" alt="${category.name?.ar}">
@@ -3770,6 +3996,11 @@
                 title.textContent = 'إضافة قسم جديد';
                 document.getElementById('categoryForm').reset();
                 document.getElementById('categoryId').value = '';
+                
+                // Reset Select2
+                setTimeout(() => {
+                    $('#categoryParent').val('').trigger('change');
+                }, 100);
             }
             
             modal.classList.add('active');
@@ -3788,9 +4019,20 @@
                     document.getElementById('userUsername').value = user.username || '';
                     document.getElementById('userEmail').value = user.email || '';
                     document.getElementById('userPassword').value = '';
-                    document.getElementById('userRole').value = user.role || 'viewer';
+                    
+                    // Set role
+                    setTimeout(() => {
+                        $('#userRole').val(user.role || 'viewer').trigger('change');
+                    }, 100);
+                    
                     document.getElementById('userPhone').value = user.phone || '';
                     document.getElementById('userActive').checked = user.active !== false;
+                    
+                    // Set permissions
+                    document.getElementById('permView').checked = user.permissions?.includes('view') || false;
+                    document.getElementById('permCreate').checked = user.permissions?.includes('create') || false;
+                    document.getElementById('permEdit').checked = user.permissions?.includes('edit') || false;
+                    document.getElementById('permDelete').checked = user.permissions?.includes('delete') || false;
                     
                     if (user.avatar) {
                         document.getElementById('userAvatarPreview').innerHTML = `
@@ -3803,6 +4045,11 @@
                 title.textContent = 'إضافة مستخدم جديد';
                 document.getElementById('userForm').reset();
                 document.getElementById('userId').value = '';
+                
+                // Reset Select2
+                setTimeout(() => {
+                    $('#userRole').val('viewer').trigger('change');
+                }, 100);
             }
             
             modal.classList.add('active');
@@ -3833,6 +4080,7 @@
             await saveUser();
         });
         
+        // ============ Save Functions ============
         async function saveProduct() {
             showLoading('جاري حفظ السيارة...');
             
@@ -3846,7 +4094,7 @@
                     },
                     model: document.getElementById('productModel').value,
                     year: document.getElementById('productYear').value,
-                    price: parseFloat(document.getElementById('productPrice').value),
+                    price: parseFloat(document.getElementById('productPrice').value) || 0,
                     oldPrice: parseFloat(document.getElementById('productOldPrice').value) || null,
                     type: document.getElementById('productType').value,
                     fuel: document.getElementById('productFuel').value,
@@ -3857,23 +4105,21 @@
                     active: document.getElementById('productActive').checked,
                     image: document.getElementById('productImagesUrls').value,
                     colors: Array.from(document.getElementById('productColors').selectedOptions).map(opt => opt.value),
+                    brandId: document.getElementById('productBrand').value,
+                    categoryId: document.getElementById('productCategory').value,
                     createdAt: adminData.products?.find(p => p.id === productId)?.createdAt || new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 };
                 
-                // Handle brand selection
-                const brandId = document.getElementById('productBrand').value;
-                const brand = adminData.brands?.find(b => b.id === brandId);
+                // Get brand and category names
+                const brand = adminData.brands?.find(b => b.id === productData.brandId);
+                const category = adminData.categories?.find(c => c.id === productData.categoryId);
+                
                 if (brand) {
-                    productData.brandId = brand.id;
                     productData.brand = brand.name?.ar || brand.name;
                 }
                 
-                // Handle category selection
-                const categoryId = document.getElementById('productCategory').value;
-                const category = adminData.categories?.find(c => c.id === categoryId);
                 if (category) {
-                    productData.categoryId = category.id;
                     productData.category = category.name?.ar || category.name;
                 }
                 
@@ -4019,7 +4265,7 @@
                     updatedAt: new Date().toISOString()
                 };
                 
-                // Don't update password if empty
+                // Don't update password if empty (for editing)
                 if (!userData.password) {
                     delete userData.password;
                 }
@@ -4205,12 +4451,19 @@
             showUserModal(userId);
         }
         
+        function viewProduct(productId) {
+            const product = adminData.products?.find(p => p.id === productId);
+            if (product) {
+                showProductModal(productId);
+            }
+        }
+        
         // ============ Sync Functions ============
         async function syncData() {
             showLoading('جاري مزامنة البيانات...');
             
             try {
-                if (window.gitHubSync) {
+                if (window.gitHubSync && window.gitHubSync.isInitialized) {
                     const result = await window.gitHubSync.sync();
                     if (result) {
                         adminData = result;
@@ -4230,6 +4483,116 @@
             } finally {
                 hideLoading();
             }
+        }
+        
+        // ============ Image Upload Functions ============
+        async function handleImageUpload(event, previewId, urlInputId, multiple = false) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
+            showLoading('جاري رفع الصور...');
+            
+            try {
+                if (multiple) {
+                    // Handle multiple images
+                    const imageUrls = [];
+                    const preview = document.getElementById(previewId);
+                    
+                    preview.innerHTML = '';
+                    
+                    for (let i = 0; i < Math.min(files.length, 5); i++) {
+                        const file = files[i];
+                        const result = await uploadImageToGitHub(file);
+                        
+                        if (result.success) {
+                            imageUrls.push(result.url);
+                            
+                            // Add to preview
+                            const img = document.createElement('img');
+                            img.src = result.url;
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            preview.appendChild(img);
+                        }
+                    }
+                    
+                    document.getElementById(urlInputId).value = imageUrls.join(',');
+                } else {
+                    // Handle single image
+                    const file = files[0];
+                    const result = await uploadImageToGitHub(file);
+                    
+                    if (result.success) {
+                        const preview = document.getElementById(previewId);
+                        preview.innerHTML = `<img src="${result.url}" alt="Uploaded image">`;
+                        document.getElementById(urlInputId).value = result.url;
+                    } else {
+                        throw new Error(result.error || 'فشل رفع الصورة');
+                    }
+                }
+                
+                showToast('تم رفع الصور بنجاح', 'success');
+                
+            } catch (error) {
+                console.error('خطأ في رفع الصور:', error);
+                showToast('حدث خطأ في رفع الصور', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function uploadImageToGitHub(file) {
+            if (!window.gitHubSync || !window.gitHubSync.isInitialized) {
+                // Fallback to local storage
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        resolve({
+                            success: true,
+                            url: reader.result,
+                            name: file.name
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            try {
+                const result = await window.gitHubSync.uploadImage(file);
+                return result;
+            } catch (error) {
+                console.error('فشل رفع الصورة إلى GitHub:', error);
+                
+                // Fallback to local
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        resolve({
+                            success: true,
+                            url: reader.result,
+                            name: file.name,
+                            local: true
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+        
+        function clearImage(previewId, urlInputId) {
+            const preview = document.getElementById(previewId);
+            const urlInput = document.getElementById(urlInputId);
+            
+            preview.innerHTML = `
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>انقر لرفع صورة</span>
+                </div>
+            `;
+            urlInput.value = '';
         }
         
         // ============ Utility Functions ============
@@ -4329,37 +4692,6 @@
             }, 5000);
         }
         
-        // ============ Image Upload ============
-        function previewImage(event, previewId, urlInputId) {
-            const input = event.target;
-            const preview = document.getElementById(previewId);
-            const urlInput = document.getElementById(urlInputId);
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}">`;
-                    urlInput.value = e.target.result;
-                };
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        function clearImage(previewId, urlInputId) {
-            const preview = document.getElementById(previewId);
-            const urlInput = document.getElementById(urlInputId);
-            
-            preview.innerHTML = `
-                <div class="image-placeholder">
-                    <i class="fas fa-image"></i>
-                    <span>انقر لرفع صورة</span>
-                </div>
-            `;
-            urlInput.value = '';
-        }
-        
         // ============ Event Listeners ============
         function setupEventListeners() {
             // Close modals with Escape key
@@ -4371,6 +4703,38 @@
                     closeModal('userModal');
                 }
             });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                const dropdowns = document.querySelectorAll('.dropdown');
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            });
+            
+            // Update year dropdown
+            const yearSelect = document.getElementById('productYear');
+            if (yearSelect) {
+                const currentYear = new Date().getFullYear();
+                for (let year = currentYear; year >= 2000; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                }
+            }
+            
+            // Initialize Select2
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $(document).ready(function() {
+                    $('.select2').select2({
+                        dir: 'rtl',
+                        language: 'ar'
+                    });
+                });
+            }
             
             // Auto-save data every 5 minutes
             setInterval(async () => {
@@ -4384,17 +4748,16 @@
                 }
             }, 300000);
             
-            // Update year dropdown
-            const yearSelect = document.getElementById('productYear');
-            if (yearSelect) {
-                const currentYear = new Date().getFullYear();
-                for (let year = currentYear; year >= 2000; year--) {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    yearSelect.appendChild(option);
+            // Sync when window gains focus
+            window.addEventListener('focus', async () => {
+                if (currentUser) {
+                    try {
+                        await syncData();
+                    } catch (error) {
+                        console.error('❌ خطأ في المزامنة عند التركيز:', error);
+                    }
                 }
-            }
+            });
         }
         
         // ============ Export Functions ============
@@ -4462,6 +4825,7 @@
         window.editBrand = editBrand;
         window.editCategory = editCategory;
         window.editUser = editUser;
+        window.viewProduct = viewProduct;
         window.deleteProduct = deleteProduct;
         window.deleteBrand = deleteBrand;
         window.deleteCategory = deleteCategory;
@@ -4470,7 +4834,7 @@
         window.exportReports = exportReports;
         window.refreshProducts = refreshProducts;
         window.filterProducts = filterProducts;
-        window.previewImage = previewImage;
+        window.handleImageUpload = handleImageUpload;
         window.clearImage = clearImage;
     </script>
 </body>
