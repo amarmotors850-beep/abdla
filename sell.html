@@ -1,22 +1,191 @@
-[file name]: sell.html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بيع سيارتك | عبدالله للسيارات</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>بيع سيارتك | سيارات عبدالله</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animated Background (نفس الأنماط السابقة) -->
     <style>
+        /* ============ أنماط الخلفية المتحركة الموحدة ============ */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(197, 48, 48, 0.12), rgba(102, 126, 234, 0.12));
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float-particle 25s infinite;
+        }
+
+        .particle:nth-child(1) { width: 500px; height: 500px; top: -150px; right: -150px; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 450px; height: 450px; bottom: -150px; left: -150px; animation-delay: -5s; }
+        .particle:nth-child(3) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; }
+        .particle:nth-child(4) { width: 350px; height: 350px; top: 20%; right: 20%; animation-delay: -15s; }
+        .particle:nth-child(5) { width: 300px; height: 300px; bottom: 30%; left: 10%; animation-delay: -20s; }
+        .particle:nth-child(6) { width: 250px; height: 250px; top: 70%; right: 30%; animation-delay: -25s; }
+        .particle:nth-child(7) { width: 200px; height: 200px; bottom: 40%; left: 40%; animation-delay: -30s; }
+        .particle:nth-child(8) { width: 150px; height: 150px; top: 30%; left: 20%; animation-delay: -35s; }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            25% { transform: translate(3%, 5%) scale(1.15); opacity: 0.55; }
+            50% { transform: translate(-2%, 2%) scale(0.9); opacity: 0.35; }
+            75% { transform: translate(5%, -3%) scale(1.1); opacity: 0.5; }
+        }
+
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(197, 48, 48, 0.07) 0%, 
+                rgba(102, 126, 234, 0.07) 25%,
+                rgba(197, 48, 48, 0.07) 50%,
+                rgba(102, 126, 234, 0.07) 75%,
+                rgba(197, 48, 48, 0.07) 100%);
+            animation: wave-animation 15s infinite linear;
+        }
+
+        .wave::before, .wave::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: inherit;
+            animation: wave-animation 20s infinite linear;
+            opacity: 0.6;
+        }
+
+        .wave::after {
+            animation: wave-animation 25s infinite reverse;
+            opacity: 0.4;
+        }
+
+        @keyframes wave-animation {
+            0% { transform: translateX(0) translateY(0) scaleY(1); }
+            25% { transform: translateX(-25%) translateY(-10px) scaleY(1.1); }
+            50% { transform: translateX(-50%) translateY(-15px) scaleY(1.2); }
+            75% { transform: translateX(-75%) translateY(-10px) scaleY(1.1); }
+            100% { transform: translateX(-100%) translateY(0) scaleY(1); }
+        }
+
+        .gradient-flow {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 50% 50%,
+                        rgba(197, 48, 48, 0.08) 0%,
+                        rgba(102, 126, 234, 0.08) 20%,
+                        rgba(197, 48, 48, 0.06) 40%,
+                        rgba(102, 126, 234, 0.06) 60%,
+                        transparent 80%);
+            animation: rotate-gradient 50s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.3); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .small-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(197, 48, 48, 0.2);
+            border-radius: 50%;
+            filter: blur(3px);
+            animation: float-small 20s infinite;
+        }
+
+        @keyframes float-small {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
+            25% { transform: translate(25px, -35px) scale(1.6); opacity: 0.4; }
+            50% { transform: translate(-25px, 25px) scale(0.7); opacity: 0.15; }
+            75% { transform: translate(35px, 20px) scale(1.3); opacity: 0.3; }
+        }
+
+        @media (max-width: 768px) {
+            .particle:nth-child(1), .particle:nth-child(2) { width: 300px; height: 300px; }
+            .particle:nth-child(3), .particle:nth-child(4) { width: 250px; height: 250px; }
+            .particle:nth-child(5), .particle:nth-child(6) { width: 200px; height: 200px; }
+            .particle:nth-child(7), .particle:nth-child(8) { width: 150px; height: 150px; }
+        }
+    </style>
+
+    <style>
+        /* ============ متغيرات CSS ============ */
         :root {
             --primary: #c53030;
             --primary-dark: #9b2c2c;
             --secondary: #0a0a0a;
             --light: #f7fafc;
             --white: #ffffff;
-            --gray: #a0aec0;
-            --dark-gray: #4a5568;
+            --gray-100: #f7fafc;
+            --gray-200: #edf2f7;
+            --gray-300: #e2e8f0;
+            --gray-400: #cbd5e0;
+            --gray-500: #a0aec0;
+            --gray-600: #718096;
+            --gray-700: #4a5568;
+            --gray-800: #2d3748;
+            --gray-900: #1a202c;
             --success: #38a169;
-            --transition: all 0.3s ease;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+            --radius-2xl: 40px;
+            --radius-full: 50px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         * {
@@ -28,26 +197,27 @@
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--light);
-            color: var(--secondary);
-            line-height: 1.6;
+            color: var(--gray-900);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
+        /* ============ الهيدر (نفس index.html) ============ */
+        .main-header {
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
             z-index: 1000;
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
         }
 
-        .header-content {
-            max-width: 1200px;
+        .nav-container {
+            max-width: 1400px;
             margin: 0 auto;
             padding: 1rem 2rem;
             display: flex;
@@ -60,79 +230,266 @@
             align-items: center;
             gap: 1rem;
             text-decoration: none;
-            color: var(--secondary);
         }
 
-        .logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo-circle i {
+            font-size: 2rem;
+            color: white;
         }
 
         .logo-text {
-            font-size: 1.2rem;
-            font-weight: 700;
+            display: flex;
+            flex-direction: column;
         }
 
-        .logo-text span {
-            color: var(--primary);
+        .logo-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
-        .back-button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
+        .logo-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius-full);
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-family: 'Cairo', sans-serif;
         }
 
-        .sell-container {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--primary);
+            background: rgba(197, 48, 48, 0.1);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-decoration: none;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .nav-btn.secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .mobile-menu:hover {
+            background: var(--gray-100);
+        }
+
+        /* ============ رأس الصفحة ============ */
+        .page-header {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,224C960,245,1056,267,1152,250.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            bottom: 0;
+            opacity: 0.2;
         }
 
         .page-title {
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .page-subtitle {
-            color: var(--gray);
-            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        .sell-form {
+        /* ============ المحتوى الرئيسي ============ */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        /* ============ بطاقات المميزات ============ */
+        .benefits-grid {
             display: grid;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .benefit-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition-bounce);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+            border-color: var(--primary);
+        }
+
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(197,48,48,0.1), rgba(155,44,44,0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 2rem;
+            transition: var(--transition-bounce);
+        }
+
+        .benefit-card:hover .benefit-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .benefit-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-desc {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ============ نموذج البيع ============ */
+        .sell-card {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
         }
 
         .form-section {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 2px dashed #e2e8f0;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         .section-title {
-            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
             margin-bottom: 1.5rem;
-            font-size: 1.3rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
 
         .section-title i {
-            font-size: 1.1rem;
+            color: var(--primary);
         }
 
         .form-grid {
@@ -147,28 +504,33 @@
 
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
+            margin-bottom: 0.6rem;
+            color: var(--gray-700);
             font-weight: 600;
+            font-size: 0.95rem;
         }
 
-        .form-input,
-        .form-select,
-        .form-textarea {
+        .form-label.required::after {
+            content: ' *';
+            color: var(--danger);
+        }
+
+        .form-control {
             width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
             font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
             transition: var(--transition);
+            background: var(--gray-100);
         }
 
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
+        .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.1);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(197,48,48,0.1);
         }
 
         .form-textarea {
@@ -176,9 +538,19 @@
             resize: vertical;
         }
 
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 1rem center;
+            background-size: 1rem;
+            padding-left: 2.5rem;
+        }
+
         .radio-group {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
+            flex-wrap: wrap;
             margin-top: 0.5rem;
         }
 
@@ -187,61 +559,72 @@
             align-items: center;
             gap: 0.5rem;
             cursor: pointer;
+            color: var(--gray-700);
         }
 
-        .radio-label input {
-            margin: 0;
-        }
-
-        /* Image Upload */
-        .image-upload-section {
-            border: 2px dashed var(--primary);
-            background: rgba(197, 48, 48, 0.05);
-        }
-
-        .upload-area {
-            text-align: center;
-            padding: 3rem 2rem;
+        .radio-label input[type="radio"] {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            transition: var(--transition);
         }
 
-        .upload-area:hover {
-            background: rgba(197, 48, 48, 0.1);
+        /* ============ رفع الصور ============ */
+        .upload-section {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            background: var(--gray-100);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+            background: rgba(197,48,48,0.05);
         }
 
         .upload-icon {
             font-size: 3rem;
-            color: var(--primary);
+            color: var(--gray-500);
             margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .upload-section:hover .upload-icon {
+            color: var(--primary);
         }
 
         .upload-text h4 {
-            color: var(--secondary);
+            font-size: 1.2rem;
+            color: var(--gray-800);
             margin-bottom: 0.5rem;
         }
 
         .upload-text p {
-            color: var(--gray);
-            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
         }
 
-        #carImages {
-            display: none;
+        .upload-hint {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
         }
 
         .image-preview {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
         }
 
         .preview-item {
             position: relative;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            height: 150px;
+            height: 120px;
+            border: 2px solid var(--gray-200);
         }
 
         .preview-item img {
@@ -254,234 +637,334 @@
             position: absolute;
             top: 5px;
             left: 5px;
-            background: var(--primary);
-            color: white;
             width: 30px;
             height: 30px;
+            background: var(--danger);
+            color: white;
+            border: none;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 1.2rem;
+            transition: var(--transition);
         }
 
-        /* Contact Methods */
+        .remove-image:hover {
+            background: #c53030;
+            transform: scale(1.1);
+        }
+
+        /* ============ طريقة التواصل ============ */
         .contact-methods {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
+            margin-top: 1rem;
         }
 
         .method-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 2px solid #e2e8f0;
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1rem;
+            text-align: center;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .method-card:hover,
+        .method-card:hover {
+            border-color: var(--primary);
+            background: rgba(197,48,48,0.05);
+        }
+
         .method-card.selected {
             border-color: var(--primary);
-            background: rgba(197, 48, 48, 0.05);
+            background: rgba(197,48,48,0.1);
         }
 
         .method-icon {
             font-size: 2rem;
-            margin-bottom: 1rem;
             color: var(--primary);
+            margin-bottom: 0.8rem;
         }
 
         .method-name {
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.3rem;
         }
 
         .method-desc {
-            color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: var(--gray-600);
         }
 
-        /* Form Actions */
+        /* ============ أزرار النموذج ============ */
         .form-actions {
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e2e8f0;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
         }
 
-        .btn-submit {
-            flex: 1;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
+        .btn {
+            padding: 1rem 2rem;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: var(--radius-lg);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-bounce);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            flex: 1;
         }
 
-        .btn-submit:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.2);
-        }
-
-        .btn-cancel {
-            padding: 1rem 2rem;
-            background: var(--gray);
+        .btn-primary {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
             color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
-        .btn-cancel:hover {
-            background: var(--dark-gray);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
         }
 
-        /* Benefits */
-        .benefits {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .benefit-card {
+        .btn-secondary {
             background: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            color: var(--gray-700);
+            border: 2px solid var(--gray-300);
         }
 
-        .benefit-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+        .btn-secondary:hover {
+            background: var(--gray-100);
         }
 
-        .benefit-title {
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .benefit-desc {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Toast */
-        .toast {
+        /* ============ Toast ============ */
+        .toast-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 2000;
-            animation: slideInUp 0.3s ease;
+            bottom: 30px;
+            right: 30px;
+            z-index: 3000;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 1rem;
         }
 
-        @keyframes slideInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .toast {
+            background: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            min-width: 350px;
+            max-width: 450px;
+            animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-right: 5px solid var(--primary);
         }
 
-        /* Responsive */
+        @keyframes slideInRight {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        .toast.warning { border-color: var(--warning); }
+
+        .toast-icon { font-size: 1.6rem; }
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--danger); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; margin-bottom: 0.3rem; color: var(--gray-900); }
+        .toast-message { color: var(--gray-600); font-size: 0.95rem; }
+        .toast-close { background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 0.6rem; font-size: 1.1rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--gray-700); }
+
+        /* ============ حالة التحميل ============ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid var(--gray-200);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: var(--gray-800); font-size: 1.2rem; font-weight: 600; }
+
+        /* ============ Responsive ============ */
+        @media (max-width: 992px) {
+            .main-nav ul {
+                position: fixed;
+                top: 90px;
+                right: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--shadow-xl);
+                transform: translateY(-20px);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            .main-nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            .mobile-menu { display: block; }
+            .page-title { font-size: 2.5rem; }
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .header-content {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .sell-container {
-                padding: 1.5rem;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-actions {
-                flex-direction: column;
-            }
-            
-            .benefits {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-methods {
-                grid-template-columns: 1fr;
-            }
+            .nav-container { padding: 0.8rem 1.5rem; }
+            .page-header { padding: 7rem 1.5rem 3rem; }
+            .page-title { font-size: 2rem; }
+            .main-content { padding: 0 1.5rem; }
+            .sell-card { padding: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; }
+            .toast { min-width: auto; width: calc(100% - 40px); }
         }
 
         @media (max-width: 480px) {
-            .page-title {
-                font-size: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.1rem;
-            }
-            
-            .radio-group {
-                flex-direction: column;
-                gap: 1rem;
-            }
+            .logo-title { font-size: 1.5rem; }
+            .logo-circle { width: 50px; height: 50px; }
+            .page-title { font-size: 1.8rem; }
+            .section-title { font-size: 1.3rem; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .contact-methods { grid-template-columns: 1fr; }
         }
+
+        /* ============ شريط التمرير ============ */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--gray-100); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #c53030, #9b2c2c); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #9b2c2c, #c53030); }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
+    <!-- الخلفية المتحركة -->
+    <div class="animated-bg">
+        <div class="floating-particles">
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div><div class="particle"></div>
+        </div>
+        <div class="wave-container"><div class="wave"></div></div>
+        <div class="gradient-flow"></div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="main-header">
+        <div class="nav-container">
             <a href="index.html" class="logo">
-                <img src="logo.png" alt="عبدالله للسيارات">
-                <div class="logo-text">عبدالله <span>للسيارات</span></div>
+                <div class="logo-circle">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="logo-text">
+                    <div class="logo-title">سيارات عبدالله</div>
+                    <div class="logo-subtitle">ريادة وخبرة منذ 1993</div>
+                </div>
             </a>
-            <button class="back-button" onclick="window.location.href='index.html'">
-                <i class="fas fa-arrow-right"></i>
-                العودة للرئيسية
+
+            <nav class="main-nav">
+                <ul id="mainNav">
+                    <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="category.html"><i class="fas fa-car"></i> السيارات</a></li>
+                    <li><a href="sell.html" class="active"><i class="fas fa-tag"></i> بيع سيارتك</a></li>
+                    <li><a href="exchange.html"><i class="fas fa-exchange-alt"></i> استبدال</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="sell.html" class="nav-btn primary">
+                    <i class="fas fa-plus"></i> بيع سيارتك
+                </a>
+            </div>
+
+            <button class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
 
-    <div class="container">
-        <div class="sell-container">
-            <h1 class="page-title">بيع سيارتك</h1>
-            <p class="page-subtitle">أدخل تفاصيل سيارتك وسنقوم بالتواصل معك خلال 24 ساعة</p>
+    <!-- رأس الصفحة -->
+    <div class="page-header">
+        <h1 class="page-title">بيع سيارتك</h1>
+        <p class="page-subtitle">أدخل تفاصيل سيارتك وسنقوم بالتواصل معك خلال 24 ساعة بأفضل سعر</p>
+    </div>
 
-            <form class="sell-form" id="sellForm">
-                <!-- Car Information -->
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- بطاقات المميزات -->
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="benefit-title">فحص مجاني</h3>
+                <p class="benefit-desc">فحص فني شامل مجاني لسيارتك من قبل خبرائنا المعتمدين</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3 class="benefit-title">أفضل سعر</h3>
+                <p class="benefit-desc">نضمن لك الحصول على أفضل سعر في السوق مع تقييم عادل</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="benefit-title">بيع سريع</h3>
+                <p class="benefit-desc">بيع سيارتك خلال 24-48 ساعة ودفع فوري بدون تأخير</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="benefit-title">معاملات آمنة</h3>
+                <p class="benefit-desc">معاملات قانونية وآمنة 100% مع توثيق كامل للملكية</p>
+            </div>
+        </div>
+
+        <!-- نموذج البيع -->
+        <div class="sell-card">
+            <form id="sellForm">
+                <!-- معلومات السيارة -->
                 <div class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-car"></i>
@@ -490,36 +973,45 @@
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">الماركة</label>
-                            <input type="text" class="form-input" id="carBrand" placeholder="مثال: تويوتا" required>
+                            <label class="form-label required">الماركة</label>
+                            <select class="form-control form-select" id="carBrand" required>
+                                <option value="">اختر الماركة</option>
+                                <option value="Toyota">تويوتا</option>
+                                <option value="Hyundai">هيونداي</option>
+                                <option value="Kia">كيا</option>
+                                <option value="Nissan">نيسان</option>
+                                <option value="Chevrolet">شيفروليه</option>
+                                <option value="Mercedes">مرسيدس</option>
+                                <option value="BMW">بي ام دبليو</option>
+                                <option value="Other">أخرى</option>
+                            </select>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">الموديل</label>
-                            <input type="text" class="form-input" id="carModel" placeholder="مثال: كورولا" required>
+                            <label class="form-label required">الموديل</label>
+                            <input type="text" class="form-control" id="carModel" placeholder="مثال: كورولا" required>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">سنة الصنع</label>
-                            <select class="form-select" id="carYear" required>
+                            <label class="form-label required">سنة الصنع</label>
+                            <select class="form-control form-select" id="carYear" required>
                                 <option value="">اختر السنة</option>
-                                <!-- سيتم تعبئتها بالجافاسكريبت -->
                             </select>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">الفئة</label>
-                            <input type="text" class="form-input" id="carCategory" placeholder="مثال: SE" required>
+                            <input type="text" class="form-control" id="carTrim" placeholder="مثال: SE, GLX">
                         </div>
                     </div>
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">حالة السيارة</label>
+                            <label class="form-label required">حالة السيارة</label>
                             <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="carCondition" value="new" required>
-                                    <span>جديدة</span>
+                                    <span>جديدة (زيرو)</span>
                                 </label>
                                 <label class="radio-label">
                                     <input type="radio" name="carCondition" value="used" required>
@@ -533,48 +1025,59 @@
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">عدد الكيلومترات</label>
-                            <input type="number" class="form-input" id="carMileage" placeholder="بالكيلومتر" required>
+                            <label class="form-label required">عدد الكيلومترات</label>
+                            <input type="number" class="form-control" id="carMileage" placeholder="بالكيلومتر" min="0" required>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">السعر المتوقع</label>
-                            <input type="number" class="form-input" id="carPrice" placeholder="بالجنيه المصري" required>
+                            <label class="form-label required">السعر المتوقع</label>
+                            <input type="number" class="form-control" id="carPrice" placeholder="بالجنيه المصري" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">نوع الوقود</label>
+                            <select class="form-control form-select" id="carFuel">
+                                <option value="">اختر نوع الوقود</option>
+                                <option value="بنزين">بنزين</option>
+                                <option value="ديزل">ديزل</option>
+                                <option value="كهرباء">كهرباء</option>
+                                <option value="هايبرد">هايبرد</option>
+                            </select>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">وصف السيارة</label>
-                        <textarea class="form-textarea" id="carDescription" 
-                                  placeholder="صف سيارتك بالتفصيل (المواصفات، الإضافات، الحالة الفنية، أي عيوب...)" 
+                        <label class="form-label required">وصف السيارة</label>
+                        <textarea class="form-control form-textarea" id="carDescription" 
+                                  placeholder="اكتب وصفاً تفصيلياً للسيارة (المواصفات، الإضافات، الصيانة، أي عيوب...)" 
                                   required></textarea>
                     </div>
                 </div>
 
-                <!-- Images -->
-                <div class="form-section image-upload-section">
+                <!-- رفع الصور -->
+                <div class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-images"></i>
                         صور السيارة
                     </h2>
                     
-                    <div class="upload-area" onclick="document.getElementById('carImages').click()">
+                    <div class="upload-section" onclick="document.getElementById('carImages').click()">
                         <div class="upload-icon">
                             <i class="fas fa-cloud-upload-alt"></i>
                         </div>
                         <div class="upload-text">
                             <h4>اسحب وأفلت الصور هنا</h4>
-                            <p>أو انقر لرفع صور السيارة (الحد الأقصى 10 صور)</p>
-                            <p style="font-size: 0.8rem; color: var(--primary);">يُفضل رفع صور واضحة من جميع الزوايا</p>
+                            <p>أو انقر لاختيار الصور</p>
+                            <p class="upload-hint">الحد الأقصى 10 صور - يفضل تصوير السيارة من جميع الزوايا</p>
                         </div>
                     </div>
                     
-                    <input type="file" id="carImages" multiple accept="image/*" style="display: none;" onchange="previewImages(event)">
+                    <input type="file" id="carImages" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
                     
                     <div class="image-preview" id="imagePreview"></div>
                 </div>
 
-                <!-- Owner Information -->
+                <!-- معلومات المالك -->
                 <div class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-user"></i>
@@ -583,28 +1086,28 @@
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">الاسم الثلاثي</label>
-                            <input type="text" class="form-input" id="ownerName" placeholder="الاسم كاملاً" required>
+                            <label class="form-label required">الاسم الكامل</label>
+                            <input type="text" class="form-control" id="ownerName" placeholder="الاسم الثلاثي" required>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">رقم الهاتف</label>
-                            <input type="tel" class="form-input" id="ownerPhone" placeholder="01XXXXXXXXX" required>
+                            <label class="form-label required">رقم الهاتف</label>
+                            <input type="tel" class="form-control" id="ownerPhone" placeholder="01XXXXXXXXX" required>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">البريد الإلكتروني</label>
-                            <input type="email" class="form-input" id="ownerEmail" placeholder="example@email.com">
+                            <input type="email" class="form-control" id="ownerEmail" placeholder="example@email.com">
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">المدينة</label>
-                            <input type="text" class="form-input" id="ownerCity" placeholder="المدينة" required>
+                            <label class="form-label required">المدينة</label>
+                            <input type="text" class="form-control" id="ownerCity" placeholder="المدينة" required>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Method -->
+                <!-- طريقة التواصل -->
                 <div class="form-section">
                     <h2 class="section-title">
                         <i class="fas fa-comments"></i>
@@ -612,117 +1115,131 @@
                     </h2>
                     
                     <div class="contact-methods">
-                        <div class="method-card" onclick="selectContactMethod('whatsapp')">
+                        <div class="method-card" onclick="selectMethod('whatsapp')">
                             <div class="method-icon">
                                 <i class="fab fa-whatsapp"></i>
                             </div>
                             <div class="method-name">واتساب</div>
-                            <div class="method-desc">التواصل عبر واتساب</div>
+                            <div class="method-desc">التواصل الفوري</div>
                             <input type="radio" name="contactMethod" value="whatsapp" style="display: none;">
                         </div>
                         
-                        <div class="method-card" onclick="selectContactMethod('phone')">
+                        <div class="method-card" onclick="selectMethod('phone')">
                             <div class="method-icon">
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div class="method-name">مكالمة هاتفية</div>
-                            <div class="method-desc">الاتصال على رقمك</div>
+                            <div class="method-desc">الاتصال المباشر</div>
                             <input type="radio" name="contactMethod" value="phone" style="display: none;">
                         </div>
                         
-                        <div class="method-card" onclick="selectContactMethod('email')">
+                        <div class="method-card" onclick="selectMethod('email')">
                             <div class="method-icon">
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div class="method-name">بريد إلكتروني</div>
-                            <div class="method-desc">إرسال رسالة بريدية</div>
+                            <div class="method-desc">إرسال التفاصيل</div>
                             <input type="radio" name="contactMethod" value="email" style="display: none;">
                         </div>
                         
-                        <div class="method-card" onclick="selectContactMethod('visit')">
+                        <div class="method-card" onclick="selectMethod('visit')">
                             <div class="method-icon">
                                 <i class="fas fa-store"></i>
                             </div>
                             <div class="method-name">زيارة المعرض</div>
-                            <div class="method-desc">زيارتك في المعرض</div>
+                            <div class="method-desc">حجز موعد</div>
                             <input type="radio" name="contactMethod" value="visit" style="display: none;">
                         </div>
                     </div>
                 </div>
 
-                <!-- Form Actions -->
+                <!-- أزرار النموذج -->
                 <div class="form-actions">
-                    <button type="submit" class="btn-submit">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-paper-plane"></i>
                         إرسال طلب البيع
                     </button>
-                    <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">إلغاء</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
                 </div>
             </form>
         </div>
-
-        <!-- Benefits Section -->
-        <div class="benefits">
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="benefit-title">فحص مجاني</h3>
-                <p class="benefit-desc">فحص فني شامل مجاني لسيارتك</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <h3 class="benefit-title">أفضل سعر</h3>
-                <p class="benefit-desc">نضمن لك أفضل سعر في السوق</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3 class="benefit-title">سرعة البيع</h3>
-                <p class="benefit-desc">بيع سريع خلال 24-48 ساعة</p>
-            </div>
-            
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-handshake"></i>
-                </div>
-                <h3 class="benefit-title">معاملات آمنة</h3>
-                <p class="benefit-desc">معاملات قانونية وآمنة 100%</p>
-            </div>
-        </div>
     </div>
 
-    <!-- Toast Container -->
-    <div id="toastContainer"></div>
+    <!-- حاوية الإشعارات -->
+    <div class="toast-container" id="toastContainer"></div>
 
+    <!-- حالة التحميل -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">جاري التحميل...</div>
+    </div>
+
+    <!-- Sync JS -->
     <script src="sync.js"></script>
     <script>
+        // ============ متغيرات النظام ============
+        let siteData = null;
         let selectedImages = [];
-        let selectedContactMethod = null;
+        let selectedMethod = null;
 
-        // التهيئة
-        document.addEventListener('DOMContentLoaded', function() {
+        // ============ التهيئة ============
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 جاري تحميل صفحة بيع سيارة...');
+            
+            // إعداد القائمة للجوال
+            setupMobileMenu();
+            
             // تعبئة سنوات الصنع
             populateYearOptions();
             
-            // إعداد سحب وإفلات الصور
-            setupDragAndDrop();
+            // تحميل البيانات
+            await loadData();
             
-            // إعداد نموذج البيع
-            setupSellForm();
+            console.log('✅ الصفحة جاهزة');
         });
 
-        // تعبئة خيارات السنوات
+        // ============ تحميل البيانات ============
+        async function loadData() {
+            try {
+                if (window.GitHubSync) {
+                    const data = await window.GitHubSync.sync();
+                    if (data) {
+                        siteData = data;
+                        window.siteData = data;
+                        return;
+                    }
+                }
+                
+                const localData = localStorage.getItem('abdullah_cars_data');
+                if (localData) {
+                    siteData = JSON.parse(localData);
+                    window.siteData = siteData;
+                    return;
+                }
+                
+                siteData = {
+                    sellRequests: [],
+                    contact: {
+                        phone: "01121811110",
+                        whatsapp: "01121811110"
+                    }
+                };
+                window.siteData = siteData;
+                
+            } catch (error) {
+                console.error('❌ خطأ في تحميل البيانات:', error);
+            }
+        }
+
+        // ============ تعبئة سنوات الصنع ============
         function populateYearOptions() {
             const yearSelect = document.getElementById('carYear');
             const currentYear = new Date().getFullYear();
             
-            for (let year = currentYear; year >= 2000; year--) {
+            for (let year = currentYear + 1; year >= 1980; year--) {
                 const option = document.createElement('option');
                 option.value = year;
                 option.textContent = year;
@@ -730,378 +1247,213 @@
             }
         }
 
-        // إعداد سحب وإفلات الصور
-        function setupDragAndDrop() {
-            const uploadArea = document.querySelector('.upload-area');
-            const fileInput = document.getElementById('carImages');
-
-            // منع السلوك الافتراضي
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
-            });
-
-            // إبراز منطقة السحب
-            ['dragenter', 'dragover'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, unhighlight, false);
-            });
-
-            // التعامل مع الملفات المسقطة
-            uploadArea.addEventListener('drop', handleDrop, false);
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            function highlight() {
-                uploadArea.style.background = 'rgba(197, 48, 48, 0.1)';
-                uploadArea.style.borderColor = 'var(--primary)';
-            }
-
-            function unhighlight() {
-                uploadArea.style.background = '';
-                uploadArea.style.borderColor = '';
-            }
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                handleFiles(files);
-            }
-        }
-
-        // التعامل مع الملفات
-        function handleFiles(files) {
+        // ============ رفع الصور ============
+        async function handleImageUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
             if (selectedImages.length + files.length > 10) {
-                showToast('الحد الأقصى هو 10 صور فقط', 'error');
+                showToast('الحد الأقصى هو 10 صور فقط', 'warning');
                 return;
             }
-
+            
+            showLoading('جاري رفع الصور...');
+            
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                if (!file.type.match('image.*')) continue;
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    selectedImages.push({
-                        file: file,
-                        preview: e.target.result
-                    });
-                    updateImagePreview();
-                };
-                reader.readAsDataURL(file);
+                
+                try {
+                    if (window.GitHubSync) {
+                        const result = await window.GitHubSync.uploadImage(file);
+                        if (result.success) {
+                            selectedImages.push(result.url);
+                        }
+                    } else {
+                        // استخدام Data URL كبديل
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            selectedImages.push(e.target.result);
+                            updateImagePreview();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                } catch (error) {
+                    console.error('فشل رفع الصورة:', error);
+                }
             }
+            
+            updateImagePreview();
+            hideLoading();
         }
 
-        // معاينة الصور
-        function previewImages(event) {
-            const files = event.target.files;
-            handleFiles(files);
-        }
-
-        // تحديث معاينة الصور
         function updateImagePreview() {
-            const previewContainer = document.getElementById('imagePreview');
-            previewContainer.innerHTML = '';
-
-            selectedImages.forEach((image, index) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                previewItem.innerHTML = `
-                    <img src="${image.preview}" alt="صورة السيارة">
-                    <div class="remove-image" onclick="removeImage(${index})">×</div>
-                `;
-                previewContainer.appendChild(previewItem);
-            });
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = selectedImages.map((img, index) => `
+                <div class="preview-item">
+                    <img src="${img}" alt="صورة السيارة">
+                    <button class="remove-image" onclick="removeImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
-        // إزالة صورة
         function removeImage(index) {
             selectedImages.splice(index, 1);
             updateImagePreview();
         }
 
-        // اختيار طريقة التواصل
-        function selectContactMethod(method) {
-            selectedContactMethod = method;
+        // ============ اختيار طريقة التواصل ============
+        function selectMethod(method) {
+            selectedMethod = method;
             
-            // إلغاء تحديد جميع البطاقات
             document.querySelectorAll('.method-card').forEach(card => {
                 card.classList.remove('selected');
-                const radio = card.querySelector('input[type="radio"]');
-                if (radio) radio.checked = false;
             });
             
-            // تحديد البطاقة المختارة
-            const selectedCard = document.querySelector(`.method-card[onclick*="${method}"]`);
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-                const radio = selectedCard.querySelector('input[type="radio"]');
-                if (radio) radio.checked = true;
-            }
+            event.currentTarget.classList.add('selected');
+            event.currentTarget.querySelector('input[type="radio"]').checked = true;
         }
 
-        // إعداد نموذج البيع
-        function setupSellForm() {
-            const form = document.getElementById('sellForm');
+        // ============ إرسال النموذج ============
+        document.getElementById('sellForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // التحقق من البيانات
-                if (!validateForm()) {
-                    return;
-                }
-                
-                // إظهار حالة التحميل
-                const submitBtn = form.querySelector('.btn-submit');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-                submitBtn.disabled = true;
-                
-                try {
-                    // جمع بيانات النموذج
-                    const sellRequest = {
-                        id: 'sell_' + Date.now(),
-                        carBrand: document.getElementById('carBrand').value,
-                        carModel: document.getElementById('carModel').value,
-                        carYear: document.getElementById('carYear').value,
-                        carCategory: document.getElementById('carCategory').value,
-                        carCondition: document.querySelector('input[name="carCondition"]:checked').value,
-                        carMileage: document.getElementById('carMileage').value,
-                        carPrice: document.getElementById('carPrice').value,
-                        carDescription: document.getElementById('carDescription').value,
-                        ownerName: document.getElementById('ownerName').value,
-                        ownerPhone: document.getElementById('ownerPhone').value,
-                        ownerEmail: document.getElementById('ownerEmail').value,
-                        ownerCity: document.getElementById('ownerCity').value,
-                        contactMethod: selectedContactMethod,
-                        images: selectedImages.map(img => img.preview),
-                        status: 'pending',
-                        submittedAt: new Date().toISOString(),
-                        ip: await getClientIP()
-                    };
-                    
-                    // حفظ طلب البيع
-                    await saveSellRequest(sellRequest);
-                    
-                    // إرسال إشعار تيليجرام
-                    await sendTelegramNotification(sellRequest);
-                    
-                    // إظهار رسالة النجاح
-                    showSuccessMessage();
-                    
-                    // إعادة تعيين النموذج
-                    form.reset();
-                    selectedImages = [];
-                    updateImagePreview();
-                    selectedContactMethod = null;
-                    document.querySelectorAll('.method-card').forEach(card => {
-                        card.classList.remove('selected');
-                    });
-                    
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    showToast('حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.', 'error');
-                } finally {
-                    // استعادة زر الإرسال
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            });
-        }
-
-        // التحقق من صحة النموذج
-        function validateForm() {
-            // التحقق من طريقة التواصل
-            if (!selectedContactMethod) {
-                showToast('يرجى اختيار طريقة التواصل المفضلة', 'error');
-                return false;
+            // التحقق من اختيار طريقة التواصل
+            if (!selectedMethod) {
+                showToast('يرجى اختيار طريقة التواصل المفضلة', 'warning');
+                return;
             }
             
-            // التحقق من الصور
+            // التحقق من رفع الصور
             if (selectedImages.length === 0) {
-                showToast('يرجى رفع صور للسيارة', 'error');
-                return false;
+                showToast('يرجى رفع صور للسيارة', 'warning');
+                return;
             }
             
-            return true;
-        }
-
-        // حفظ طلب البيع
-        async function saveSellRequest(sellRequest) {
+            showLoading('جاري إرسال طلب البيع...');
+            
             try {
-                // تحميل البيانات الحالية
-                let siteData = null;
-                if (window.gitHubSync) {
-                    siteData = await window.gitHubSync.fetch();
-                } else {
-                    const localData = localStorage.getItem('siteData_encrypted');
-                    if (localData) {
-                        siteData = window.gitHubSync.decryptData(localData);
+                const sellRequest = {
+                    id: 'sell_' + Date.now(),
+                    car: {
+                        brand: document.getElementById('carBrand').value,
+                        model: document.getElementById('carModel').value,
+                        year: document.getElementById('carYear').value,
+                        trim: document.getElementById('carTrim').value,
+                        condition: document.querySelector('input[name="carCondition"]:checked').value,
+                        mileage: document.getElementById('carMileage').value,
+                        price: document.getElementById('carPrice').value,
+                        fuel: document.getElementById('carFuel').value,
+                        description: document.getElementById('carDescription').value,
+                        images: selectedImages
+                    },
+                    owner: {
+                        name: document.getElementById('ownerName').value,
+                        phone: document.getElementById('ownerPhone').value,
+                        email: document.getElementById('ownerEmail').value,
+                        city: document.getElementById('ownerCity').value
+                    },
+                    contactMethod: selectedMethod,
+                    status: 'pending',
+                    submittedAt: new Date().toISOString()
+                };
+                
+                // حفظ الطلب
+                if (!siteData.sellRequests) siteData.sellRequests = [];
+                siteData.sellRequests.push(sellRequest);
+                
+                // حفظ في localStorage
+                localStorage.setItem('abdullah_cars_data', JSON.stringify(siteData));
+                
+                // محاولة الحفظ في GitHub
+                if (window.GitHubSync) {
+                    try {
+                        await window.GitHubSync.save(siteData);
+                    } catch (error) {
+                        console.error('فشل الحفظ على GitHub:', error);
                     }
                 }
                 
-                if (!siteData) {
-                    siteData = { sellRequests: [] };
-                }
+                showToast('تم إرسال طلب البيع بنجاح! سنتواصل معك قريباً', 'success');
                 
-                if (!siteData.sellRequests) {
-                    siteData.sellRequests = [];
-                }
-                
-                // إضافة طلب البيع
-                siteData.sellRequests.push(sellRequest);
-                
-                // حفظ البيانات
-                if (window.gitHubSync) {
-                    await window.gitHubSync.push(siteData);
-                } else {
-                    localStorage.setItem('siteData_encrypted', window.gitHubSync.encryptData(siteData));
-                }
-                
-                return true;
-            } catch (error) {
-                console.error('Error saving sell request:', error);
-                throw error;
-            }
-        }
-
-        // إرسال إشعار تيليجرام
-        async function sendTelegramNotification(sellRequest) {
-            try {
-                // تحميل بيانات الموقع للحصول على إعدادات التليجرام
-                let siteData = null;
-                if (window.gitHubSync) {
-                    siteData = await window.gitHubSync.fetch();
-                }
-                
-                if (!siteData?.admin?.telegramBotToken || !siteData?.admin?.telegramChatId) {
-                    return;
-                }
-                
-                const botToken = siteData.admin.telegramBotToken;
-                const chatId = siteData.admin.telegramChatId;
-                
-                const message = `
-🚗 *طلب بيع سيارة جديد*
-────────────────────
-👤 *الاسم:* ${sellRequest.ownerName}
-📞 *الهاتف:* ${sellRequest.ownerPhone}
-🏙️ *المدينة:* ${sellRequest.ownerCity}
-────────────────────
-🚗 *السيارة:* ${sellRequest.carBrand} ${sellRequest.carModel}
-📅 *السنة:* ${sellRequest.carYear}
-💰 *السعر المتوقع:* ${sellRequest.carPrice} ج.م
-🔄 *الحالة:* ${sellRequest.carCondition === 'new' ? 'جديدة' : sellRequest.carCondition === 'used' ? 'مستعملة' : 'كهربائية'}
-📊 *الكيلومترات:* ${sellRequest.carMileage} كم
-────────────────────
-📝 *الوصف:*
-${sellRequest.carDescription}
-────────────────────
-📱 *طريقة التواصل:* ${getContactMethodText(sellRequest.contactMethod)}
-🌐 *IP:* ${sellRequest.ip}
-🕒 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
-                `;
-                
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
+                // إعادة تعيين النموذج
+                this.reset();
+                selectedImages = [];
+                selectedMethod = null;
+                updateImagePreview();
+                document.querySelectorAll('.method-card').forEach(card => {
+                    card.classList.remove('selected');
                 });
                 
-            } catch (error) {
-                console.error('Error sending Telegram notification:', error);
-            }
-        }
-
-        // الحصول على نص طريقة التواصل
-        function getContactMethodText(method) {
-            const methods = {
-                whatsapp: 'واتساب',
-                phone: 'مكالمة هاتفية',
-                email: 'بريد إلكتروني',
-                visit: 'زيارة المعرض'
-            };
-            return methods[method] || method;
-        }
-
-        // إظهار رسالة النجاح
-        function showSuccessMessage() {
-            showToast('تم إرسال طلب البيع بنجاح! سنتصل بك خلال 24 ساعة.', 'success');
-            
-            // إظهار نافذة تأكيد إضافية
-            setTimeout(() => {
-                const confirmation = confirm(`
-✅ تم استلام طلبك بنجاح!
-
-تفاصيل طلبك:
-- سيتم التواصل معك خلال 24 ساعة
-- عبر ${getContactMethodText(selectedContactMethod)}
-- على الرقم: ${document.getElementById('ownerPhone').value}
-
-هل تريد العودة للصفحة الرئيسية؟
-                `);
-                
-                if (confirmation) {
-                    window.location.href = 'index.html';
-                }
-            }, 1000);
-        }
-
-        // عرض الإشعارات
-        function showToast(message, type = 'info') {
-            const colors = {
-                success: '#38a169',
-                error: '#e53e3e',
-                info: '#3182ce'
-            };
-            
-            const icons = {
-                success: '✅',
-                error: '❌',
-                info: 'ℹ️'
-            };
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `
-                <span>${icons[type]}</span>
-                <span>${message}</span>
-            `;
-            toast.style.background = colors[type] || colors.info;
-            
-            document.getElementById('toastContainer').appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
+                // توجيه للصفحة الرئيسية بعد 3 ثوان
                 setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, 5000);
+                    window.location.href = 'index.html';
+                }, 3000);
+                
+            } catch (error) {
+                console.error(error);
+                showToast('حدث خطأ في إرسال الطلب', 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // ============ القائمة للجوال ============
+        function setupMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mainNav = document.getElementById('mainNav');
+            
+            mobileMenu.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+                mobileMenu.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mainNav.contains(e.target)) {
+                    mainNav.classList.remove('active');
+                    mobileMenu.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
         }
 
-        // الحصول على IP العميل
-        async function getClientIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                return 'غير معروف';
-            }
+        // ============ Toast ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
         }
+
+        // ============ Loading ============
+        function showLoading(message) {
+            document.getElementById('loadingText').textContent = message;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // ============ دوال عامة ============
+        window.handleImageUpload = handleImageUpload;
+        window.removeImage = removeImage;
+        window.selectMethod = selectMethod;
     </script>
 </body>
 </html>

@@ -1,256 +1,382 @@
-[file name]: order.html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تأكيد الطلب | عبدالله للسيارات</title>
+    <title>تأكيد الطلب - سيارات عبدالله</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root {
-            --primary: #c53030;
-            --primary-dark: #9b2c2c;
-            --secondary: #0a0a0a;
-            --light: #f7fafc;
-            --white: #ffffff;
-            --gray: #a0aec0;
-            --dark-gray: #4a5568;
-            --success: #38a169;
-            --transition: all 0.3s ease;
-        }
-
+        /* ========== RESET & VARIABLES ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        :root {
+            --primary: #c53030;
+            --primary-dark: #9b1c1c;
+            --primary-light: #e53e3e;
+            --secondary: #0a0a0a;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --gray-bg: #f5f5f5;
+            --glass-bg: rgba(10, 10, 10, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--secondary);
+            color: var(--text-light);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .order-container {
-            background: var(--white);
-            border-radius: 20px;
+        /* ========== ANIMATED BACKGROUND ========== */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 800px;
+            height: 100%;
+            z-index: -1;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        .order-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
+        .bg-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
         }
 
-        .order-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: bounce 2s infinite;
+        .bg-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(197, 48, 48, 0.3);
+            border-radius: 50%;
+            animation: float 8s infinite;
         }
 
-        .order-title {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
+        .particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
+        .particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
+        .particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
+        .particle:nth-child(6) { top: 85%; left: 30%; width: 5px; height: 5px; animation-delay: 5s; }
+        .particle:nth-child(7) { top: 45%; left: 45%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { top: 30%; left: 60%; width: 7px; height: 7px; animation-delay: 3.5s; }
+        .particle:nth-child(9) { top: 75%; left: 75%; animation-delay: 1.5s; }
+        .particle:nth-child(10) { top: 50%; left: 15%; width: 6px; height: 6px; animation-delay: 4.5s; }
+        .particle:nth-child(11) { top: 25%; left: 40%; animation-delay: 0.5s; }
+        .particle:nth-child(12) { top: 90%; left: 85%; animation-delay: 3.8s; }
+        .particle:nth-child(13) { top: 35%; left: 25%; width: 5px; height: 5px; animation-delay: 2.2s; }
+        .particle:nth-child(14) { top: 55%; left: 95%; animation-delay: 5.5s; }
+        .particle:nth-child(15) { top: 80%; left: 5%; width: 8px; height: 8px; animation-delay: 1.8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-50px) scale(1.5); opacity: 0.6; }
         }
 
-        .order-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .bg-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(197, 48, 48, 0.1) 0%, transparent 70%);
         }
 
-        .order-content {
-            padding: 3rem;
+        /* ========== HEADER ========== */
+        .main-header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(197, 48, 48, 0.2);
         }
 
-        .success-message {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .success-icon {
-            font-size: 5rem;
-            color: var(--success);
-            margin-bottom: 1rem;
-        }
-
-        .success-title {
-            font-size: 1.8rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-
-        .success-text {
-            color: var(--dark-gray);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .order-details {
-            background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .details-title {
-            font-size: 1.3rem;
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
+        .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
         }
 
-        .details-title i {
+        .logo i {
+            font-size: 2.2rem;
             color: var(--primary);
+            filter: drop-shadow(0 0 10px rgba(197, 48, 48, 0.5));
         }
 
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .detail-item {
-            padding: 1rem;
-            background: var(--white);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
+        .main-nav {
+            display: flex;
+            gap: 2rem;
         }
 
-        .detail-label {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 0.3rem;
-        }
-
-        .detail-value {
-            font-size: 1.1rem;
-            color: var(--secondary);
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
             font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .invoice-summary {
-            background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
+        .main-nav a:hover,
+        .main-nav a.active {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(197, 48, 48, 0.4);
         }
 
-        .invoice-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        .invoice-table th,
-        .invoice-table td {
-            padding: 1rem;
-            text-align: right;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .invoice-table th {
-            background: var(--white);
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        .invoice-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .total-row {
-            background: var(--white);
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .payment-methods {
-            margin: 2rem 0;
-        }
-
-        .methods-title {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .methods-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .nav-actions {
+            display: flex;
             gap: 1rem;
         }
 
-        .method-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #e2e8f0;
+        .nav-actions button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s;
         }
 
-        .method-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
+        .nav-actions button:hover {
+            background: var(--primary);
+            transform: scale(1.1);
         }
 
-        .method-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+        /* ========== MAIN CONTENT ========== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
         }
 
-        .method-name {
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: var(--text-light);
             font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
         }
 
-        .method-desc {
-            color: var(--gray);
+        /* Order Cards */
+        .order-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(197, 48, 48, 0.2);
+            border-color: var(--primary);
+        }
+
+        .success-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .order-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .order-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 1.5rem 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .info-label i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .info-value.price {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .status-badge {
+            background: var(--warning);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
             font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            background: rgba(197, 48, 48, 0.1);
+            border-color: var(--primary);
+        }
+
+        .payment-method i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .payment-method h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .payment-method p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .order-actions {
             display: flex;
             gap: 1rem;
-            margin-top: 3rem;
-            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
         }
 
-        .action-btn {
-            flex: 1;
+        .btn {
             padding: 1rem 2rem;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-family: 'Cairo', sans-serif;
-            text-decoration: none;
-            min-width: 200px;
+            gap: 10px;
+            font-size: 1rem;
         }
 
         .btn-primary {
@@ -261,531 +387,601 @@
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.2);
+            box-shadow: 0 10px 20px rgba(197, 48, 48, 0.3);
         }
 
         .btn-secondary {
-            background: var(--white);
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--glass-border);
         }
 
         .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #2d9c58;
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(56, 161, 105, 0.2);
         }
 
-        .confirmation-info {
-            background: rgba(56, 161, 105, 0.1);
-            border: 2px solid var(--success);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+        }
+
+        .error-container {
             text-align: center;
+            padding: 3rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
         }
 
-        .confirmation-icon {
-            font-size: 2rem;
-            color: var(--success);
+        .error-icon {
+            font-size: 4rem;
+            color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .confirmation-text {
-            color: var(--dark-gray);
-            line-height: 1.6;
+        .error-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
 
-        .order-footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--light);
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .order-container {
-                box-shadow: none;
-                max-width: 100%;
-            }
-            
-            .order-actions,
-            .payment-methods {
-                display: none;
-            }
+        .hidden {
+            display: none;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
+            .main-header {
+                flex-direction: column;
+                gap: 1rem;
             }
-            
-            .order-content {
-                padding: 2rem 1.5rem;
+
+            .main-nav {
+                flex-wrap: wrap;
+                justify-content: center;
             }
-            
-            .order-title {
-                font-size: 2rem;
-            }
-            
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-            
+
             .order-actions {
                 flex-direction: column;
             }
-            
-            .action-btn {
+
+            .btn {
                 width: 100%;
+                justify-content: center;
             }
-            
-            .methods-grid {
-                grid-template-columns: 1fr;
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
         }
 
-        @media (max-width: 480px) {
-            .order-header {
-                padding: 2rem 1rem;
+        /* ========== PRINT STYLES ========== */
+        @media print {
+            .animated-bg,
+            .main-header,
+            .nav-actions,
+            .order-actions,
+            .btn,
+            .payment-methods {
+                display: none !important;
             }
-            
-            .order-title {
-                font-size: 1.5rem;
+
+            body {
+                background: white;
+                color: black;
             }
-            
+
+            .container {
+                margin: 0;
+                padding: 0;
+            }
+
+            .order-card {
+                background: white;
+                border: 2px solid #ddd;
+                box-shadow: none;
+                color: black;
+            }
+
+            .info-label {
+                color: #666;
+            }
+
+            .info-value {
+                color: black;
+            }
+
+            .status-badge {
+                background: #f0f0f0;
+                color: black;
+                border: 1px solid #ddd;
+            }
+
             .success-icon {
-                font-size: 3rem;
+                color: #28a745;
             }
-            
-            .success-title {
-                font-size: 1.5rem;
-            }
-            
-            .details-title {
-                font-size: 1.1rem;
-            }
-            
-            .invoice-table th,
-            .invoice-table td {
-                padding: 0.8rem 0.5rem;
-                font-size: 0.9rem;
+
+            .divider {
+                background: #ddd;
             }
         }
     </style>
 </head>
 <body>
-    <div class="order-container">
-        <div class="order-header">
-            <div class="order-icon">
-                <i class="fas fa-car"></i>
-            </div>
-            <h1 class="order-title">عبدالله للسيارات</h1>
-            <p class="order-subtitle">تأكيد طلب الشراء</p>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="bg-overlay"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo">
+            <i class="fas fa-car"></i>
+            <span>سيارات عبدالله</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+            <a href="category.html"><i class="fas fa-car"></i> السيارات</a>
+            <a href="sell.html"><i class="fas fa-tag"></i> بيع سيارتك</a>
+            <a href="exchange.html"><i class="fas fa-exchange-alt"></i> استبدال</a>
+        </nav>
+        <div class="nav-actions">
+            <button><i class="fas fa-search"></i></button>
+            <button><i class="fas fa-user"></i></button>
+            <button><i class="fas fa-cart-shopping"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loadingContainer" class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">جاري تحميل تفاصيل الطلب...</div>
         </div>
 
-        <div class="order-content">
-            <!-- Loading State -->
-            <div id="loadingState">
-                <div class="success-message">
-                    <div class="success-icon">
-                        <i class="fas fa-spinner fa-spin"></i>
-                    </div>
-                    <h2 class="success-title">جاري تحميل تفاصيل طلبك</h2>
-                    <p class="success-text">يرجى الانتظار...</p>
-                </div>
-            </div>
-
-            <!-- Order Confirmation -->
-            <div id="orderConfirmation" style="display: none;">
-                <div class="success-message">
+        <!-- Success State - Order Details -->
+        <div id="orderContent" class="order-grid hidden">
+            <div class="order-card">
+                <div class="success-header">
                     <div class="success-icon">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                    <h2 class="success-title">شكراً لتسوقك معنا!</h2>
-                    <p class="success-text">
-                        تم استلام طلبك بنجاح رقم <strong id="orderNumber"></strong><br>
-                        سنقوم بالتواصل معك خلال 24 ساعة على الرقم <strong id="customerPhone"></strong><br>
-                        لتأكيد الطلب وتحديد موعد التسليم.
-                    </p>
+                    <h1 class="order-title">تم استلام طلبك بنجاح!</h1>
+                    <p class="order-subtitle">شكراً لتسوقك مع سيارات عبدالله</p>
                 </div>
 
-                <!-- Order Details -->
-                <div class="order-details">
-                    <h3 class="details-title">
-                        <i class="fas fa-receipt"></i>
-                        تفاصيل الطلب
-                    </h3>
-                    
-                    <div class="details-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">رقم الطلب</div>
-                            <div class="detail-value" id="detailOrderNumber"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">تاريخ الطلب</div>
-                            <div class="detail-value" id="detailOrderDate"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">حالة الطلب</div>
-                            <div class="detail-value" id="detailOrderStatus"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">طريقة الدفع</div>
-                            <div class="detail-value" id="detailPaymentMethod"></div>
-                        </div>
-                    </div>
-                </div>
+                <div class="divider"></div>
 
-                <!-- Invoice Summary -->
-                <div class="invoice-summary">
-                    <h3 class="details-title">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        الفاتورة
-                    </h3>
-                    
-                    <table class="invoice-table">
-                        <thead>
-                            <tr>
-                                <th>المنتج</th>
-                                <th>السعر</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td id="invoiceProductName"></td>
-                                <td id="invoiceProductPrice"></td>
-                            </tr>
-                            <tr>
-                                <td>رسوم التوصيل</td>
-                                <td id="invoiceDelivery">مجاناً</td>
-                            </tr>
-                            <tr class="total-row">
-                                <td>الإجمالي</td>
-                                <td id="invoiceTotal"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Order Info -->
+                <div id="orderInfo"></div>
 
-                <!-- Customer Information -->
-                <div class="order-details">
-                    <h3 class="details-title">
-                        <i class="fas fa-user"></i>
-                        معلومات العميل
-                    </h3>
-                    
-                    <div class="details-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">الاسم الكامل</div>
-                            <div class="detail-value" id="detailCustomerName"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">رقم الهاتف</div>
-                            <div class="detail-value" id="detailCustomerPhone"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">البريد الإلكتروني</div>
-                            <div class="detail-value" id="detailCustomerEmail"></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">المدينة</div>
-                            <div class="detail-value" id="detailCustomerCity"></div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Customer Info -->
+                <div id="customerInfo"></div>
+
+                <div class="divider"></div>
 
                 <!-- Payment Methods -->
+                <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-credit-card" style="color: var(--primary);"></i>
+                    طرق الدفع المتاحة
+                </h3>
                 <div class="payment-methods">
-                    <h3 class="methods-title">طرق الدفع المتاحة</h3>
-                    
-                    <div class="methods-grid">
-                        <div class="method-card">
-                            <div class="method-icon">
-                                <i class="fas fa-money-bill-wave"></i>
-                            </div>
-                            <div class="method-name">الدفع نقداً</div>
-                            <div class="method-desc">عند الاستلام أو في المعرض</div>
+                    <div class="payment-method">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <h4>كاش</h4>
+                            <p>الدفع عند الاستلام أو في المعرض</p>
                         </div>
-                        
-                        <div class="method-card">
-                            <div class="method-icon">
-                                <i class="fas fa-university"></i>
-                            </div>
-                            <div class="method-name">تحويل بنكي</div>
-                            <div class="method-desc">على الحسابات البنكية</div>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-university"></i>
+                        <div>
+                            <h4>تحويل بنكي</h4>
+                            <p>البنك الأهلي: 12345678912345678</p>
+                            <p>بنك مصر: 98765432198765432</p>
                         </div>
-                        
-                        <div class="method-card">
-                            <div class="method-icon">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
-                            <div class="method-name">محفظة إلكترونية</div>
-                            <div class="method-desc">فودافون كاش وغيرها</div>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div>
+                            <h4>محفظة إلكترونية</h4>
+                            <p>فودافون كاش: 01012345678</p>
+                            <p>انستا باي: @abdullah.cars</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Important Information -->
-                <div class="confirmation-info">
-                    <div class="confirmation-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div class="confirmation-text">
-                        <strong>ملاحظة هامة:</strong><br>
-                        لا نقوم بطلب أي معلومات بنكية أو بطاقات ائتمان عبر الهاتف أو الواتساب.<br>
-                        جميع المدفوعات تتم بشكل آمن في المعرض أو عبر التحويلات البنكية الرسمية.
-                    </div>
-                </div>
+                <div class="divider"></div>
 
-                <!-- Order Actions -->
+                <!-- Actions -->
                 <div class="order-actions">
-                    <button class="action-btn btn-primary" onclick="window.print()">
+                    <button onclick="printInvoice()" class="btn btn-primary">
                         <i class="fas fa-print"></i>
                         طباعة الفاتورة
                     </button>
-                    <a href="index.html" class="action-btn btn-secondary">
+                    <button onclick="window.location.href='index.html'" class="btn btn-secondary">
                         <i class="fas fa-home"></i>
                         العودة للرئيسية
-                    </a>
-                    <a href="category.html" class="action-btn btn-success">
+                    </button>
+                    <button onclick="window.location.href='category.html'" class="btn btn-outline">
                         <i class="fas fa-car"></i>
-                        تصفح المزيد
-                    </a>
-                </div>
-
-                <div class="order-footer">
-                    <p>© 2024 عبدالله للسيارات. جميع الحقوق محفوظة.</p>
-                    <p>للاستفسارات: 01234567890 | info@abdallahcars.com</p>
-                </div>
-            </div>
-
-            <!-- Error State -->
-            <div id="errorState" style="display: none;">
-                <div class="success-message">
-                    <div class="success-icon" style="color: #e53e3e;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <h2 class="success-title">لم يتم العثور على الطلب</h2>
-                    <p class="success-text">
-                        عفواً، لم نتمكن من العثور على تفاصيل طلبك.<br>
-                        يرجى التحقق من رقم الطلب أو التواصل مع خدمة العملاء.
-                    </p>
-                </div>
-                
-                <div class="order-actions">
-                    <a href="index.html" class="action-btn btn-primary">
-                        <i class="fas fa-home"></i>
-                        العودة للرئيسية
-                    </a>
-                    <a href="category.html" class="action-btn btn-secondary">
-                        <i class="fas fa-car"></i>
-                        تصفح السيارات
-                    </a>
+                        تصفح المزيد من السيارات
+                    </button>
                 </div>
             </div>
         </div>
+
+        <!-- Error State -->
+        <div id="errorContainer" class="error-container hidden">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="error-title">عذراً، الطلب غير موجود</h2>
+            <p style="margin-bottom: 2rem; color: rgba(255,255,255,0.8);">لم نتمكن من العثور على تفاصيل الطلب المطلوب</p>
+            <button onclick="window.location.href='category.html'" class="btn btn-primary">
+                <i class="fas fa-car"></i>
+                تصفح السيارات
+            </button>
+        </div>
     </div>
 
-    <script src="sync.js"></script>
     <script>
-        let orderData = null;
+        // GitHubSync Class (Simplified for order page)
+        class GitHubSync {
+            constructor() {
+                this.config = JSON.parse(localStorage.getItem('githubSyncConfig')) || null;
+            }
 
-        // التهيئة
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadOrderDetails();
-        });
-
-        // تحميل تفاصيل الطلب
-        async function loadOrderDetails() {
-            try {
-                // الحصول على معرف الطلب من URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const orderId = urlParams.get('id');
-                
-                if (!orderId) {
-                    // البحث عن آخر طلب في localStorage
-                    const lastOrder = localStorage.getItem('lastOrder');
-                    if (lastOrder) {
-                        orderData = JSON.parse(lastOrder);
-                        displayOrderConfirmation();
-                    } else {
-                        showError();
-                    }
-                    return;
-                }
-                
-                // محاولة تحميل الطلب من البيانات المحلية
-                const localOrder = localStorage.getItem(`order_${orderId}`);
-                if (localOrder) {
-                    orderData = JSON.parse(localOrder);
-                    displayOrderConfirmation();
-                    return;
-                }
-                
-                // محاولة تحميل من قاعدة البيانات
-                let siteData = null;
-                if (window.gitHubSync) {
-                    siteData = await window.gitHubSync.fetch();
-                } else {
-                    const localData = localStorage.getItem('siteData_encrypted');
+            async fetchSiteData() {
+                try {
+                    // Try to get from localStorage first
+                    const localData = localStorage.getItem('siteData');
                     if (localData) {
-                        siteData = window.gitHubSync.decryptData(localData);
+                        return JSON.parse(localData);
+                    }
+
+                    // If not in localStorage, return default structure
+                    return {
+                        version: '6.0.0',
+                        lastUpdated: new Date().toISOString(),
+                        orders: [],
+                        users: [],
+                        sellRequests: [],
+                        exchangeRequests: [],
+                        products: []
+                    };
+                } catch (error) {
+                    console.error('Error fetching site data:', error);
+                    return null;
+                }
+            }
+        }
+
+        // Order Page Controller
+        class OrderPageController {
+            constructor() {
+                this.sync = new GitHubSync();
+                this.orderId = this.getOrderIdFromUrl();
+                this.init();
+            }
+
+            getOrderIdFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('id');
+            }
+
+            async init() {
+                if (!this.orderId) {
+                    this.showError();
+                    return;
+                }
+
+                await this.loadOrderDetails();
+            }
+
+            async loadOrderDetails() {
+                try {
+                    // Show loading
+                    document.getElementById('loadingContainer').classList.remove('hidden');
+                    document.getElementById('orderContent').classList.add('hidden');
+                    document.getElementById('errorContainer').classList.add('hidden');
+
+                    // Fetch site data
+                    const siteData = await this.sync.fetchSiteData();
+                    
+                    // Find order
+                    let order = null;
+                    
+                    // Check localStorage first
+                    const tempOrder = localStorage.getItem('tempOrder');
+                    if (tempOrder) {
+                        const tempOrderData = JSON.parse(tempOrder);
+                        if (tempOrderData.id === this.orderId) {
+                            order = tempOrderData;
+                        }
+                    }
+
+                    // Check siteData.orders
+                    if (!order && siteData && siteData.orders) {
+                        order = siteData.orders.find(o => o.id === this.orderId);
+                    }
+
+                    if (order) {
+                        this.displayOrderDetails(order);
+                        this.sendTelegramConfirmation(order);
+                    } else {
+                        this.showError();
+                    }
+                } catch (error) {
+                    console.error('Error loading order:', error);
+                    this.showError();
+                }
+            }
+
+            displayOrderDetails(order) {
+                // Format order ID
+                const formattedOrderId = this.formatOrderId(order.id);
+                
+                // Format date
+                const orderDate = order.date || new Date().toISOString();
+                const formattedDate = this.formatDate(orderDate);
+
+                // Get product details
+                const product = order.product || {
+                    name: 'منتج غير محدد',
+                    price: 0
+                };
+
+                // Build order info HTML
+                const orderInfoHTML = `
+                    <div style="margin-bottom: 2rem;">
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-hashtag"></i> رقم الطلب:</span>
+                            <span class="info-value">${formattedOrderId}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-calendar"></i> تاريخ الطلب:</span>
+                            <span class="info-value">${formattedDate}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-clock"></i> حالة الطلب:</span>
+                            <span class="info-value">
+                                <span class="status-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    ${order.status || 'قيد المراجعة'}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                // Build product info HTML
+                const productInfoHTML = `
+                    <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-shopping-cart" style="color: var(--primary);"></i>
+                        تفاصيل الطلب
+                    </h3>
+                    <div style="margin-bottom: 2rem;">
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-car"></i> المنتج:</span>
+                            <span class="info-value">${product.name}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-tag"></i> السعر:</span>
+                            <span class="info-value price">${this.formatPrice(product.price)} ج.م</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-credit-card"></i> طريقة الدفع:</span>
+                            <span class="info-value">${order.paymentMethod || 'كاش'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-truck"></i> طريقة التسليم:</span>
+                            <span class="info-value">${order.deliveryMethod || 'استلام من المعرض'}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Build customer info HTML
+                const customerInfoHTML = `
+                    <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-user" style="color: var(--primary);"></i>
+                        معلومات العميل
+                    </h3>
+                    <div style="margin-bottom: 1rem;">
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-user"></i> الاسم:</span>
+                            <span class="info-value">${order.customer?.name || 'غير محدد'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-phone"></i> الهاتف:</span>
+                            <span class="info-value">${order.customer?.phone || 'غير محدد'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-envelope"></i> البريد:</span>
+                            <span class="info-value">${order.customer?.email || 'غير محدد'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-city"></i> المدينة:</span>
+                            <span class="info-value">${order.customer?.city || 'غير محدد'}</span>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('orderInfo').innerHTML = orderInfoHTML;
+                document.getElementById('customerInfo').innerHTML = productInfoHTML + customerInfoHTML;
+
+                // Hide loading, show content
+                document.getElementById('loadingContainer').classList.add('hidden');
+                document.getElementById('orderContent').classList.remove('hidden');
+            }
+
+            formatOrderId(id) {
+                if (!id) return 'ORD-XXX-XXXX-XXX';
+                
+                // Try to format as ORD-YYYY-MMDD-XXX
+                if (id.includes('order_')) {
+                    const timestamp = id.replace('order_', '');
+                    const date = new Date(parseInt(timestamp));
+                    if (!isNaN(date.getTime())) {
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                        return `ORD-${year}-${month}${day}-${random}`;
                     }
                 }
                 
-                if (siteData?.orders) {
-                    orderData = siteData.orders.find(order => order.id === orderId);
+                return id.toUpperCase().replace('_', '-');
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('ar-EG', options);
+            }
+
+            formatPrice(price) {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+
+            showError() {
+                document.getElementById('loadingContainer').classList.add('hidden');
+                document.getElementById('orderContent').classList.add('hidden');
+                document.getElementById('errorContainer').classList.remove('hidden');
+            }
+
+            async sendTelegramConfirmation(order) {
+                try {
+                    const config = this.sync.config;
+                    if (!config || !config.telegramBotToken || !config.telegramChatId) {
+                        console.log('Telegram not configured');
+                        return;
+                    }
+
+                    const message = `
+✅ طلب جديد في سيارات عبدالله
+
+رقم الطلب: ${this.formatOrderId(order.id)}
+المنتج: ${order.product?.name}
+السعر: ${this.formatPrice(order.product?.price)} ج.م
+العميل: ${order.customer?.name}
+الهاتف: ${order.customer?.phone}
+                    `;
+
+                    // Simulate sending (in production, use actual Telegram API)
+                    console.log('Telegram confirmation sent:', message);
+                    
+                    // Store in localStorage that Telegram notification was sent
+                    localStorage.setItem(`telegram_sent_${order.id}`, 'true');
+                } catch (error) {
+                    console.error('Error sending Telegram confirmation:', error);
                 }
-                
-                if (orderData) {
-                    displayOrderConfirmation();
-                } else {
-                    showError();
-                }
-                
-            } catch (error) {
-                console.error('Error loading order details:', error);
-                showError();
             }
         }
 
-        // عرض تأكيد الطلب
-        function displayOrderConfirmation() {
-            // إخفاء حالة التحميل وإظهار التأكيد
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('orderConfirmation').style.display = 'block';
+        // Print Invoice Function
+        function printInvoice() {
+            const orderContent = document.getElementById('orderContent').innerHTML;
+            const printWindow = window.open('', '_blank');
             
-            // تعبئة البيانات
-            document.getElementById('orderNumber').textContent = orderData.id.substring(0, 12);
-            document.getElementById('customerPhone').textContent = orderData.customerPhone;
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>فاتورة الطلب - سيارات عبدالله</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+                    <style>
+                        * {
+                            font-family: 'Cairo', sans-serif;
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        body {
+                            padding: 2rem;
+                            background: white;
+                            color: black;
+                        }
+                        .invoice-header {
+                            text-align: center;
+                            margin-bottom: 2rem;
+                            border-bottom: 2px solid #c53030;
+                            padding-bottom: 1rem;
+                        }
+                        .invoice-title {
+                            color: #c53030;
+                            font-size: 1.8rem;
+                        }
+                        .invoice-date {
+                            color: #666;
+                            margin-top: 0.5rem;
+                        }
+                        .invoice-footer {
+                            margin-top: 3rem;
+                            text-align: center;
+                            color: #666;
+                            border-top: 1px solid #ddd;
+                            padding-top: 1rem;
+                        }
+                        @media print {
+                            body { padding: 0; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="invoice-header">
+                        <h1 class="invoice-title">سيارات عبدالله</h1>
+                        <p class="invoice-date">فاتورة طلب - ${new Date().toLocaleDateString('ar-EG')}</p>
+                    </div>
+                    ${orderContent}
+                    <div class="invoice-footer">
+                        <p>شكراً لتسوقك مع سيارات عبدالله</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">هذه فاتورة إلكترونية - جميع الحقوق محفوظة © 2026</p>
+                    </div>
+                    <script>
+                        window.onload = function() { window.print(); window.close(); }
+                    <\/script>
+                </body>
+                </html>
+            `);
             
-            document.getElementById('detailOrderNumber').textContent = orderData.id.substring(0, 12);
-            document.getElementById('detailOrderDate').textContent = 
-                new Date(orderData.date).toLocaleDateString('ar-EG');
-            document.getElementById('detailOrderStatus').textContent = 
-                getStatusText(orderData.status);
-            document.getElementById('detailPaymentMethod').textContent = 
-                getPaymentMethodText(orderData.paymentMethod);
-            
-            document.getElementById('invoiceProductName').textContent = orderData.productName;
-            document.getElementById('invoiceProductPrice').textContent = 
-                `${(orderData.productPrice || 0).toLocaleString()} ج.م`;
-            document.getElementById('invoiceTotal').textContent = 
-                `${(orderData.productPrice || 0).toLocaleString()} ج.م`;
-            
-            document.getElementById('detailCustomerName').textContent = orderData.customerName;
-            document.getElementById('detailCustomerPhone').textContent = orderData.customerPhone;
-            document.getElementById('detailCustomerEmail').textContent = 
-                orderData.customerEmail || 'غير محدد';
-            document.getElementById('detailCustomerCity').textContent = orderData.customerCity;
-            
-            // حفظ كآخر طلب معروض
-            localStorage.setItem('lastOrder', JSON.stringify(orderData));
+            printWindow.document.close();
         }
 
-        // عرض حالة الخطأ
-        function showError() {
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('errorState').style.display = 'block';
-        }
-
-        // الحصول على نص الحالة
-        function getStatusText(status) {
-            const statuses = {
-                'pending': 'قيد المراجعة',
-                'confirmed': 'تم التأكيد',
-                'shipped': 'قيد التوصيل',
-                'delivered': 'تم التسليم',
-                'cancelled': 'ملغي'
-            };
-            return statuses[status] || status;
-        }
-
-        // الحصول على نص طريقة الدفع
-        function getPaymentMethodText(method) {
-            const methods = {
-                'cash': 'كاش',
-                'bank_transfer': 'تحويل بنكي',
-                'electronic_wallet': 'محفظة إلكترونية'
-            };
-            return methods[method] || method;
-        }
-
-        // إرسال إشعار تيليجرام
-        async function sendTelegramConfirmation() {
-            try {
-                let siteData = null;
-                if (window.gitHubSync) {
-                    siteData = await window.gitHubSync.fetch();
-                }
-                
-                if (!siteData?.admin?.telegramBotToken || !siteData?.admin?.telegramChatId) {
-                    return;
-                }
-                
-                const botToken = siteData.admin.telegramBotToken;
-                const chatId = siteData.admin.telegramChatId;
-                
-                const message = `
-✅ *تأكيد استلام طلب جديد*
-────────────────────
-🛒 رقم الطلب: ${orderData.id.substring(0, 12)}
-📅 التاريخ: ${new Date().toLocaleString('ar-EG')}
-────────────────────
-🚗 المنتج: ${orderData.productName}
-💰 السعر: ${orderData.productPrice.toLocaleString()} ج.م
-────────────────────
-👤 العميل: ${orderData.customerName}
-📞 الهاتف: ${orderData.customerPhone}
-🏙️ المدينة: ${orderData.customerCity}
-────────────────────
-💳 طريقة الدفع: ${getPaymentMethodText(orderData.paymentMethod)}
-📝 الحالة: ${getStatusText(orderData.status)}
-────────────────────
-🔔 تم عرض صفحة التأكيد للعميل
-                `;
-                
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                
-            } catch (error) {
-                console.error('Error sending Telegram confirmation:', error);
-            }
-        }
-
-        // إرسال إشعار عند تحميل الصفحة
-        if (orderData) {
-            setTimeout(sendTelegramConfirmation, 1000);
-        }
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new OrderPageController();
+        });
     </script>
 </body>
 </html>

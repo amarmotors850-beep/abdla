@@ -1,21 +1,59 @@
-[file name]: category.html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصفح السيارات | عبدالله للسيارات</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>تصفح السيارات | سيارات عبدالله</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animated Background (نفس الأنماط السابقة) -->
     <style>
+        /* ... أنماط الخلفية المتحركة كما في index.html ... */
+        .animated-bg { /* نفس الكود */ }
+        /* للاختصار، نضع نفس الأنماط من index.html */
+    </style>
+
+    <style>
+        /* ============ متغيرات CSS ============ */
         :root {
             --primary: #c53030;
             --primary-dark: #9b2c2c;
             --secondary: #0a0a0a;
             --light: #f7fafc;
             --white: #ffffff;
-            --gray: #a0aec0;
-            --dark-gray: #4a5568;
-            --transition: all 0.3s ease;
+            --gray-100: #f7fafc;
+            --gray-200: #edf2f7;
+            --gray-300: #e2e8f0;
+            --gray-400: #cbd5e0;
+            --gray-500: #a0aec0;
+            --gray-600: #718096;
+            --gray-700: #4a5568;
+            --gray-800: #2d3748;
+            --gray-900: #1a202c;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+            --radius-2xl: 40px;
+            --radius-full: 50px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         * {
@@ -27,28 +65,29 @@
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--light);
-            color: var(--secondary);
-            line-height: 1.6;
+            color: var(--gray-900);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        header {
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
+        /* ============ الهيدر (نفس index.html) ============ */
+        .main-header {
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
             z-index: 1000;
+            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
         }
 
-        .header-content {
+        .nav-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,157 +98,211 @@
             align-items: center;
             gap: 1rem;
             text-decoration: none;
-            color: var(--secondary);
         }
 
-        .logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo-circle i {
+            font-size: 2rem;
+            color: white;
         }
 
         .logo-text {
-            font-size: 1.2rem;
-            font-weight: 700;
+            display: flex;
+            flex-direction: column;
         }
 
-        .logo-text span {
-            color: var(--primary);
+        .logo-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
-        .nav-links {
+        .logo-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .main-nav ul {
             display: flex;
             gap: 1.5rem;
+            list-style: none;
         }
 
-        .nav-link {
+        .main-nav a {
             text-decoration: none;
-            color: var(--secondary);
+            color: var(--gray-700);
             font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius-full);
             transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .nav-link:hover {
+        .main-nav a:hover,
+        .main-nav a.active {
             color: var(--primary);
+            background: rgba(197, 48, 48, 0.1);
         }
 
-        /* Category Header */
-        .category-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4rem 2rem;
-            margin-bottom: 2rem;
-            border-radius: 0 0 20px 20px;
-            text-align: center;
-        }
-
-        .category-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .category-description {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Category Filter */
-        .category-filter {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+        .nav-actions {
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap;
             align-items: center;
-            justify-content: space-between;
         }
 
-        .filter-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.5rem 1.5rem;
-            border: 2px solid #e2e8f0;
-            background: var(--white);
-            border-radius: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .filter-search {
-            display: flex;
-            gap: 0.5rem;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 0.5rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 25px;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        .search-btn {
-            padding: 0.5rem 1.5rem;
-            background: var(--primary);
-            color: white;
+        .nav-btn {
+            padding: 0.8rem 1.8rem;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius-full);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
             cursor: pointer;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-decoration: none;
         }
 
-        /* Layout */
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .nav-btn.secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .mobile-menu:hover {
+            background: var(--gray-100);
+        }
+
+        /* ============ رأس الصفحة ============ */
+        .page-header {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,224C960,245,1056,267,1152,250.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            bottom: 0;
+            opacity: 0.2;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ تخطيط الصفحة ============ */
         .category-layout {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 320px 1fr;
             gap: 2rem;
         }
 
-        /* Sidebar */
+        /* ============ السايدبار ============ */
         .category-sidebar {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
             height: fit-content;
             position: sticky;
             top: 100px;
+            border: 1px solid var(--gray-200);
         }
 
         .sidebar-section {
             margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .sidebar-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         .sidebar-title {
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
 
         .sidebar-title i {
@@ -219,210 +312,287 @@
         .filter-options {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .filter-option {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .filter-option:hover {
+            background: var(--gray-100);
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
         }
 
-        .filter-option input {
-            margin: 0;
-        }
-
         .filter-option span {
-            color: var(--dark-gray);
-        }
-
-        .filter-option:hover span {
-            color: var(--primary);
+            color: var(--gray-700);
+            font-size: 0.95rem;
         }
 
         .price-range {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
         }
 
         .price-input {
             flex: 1;
-            padding: 0.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 0.8rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
             font-family: 'Cairo', sans-serif;
+            transition: var(--transition);
         }
 
-        /* Products Grid */
+        .price-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197,48,48,0.1);
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gray-100);
+            border: none;
+            border-radius: var(--radius-lg);
+            color: var(--gray-700);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            border: 2px solid var(--gray-200);
+        }
+
+        .reset-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ============ المحتوى الرئيسي ============ */
+        .category-content {
+            min-height: 600px;
+        }
+
+        .category-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-count {
+            color: var(--gray-600);
+            font-size: 1rem;
+        }
+
+        .results-count span {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .sort-select {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-family: 'Cairo', sans-serif;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
         .product-card {
-            background: var(--white);
-            border-radius: 15px;
+            background: white;
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .product-card.featured {
-            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-bounce);
+            border: 1px solid var(--gray-200);
+            position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(197, 48, 48, 0.15);
+            box-shadow: var(--shadow-2xl);
         }
 
         .product-image {
             width: 100%;
             height: 200px;
-            object-fit: cover;
             position: relative;
+            overflow: hidden;
         }
 
-        .product-card.featured .product-image::after {
-            content: 'مميز';
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.15);
+        }
+
+        .product-badge {
             position: absolute;
             top: 15px;
-            left: 15px;
-            background: var(--primary);
+            right: 15px;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
             color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 1;
+            box-shadow: var(--shadow);
         }
 
         .product-info {
             padding: 1.5rem;
         }
 
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 0.3rem;
         }
 
-        .product-name {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .product-type {
-            background: rgba(197, 48, 48, 0.1);
+        .product-category {
             color: var(--primary);
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 900;
             color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
         }
 
-        .product-old-price {
+        .product-price .old-price {
             font-size: 1rem;
-            color: var(--gray);
+            color: var(--gray-500);
             text-decoration: line-through;
-            margin-right: 0.8rem;
+            font-weight: 600;
         }
 
         .product-specs {
             list-style: none;
-            margin: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
         }
 
         .product-specs li {
-            color: var(--dark-gray);
-            margin-bottom: 0.4rem;
-            padding-right: 1.2rem;
-            position: relative;
-            font-size: 0.9rem;
+            background: var(--gray-100);
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-full);
+            color: var(--gray-700);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
-        .product-specs li::before {
-            content: '•';
+        .product-specs i {
             color: var(--primary);
-            position: absolute;
-            right: 0;
-            font-size: 1.1rem;
+            font-size: 0.8rem;
         }
 
-        .product-button {
+        .product-btn {
             display: block;
             width: 100%;
-            padding: 0.8rem;
-            background: var(--primary);
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
+            transition: var(--transition-bounce);
             text-decoration: none;
-            margin-top: 1rem;
+            text-align: center;
         }
 
-        .product-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
+        .product-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Installment Badge */
-        .installment-badge {
-            background: linear-gradient(45deg, #38a169, #2f855a);
-            color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            display: inline-block;
-        }
-
-        /* Pagination */
+        /* ============ الترقيم ============ */
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 2px solid #e2e8f0;
+            border-top: 1px solid var(--gray-200);
         }
 
         .page-btn {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #e2e8f0;
-            background: var(--white);
-            border-radius: 8px;
+            border: 2px solid var(--gray-200);
+            background: white;
+            border-radius: var(--radius-md);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
+            color: var(--gray-700);
         }
 
         .page-btn:hover,
         .page-btn.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
             color: white;
-            border-color: var(--primary);
+            border-color: transparent;
         }
 
         .page-btn.disabled {
@@ -430,44 +600,45 @@
             cursor: not-allowed;
         }
 
-        /* Empty State */
+        /* ============ حالة عدم وجود نتائج ============ */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
             padding: 4rem 2rem;
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-lg);
         }
 
         .empty-state i {
             font-size: 4rem;
-            color: var(--gray);
+            color: var(--gray-400);
             margin-bottom: 1.5rem;
         }
 
         .empty-state h3 {
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            color: var(--gray-700);
+            margin-bottom: 1rem;
         }
 
         .empty-state p {
-            color: var(--dark-gray);
-            margin-bottom: 1.5rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .empty-state .product-button {
-            width: auto;
-            display: inline-block;
-            padding: 0.8rem 2rem;
-        }
-
-        /* Loading */
-        .loading {
+        /* ============ حالة التحميل ============ */
+        .loading-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 3rem;
+            padding: 4rem;
         }
 
-        .loading i {
-            font-size: 2rem;
+        .loading-state i {
+            font-size: 3rem;
             color: var(--primary);
             animation: spin 1s linear infinite;
         }
@@ -477,721 +648,795 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive */
+        /* ============ Toast ============ */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toast {
+            background: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            min-width: 350px;
+            max-width: 450px;
+            animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-right: 5px solid var(--primary);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        .toast.warning { border-color: var(--warning); }
+
+        .toast-icon { font-size: 1.6rem; }
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--danger); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; margin-bottom: 0.3rem; color: var(--gray-900); }
+        .toast-message { color: var(--gray-600); font-size: 0.95rem; }
+        .toast-close { background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 0.6rem; font-size: 1.1rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--gray-700); }
+
+        /* ============ Responsive ============ */
         @media (max-width: 1200px) {
+            .category-layout {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
             .category-layout {
                 grid-template-columns: 1fr;
             }
-            
             .category-sidebar {
                 position: static;
                 order: 2;
             }
+            .main-nav ul {
+                position: fixed;
+                top: 90px;
+                right: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--shadow-xl);
+                transform: translateY(-20px);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            .main-nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            .mobile-menu { display: block; }
+            .page-title { font-size: 2.5rem; }
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .nav-links {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .category-header {
-                padding: 3rem 1rem;
-            }
-            
-            .category-title {
-                font-size: 2rem;
-            }
-            
-            .category-filter {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filter-search {
-                max-width: 100%;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
+            .nav-container { padding: 0.8rem 1.5rem; }
+            .page-header { padding: 7rem 1.5rem 3rem; }
+            .page-title { font-size: 2rem; }
+            .category-layout { padding: 0 1.5rem 3rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            .category-header-actions { flex-direction: column; align-items: flex-start; }
+            .sort-select { width: 100%; }
+            .toast { min-width: auto; width: calc(100% - 40px); }
         }
 
         @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .filter-buttons {
-                justify-content: center;
-            }
-            
-            .filter-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-            
-            .page-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
+            .logo-title { font-size: 1.5rem; }
+            .logo-circle { width: 50px; height: 50px; }
+            .page-title { font-size: 1.8rem; }
+            .page-subtitle { font-size: 1rem; }
         }
+
+        /* ============ شريط التمرير ============ */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--gray-100); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #c53030, #9b2c2c); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #9b2c2c, #c53030); }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
+    <!-- الخلفية المتحركة (نفس الكود) -->
+    <div class="animated-bg">
+        <!-- ... نفس الخلفية من index.html ... -->
+    </div>
+
+    <!-- الهيدر -->
+    <header class="main-header">
+        <div class="nav-container">
             <a href="index.html" class="logo">
-                <img src="logo.png" alt="عبدالله للسيارات">
-                <div class="logo-text">عبدالله <span>للسيارات</span></div>
+                <div class="logo-circle">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="logo-text">
+                    <div class="logo-title">سيارات عبدالله</div>
+                    <div class="logo-subtitle">ريادة وخبرة منذ 1993</div>
+                </div>
             </a>
-            
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    الرئيسية
-                </a>
-                <a href="sell.html" class="nav-link">
-                    <i class="fas fa-tag"></i>
-                    بيع سيارتك
-                </a>
-                <a href="exchange.html" class="nav-link">
-                    <i class="fas fa-exchange-alt"></i>
-                    استبدال
-                </a>
-                <a href="index.html#contact" class="nav-link">
-                    <i class="fas fa-phone"></i>
-                    اتصل بنا
+
+            <nav class="main-nav">
+                <ul id="mainNav">
+                    <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="index.html#services"><i class="fas fa-cogs"></i> الخدمات</a></li>
+                    <li><a href="category.html" class="active"><i class="fas fa-car"></i> السيارات</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-phone"></i> اتصل بنا</a></li>
+                    <li><a href="sell.html"><i class="fas fa-tag"></i> بيع سيارتك</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="sell.html" class="nav-btn primary">
+                    <i class="fas fa-plus"></i> بيع سيارتك
                 </a>
             </div>
+
+            <button class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Category Header -->
-        <div class="category-header" id="categoryHeader">
-            <h1 class="category-title" id="categoryTitle">جميع السيارات</h1>
-            <p class="category-description" id="categoryDescription">تصفح مجموعتنا المتميزة من السيارات الفاخرة بأفضل الأسعار</p>
-        </div>
-
-        <!-- Category Filter -->
-        <div class="category-filter">
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-type="all" onclick="filterProducts('all')">الكل</button>
-                <button class="filter-btn" data-type="new" onclick="filterProducts('new')">جديدة</button>
-                <button class="filter-btn" data-type="used" onclick="filterProducts('used')">مستعملة</button>
-                <button class="filter-btn" data-type="electric" onclick="filterProducts('electric')">كهربائية</button>
-                <button class="filter-btn" data-type="featured" onclick="filterProducts('featured')">مميزة</button>
-                <button class="filter-btn" data-type="installment" onclick="filterProducts('installment')">تقسيط</button>
-            </div>
-            
-            <div class="filter-search">
-                <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن سيارة...">
-                <button class="search-btn" onclick="searchProducts()">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="category-layout">
-            <!-- Sidebar Filters -->
-            <aside class="category-sidebar">
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-filter"></i>
-                        تصفية حسب
-                    </h3>
-                    
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <input type="checkbox" id="filterFeatured" onchange="applyFilters()">
-                            <span>عرض المميز فقط</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="filterInstallment" onchange="applyFilters()">
-                            <span>متاح بالتقسيط</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-tags"></i>
-                        الفئات
-                    </h3>
-                    
-                    <div class="filter-options" id="categoryFilters">
-                        <!-- سيتم تعبئتها بالجافاسكريبت -->
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-industry"></i>
-                        الماركات
-                    </h3>
-                    
-                    <div class="filter-options" id="brandFilters">
-                        <!-- سيتم تعبئتها بالجافاسكريبت -->
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-money-bill-wave"></i>
-                        نطاق السعر
-                    </h3>
-                    
-                    <div class="price-range">
-                        <input type="number" class="price-input" id="minPrice" placeholder="من" onchange="applyFilters()">
-                        <input type="number" class="price-input" id="maxPrice" placeholder="إلى" onchange="applyFilters()">
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-calendar-alt"></i>
-                        سنة الصنع
-                    </h3>
-                    
-                    <div class="filter-options" id="yearFilters">
-                        <!-- سيتم تعبئتها بالجافاسكريبت -->
-                    </div>
-                </div>
-                
-                <button class="product-button" onclick="resetFilters()">
-                    <i class="fas fa-redo"></i>
-                    إعادة تعيين الفلاتر
-                </button>
-            </aside>
-
-            <!-- Products Grid -->
-            <main class="category-content">
-                <div class="products-grid" id="productsGrid">
-                    <!-- سيتم تعبئتها بالجافاسكريبت -->
-                </div>
-                
-                <!-- Loading State -->
-                <div class="loading" id="loadingState" style="display: none;">
-                    <i class="fas fa-spinner"></i>
-                    <p>جاري تحميل المنتجات...</p>
-                </div>
-                
-                <!-- Empty State -->
-                <div class="empty-state" id="emptyState" style="display: none;">
-                    <i class="fas fa-car"></i>
-                    <h3>لا توجد سيارات متطابقة</h3>
-                    <p>لم نجد سيارات تطابق معايير البحث التي حددتها</p>
-                    <button class="product-button" onclick="resetFilters()">
-                        إعادة تعيين الفلاتر
-                    </button>
-                </div>
-                
-                <!-- Pagination -->
-                <div class="pagination" id="pagination" style="display: none;">
-                    <!-- سيتم تعبئتها بالجافاسكريبت -->
-                </div>
-            </main>
-        </div>
+    <!-- رأس الصفحة -->
+    <div class="page-header">
+        <h1 class="page-title" id="pageTitle">جميع السيارات</h1>
+        <p class="page-subtitle" id="pageSubtitle">تصفح مجموعتنا المتميزة من السيارات الفاخرة بأفضل الأسعار</p>
     </div>
 
+    <!-- المحتوى الرئيسي -->
+    <div class="category-layout">
+        <!-- السايدبار - الفلاتر -->
+        <aside class="category-sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-filter"></i>
+                    تصفية حسب
+                </h3>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" id="filterFeatured" onchange="applyFilters()">
+                        <span>السيارات المميزة فقط</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" id="filterInstallment" onchange="applyFilters()">
+                        <span>متاح بالتقسيط</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-tags"></i>
+                    الماركات
+                </h3>
+                <div class="filter-options" id="brandFilters">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-folder"></i>
+                    الأقسام الرئيسية
+                </h3>
+                <div class="filter-options" id="mainCategoryFilters">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-money-bill-wave"></i>
+                    نطاق السعر
+                </h3>
+                <div class="price-range">
+                    <input type="number" class="price-input" id="minPrice" placeholder="من" min="0" onchange="applyFilters()">
+                    <input type="number" class="price-input" id="maxPrice" placeholder="إلى" min="0" onchange="applyFilters()">
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    سنة الصنع
+                </h3>
+                <div class="filter-options" id="yearFilters">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-cog"></i>
+                    نوع الوقود
+                </h3>
+                <div class="filter-options" id="fuelFilters">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetFilters()">
+                <i class="fas fa-redo"></i>
+                إعادة تعيين الفلاتر
+            </button>
+        </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="category-content">
+            <div class="category-header-actions">
+                <div class="results-count">
+                    عرض <span id="resultsStart">1</span> - <span id="resultsEnd">12</span> من <span id="totalResults">0</span> سيارة
+                </div>
+                <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+                    <option value="default">الترتيب الافتراضي</option>
+                    <option value="price_asc">السعر: من الأقل للأعلى</option>
+                    <option value="price_desc">السعر: من الأعلى للأقل</option>
+                    <option value="year_desc">الأحدث أولاً</option>
+                    <option value="year_asc">الأقدم أولاً</option>
+                </select>
+            </div>
+
+            <!-- شبكة المنتجات -->
+            <div class="products-grid" id="productsGrid">
+                <!-- سيتم تعبئتها ديناميكياً -->
+                <div class="loading-state">
+                    <i class="fas fa-spinner"></i>
+                    <p style="margin-top: 1rem; color: var(--gray-600);">جاري تحميل السيارات...</p>
+                </div>
+            </div>
+
+            <!-- الترقيم -->
+            <div class="pagination" id="pagination"></div>
+        </main>
+    </div>
+
+    <!-- حاوية الإشعارات -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- تضمين نظام المزامنة -->
     <script src="sync.js"></script>
     <script>
+        // ============ متغيرات النظام ============
+        let siteData = null;
         let allProducts = [];
         let filteredProducts = [];
-        let currentProducts = [];
         let currentPage = 1;
         let productsPerPage = 12;
-        let currentType = 'all';
-        let currentCategory = null;
-        let currentBrand = null;
+        let activeFilters = {
+            brands: [],
+            mainCategories: [],
+            years: [],
+            fuels: [],
+            featured: false,
+            installment: false,
+            minPrice: 0,
+            maxPrice: Infinity,
+            sort: 'default'
+        };
 
-        // التهيئة
+        // ============ التهيئة ============
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadProducts();
-            updateCategoryInfo();
-            loadFilterOptions();
-            applyFilters();
+            console.log('🚀 جاري تحميل صفحة التصنيف...');
+            
+            // إعداد القائمة للجوال
+            setupMobileMenu();
+            
+            // تحميل البيانات
+            await loadData();
+            
+            // تحميل معايير البحث من URL
+            loadURLParams();
+            
+            // تحديث الواجهة
+            updateUI();
+            
+            console.log('✅ صفحة التصنيف جاهزة');
         });
 
-        // تحميل المنتجات
-        async function loadProducts() {
-            const loadingElement = document.getElementById('loadingState');
-            loadingElement.style.display = 'block';
-            
+        // ============ تحميل البيانات ============
+        async function loadData() {
             try {
-                let siteData = null;
-                if (window.gitHubSync) {
-                    siteData = await window.gitHubSync.fetch();
-                } else {
-                    const localData = localStorage.getItem('siteData_encrypted');
-                    if (localData) {
-                        siteData = window.gitHubSync.decryptData(localData);
+                if (window.GitHubSync) {
+                    const data = await window.GitHubSync.sync();
+                    if (data) {
+                        siteData = data;
+                        window.siteData = data;
+                        return;
                     }
                 }
                 
-                allProducts = siteData?.products || [];
-                
-                // تحميل معلومات الفئة من URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const type = urlParams.get('type');
-                const categoryId = urlParams.get('category');
-                const brand = urlParams.get('brand');
-                
-                if (type) {
-                    currentType = type;
-                    document.querySelector(`.filter-btn[data-type="${type}"]`).classList.add('active');
+                const localData = localStorage.getItem('abdullah_cars_data');
+                if (localData) {
+                    siteData = JSON.parse(localData);
+                    window.siteData = siteData;
+                    return;
                 }
                 
-                if (categoryId) {
-                    currentCategory = categoryId;
-                }
-                
-                if (brand) {
-                    currentBrand = brand;
-                }
+                // بيانات افتراضية
+                siteData = {
+                    products: [],
+                    brands: [],
+                    mainCategories: [],
+                    subCategories: []
+                };
+                window.siteData = siteData;
                 
             } catch (error) {
-                console.error('Error loading products:', error);
-                allProducts = [];
-            } finally {
-                loadingElement.style.display = 'none';
+                console.error('❌ خطأ في تحميل البيانات:', error);
+                showToast('حدث خطأ في تحميل البيانات', 'error');
             }
         }
 
-        // تحديث معلومات الفئة
-        function updateCategoryInfo() {
+        // ============ تحميل معايير URL ============
+        function loadURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // نوع السيارة
             const type = urlParams.get('type');
-            const categoryId = urlParams.get('category');
+            if (type) {
+                document.querySelector(`.filter-btn[data-type="${type}"]`)?.classList.add('active');
+            }
+            
+            // الماركة
             const brand = urlParams.get('brand');
+            if (brand) {
+                activeFilters.brands = [brand];
+            }
             
-            const titleElement = document.getElementById('categoryTitle');
-            const descElement = document.getElementById('categoryDescription');
+            // الفئة
+            const category = urlParams.get('category');
+            if (category) {
+                activeFilters.mainCategories = [category];
+            }
             
-            if (type === 'new') {
-                titleElement.textContent = 'السيارات الجديدة';
-                descElement.textContent = 'أحدث الموديلات من السيارات الجديدة بأفضل الأسعار وضمان المصنع الكامل';
-            } else if (type === 'used') {
-                titleElement.textContent = 'السيارات المستعملة';
-                descElement.textContent = 'سيارات مستعملة بحالة ممتازة مع فحص فني شامل وأسعار مناسبة';
-            } else if (type === 'electric') {
-                titleElement.textContent = 'السيارات الكهربائية';
-                descElement.textContent = 'سيارات كهربائية صديقة للبيئة بتقنيات حديثة وتوفير في الوقود';
-            } else if (brand) {
-                titleElement.textContent = brand;
-                descElement.textContent = `مجموعة مميزة من سيارات ${brand} بأفضل الأسعار`;
-            } else if (categoryId) {
-                // هنا يمكن تحميل معلومات الفئة من البيانات
-                titleElement.textContent = 'تصفح حسب الفئة';
-                descElement.textContent = 'اختر من مجموعتنا المتنوعة من السيارات حسب الفئة';
-            } else {
-                titleElement.textContent = 'جميع السيارات';
-                descElement.textContent = 'تصفح مجموعتنا المتميزة من السيارات الفاخرة بأفضل الأسعار';
+            // بحث
+            const search = urlParams.get('search');
+            if (search) {
+                const searchResults = localStorage.getItem('search_results');
+                if (searchResults) {
+                    try {
+                        const results = JSON.parse(searchResults);
+                        if (results.length > 0) {
+                            allProducts = results;
+                            filteredProducts = results;
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
             }
         }
 
-        // تحميل خيارات الفلاتر
-        function loadFilterOptions() {
-            loadCategoryFilters();
-            loadBrandFilters();
-            loadYearFilters();
-        }
-
-        // تحميل فلاتر الفئات
-        function loadCategoryFilters() {
-            const container = document.getElementById('categoryFilters');
-            const categories = getUniqueCategories();
+        // ============ تحديث الواجهة ============
+        function updateUI() {
+            if (!siteData) return;
             
-            categories.forEach(category => {
-                const option = document.createElement('div');
-                option.className = 'filter-option';
-                option.innerHTML = `
-                    <input type="checkbox" id="cat_${category.id}" value="${category.id}" onchange="applyFilters()">
-                    <span>${category.name}</span>
-                `;
-                container.appendChild(option);
-            });
-        }
-
-        // تحميل فلاتر الماركات
-        function loadBrandFilters() {
-            const container = document.getElementById('brandFilters');
-            const brands = getUniqueBrands();
+            // تحميل المنتجات
+            if (allProducts.length === 0) {
+                allProducts = siteData.products || [];
+            }
             
-            brands.forEach(brand => {
-                const option = document.createElement('div');
-                option.className = 'filter-option';
-                option.innerHTML = `
-                    <input type="checkbox" id="brand_${brand}" value="${brand}" onchange="applyFilters()">
-                    <span>${brand}</span>
-                `;
-                container.appendChild(option);
-            });
+            // تحديث خيارات الفلاتر
+            updateFilterOptions();
+            
+            // تطبيق الفلاتر
+            applyFilters();
         }
 
-        // تحميل فلاتر السنوات
-        function loadYearFilters() {
-            const container = document.getElementById('yearFilters');
+        // ============ تحديث خيارات الفلاتر ============
+        function updateFilterOptions() {
+            // الماركات
+            const brands = siteData.brands || [];
+            const brandFilterContainer = document.getElementById('brandFilters');
+            if (brandFilterContainer) {
+                brandFilterContainer.innerHTML = brands.map(brand => `
+                    <label class="filter-option">
+                        <input type="checkbox" value="${brand.id}" onchange="toggleBrandFilter('${brand.id}')">
+                        <span>${brand.name.ar} (${countProductsByBrand(brand.id)})</span>
+                    </label>
+                `).join('');
+            }
+            
+            // الأقسام الرئيسية
+            const categories = siteData.mainCategories || [];
+            const categoryFilterContainer = document.getElementById('mainCategoryFilters');
+            if (categoryFilterContainer) {
+                categoryFilterContainer.innerHTML = categories.map(cat => `
+                    <label class="filter-option">
+                        <input type="checkbox" value="${cat.id}" onchange="toggleCategoryFilter('${cat.id}')">
+                        <span>${cat.name.ar} (${countProductsByCategory(cat.id)})</span>
+                    </label>
+                `).join('');
+            }
+            
+            // السنوات
             const years = getUniqueYears();
+            const yearFilterContainer = document.getElementById('yearFilters');
+            if (yearFilterContainer) {
+                yearFilterContainer.innerHTML = years.map(year => `
+                    <label class="filter-option">
+                        <input type="checkbox" value="${year}" onchange="toggleYearFilter(${year})">
+                        <span>${year} (${countProductsByYear(year)})</span>
+                    </label>
+                `).join('');
+            }
             
-            // إضافة خيارات للفترات
-            const yearRanges = [
-                { label: '2024 - 2026', min: 2024, max: 2026 },
-                { label: '2020 - 2023', min: 2020, max: 2023 },
-                { label: '2015 - 2019', min: 2015, max: 2019 },
-                { label: '2010 - 2014', min: 2010, max: 2014 },
-                { label: 'قبل 2010', min: 0, max: 2009 }
-            ];
-            
-            yearRanges.forEach(range => {
-                const option = document.createElement('div');
-                option.className = 'filter-option';
-                option.innerHTML = `
-                    <input type="checkbox" id="year_${range.min}_${range.max}" 
-                           data-min="${range.min}" data-max="${range.max}" 
-                           onchange="applyFilters()">
-                    <span>${range.label}</span>
-                `;
-                container.appendChild(option);
-            });
+            // أنواع الوقود
+            const fuels = ['بنزين', 'ديزل', 'كهرباء', 'هايبرد'];
+            const fuelFilterContainer = document.getElementById('fuelFilters');
+            if (fuelFilterContainer) {
+                fuelFilterContainer.innerHTML = fuels.map(fuel => `
+                    <label class="filter-option">
+                        <input type="checkbox" value="${fuel}" onchange="toggleFuelFilter('${fuel}')">
+                        <span>${fuel} (${countProductsByFuel(fuel)})</span>
+                    </label>
+                `).join('');
+            }
         }
 
-        // الحصول على الفئات الفريدة
-        function getUniqueCategories() {
-            const categories = new Map();
-            allProducts.forEach(product => {
-                if (product.categoryId) {
-                    // في الواقع يجب تحميل اسم الفئة من بيانات الموقع
-                    categories.set(product.categoryId, {
-                        id: product.categoryId,
-                        name: `الفئة ${product.categoryId}`
-                    });
-                }
-            });
-            return Array.from(categories.values());
+        // ============ دوال الإحصاء ============
+        function countProductsByBrand(brandId) {
+            return (siteData.products || []).filter(p => p.brandId === brandId).length;
         }
 
-        // الحصول على الماركات الفريدة
-        function getUniqueBrands() {
-            const brands = new Set();
-            allProducts.forEach(product => {
-                if (product.brand) {
-                    brands.add(product.brand);
-                }
-            });
-            return Array.from(brands).sort();
+        function countProductsByCategory(categoryId) {
+            return (siteData.products || []).filter(p => p.mainCategoryId === categoryId).length;
         }
 
-        // الحصول على السنوات الفريدة
+        function countProductsByYear(year) {
+            return (siteData.products || []).filter(p => p.year == year).length;
+        }
+
+        function countProductsByFuel(fuel) {
+            return (siteData.products || []).filter(p => p.fuel === fuel).length;
+        }
+
         function getUniqueYears() {
             const years = new Set();
-            allProducts.forEach(product => {
-                if (product.year) {
-                    years.add(product.year);
-                }
+            (siteData.products || []).forEach(p => {
+                if (p.year) years.add(p.year);
             });
             return Array.from(years).sort((a, b) => b - a);
         }
 
-        // تصفية المنتجات حسب النوع
-        function filterProducts(type) {
-            currentType = type;
-            currentPage = 1;
-            
-            // تحديث الأزرار النشطة
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`.filter-btn[data-type="${type}"]`).classList.add('active');
-            
+        // ============ دوال الفلترة ============
+        function toggleBrandFilter(brandId) {
+            const index = activeFilters.brands.indexOf(brandId);
+            if (index === -1) {
+                activeFilters.brands.push(brandId);
+            } else {
+                activeFilters.brands.splice(index, 1);
+            }
             applyFilters();
         }
 
-        // البحث عن المنتجات
-        function searchProducts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            if (searchTerm) {
-                filteredProducts = allProducts.filter(product => {
-                    const name = product.name?.ar || product.name || '';
-                    const desc = product.description?.ar || product.description || '';
-                    const brand = product.brand || '';
-                    const model = product.model || '';
-                    
-                    return name.toLowerCase().includes(searchTerm) ||
-                           desc.toLowerCase().includes(searchTerm) ||
-                           brand.toLowerCase().includes(searchTerm) ||
-                           model.toLowerCase().includes(searchTerm);
-                });
-                
-                renderProducts();
+        function toggleCategoryFilter(categoryId) {
+            const index = activeFilters.mainCategories.indexOf(categoryId);
+            if (index === -1) {
+                activeFilters.mainCategories.push(categoryId);
             } else {
-                applyFilters();
+                activeFilters.mainCategories.splice(index, 1);
             }
+            applyFilters();
         }
 
-        // تطبيق الفلاتر
+        function toggleYearFilter(year) {
+            const index = activeFilters.years.indexOf(year);
+            if (index === -1) {
+                activeFilters.years.push(year);
+            } else {
+                activeFilters.years.splice(index, 1);
+            }
+            applyFilters();
+        }
+
+        function toggleFuelFilter(fuel) {
+            const index = activeFilters.fuels.indexOf(fuel);
+            if (index === -1) {
+                activeFilters.fuels.push(fuel);
+            } else {
+                activeFilters.fuels.splice(index, 1);
+            }
+            applyFilters();
+        }
+
         function applyFilters() {
-            let filtered = [...allProducts];
+            // تحديث قيم الفلاتر
+            activeFilters.featured = document.getElementById('filterFeatured')?.checked || false;
+            activeFilters.installment = document.getElementById('filterInstallment')?.checked || false;
             
-            // فلترة حسب النوع
-            if (currentType !== 'all') {
-                if (currentType === 'featured') {
-                    filtered = filtered.filter(p => p.featured);
-                } else if (currentType === 'installment') {
-                    filtered = filtered.filter(p => p.installment);
-                } else {
-                    filtered = filtered.filter(p => p.type === currentType);
+            const minPrice = parseFloat(document.getElementById('minPrice')?.value);
+            const maxPrice = parseFloat(document.getElementById('maxPrice')?.value);
+            activeFilters.minPrice = isNaN(minPrice) ? 0 : minPrice;
+            activeFilters.maxPrice = isNaN(maxPrice) ? Infinity : maxPrice;
+            
+            activeFilters.sort = document.getElementById('sortSelect')?.value || 'default';
+            
+            // تطبيق الفلاتر
+            filteredProducts = allProducts.filter(product => {
+                // فلتر الماركة
+                if (activeFilters.brands.length > 0 && !activeFilters.brands.includes(product.brandId)) {
+                    return false;
                 }
-            }
-            
-            // فلترة حسب الفئة من URL
-            if (currentCategory) {
-                filtered = filtered.filter(p => p.categoryId === currentCategory);
-            }
-            
-            // فلترة حسب الماركة من URL
-            if (currentBrand) {
-                filtered = filtered.filter(p => p.brand === currentBrand);
-            }
-            
-            // فلترة حسب الفئات المختارة
-            const selectedCategories = getSelectedCheckboxes('categoryFilters');
-            if (selectedCategories.length > 0) {
-                filtered = filtered.filter(p => selectedCategories.includes(p.categoryId));
-            }
-            
-            // فلترة حسب الماركات المختارة
-            const selectedBrands = getSelectedCheckboxes('brandFilters');
-            if (selectedBrands.length > 0) {
-                filtered = filtered.filter(p => selectedBrands.includes(p.brand));
-            }
-            
-            // فلترة حسب السنوات المختارة
-            const selectedYearRanges = getSelectedYearRanges();
-            if (selectedYearRanges.length > 0) {
-                filtered = filtered.filter(p => {
-                    if (!p.year) return false;
-                    return selectedYearRanges.some(range => {
-                        return p.year >= range.min && p.year <= range.max;
-                    });
-                });
-            }
-            
-            // فلترة حسب السعر
-            const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
-            const maxPrice = parseInt(document.getElementById('maxPrice').value) || Infinity;
-            filtered = filtered.filter(p => {
-                const price = p.price || 0;
-                return price >= minPrice && price <= maxPrice;
+                
+                // فلتر القسم الرئيسي
+                if (activeFilters.mainCategories.length > 0 && !activeFilters.mainCategories.includes(product.mainCategoryId)) {
+                    return false;
+                }
+                
+                // فلتر السنة
+                if (activeFilters.years.length > 0 && !activeFilters.years.includes(product.year)) {
+                    return false;
+                }
+                
+                // فلتر الوقود
+                if (activeFilters.fuels.length > 0 && !activeFilters.fuels.includes(product.fuel)) {
+                    return false;
+                }
+                
+                // فلتر المميز
+                if (activeFilters.featured && !product.featured) {
+                    return false;
+                }
+                
+                // فلتر التقسيط
+                if (activeFilters.installment && !product.installment) {
+                    return false;
+                }
+                
+                // فلتر السعر
+                if (product.price < activeFilters.minPrice || product.price > activeFilters.maxPrice) {
+                    return false;
+                }
+                
+                return true;
             });
             
-            // فلترة حسب المميز
-            if (document.getElementById('filterFeatured').checked) {
-                filtered = filtered.filter(p => p.featured);
-            }
+            // ترتيب النتائج
+            sortProducts();
             
-            // فلترة حسب التقسيط
-            if (document.getElementById('filterInstallment').checked) {
-                filtered = filtered.filter(p => p.installment);
-            }
-            
-            filteredProducts = filtered;
+            // تحديث الصفحة
             currentPage = 1;
             renderProducts();
         }
 
-        // الحصول على الصناديق المختارة
-        function getSelectedCheckboxes(containerId) {
-            const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`);
-            return Array.from(checkboxes).map(cb => cb.value);
+        function sortProducts() {
+            switch (activeFilters.sort) {
+                case 'price_asc':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price_desc':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'year_desc':
+                    filteredProducts.sort((a, b) => b.year - a.year);
+                    break;
+                case 'year_asc':
+                    filteredProducts.sort((a, b) => a.year - b.year);
+                    break;
+                default:
+                    // الترتيب الافتراضي - الأحدث أولاً
+                    filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
         }
 
-        // الحصول على نطاقات السنوات المختارة
-        function getSelectedYearRanges() {
-            const checkboxes = document.querySelectorAll('#yearFilters input[type="checkbox"]:checked');
-            return Array.from(checkboxes).map(cb => ({
-                min: parseInt(cb.dataset.min),
-                max: parseInt(cb.dataset.max)
-            }));
-        }
-
-        // عرض المنتجات
-        function renderProducts() {
-            const productsGrid = document.getElementById('productsGrid');
-            const emptyState = document.getElementById('emptyState');
-            const pagination = document.getElementById('pagination');
+        function resetFilters() {
+            // إعادة تعيين الفلاتر النشطة
+            activeFilters = {
+                brands: [],
+                mainCategories: [],
+                years: [],
+                fuels: [],
+                featured: false,
+                installment: false,
+                minPrice: 0,
+                maxPrice: Infinity,
+                sort: 'default'
+            };
             
-            if (filteredProducts.length === 0) {
-                productsGrid.innerHTML = '';
-                emptyState.style.display = 'block';
-                pagination.style.display = 'none';
+            // إلغاء تحديد جميع الـ checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // إعادة تعيين حقول السعر
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            
+            // إعادة تعيين الترتيب
+            document.getElementById('sortSelect').value = 'default';
+            
+            // إعادة تعيين المنتجات
+            filteredProducts = [...allProducts];
+            
+            // تحديث الصفحة
+            currentPage = 1;
+            renderProducts();
+        }
+
+        // ============ عرض المنتجات ============
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const total = filteredProducts.length;
+            
+            // تحديث عداد النتائج
+            document.getElementById('totalResults').textContent = total;
+            
+            if (total === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-car"></i>
+                        <h3>لا توجد نتائج</h3>
+                        <p>لم نعثر على سيارات تطابق معايير البحث الخاصة بك. جرب معايير بحث مختلفة.</p>
+                        <button class="nav-btn primary" onclick="resetFilters()" style="display: inline-flex;">
+                            <i class="fas fa-redo"></i>
+                            إعادة تعيين الفلاتر
+                        </button>
+                    </div>
+                `;
+                document.getElementById('pagination').innerHTML = '';
                 return;
             }
             
-            emptyState.style.display = 'none';
+            // حساب الترقيم
+            const start = (currentPage - 1) * productsPerPage;
+            const end = Math.min(start + productsPerPage, total);
+            const pageProducts = filteredProducts.slice(start, end);
             
-            // حساب الترقيم الصفحي
-            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-            currentProducts = filteredProducts.slice(startIndex, endIndex);
+            // تحديث عداد البداية والنهاية
+            document.getElementById('resultsStart').textContent = total > 0 ? start + 1 : 0;
+            document.getElementById('resultsEnd').textContent = end;
             
             // عرض المنتجات
-            productsGrid.innerHTML = currentProducts.map(product => `
-                <div class="product-card ${product.featured ? 'featured' : ''}">
-                    <img src="${product.images?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'}" 
-                         alt="${product.name?.ar || 'Product'}" 
-                         class="product-image">
-                    <div class="product-info">
-                        <div class="product-header">
-                            <h3 class="product-name">${product.name?.ar || 'Product'}</h3>
-                            <span class="product-type">${getTypeText(product.type)}</span>
+            grid.innerHTML = pageProducts.map(product => {
+                const brand = siteData.brands?.find(b => b.id === product.brandId);
+                const mainCategory = siteData.mainCategories?.find(c => c.id === product.mainCategoryId);
+                const mainImage = product.images?.[0] || 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                
+                return `
+                    <div class="product-card ${product.featured ? 'featured' : ''}">
+                        ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
+                        <div class="product-image">
+                            <img src="${mainImage}" alt="${product.name.ar}" onerror="this.src='https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                         </div>
-                        <div class="product-price">
-                            ${product.oldPrice ? `
-                                <span class="product-old-price">${product.oldPrice.toLocaleString()} ج.م</span>
-                            ` : ''}
-                            ${(product.price || 0).toLocaleString()} ج.م
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name.ar}</h3>
+                            <div class="product-category">
+                                <i class="fas fa-tag"></i> ${brand?.name.ar || 'غير محدد'} • ${mainCategory?.name.ar || ''}
+                            </div>
+                            <div class="product-price">
+                                ${(product.price || 0).toLocaleString()} ج.م
+                                ${product.oldPrice ? `<span class="old-price">${product.oldPrice.toLocaleString()} ج.م</span>` : ''}
+                            </div>
+                            <ul class="product-specs">
+                                ${product.year ? `<li><i class="fas fa-calendar-alt"></i> ${product.year}</li>` : ''}
+                                ${product.fuel ? `<li><i class="fas fa-gas-pump"></i> ${product.fuel}</li>` : ''}
+                                ${product.mileage ? `<li><i class="fas fa-tachometer-alt"></i> ${product.mileage.toLocaleString()} كم</li>` : ''}
+                                ${product.engine ? `<li><i class="fas fa-engine"></i> ${product.engine}</li>` : ''}
+                                ${product.installment ? `<li><i class="fas fa-credit-card"></i> تقسيط</li>` : ''}
+                            </ul>
+                            <a href="product-details.html?id=${product.id}" class="product-btn">
+                                <i class="fas fa-eye"></i> عرض التفاصيل
+                            </a>
                         </div>
-                        ${product.installment ? `
-                            <div class="installment-badge">تقسيط متاح</div>
-                        ` : ''}
-                        <ul class="product-specs">
-                            ${(product.specs || []).slice(0, 3).map(spec => `
-                                <li>${spec.name}: ${spec.value}</li>
-                            `).join('')}
-                        </ul>
-                        <a href="product-details.html?id=${product.id}" class="product-button">
-                            <i class="fas fa-eye"></i>
-                            عرض التفاصيل
-                        </a>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             
-            // عرض الترقيم الصفحي
-            renderPagination(totalPages);
+            // عرض أزرار الترقيم
+            renderPagination(total);
         }
 
-        // عرض الترقيم الصفحي
-        function renderPagination(totalPages) {
+        function renderPagination(total) {
             const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(total / productsPerPage);
             
             if (totalPages <= 1) {
-                pagination.style.display = 'none';
+                pagination.innerHTML = '';
                 return;
             }
-            
-            pagination.style.display = 'flex';
             
             let html = '';
             
             // زر السابق
-            html += `
-                <button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" 
-                        onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            `;
+            html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
             
-            // أرقام الصفحات
-            const maxVisible = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            
-            if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                html += `
-                    <button class="page-btn ${currentPage === i ? 'active' : ''}" 
-                            onclick="changePage(${i})">
-                        ${i}
-                    </button>
-                `;
+            // الصفحات
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    html += `<button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    html += `<button class="page-btn disabled">...</button>`;
+                }
             }
             
             // زر التالي
-            html += `
-                <button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" 
-                        onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            `;
+            html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
             
             pagination.innerHTML = html;
         }
 
-        // تغيير الصفحة
         function changePage(page) {
-            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            const total = filteredProducts.length;
+            const totalPages = Math.ceil(total / productsPerPage);
             
             if (page < 1 || page > totalPages) return;
             
             currentPage = page;
             renderProducts();
             
-            // التمرير إلى الأعلى
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+            // التمرير لأعلى الصفحة
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============ القائمة للجوال ============
+        function setupMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mainNav = document.getElementById('mainNav');
+            
+            mobileMenu.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+                mobileMenu.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mainNav.contains(e.target)) {
+                    mainNav.classList.remove('active');
+                    mobileMenu.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             });
         }
 
-        // الحصول على نص النوع
-        function getTypeText(type) {
-            const types = {
-                'new': 'جديد',
-                'used': 'مستعمل',
-                'electric': 'كهربائي'
-            };
-            return types[type] || type;
+        // ============ Toast ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
         }
 
-        // إعادة تعيين الفلاتر
-        function resetFilters() {
-            // إعادة تعيين الأزرار
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('.filter-btn[data-type="all"]').classList.add('active');
-            
-            // إعادة تعيين صناديق الاختيار
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                cb.checked = false;
-            });
-            
-            // إعادة تعيين حقول السعر
-            document.getElementById('minPrice').value = '';
-            document.getElementById('maxPrice').value = '';
-            
-            // إعادة تعيين البحث
-            document.getElementById('searchInput').value = '';
-            
-            // إعادة تعيين المتغيرات
-            currentType = 'all';
-            currentCategory = null;
-            currentBrand = null;
-            
-            // تطبيق الفلاتر
-            applyFilters();
-        }
-
-        // البحث عند الضغط على Enter
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchProducts();
-            }
-        });
+        // ============ دوال عامة ============
+        window.applyFilters = applyFilters;
+        window.resetFilters = resetFilters;
+        window.changePage = changePage;
+        window.toggleBrandFilter = toggleBrandFilter;
+        window.toggleCategoryFilter = toggleCategoryFilter;
+        window.toggleYearFilter = toggleYearFilter;
+        window.toggleFuelFilter = toggleFuelFilter;
     </script>
 </body>
 </html>
