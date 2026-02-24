@@ -5,7 +5,7 @@
 
 // تهيئة Supabase
 const SUPABASE_URL = 'https://epeghbnpumoxdebupndh.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwZWdoYm5wdW1veGRlYnVwbmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA0MjM2NjAsImV4cCI6MjA1NTk5OTY2MH0.fkJWnMwVl-RP6X6GL8EG8CgL2-eNt4wZBl61uGJjLw0';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwZWdoYm5wdW1veGRlYnVwbmRoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTg4OTU3OCwiZXhwIjoyMDg3NDY1NTc4fQ.w_dHnUUgFCbKPaoxrY4Mm-i0vuTPCM0IfMDgC-ltc_w';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
