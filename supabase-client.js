@@ -1,9 +1,9 @@
 /**
  * Supabase Client - سيارات عبدالله
- * الإصدار: 6.0.0
+ * الإصدار: 7.0.0 - مصحح بالكامل
  */
 
-// تهيئة Supabase
+// تهيئة Supabase - استخدم Anon Key وليس Service Key!
 const SUPABASE_URL = 'https://epeghbnpumoxdebupndh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwZWdoYm5wdW1veGRlYnVwbmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODk1NzgsImV4cCI6MjA4NzQ2NTU3OH0.iiW7XbQ6QKoax9NvuPtCMNKR1hwii6bB6TieatVAS7w';
 
@@ -37,7 +37,7 @@ class DatabaseService {
                     categories(name_ar, name_en)
                 `);
 
-            // تطبيق الفلاتر
+            // تطبيق الفلاتر - استخدم أسماء الحقول الصحيحة من قاعدة البيانات
             if (filters.brandId) {
                 query = query.eq('brand_id', filters.brandId);
             }
@@ -66,7 +66,11 @@ class DatabaseService {
             const { data, error } = await query.order('created_at', { ascending: false });
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول من underscore إلى camelCase للتطبيق
+            const formattedData = data?.map(item => this.formatProductFromDB(item)) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب المنتجات:', error);
             return { success: false, error: error.message };
@@ -86,43 +90,98 @@ class DatabaseService {
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = this.formatProductFromDB(data);
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب المنتج:', error);
             return { success: false, error: error.message };
         }
     }
 
+    // دالة مساعدة لتحويل البيانات من قاعدة البيانات إلى التطبيق
+    formatProductFromDB(dbProduct) {
+        if (!dbProduct) return null;
+        
+        return {
+            id: dbProduct.id,
+            nameAr: dbProduct.name_ar,
+            nameEn: dbProduct.name_en,
+            brandId: dbProduct.brand_id,
+            categoryId: dbProduct.category_id,
+            subCategoryId: dbProduct.sub_category_id,
+            model: dbProduct.model,
+            year: dbProduct.year,
+            price: dbProduct.price,
+            oldPrice: dbProduct.old_price,
+            type: dbProduct.type,
+            fuel: dbProduct.fuel,
+            engine: dbProduct.engine,
+            mileage: dbProduct.mileage,
+            colors: dbProduct.colors,
+            description: dbProduct.description,
+            images: dbProduct.images,
+            featured: dbProduct.featured,
+            installment: dbProduct.installment,
+            active: dbProduct.active,
+            createdAt: dbProduct.created_at,
+            updatedAt: dbProduct.updated_at,
+            brand: dbProduct.brands ? {
+                nameAr: dbProduct.brands.name_ar,
+                nameEn: dbProduct.brands.name_en
+            } : null,
+            category: dbProduct.categories ? {
+                nameAr: dbProduct.categories.name_ar,
+                nameEn: dbProduct.categories.name_en
+            } : null
+        };
+    }
+
+    // دالة مساعدة لتحويل البيانات من التطبيق إلى قاعدة البيانات
+    formatProductForDB(appProduct) {
+        return {
+            name_ar: appProduct.nameAr,
+            name_en: appProduct.nameEn,
+            brand_id: appProduct.brandId,
+            category_id: appProduct.categoryId,
+            sub_category_id: appProduct.subCategoryId,
+            model: appProduct.model,
+            year: appProduct.year,
+            price: appProduct.price,
+            old_price: appProduct.oldPrice,
+            type: appProduct.type,
+            fuel: appProduct.fuel,
+            engine: appProduct.engine,
+            mileage: appProduct.mileage,
+            colors: appProduct.colors,
+            description: appProduct.description,
+            images: appProduct.images,
+            featured: appProduct.featured || false,
+            installment: appProduct.installment || false,
+            active: appProduct.active !== false,
+            created_at: appProduct.createdAt || new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+    }
+
     async addProduct(product) {
         try {
+            // تحويل البيانات لصيغة قاعدة البيانات
+            const dbProduct = this.formatProductForDB(product);
+            
             const { data, error } = await this.supabase
                 .from(this.tables.products)
-                .insert([{
-                    name_ar: product.nameAr,
-                    name_en: product.nameEn,
-                    brand_id: product.brandId,
-                    category_id: product.categoryId,
-                    sub_category_id: product.subCategoryId,
-                    model: product.model,
-                    year: product.year,
-                    price: product.price,
-                    old_price: product.oldPrice,
-                    type: product.type,
-                    fuel: product.fuel,
-                    engine: product.engine,
-                    mileage: product.mileage,
-                    colors: product.colors,
-                    description: product.description,
-                    images: product.images,
-                    featured: product.featured || false,
-                    installment: product.installment || false,
-                    active: product.active !== false,
-                    created_at: new Date().toISOString()
-                }])
+                .insert([dbProduct])
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة لصيغة التطبيق
+            const formattedData = this.formatProductFromDB(data[0]);
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة المنتج:', error);
             return { success: false, error: error.message };
@@ -131,35 +190,23 @@ class DatabaseService {
 
     async updateProduct(id, updates) {
         try {
+            // تحويل البيانات لصيغة قاعدة البيانات
+            const dbUpdates = this.formatProductForDB(updates);
+            delete dbUpdates.created_at; // لا نحدث تاريخ الإنشاء
+            delete dbUpdates.id; // لا نحدث المعرف
+            
             const { data, error } = await this.supabase
                 .from(this.tables.products)
-                .update({
-                    name_ar: updates.nameAr,
-                    name_en: updates.nameEn,
-                    brand_id: updates.brandId,
-                    category_id: updates.categoryId,
-                    sub_category_id: updates.subCategoryId,
-                    model: updates.model,
-                    year: updates.year,
-                    price: updates.price,
-                    old_price: updates.oldPrice,
-                    type: updates.type,
-                    fuel: updates.fuel,
-                    engine: updates.engine,
-                    mileage: updates.mileage,
-                    colors: updates.colors,
-                    description: updates.description,
-                    images: updates.images,
-                    featured: updates.featured,
-                    installment: updates.installment,
-                    active: updates.active,
-                    updated_at: new Date().toISOString()
-                })
+                .update(dbUpdates)
                 .eq('id', id)
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة لصيغة التطبيق
+            const formattedData = this.formatProductFromDB(data[0]);
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في تحديث المنتج:', error);
             return { success: false, error: error.message };
@@ -190,7 +237,19 @@ class DatabaseService {
                 .order('name_ar');
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = data?.map(brand => ({
+                id: brand.id,
+                nameAr: brand.name_ar,
+                nameEn: brand.name_en,
+                logo: brand.logo,
+                active: brand.active,
+                createdAt: brand.created_at,
+                updatedAt: brand.updated_at
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب الماركات:', error);
             return { success: false, error: error.message };
@@ -211,7 +270,19 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                nameAr: data[0].name_ar,
+                nameEn: data[0].name_en,
+                logo: data[0].logo,
+                active: data[0].active,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة الماركة:', error);
             return { success: false, error: error.message };
@@ -233,7 +304,19 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                nameAr: data[0].name_ar,
+                nameEn: data[0].name_en,
+                logo: data[0].logo,
+                active: data[0].active,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في تحديث الماركة:', error);
             return { success: false, error: error.message };
@@ -276,7 +359,21 @@ class DatabaseService {
                 .order('name_ar');
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = data?.map(cat => ({
+                id: cat.id,
+                nameAr: cat.name_ar,
+                nameEn: cat.name_en,
+                parentId: cat.parent_id,
+                description: cat.description,
+                image: cat.image,
+                active: cat.active,
+                createdAt: cat.created_at,
+                updatedAt: cat.updated_at
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب الأقسام:', error);
             return { success: false, error: error.message };
@@ -299,7 +396,21 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                nameAr: data[0].name_ar,
+                nameEn: data[0].name_en,
+                parentId: data[0].parent_id,
+                description: data[0].description,
+                image: data[0].image,
+                active: data[0].active,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة القسم:', error);
             return { success: false, error: error.message };
@@ -315,7 +426,24 @@ class DatabaseService {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول (مع إخفاء كلمة المرور)
+            const formattedData = data?.map(user => ({
+                id: user.id,
+                username: user.username,
+                fullName: user.full_name,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                permissions: user.permissions,
+                avatar: user.avatar,
+                active: user.active,
+                createdAt: user.created_at,
+                updatedAt: user.updated_at
+                // لا نرسل password أبداً!
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب المستخدمين:', error);
             return { success: false, error: error.message };
@@ -331,7 +459,23 @@ class DatabaseService {
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول (مع إخفاء كلمة المرور)
+            const formattedData = {
+                id: data.id,
+                username: data.username,
+                fullName: data.full_name,
+                email: data.email,
+                phone: data.phone,
+                role: data.role,
+                permissions: data.permissions,
+                avatar: data.avatar,
+                active: data.active,
+                createdAt: data.created_at,
+                updatedAt: data.updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             return { success: false, error: error.message };
         }
@@ -356,7 +500,23 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة (بدون كلمة المرور)
+            const formattedData = {
+                id: data[0].id,
+                username: data[0].username,
+                fullName: data[0].full_name,
+                email: data[0].email,
+                phone: data[0].phone,
+                role: data[0].role,
+                permissions: data[0].permissions,
+                avatar: data[0].avatar,
+                active: data[0].active,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة المستخدم:', error);
             return { success: false, error: error.message };
@@ -365,21 +525,39 @@ class DatabaseService {
 
     async updateUser(id, updates) {
         try {
+            const dbUpdates = {
+                full_name: updates.fullName,
+                email: updates.email,
+                phone: updates.phone,
+                avatar: updates.avatar,
+                active: updates.active,
+                updated_at: new Date().toISOString()
+            };
+            
             const { data, error } = await this.supabase
                 .from(this.tables.users)
-                .update({
-                    full_name: updates.fullName,
-                    email: updates.email,
-                    phone: updates.phone,
-                    avatar: updates.avatar,
-                    active: updates.active,
-                    updated_at: new Date().toISOString()
-                })
+                .update(dbUpdates)
                 .eq('id', id)
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                username: data[0].username,
+                fullName: data[0].full_name,
+                email: data[0].email,
+                phone: data[0].phone,
+                role: data[0].role,
+                permissions: data[0].permissions,
+                avatar: data[0].avatar,
+                active: data[0].active,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في تحديث المستخدم:', error);
             return { success: false, error: error.message };
@@ -430,7 +608,23 @@ class DatabaseService {
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل النتيجة (بدون كلمة المرور)
+            const formattedData = {
+                id: data.id,
+                username: data.username,
+                fullName: data.full_name,
+                email: data.email,
+                phone: data.phone,
+                role: data.role,
+                permissions: data.permissions,
+                avatar: data.avatar,
+                active: data.active,
+                createdAt: data.created_at,
+                updatedAt: data.updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             return { success: false, error: 'بيانات الدخول غير صحيحة' };
         }
@@ -451,7 +645,31 @@ class DatabaseService {
             const { data, error } = await query;
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = data?.map(req => ({
+                id: req.id,
+                customerName: req.customer_name,
+                customerPhone: req.customer_phone,
+                customerEmail: req.customer_email,
+                customerCity: req.customer_city,
+                carBrand: req.car_brand,
+                carModel: req.car_model,
+                carYear: req.car_year,
+                carTrim: req.car_trim,
+                carCondition: req.car_condition,
+                carMileage: req.car_mileage,
+                expectedPrice: req.expected_price,
+                carFuel: req.car_fuel,
+                carDescription: req.car_description,
+                carImages: req.car_images,
+                contactMethod: req.contact_method,
+                status: req.status,
+                createdAt: req.created_at,
+                updatedAt: req.updated_at
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب طلبات البيع:', error);
             return { success: false, error: error.message };
@@ -484,7 +702,31 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                customerName: data[0].customer_name,
+                customerPhone: data[0].customer_phone,
+                customerEmail: data[0].customer_email,
+                customerCity: data[0].customer_city,
+                carBrand: data[0].car_brand,
+                carModel: data[0].car_model,
+                carYear: data[0].car_year,
+                carTrim: data[0].car_trim,
+                carCondition: data[0].car_condition,
+                carMileage: data[0].car_mileage,
+                expectedPrice: data[0].expected_price,
+                carFuel: data[0].car_fuel,
+                carDescription: data[0].car_description,
+                carImages: data[0].car_images,
+                contactMethod: data[0].contact_method,
+                status: data[0].status,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة طلب البيع:', error);
             return { success: false, error: error.message };
@@ -518,7 +760,26 @@ class DatabaseService {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = data?.map(req => ({
+                id: req.id,
+                customerName: req.customer_name,
+                customerPhone: req.customer_phone,
+                customerEmail: req.customer_email,
+                customerCity: req.customer_city,
+                currentCar: req.current_car,
+                desiredCar: req.desired_car,
+                currentCarDetails: req.current_car_details,
+                currentCarImages: req.current_car_images,
+                contactMethod: req.contact_method,
+                notes: req.notes,
+                status: req.status,
+                createdAt: req.created_at,
+                updatedAt: req.updated_at
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب طلبات الاستبدال:', error);
             return { success: false, error: error.message };
@@ -546,7 +807,26 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                customerName: data[0].customer_name,
+                customerPhone: data[0].customer_phone,
+                customerEmail: data[0].customer_email,
+                customerCity: data[0].customer_city,
+                currentCar: data[0].current_car,
+                desiredCar: data[0].desired_car,
+                currentCarDetails: data[0].current_car_details,
+                currentCarImages: data[0].current_car_images,
+                contactMethod: data[0].contact_method,
+                notes: data[0].notes,
+                status: data[0].status,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة طلب الاستبدال:', error);
             return { success: false, error: error.message };
@@ -565,7 +845,29 @@ class DatabaseService {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = data?.map(order => ({
+                id: order.id,
+                productId: order.product_id,
+                productName: order.product_name,
+                productPrice: order.product_price,
+                customerName: order.customer_name,
+                customerPhone: order.customer_phone,
+                customerEmail: order.customer_email,
+                customerCity: order.customer_city,
+                paymentMethod: order.payment_method,
+                notes: order.notes,
+                status: order.status,
+                createdAt: order.created_at,
+                updatedAt: order.updated_at,
+                product: order.products ? {
+                    nameAr: order.products.name_ar,
+                    price: order.products.price
+                } : null
+            })) || [];
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب الطلبات:', error);
             return { success: false, error: error.message };
@@ -584,7 +886,30 @@ class DatabaseService {
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = {
+                id: data.id,
+                productId: data.product_id,
+                productName: data.product_name,
+                productPrice: data.product_price,
+                customerName: data.customer_name,
+                customerPhone: data.customer_phone,
+                customerEmail: data.customer_email,
+                customerCity: data.customer_city,
+                paymentMethod: data.payment_method,
+                notes: data.notes,
+                status: data.status,
+                createdAt: data.created_at,
+                updatedAt: data.updated_at,
+                product: data.products ? {
+                    nameAr: data.products.name_ar,
+                    price: data.products.price,
+                    images: data.products.images
+                } : null
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في جلب الطلب:', error);
             return { success: false, error: error.message };
@@ -597,6 +922,8 @@ class DatabaseService {
                 .from(this.tables.orders)
                 .insert([{
                     product_id: order.productId,
+                    product_name: order.productName,
+                    product_price: order.productPrice,
                     customer_name: order.customerName,
                     customer_phone: order.customerPhone,
                     customer_email: order.customerEmail || null,
@@ -609,7 +936,25 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                productId: data[0].product_id,
+                productName: data[0].product_name,
+                productPrice: data[0].product_price,
+                customerName: data[0].customer_name,
+                customerPhone: data[0].customer_phone,
+                customerEmail: data[0].customer_email,
+                customerCity: data[0].customer_city,
+                paymentMethod: data[0].payment_method,
+                notes: data[0].notes,
+                status: data[0].status,
+                createdAt: data[0].created_at,
+                updatedAt: data[0].updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة الطلب:', error);
             return { success: false, error: error.message };
@@ -651,7 +996,20 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
-            return { success: true, data: data[0] };
+            
+            // تحويل النتيجة
+            const formattedData = {
+                id: data[0].id,
+                name: data[0].name,
+                phone: data[0].phone,
+                email: data[0].email,
+                message: data[0].message,
+                productId: data[0].product_id,
+                status: data[0].status,
+                createdAt: data[0].created_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             console.error('خطأ في إضافة الاستفسار:', error);
             return { success: false, error: error.message };
@@ -667,23 +1025,45 @@ class DatabaseService {
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            // تحويل أسماء الحقول
+            const formattedData = {
+                id: data.id,
+                siteNameAr: data.site_name_ar,
+                siteNameEn: data.site_name_en,
+                siteDescriptionAr: data.site_description_ar,
+                siteDescriptionEn: data.site_description_en,
+                contactPhone: data.contact_phone,
+                contactWhatsapp: data.contact_whatsapp,
+                contactEmail: data.contact_email,
+                contactAddress: data.contact_address,
+                socialFacebook: data.social_facebook,
+                socialInstagram: data.social_instagram,
+                socialTiktok: data.social_tiktok,
+                socialTwitter: data.social_twitter,
+                socialYoutube: data.social_youtube,
+                createdAt: data.created_at,
+                updatedAt: data.updated_at
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
             // إنشاء إعدادات افتراضية
             const defaultSettings = {
-                site_name_ar: 'سيارات عبدالله',
-                site_name_en: 'Abdullah Cars',
-                site_description_ar: 'ريادة وخبرة في عالم السيارات منذ 1993',
-                site_description_en: 'Leadership and experience in the automotive world since 1993',
-                contact_phone: '01121811110',
-                contact_whatsapp: '01121811110',
-                contact_email: 'amarmotors850@gmail.com',
-                contact_address: 'الجيزة، مصر',
-                social_facebook: 'https://www.facebook.com/share/1SdkvcBynu',
-                social_instagram: 'https://www.instagram.com/abdullah_auto_',
-                social_tiktok: 'https://www.tiktok.com/@abdullah.auto0',
-                social_twitter: '',
-                social_youtube: ''
+                id: 1,
+                siteNameAr: 'سيارات عبدالله',
+                siteNameEn: 'Abdullah Cars',
+                siteDescriptionAr: 'ريادة وخبرة في عالم السيارات منذ 1993',
+                siteDescriptionEn: 'Leadership and experience since 1993',
+                contactPhone: '01121811110',
+                contactWhatsapp: '01121811110',
+                contactEmail: 'amarmotors850@gmail.com',
+                contactAddress: 'الجيزة، مصر',
+                socialFacebook: 'https://www.facebook.com/share/1SdkvcBynu',
+                socialInstagram: 'https://www.instagram.com/abdullah_auto_',
+                socialTiktok: 'https://www.tiktok.com/@abdullah.auto0',
+                socialTwitter: '',
+                socialYoutube: ''
             };
             return { success: true, data: defaultSettings, isDefault: true };
         }
@@ -691,59 +1071,50 @@ class DatabaseService {
 
     async updateSettings(settings) {
         try {
+            // تحويل البيانات لصيغة قاعدة البيانات
+            const dbSettings = {
+                site_name_ar: settings.siteNameAr,
+                site_name_en: settings.siteNameEn,
+                site_description_ar: settings.siteDescriptionAr,
+                site_description_en: settings.siteDescriptionEn,
+                contact_phone: settings.contactPhone,
+                contact_whatsapp: settings.contactWhatsapp,
+                contact_email: settings.contactEmail,
+                contact_address: settings.contactAddress,
+                social_facebook: settings.socialFacebook,
+                social_instagram: settings.socialInstagram,
+                social_tiktok: settings.socialTiktok,
+                social_twitter: settings.socialTwitter,
+                social_youtube: settings.socialYoutube,
+                updated_at: new Date().toISOString()
+            };
+            
             // التحقق من وجود الإعدادات
             const { data: existing } = await this.supabase
                 .from(this.tables.settings)
                 .select('id')
                 .maybeSingle();
 
+            let error;
             if (existing) {
                 // تحديث
-                const { error } = await this.supabase
+                const result = await this.supabase
                     .from(this.tables.settings)
-                    .update({
-                        site_name_ar: settings.siteNameAr,
-                        site_name_en: settings.siteNameEn,
-                        site_description_ar: settings.siteDescriptionAr,
-                        site_description_en: settings.siteDescriptionEn,
-                        contact_phone: settings.contactPhone,
-                        contact_whatsapp: settings.contactWhatsapp,
-                        contact_email: settings.contactEmail,
-                        contact_address: settings.contactAddress,
-                        social_facebook: settings.socialFacebook,
-                        social_instagram: settings.socialInstagram,
-                        social_tiktok: settings.socialTiktok,
-                        social_twitter: settings.socialTwitter,
-                        social_youtube: settings.socialYoutube,
-                        updated_at: new Date().toISOString()
-                    })
+                    .update(dbSettings)
                     .eq('id', existing.id);
-
-                if (error) throw error;
+                error = result.error;
             } else {
                 // إدراج
-                const { error } = await this.supabase
+                const result = await this.supabase
                     .from(this.tables.settings)
                     .insert([{
-                        site_name_ar: settings.siteNameAr,
-                        site_name_en: settings.siteNameEn,
-                        site_description_ar: settings.siteDescriptionAr,
-                        site_description_en: settings.siteDescriptionEn,
-                        contact_phone: settings.contactPhone,
-                        contact_whatsapp: settings.contactWhatsapp,
-                        contact_email: settings.contactEmail,
-                        contact_address: settings.contactAddress,
-                        social_facebook: settings.socialFacebook,
-                        social_instagram: settings.socialInstagram,
-                        social_tiktok: settings.socialTiktok,
-                        social_twitter: settings.socialTwitter,
-                        social_youtube: settings.socialYoutube,
+                        ...dbSettings,
                         created_at: new Date().toISOString()
                     }]);
-
-                if (error) throw error;
+                error = result.error;
             }
 
+            if (error) throw error;
             return { success: true };
         } catch (error) {
             console.error('خطأ في تحديث الإعدادات:', error);
@@ -840,3 +1211,6 @@ class DatabaseService {
 
 // تهيئة الكائن العام
 window.db = new DatabaseService();
+
+// للتصحيح - يمكن إزالته في الإنتاج
+console.log('✅ Database service initialized with Anon Key');
