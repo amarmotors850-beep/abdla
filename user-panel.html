@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المستخدمين - سيارات عبدالله</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        :root {
+            --primary: #c53030;
+            --primary-dark: #9b1c1c;
+            --primary-light: #e53e3e;
+            --secondary: #0a0a0a;
+            --sidebar-bg: #0a0a0a;
+            --content-bg: #f5f5f5;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --glass-bg: rgba(10, 10, 10, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: var(--content-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* ========== ANIMATED BACKGROUND (Login Page) ========== */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        }
+
+        .bg-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(197, 48, 48, 0.3);
+            border-radius: 50%;
+            animation: float 8s infinite;
+        }
+
+        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
+        .particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
+        .particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
+        .particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-50px) scale(1.5); opacity: 0.6; }
+        }
+
+        .bg-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(197, 48, 48, 0.1) 0%, transparent 70%);
+        }
+
+        /* ========== LOGIN PAGE STYLES ========== */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group:hover,
+        .input-group:focus-within {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(197, 48, 48, 0.2);
+        }
+
+        .input-group i {
+            color: var(--primary);
+            margin-left: 10px;
+        }
+
+        .input-group input {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            width: 100%;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.4);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .demo-credentials {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border: 1px dashed var(--primary);
+        }
+
+        .demo-credentials p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-credentials span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ========== DASHBOARD LAYOUT ========== */
+        .dashboard-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: var(--text-light);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-logo {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-logo span {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .user-info {
+            padding: 1.5rem;
+            background: rgba(197, 48, 48, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .user-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            text-align: center;
+        }
+
+        .user-role {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--primary-light);
+            margin: 0 auto;
+            text-align: center;
+            width: fit-content;
+        }
+
+        .sidebar-nav {
+            padding: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-right: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .page-title i {
+            color: var(--primary);
+            margin-left: 10px;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(197, 48, 48, 0.2);
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(197, 48, 48, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .card-title i {
+            color: var(--primary);
+            margin-left: 10px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: right;
+            font-weight: 600;
+            color: #666;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-contacted { background: #cce5ff; color: #004085; }
+        .status-sold { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        /* Profile Form */
+        .profile-form {
+            max-width: 600px;
+        }
+
+        .form-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-control:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            background: #f0f2f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #999;
+            border: 3px solid var(--primary);
+            overflow: hidden;
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .save-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.3s;
+            border-right: 4px solid;
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+        .toast.warning { border-color: var(--warning); }
+        .toast.info { border-color: var(--info); }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Permission-based visibility */
+        [data-permission] {
+            display: none;
+        }
+
+        [data-permission].has-permission {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                right: -280px;
+            }
+            .sidebar.active {
+                right: 0;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid var(--gray-200);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: var(--gray-800); font-size: 1.2rem; font-weight: 600; }
+    </style>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase Client -->
+    <script src="supabase-client.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="animated-bg">
+            <div class="bg-gradient"></div>
+            <div class="bg-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="bg-overlay"></div>
+        </div>
+
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h1 class="login-title">🔐 تسجيل الدخول</h1>
+                <p class="login-subtitle">لوحة المستخدمين - سيارات عبدالله</p>
+            </div>
+
+            <form id="loginForm" onsubmit="event.preventDefault(); userPanel.login();">
+                <div class="form-group">
+                    <label class="form-label">👤 اسم المستخدم</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🔒 كلمة المرور</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="rememberMe">
+                        <span>✓ تذكرني</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+            </form>
+
+            <div class="demo-credentials">
+                <p><i class="fas fa-info-circle"></i> بيانات الدخول التجريبية:</p>
+                <p><span>مستخدم عادي:</span> user1 / 123456</p>
+                <p><span>مدير مبيعات:</span> sales1 / 123456</p>
+                <p><span>محرر:</span> editor1 / 123456</p>
+            </div>
+
+            <div class="login-footer">
+                <p>© 2026 سيارات عبدالله - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Panel -->
+    <div id="dashboardPanel" class="dashboard-wrapper hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-car"></i>
+                    <span>سيارات عبدالله</span>
+                </div>
+            </div>
+
+            <div id="sidebarUserInfo" class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div style="text-align: center;">
+                    <div class="user-name" id="displayName"></div>
+                    <span class="user-role" id="displayRole"></span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div onclick="userPanel.loadPage('dashboard')" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-pie"></i>
+                    لوحة المعلومات
+                </div>
+                <div onclick="userPanel.loadPage('cars')" class="nav-item" data-page="cars">
+                    <i class="fas fa-car"></i>
+                    عرض السيارات
+                </div>
+                <div onclick="userPanel.loadPage('sellRequests')" class="nav-item" data-page="sellRequests" data-permission="view_sell">
+                    <i class="fas fa-tag"></i>
+                    طلبات البيع
+                </div>
+                <div onclick="userPanel.loadPage('exchangeRequests')" class="nav-item" data-page="exchangeRequests" data-permission="view_exchange">
+                    <i class="fas fa-exchange-alt"></i>
+                    طلبات الاستبدال
+                </div>
+                <div onclick="userPanel.loadPage('orders')" class="nav-item" data-page="orders" data-permission="view_orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    طلبات الشراء
+                </div>
+                <div onclick="userPanel.loadPage('profile')" class="nav-item" data-page="profile">
+                    <i class="fas fa-user"></i>
+                    الملف الشخصي
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+                <div onclick="userPanel.logout()" class="nav-item" style="color: var(--danger);">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <h1 class="page-title" id="mainPageTitle">
+                    <i class="fas fa-chart-pie"></i>
+                    لوحة المعلومات
+                </h1>
+                <button onclick="userPanel.logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+
+            <div id="pageContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">جاري التحميل...</div>
+    </div>
+
+    <script>
+        // User Panel Controller
+        class UserPanelController {
+            constructor() {
+                this.currentUser = null;
+                this.sessionTimeout = 12 * 60 * 60 * 1000; // 12 hours
+                this.allUsers = [];
+                this.allProducts = [];
+                this.allSellRequests = [];
+                this.allExchangeRequests = [];
+                this.allOrders = [];
+                this.init();
+            }
+
+            async init() {
+                // Check for existing session
+                this.checkExistingSession();
+                
+                // Load data from Supabase
+                await this.loadData();
+            }
+
+            async loadData() {
+                try {
+                    // Load users
+                    const usersResult = await window.db.getUsers();
+                    if (usersResult.success) {
+                        this.allUsers = usersResult.data;
+                    }
+                    
+                    // Load products
+                    const productsResult = await window.db.getProducts({ active: true });
+                    if (productsResult.success) {
+                        this.allProducts = productsResult.data;
+                    }
+                    
+                    // Load sell requests
+                    const sellResult = await window.db.getSellRequests();
+                    if (sellResult.success) {
+                        this.allSellRequests = sellResult.data;
+                    }
+                    
+                    // Load exchange requests
+                    const exchangeResult = await window.db.getExchangeRequests();
+                    if (exchangeResult.success) {
+                        this.allExchangeRequests = exchangeResult.data;
+                    }
+                    
+                    // Load orders
+                    const ordersResult = await window.db.getOrders();
+                    if (ordersResult.success) {
+                        this.allOrders = ordersResult.data;
+                    }
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                }
+            }
+
+            checkExistingSession() {
+                const session = localStorage.getItem('userSession');
+                if (session) {
+                    try {
+                        const userData = JSON.parse(session);
+                        const sessionTime = localStorage.getItem('sessionStartTime');
+                        
+                        if (sessionTime && (Date.now() - parseInt(sessionTime)) < this.sessionTimeout) {
+                            this.currentUser = userData;
+                            this.showDashboard();
+                            this.loadPage('dashboard');
+                        } else {
+                            this.clearSession();
+                        }
+                    } catch (e) {
+                        this.clearSession();
+                    }
+                }
+            }
+
+            async login() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+
+                if (!username || !password) {
+                    this.showToast('يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
+                    return;
+                }
+
+                this.showLoading('جاري تسجيل الدخول...');
+
+                try {
+                    // Login using Supabase
+                    const result = await window.db.login(username, password);
+                    
+                    if (result.success) {
+                        this.currentUser = result.data;
+                        
+                        // Create session
+                        if (rememberMe) {
+                            localStorage.setItem('userSession', JSON.stringify(this.currentUser));
+                            localStorage.setItem('sessionStartTime', Date.now().toString());
+                        } else {
+                            sessionStorage.setItem('userSession', JSON.stringify(this.currentUser));
+                        }
+
+                        this.showToast(`مرحباً بك، ${this.currentUser.full_name}`, 'success');
+                        this.showDashboard();
+                        this.loadPage('dashboard');
+                    } else {
+                        this.showToast('اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('حدث خطأ في تسجيل الدخول', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            logout() {
+                this.currentUser = null;
+                this.clearSession();
+                this.showLoginPage();
+                this.showToast('تم تسجيل الخروج بنجاح', 'info');
+            }
+
+            clearSession() {
+                localStorage.removeItem('userSession');
+                localStorage.removeItem('sessionStartTime');
+                sessionStorage.removeItem('userSession');
+            }
+
+            showDashboard() {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboardPanel').classList.remove('hidden');
+                
+                // Update user info in sidebar
+                document.getElementById('displayName').textContent = this.currentUser.full_name;
+                
+                let roleText = '';
+                switch(this.currentUser.role) {
+                    case 'admin': roleText = 'مدير'; break;
+                    case 'viewer': roleText = 'مشاهد'; break;
+                    case 'sales': roleText = 'مبيعات'; break;
+                    case 'editor': roleText = 'محرر'; break;
+                    default: roleText = this.currentUser.role;
+                }
+                document.getElementById('displayRole').textContent = roleText;
+
+                // Update avatar
+                const avatarEl = document.getElementById('userAvatar');
+                if (this.currentUser.avatar) {
+                    avatarEl.innerHTML = `<img src="${this.currentUser.avatar}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+                } else {
+                    avatarEl.innerHTML = '<i class="fas fa-user"></i>';
+                }
+
+                // Update permissions visibility
+                this.updatePermissionsUI();
+            }
+
+            showLoginPage() {
+                document.getElementById('loginPage').classList.remove('hidden');
+                document.getElementById('dashboardPanel').classList.add('hidden');
+            }
+
+            checkPermission(action) {
+                if (!this.currentUser) return false;
+                if (this.currentUser.permissions && this.currentUser.permissions.includes('all')) return true;
+                if (this.currentUser.permissions && this.currentUser.permissions.includes(action)) return true;
+                return false;
+            }
+
+            updatePermissionsUI() {
+                // Show/hide elements based on permissions
+                document.querySelectorAll('[data-permission]').forEach(el => {
+                    const permission = el.dataset.permission;
+                    if (this.checkPermission(permission)) {
+                        el.classList.add('has-permission');
+                    } else {
+                        el.classList.remove('has-permission');
+                    }
+                });
+            }
+
+            async loadPage(page) {
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+                // Update page title
+                const titles = {
+                    'dashboard': 'لوحة المعلومات',
+                    'cars': 'عرض السيارات',
+                    'sellRequests': 'طلبات البيع',
+                    'exchangeRequests': 'طلبات الاستبدال',
+                    'orders': 'طلبات الشراء',
+                    'profile': 'الملف الشخصي'
+                };
+                document.getElementById('mainPageTitle').innerHTML = `<i class="fas fa-${this.getPageIcon(page)}"></i> ${titles[page]}`;
+
+                // Load page content
+                this.showLoading('جاري تحميل الصفحة...');
+                
+                try {
+                    switch(page) {
+                        case 'dashboard':
+                            await this.loadDashboard();
+                            break;
+                        case 'cars':
+                            await this.loadCars();
+                            break;
+                        case 'sellRequests':
+                            await this.loadSellRequests();
+                            break;
+                        case 'exchangeRequests':
+                            await this.loadExchangeRequests();
+                            break;
+                        case 'orders':
+                            await this.loadOrders();
+                            break;
+                        case 'profile':
+                            await this.loadProfile();
+                            break;
+                    }
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('حدث خطأ في تحميل الصفحة', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async loadDashboard() {
+                // Get stats
+                const productsCount = this.allProducts.length;
+                const sellRequestsCount = this.allSellRequests.length;
+                const exchangeRequestsCount = this.allExchangeRequests.length;
+                const ordersCount = this.allOrders.length;
+
+                // Get recent sell requests
+                const recentSells = this.allSellRequests.slice(0, 5);
+                // Get recent exchange requests
+                const recentExchanges = this.allExchangeRequests.slice(0, 5);
+
+                let recentSellsHTML = '';
+                if (recentSells.length === 0) {
+                    recentSellsHTML = '<p style="text-align: center; color: #666; padding: 1rem;">لا توجد طلبات بيع حديثة</p>';
+                } else {
+                    recentSellsHTML = '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة</th><th>الحالة</th></tr></thead><tbody>';
+                    recentSells.forEach(request => {
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'contacted': 'status-contacted',
+                            'sold': 'status-sold',
+                            'rejected': 'status-rejected'
+                        }[request.status] || 'status-pending';
+                        
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'contacted': 'تم التواصل',
+                            'sold': 'تم البيع',
+                            'rejected': 'مرفوض'
+                        }[request.status] || 'قيد المراجعة';
+
+                        recentSellsHTML += `<tr>
+                            <td>${request.customer_name}</td>
+                            <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        </tr>`;
+                    });
+                    recentSellsHTML += '</tbody></table></div>';
+                }
+
+                let recentExchangesHTML = '';
+                if (recentExchanges.length === 0) {
+                    recentExchangesHTML = '<p style="text-align: center; color: #666; padding: 1rem;">لا توجد طلبات استبدال حديثة</p>';
+                } else {
+                    recentExchangesHTML = '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة الحالية</th><th>السيارة المطلوبة</th><th>الحالة</th></tr></thead><tbody>';
+                    recentExchanges.forEach(request => {
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'contacted': 'status-contacted',
+                            'completed': 'status-sold'
+                        }[request.status] || 'status-pending';
+                        
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'contacted': 'تم التواصل',
+                            'completed': 'تم الاستبدال'
+                        }[request.status] || 'قيد المراجعة';
+
+                        recentExchangesHTML += `<tr>
+                            <td>${request.customer_name}</td>
+                            <td>${request.current_car}</td>
+                            <td>${request.desired_car}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        </tr>`;
+                    });
+                    recentExchangesHTML += '</tbody></table></div>';
+                }
+
+                const content = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>🚗 إجمالي السيارات</h3>
+                                <div class="stat-number">${productsCount}</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>📝 طلبات البيع</h3>
+                                <div class="stat-number">${sellRequestsCount}</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-tag"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>🔄 طلبات الاستبدال</h3>
+                                <div class="stat-number">${exchangeRequestsCount}</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>📦 طلبات الشراء</h3>
+                                <div class="stat-number">${ordersCount}</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-check-circle"></i>
+                                صلاحياتك
+                            </h3>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_cars') ? '#10b981' : '#ef4444'};"></i>
+                                عرض السيارات: ${this.checkPermission('view_cars') ? '✅' : '❌'}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_sell') ? '#10b981' : '#ef4444'};"></i>
+                                عرض طلبات البيع: ${this.checkPermission('view_sell') ? '✅' : '❌'}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_exchange') ? '#10b981' : '#ef4444'};"></i>
+                                عرض طلبات الاستبدال: ${this.checkPermission('view_exchange') ? '✅' : '❌'}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_orders') ? '#10b981' : '#ef4444'};"></i>
+                                عرض طلبات الشراء: ${this.checkPermission('view_orders') ? '✅' : '❌'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-tag"></i>
+                                آخر طلبات البيع
+                            </h3>
+                        </div>
+                        ${recentSellsHTML}
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-exchange-alt"></i>
+                                آخر طلبات الاستبدال
+                            </h3>
+                        </div>
+                        ${recentExchangesHTML}
+                    </div>
+                `;
+
+                document.getElementById('pageContent').innerHTML = content;
+            }
+
+            async loadCars() {
+                if (!this.checkPermission('view_cars')) {
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض السيارات</h3></div>';
+                    return;
+                }
+
+                let carsHTML = '<div class="content-card">';
+                carsHTML += '<div class="card-header"><h3 class="card-title"><i class="fas fa-car"></i> قائمة السيارات</h3></div>';
+                
+                if (this.allProducts.length === 0) {
+                    carsHTML += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد سيارات متاحة حالياً</p>';
+                } else {
+                    carsHTML += '<div class="table-responsive"><table><thead><tr><th>السيارة</th><th>السعر</th><th>الموديل</th><th></th></tr></thead><tbody>';
+                    
+                    this.allProducts.forEach(product => {
+                        carsHTML += `<tr>
+                            <td>${product.name_ar || 'غير محدد'}</td>
+                            <td>${this.formatPrice(product.price)} ج.م</td>
+                            <td>${product.year || 'غير محدد'}</td>
+                            <td><button class="status-badge" style="background: var(--primary); color: white; border: none; padding: 0.3rem 1rem; border-radius: 50px;" onclick="window.open('product-details.html?id=${product.id}', '_blank')">عرض التفاصيل</button></td>
+                        </tr>`;
+                    });
+                    
+                    carsHTML += '</tbody></table></div>';
+                }
+                
+                carsHTML += '</div>';
+                document.getElementById('pageContent').innerHTML = carsHTML;
+            }
+
+            async loadSellRequests() {
+                if (!this.checkPermission('view_sell')) {
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات البيع</h3></div>';
+                    return;
+                }
+
+                let html = '<div class="content-card">';
+                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-tag"></i> طلبات البيع</h3></div>';
+                
+                if (this.allSellRequests.length === 0) {
+                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات بيع حالياً</p>';
+                } else {
+                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة</th><th>الهاتف</th><th>الحالة</th>';
+                    
+                    if (this.checkPermission('update_sell')) {
+                        html += '<th>إجراء</th>';
+                    }
+                    
+                    html += '</tr></thead><tbody>';
+                    
+                    this.allSellRequests.forEach(request => {
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'contacted': 'status-contacted',
+                            'sold': 'status-sold',
+                            'rejected': 'status-rejected'
+                        }[request.status] || 'status-pending';
+                        
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'contacted': 'تم التواصل',
+                            'sold': 'تم البيع',
+                            'rejected': 'مرفوض'
+                        }[request.status] || 'قيد المراجعة';
+
+                        html += `<tr>
+                            <td>${request.customer_name}</td>
+                            <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
+                            <td>${request.customer_phone}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>`;
+                        
+                        if (this.checkPermission('update_sell')) {
+                            html += `<td>
+                                <select onchange="userPanel.updateSellStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
+                                    <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
+                                    <option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
+                                    <option value="sold" ${request.status === 'sold' ? 'selected' : ''}>تم البيع</option>
+                                    <option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>مرفوض</option>
+                                </select>
+                            </td>`;
+                        }
+                        
+                        html += '</tr>';
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                html += '</div>';
+                document.getElementById('pageContent').innerHTML = html;
+            }
+
+            async loadExchangeRequests() {
+                if (!this.checkPermission('view_exchange')) {
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات الاستبدال</h3></div>';
+                    return;
+                }
+
+                let html = '<div class="content-card">';
+                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-exchange-alt"></i> طلبات الاستبدال</h3></div>';
+                
+                if (this.allExchangeRequests.length === 0) {
+                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات استبدال حالياً</p>';
+                } else {
+                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة الحالية</th><th>السيارة المطلوبة</th><th>الهاتف</th><th>الحالة</th></tr></thead><tbody>';
+                    
+                    this.allExchangeRequests.forEach(request => {
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'contacted': 'status-contacted',
+                            'completed': 'status-sold'
+                        }[request.status] || 'status-pending';
+                        
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'contacted': 'تم التواصل',
+                            'completed': 'تم الاستبدال'
+                        }[request.status] || 'قيد المراجعة';
+
+                        html += `<tr>
+                            <td>${request.customer_name}</td>
+                            <td>${request.current_car}</td>
+                            <td>${request.desired_car}</td>
+                            <td>${request.customer_phone}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                html += '</div>';
+                document.getElementById('pageContent').innerHTML = html;
+            }
+
+            async loadOrders() {
+                if (!this.checkPermission('view_orders')) {
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات الشراء</h3></div>';
+                    return;
+                }
+
+                let html = '<div class="content-card">';
+                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-shopping-cart"></i> طلبات الشراء</h3></div>';
+                
+                if (this.allOrders.length === 0) {
+                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات شراء حالياً</p>';
+                } else {
+                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>المنتج</th><th>الهاتف</th><th>طريقة الدفع</th><th>الحالة</th>';
+                    
+                    if (this.checkPermission('update_orders')) {
+                        html += '<th>إجراء</th>';
+                    }
+                    
+                    html += '</tr></thead><tbody>';
+                    
+                    this.allOrders.forEach(order => {
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'processing': 'status-contacted',
+                            'completed': 'status-sold',
+                            'cancelled': 'status-rejected'
+                        }[order.status] || 'status-pending';
+                        
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'processing': 'جاري التجهيز',
+                            'completed': 'تم التسليم',
+                            'cancelled': 'ملغي'
+                        }[order.status] || 'قيد المراجعة';
+
+                        const paymentText = {
+                            'cash': 'كاش',
+                            'bank': 'تحويل بنكي',
+                            'wallet': 'محفظة إلكترونية'
+                        }[order.payment_method] || 'كاش';
+
+                        html += `<tr>
+                            <td>${order.customer_name}</td>
+                            <td>${order.product_name || 'غير محدد'}</td>
+                            <td>${order.customer_phone}</td>
+                            <td>${paymentText}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>`;
+                        
+                        if (this.checkPermission('update_orders')) {
+                            html += `<td>
+                                <select onchange="userPanel.updateOrderStatus('${order.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
+                                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
+                                    <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>جاري التجهيز</option>
+                                    <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تم التسليم</option>
+                                    <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>ملغي</option>
+                                </select>
+                            </td>`;
+                        }
+                        
+                        html += '</tr>';
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                html += '</div>';
+                document.getElementById('pageContent').innerHTML = html;
+            }
+
+            async loadProfile() {
+                const content = `
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-user"></i>
+                                الملف الشخصي
+                            </h3>
+                        </div>
+
+                        <div class="profile-form">
+                            <div class="avatar-upload">
+                                <div class="avatar-preview" id="profileAvatarPreview">
+                                    ${this.currentUser.avatar ? `<img src="${this.currentUser.avatar}" alt="Avatar">` : '<i class="fas fa-user"></i>'}
+                                </div>
+                                <div>
+                                    <button class="save-btn" style="background: #6c757d;" onclick="document.getElementById('avatarInput').click()">
+                                        <i class="fas fa-upload"></i>
+                                        تغيير الصورة
+                                    </button>
+                                    <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="userPanel.handleAvatarUpload(event)">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label>الاسم الكامل</label>
+                                <input type="text" class="form-control" id="profileFullName" value="${this.currentUser.full_name || ''}">
+                            </div>
+
+                            <div class="form-row">
+                                <label>البريد الإلكتروني</label>
+                                <input type="email" class="form-control" id="profileEmail" value="${this.currentUser.email || ''}" placeholder="example@email.com">
+                            </div>
+
+                            <div class="form-row">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" class="form-control" id="profilePhone" value="${this.currentUser.phone || ''}" placeholder="01xxxxxxxxx">
+                            </div>
+
+                            <div class="form-row">
+                                <label>اسم المستخدم</label>
+                                <input type="text" class="form-control" value="${this.currentUser.username}" disabled>
+                            </div>
+
+                            <div class="form-row">
+                                <label>الدور</label>
+                                <input type="text" class="form-control" value="${this.getRoleName(this.currentUser.role)}" disabled>
+                            </div>
+
+                            <hr style="margin: 2rem 0;">
+
+                            <h3 style="margin-bottom: 1rem;">تغيير كلمة المرور</h3>
+
+                            <div class="form-row">
+                                <label>كلمة المرور الحالية</label>
+                                <input type="password" class="form-control" id="currentPassword" placeholder="••••••••">
+                            </div>
+
+                            <div class="form-row">
+                                <label>كلمة المرور الجديدة</label>
+                                <input type="password" class="form-control" id="newPassword" placeholder="••••••••">
+                            </div>
+
+                            <div class="form-row">
+                                <label>تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••">
+                            </div>
+
+                            <button onclick="userPanel.updateProfile()" class="save-btn">
+                                <i class="fas fa-save"></i>
+                                حفظ التغييرات
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('pageContent').innerHTML = content;
+            }
+
+            async handleAvatarUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                this.showLoading('جاري رفع الصورة...');
+
+                try {
+                    const result = await window.db.uploadImage(file);
+                    if (result.success) {
+                        this.currentUser.avatar = result.url;
+                        document.getElementById('profileAvatarPreview').innerHTML = `<img src="${result.url}" alt="Avatar">`;
+                        this.showToast('تم رفع الصورة بنجاح', 'success');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('فشل رفع الصورة', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async updateProfile() {
+                const fullName = document.getElementById('profileFullName').value;
+                const email = document.getElementById('profileEmail').value;
+                const phone = document.getElementById('profilePhone').value;
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                this.showLoading('جاري تحديث الملف الشخصي...');
+
+                try {
+                    // Update basic info
+                    if (fullName && fullName !== this.currentUser.full_name) {
+                        this.currentUser.full_name = fullName;
+                    }
+
+                    if (email && email !== this.currentUser.email) {
+                        this.currentUser.email = email;
+                    }
+
+                    if (phone && phone !== this.currentUser.phone) {
+                        this.currentUser.phone = phone;
+                    }
+
+                    // Update in Supabase
+                    const updateResult = await window.db.updateUser(this.currentUser.id, {
+                        fullName: this.currentUser.full_name,
+                        email: this.currentUser.email,
+                        phone: this.currentUser.phone,
+                        avatar: this.currentUser.avatar,
+                        active: true
+                    });
+
+                    if (!updateResult.success) {
+                        throw new Error('فشل تحديث البيانات');
+                    }
+
+                    // Update password if provided
+                    if (currentPassword && newPassword && confirmPassword) {
+                        if (currentPassword !== this.currentUser.password) {
+                            this.showToast('كلمة المرور الحالية غير صحيحة', 'error');
+                            this.hideLoading();
+                            return;
+                        }
+
+                        if (newPassword !== confirmPassword) {
+                            this.showToast('كلمة المرور الجديدة غير متطابقة', 'error');
+                            this.hideLoading();
+                            return;
+                        }
+
+                        if (newPassword.length < 6) {
+                            this.showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+                            this.hideLoading();
+                            return;
+                        }
+
+                        const passwordResult = await window.db.updateUserPassword(this.currentUser.id, newPassword);
+                        if (!passwordResult.success) {
+                            throw new Error('فشل تحديث كلمة المرور');
+                        }
+                        
+                        this.currentUser.password = newPassword;
+                    }
+
+                    // Update session
+                    localStorage.setItem('userSession', JSON.stringify(this.currentUser));
+
+                    // Update display name in sidebar
+                    document.getElementById('displayName').textContent = this.currentUser.full_name;
+
+                    this.showToast('تم تحديث الملف الشخصي بنجاح', 'success');
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('حدث خطأ في تحديث الملف الشخصي', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async updateSellStatus(requestId, status) {
+                this.showLoading('جاري تحديث الحالة...');
+                
+                try {
+                    const result = await window.db.updateSellRequestStatus(requestId, status);
+                    if (result.success) {
+                        // Update local data
+                        const request = this.allSellRequests.find(r => r.id === requestId);
+                        if (request) {
+                            request.status = status;
+                        }
+                        this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
+                        this.loadSellRequests();
+                    }
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('حدث خطأ في تحديث الحالة', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async updateOrderStatus(orderId, status) {
+                this.showLoading('جاري تحديث الحالة...');
+                
+                try {
+                    const result = await window.db.updateOrderStatus(orderId, status);
+                    if (result.success) {
+                        // Update local data
+                        const order = this.allOrders.find(o => o.id === orderId);
+                        if (order) {
+                            order.status = status;
+                        }
+                        this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
+                        this.loadOrders();
+                    }
+                } catch (error) {
+                    console.error(error);
+                    this.showToast('حدث خطأ في تحديث الحالة', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            getRoleName(role) {
+                const roles = {
+                    admin: 'مدير',
+                    viewer: 'مشاهد',
+                    sales: 'مبيعات',
+                    editor: 'محرر'
+                };
+                return roles[role] || role;
+            }
+
+            getPageIcon(page) {
+                const icons = {
+                    'dashboard': 'chart-pie',
+                    'cars': 'car',
+                    'sellRequests': 'tag',
+                    'exchangeRequests': 'exchange-alt',
+                    'orders': 'shopping-cart',
+                    'profile': 'user'
+                };
+                return icons[page] || 'circle';
+            }
+
+            formatPrice(price) {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+
+                const container = document.getElementById('toastContainer');
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 5000);
+            }
+
+            showLoading(message) {
+                document.getElementById('loadingText').textContent = message;
+                document.getElementById('loadingOverlay').classList.add('active');
+            }
+
+            hideLoading() {
+                document.getElementById('loadingOverlay').classList.remove('active');
+            }
+        }
+
+        // Initialize User Panel
+        const userPanel = new UserPanelController();
+    </script>
+</body>
+</html>
