@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Animated Background -->
+    <!-- Animated Background - Enhanced -->
     <style>
-        /* ============ أنماط الخلفية المتحركة الموحدة ============ */
+        /* ============ أنماط الخلفية المتحركة المحسنة ============ */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -25,6 +25,133 @@
             pointer-events: none;
         }
 
+        /* طبقات الخلفية */
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ============ سيارات متحركة 3D ============ */
+        .floating-cars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-car {
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(197, 48, 48, 0.15);
+            filter: drop-shadow(0 0 20px rgba(197, 48, 48, 0.3));
+            animation: float-car 25s infinite linear;
+            transform-style: preserve-3d;
+        }
+
+        .floating-car i {
+            filter: drop-shadow(0 0 15px currentColor);
+            transform: rotateY(45deg) rotateX(10deg);
+            animation: car-shine 4s infinite alternate;
+        }
+
+        .floating-car:nth-child(1) { top: 15%; left: 5%; font-size: 4rem; animation-duration: 35s; animation-delay: 0s; }
+        .floating-car:nth-child(2) { top: 65%; right: 10%; font-size: 3.5rem; animation-duration: 30s; animation-delay: -5s; }
+        .floating-car:nth-child(3) { bottom: 20%; left: 15%; font-size: 4.5rem; animation-duration: 40s; animation-delay: -10s; }
+        .floating-car:nth-child(4) { top: 30%; right: 25%; font-size: 3rem; animation-duration: 32s; animation-delay: -15s; }
+        .floating-car:nth-child(5) { bottom: 45%; left: 30%; font-size: 3.8rem; animation-duration: 38s; animation-delay: -20s; }
+        .floating-car:nth-child(6) { top: 70%; right: 35%; font-size: 4.2rem; animation-duration: 33s; animation-delay: -25s; }
+        .floating-car:nth-child(7) { top: 20%; left: 50%; font-size: 3.6rem; animation-duration: 36s; animation-delay: -30s; }
+        .floating-car:nth-child(8) { bottom: 30%; right: 55%; font-size: 4rem; animation-duration: 31s; animation-delay: -35s; }
+        .floating-car:nth-child(9) { top: 45%; left: 70%; font-size: 3.2rem; animation-duration: 34s; animation-delay: -40s; }
+        .floating-car:nth-child(10) { bottom: 60%; right: 45%; font-size: 4.8rem; animation-duration: 37s; animation-delay: -45s; }
+
+        @keyframes float-car {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.15; }
+            25% { transform: translate(5%, -5%) rotate(5deg) scale(1.1); opacity: 0.25; }
+            50% { transform: translate(-5%, 5%) rotate(-5deg) scale(0.9); opacity: 0.2; }
+            75% { transform: translate(-5%, -5%) rotate(3deg) scale(1.05); opacity: 0.25; }
+            100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.15; }
+        }
+
+        @keyframes car-shine {
+            0% { filter: drop-shadow(0 0 10px rgba(197, 48, 48, 0.5)); transform: rotateY(45deg) rotateX(10deg); }
+            100% { filter: drop-shadow(0 0 30px rgba(197, 48, 48, 0.8)); transform: rotateY(55deg) rotateX(15deg); }
+        }
+
+        /* ============ لمبات LED متحركة ============ */
+        .floating-lights {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .light {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 30px #c53030, 0 0 60px #c53030;
+            animation: light-pulse 3s infinite alternate;
+        }
+
+        .light::before {
+            content: '';
+            position: absolute;
+            top: -200%;
+            left: -200%;
+            width: 500%;
+            height: 500%;
+            background: radial-gradient(circle, rgba(197,48,48,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: light-glow 4s infinite alternate;
+        }
+
+        .light::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: light-flash 2s infinite;
+        }
+
+        .light:nth-child(1) { top: 20%; left: 20%; animation-duration: 3s; }
+        .light:nth-child(2) { top: 70%; right: 30%; animation-duration: 4s; animation-delay: 1s; }
+        .light:nth-child(3) { bottom: 30%; left: 50%; animation-duration: 3.5s; animation-delay: 2s; }
+        .light:nth-child(4) { top: 45%; right: 60%; animation-duration: 4.5s; animation-delay: 0.5s; }
+        .light:nth-child(5) { bottom: 60%; left: 70%; animation-duration: 3.8s; animation-delay: 1.5s; }
+        .light:nth-child(6) { top: 85%; right: 15%; animation-duration: 4.2s; animation-delay: 2.5s; }
+        .light:nth-child(7) { top: 15%; right: 40%; animation-duration: 3.2s; animation-delay: 3s; }
+        .light:nth-child(8) { bottom: 40%; left: 25%; animation-duration: 3.9s; animation-delay: 0.8s; }
+        .light:nth-child(9) { top: 55%; left: 45%; animation-duration: 3.6s; animation-delay: 1.2s; }
+        .light:nth-child(10) { bottom: 25%; right: 75%; animation-duration: 4.1s; animation-delay: 2.8s; }
+        .light:nth-child(11) { top: 90%; left: 35%; animation-duration: 3.3s; animation-delay: 0.3s; }
+        .light:nth-child(12) { bottom: 75%; right: 20%; animation-duration: 4.4s; animation-delay: 1.9s; }
+
+        @keyframes light-pulse {
+            0% { opacity: 0.3; transform: scale(0.8); box-shadow: 0 0 20px #c53030; }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 60px #c53030, 0 0 100px #c53030; }
+        }
+
+        @keyframes light-glow {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        @keyframes light-flash {
+            0%, 100% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+        }
+
+        /* ============ جزيئات ضوئية متحركة ============ */
         .floating-particles {
             position: absolute;
             width: 100%;
@@ -33,7 +160,7 @@
 
         .particle {
             position: absolute;
-            background: linear-gradient(45deg, rgba(197, 48, 48, 0.12), rgba(102, 126, 234, 0.12));
+            background: linear-gradient(45deg, rgba(197, 48, 48, 0.15), rgba(255, 255, 255, 0.15));
             border-radius: 50%;
             filter: blur(60px);
             animation: float-particle 25s infinite;
@@ -47,14 +174,54 @@
         .particle:nth-child(6) { width: 250px; height: 250px; top: 70%; right: 30%; animation-delay: -25s; }
         .particle:nth-child(7) { width: 200px; height: 200px; bottom: 40%; left: 40%; animation-delay: -30s; }
         .particle:nth-child(8) { width: 150px; height: 150px; top: 30%; left: 20%; animation-delay: -35s; }
+        .particle:nth-child(9) { width: 180px; height: 180px; top: 80%; right: 50%; animation-delay: -40s; }
+        .particle:nth-child(10) { width: 220px; height: 220px; bottom: 10%; left: 70%; animation-delay: -45s; }
 
         @keyframes float-particle {
             0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            25% { transform: translate(3%, 5%) scale(1.15); opacity: 0.55; }
+            25% { transform: translate(3%, 5%) scale(1.15); opacity: 0.6; }
             50% { transform: translate(-2%, 2%) scale(0.9); opacity: 0.35; }
             75% { transform: translate(5%, -3%) scale(1.1); opacity: 0.5; }
         }
 
+        /* ============ لوجو يطوف في الخلفية ============ */
+        .floating-logos {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-logo {
+            position: absolute;
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, rgba(197,48,48,0.1), rgba(0,0,0,0.1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+            animation: float-logo 30s infinite linear;
+            transform-style: preserve-3d;
+        }
+
+        .floating-logo span {
+            display: inline-block;
+            transform: rotateY(30deg) rotateX(10deg);
+            text-shadow: 0 0 50px rgba(197,48,48,0.3);
+        }
+
+        .floating-logo:nth-child(1) { top: 10%; right: -20%; font-size: 7rem; animation-duration: 40s; }
+        .floating-logo:nth-child(2) { bottom: 15%; left: -15%; font-size: 8rem; animation-duration: 45s; animation-delay: -10s; }
+        .floating-logo:nth-child(3) { top: 50%; right: -25%; font-size: 9rem; animation-duration: 50s; animation-delay: -20s; }
+        .floating-logo:nth-child(4) { bottom: 40%; left: -20%; font-size: 6.5rem; animation-duration: 38s; animation-delay: -15s; }
+        .floating-logo:nth-child(5) { top: 75%; right: -30%; font-size: 7.5rem; animation-duration: 42s; animation-delay: -25s; }
+
+        @keyframes float-logo {
+            0% { transform: translateX(0) rotate(0deg); opacity: 0.1; }
+            50% { transform: translateX(-15%) rotate(5deg); opacity: 0.2; }
+            100% { transform: translateX(-30%) rotate(0deg); opacity: 0.1; }
+        }
+
+        /* ============ موجات متحركة ============ */
         .wave-container {
             position: absolute;
             bottom: 0;
@@ -71,11 +238,11 @@
             width: 200%;
             height: 100%;
             background: linear-gradient(45deg, 
-                rgba(197, 48, 48, 0.07) 0%, 
-                rgba(102, 126, 234, 0.07) 25%,
-                rgba(197, 48, 48, 0.07) 50%,
-                rgba(102, 126, 234, 0.07) 75%,
-                rgba(197, 48, 48, 0.07) 100%);
+                rgba(197, 48, 48, 0.1) 0%, 
+                rgba(0, 0, 0, 0.1) 25%,
+                rgba(197, 48, 48, 0.1) 50%,
+                rgba(0, 0, 0, 0.1) 75%,
+                rgba(197, 48, 48, 0.1) 100%);
             animation: wave-animation 15s infinite linear;
         }
 
@@ -104,6 +271,7 @@
             100% { transform: translateX(-100%) translateY(0) scaleY(1); }
         }
 
+        /* ============ أشعة ضوئية متحركة ============ */
         .gradient-flow {
             position: absolute;
             width: 200%;
@@ -111,20 +279,21 @@
             top: -50%;
             left: -50%;
             background: radial-gradient(circle at 50% 50%,
-                        rgba(197, 48, 48, 0.08) 0%,
-                        rgba(102, 126, 234, 0.08) 20%,
-                        rgba(197, 48, 48, 0.06) 40%,
-                        rgba(102, 126, 234, 0.06) 60%,
+                        rgba(197, 48, 48, 0.1) 0%,
+                        rgba(0, 0, 0, 0.1) 20%,
+                        rgba(197, 48, 48, 0.08) 40%,
+                        rgba(0, 0, 0, 0.08) 60%,
                         transparent 80%);
             animation: rotate-gradient 50s linear infinite;
         }
 
         @keyframes rotate-gradient {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.3); }
+            50% { transform: rotate(180deg) scale(1.2); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
+        /* ============ جزيئات صغيرة متحركة ============ */
         .small-particle {
             position: absolute;
             width: 8px;
@@ -147,6 +316,9 @@
         .small-particle:nth-child(10) { bottom: 65%; right: 25%; animation-delay: -36s; }
         .small-particle:nth-child(11) { top: 55%; left: 78%; animation-delay: -40s; }
         .small-particle:nth-child(12) { bottom: 85%; right: 45%; animation-delay: -44s; }
+        .small-particle:nth-child(13) { top: 25%; left: 92%; animation-delay: -48s; }
+        .small-particle:nth-child(14) { bottom: 45%; right: 15%; animation-delay: -52s; }
+        .small-particle:nth-child(15) { top: 68%; left: 33%; animation-delay: -56s; }
 
         @keyframes float-small {
             0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
@@ -160,6 +332,8 @@
             .particle:nth-child(3), .particle:nth-child(4) { width: 250px; height: 250px; }
             .particle:nth-child(5), .particle:nth-child(6) { width: 200px; height: 200px; }
             .particle:nth-child(7), .particle:nth-child(8) { width: 150px; height: 150px; }
+            .floating-car { font-size: 2.5rem; }
+            .floating-logo { font-size: 4rem; }
         }
     </style>
 
@@ -1253,20 +1427,89 @@
     <script src="supabase-client.js"></script>
 </head>
 <body>
-    <!-- الخلفية المتحركة -->
+    <!-- إضافة العناصر الجديدة للخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="floating-particles">
-            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-            <div class="particle"></div><div class="particle"></div>
+        <!-- طبقات الخلفية -->
+        <div class="bg-layer"></div>
+        
+        <!-- سيارات متحركة 3D -->
+        <div class="floating-cars">
+            <div class="floating-car"><i class="fas fa-car-side"></i></div>
+            <div class="floating-car"><i class="fas fa-truck"></i></div>
+            <div class="floating-car"><i class="fas fa-caravan"></i></div>
+            <div class="floating-car"><i class="fas fa-shuttle-van"></i></div>
+            <div class="floating-car"><i class="fas fa-taxi"></i></div>
+            <div class="floating-car"><i class="fas fa-bus"></i></div>
+            <div class="floating-car"><i class="fas fa-truck-pickup"></i></div>
+            <div class="floating-car"><i class="fas fa-motorcycle"></i></div>
+            <div class="floating-car"><i class="fas fa-tractor"></i></div>
+            <div class="floating-car"><i class="fas fa-truck-moving"></i></div>
         </div>
-        <div class="wave-container"><div class="wave"></div></div>
-        <div class="gradient-flow"></div>
+        
+        <!-- لمبات LED متحركة -->
+        <div class="floating-lights">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+        
+        <!-- لوجو يطوف -->
+        <div class="floating-logos">
+            <div class="floating-logo"><span>عبدالله</span></div>
+            <div class="floating-logo"><span>Abdullah Cars</span></div>
+            <div class="floating-logo"><span>سيارات عبدالله</span></div>
+            <div class="floating-logo"><span>1993</span></div>
+            <div class="floating-logo"><span>Auto</span></div>
+        </div>
+        
+        <!-- الجزيئات الأساسية -->
         <div class="floating-particles">
-            <div class="small-particle"></div><div class="small-particle"></div><div class="small-particle"></div>
-            <div class="small-particle"></div><div class="small-particle"></div><div class="small-particle"></div>
-            <div class="small-particle"></div><div class="small-particle"></div><div class="small-particle"></div>
-            <div class="small-particle"></div><div class="small-particle"></div><div class="small-particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <!-- الموجات -->
+        <div class="wave-container">
+            <div class="wave"></div>
+        </div>
+        
+        <!-- التدرج اللوني -->
+        <div class="gradient-flow"></div>
+        
+        <!-- الجزيئات الصغيرة -->
+        <div class="floating-particles">
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
+            <div class="small-particle"></div>
         </div>
     </div>
 
@@ -1576,14 +1819,18 @@
                     siteSettings = settingsResult.data;
                 }
                 
-                // تحميل المنتجات
+                // تحميل المنتجات - تم إصلاح هذه الدالة
                 const productsResult = await window.db.getProducts({ active: true });
                 if (productsResult.success) {
                     allProducts = productsResult.data;
+                    console.log('✅ المنتجات المحملة:', allProducts);
+                } else {
+                    console.error('❌ فشل تحميل المنتجات:', productsResult.error);
+                    showToast('فشل تحميل المنتجات: ' + productsResult.error, 'error');
                 }
                 
                 // تحميل الماركات
-                const brandsResult = await window.db.getBrands();
+                const brandsResult = await window.db.getBrands(true);
                 if (brandsResult.success) {
                     allBrands = brandsResult.data;
                 }
@@ -1643,16 +1890,20 @@
             }, 20);
         }
 
+        // ============ دالة عرض المنتجات المُصلحة ============
         function updateProductsGrid() {
             const container = document.getElementById('productsContainer');
             if (!container) return;
             
-            if (allProducts.length === 0) {
+            console.log('🔄 تحديث شبكة المنتجات...');
+            console.log('عدد المنتجات:', allProducts.length);
+            
+            if (!allProducts || allProducts.length === 0) {
                 container.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                        <i class="fas fa-car" style="font-size: 3rem; color: var(--gray-400);"></i>
-                        <h3 style="margin-top: 1rem; color: var(--gray-600);">لا توجد سيارات متاحة حالياً</h3>
-                        <p style="color: var(--gray-500);">سيتم إضافة السيارات قريباً</p>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem;">
+                        <i class="fas fa-car" style="font-size: 4rem; color: var(--gray-400); margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.8rem; color: var(--gray-700); margin-bottom: 0.5rem;">لا توجد سيارات متاحة حالياً</h3>
+                        <p style="color: var(--gray-500); font-size: 1.1rem;">سيتم إضافة سيارات جديدة قريباً</p>
                     </div>
                 `;
                 return;
@@ -1661,29 +1912,43 @@
             // عرض أول 6 سيارات فقط في الصفحة الرئيسية
             const displayProducts = allProducts.slice(0, 6);
             
-            container.innerHTML = displayProducts.map(product => {
-                const brand = allBrands.find(b => b.id === product.brand_id);
-                const mainImage = product.images && product.images[0] ? product.images[0] : 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+            let html = '';
+            
+            displayProducts.forEach(product => {
+                const brand = allBrands.find(b => b.id === product.brand_id) || { name_ar: 'غير محدد' };
+                const mainImage = product.images && product.images.length > 0 
+                    ? product.images[0] 
+                    : 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 
-                return `
+                // تنسيق السعر
+                const price = product.price ? Number(product.price).toLocaleString() : '0';
+                const oldPrice = product.old_price ? Number(product.old_price).toLocaleString() : null;
+                
+                // تحديد نوع السيارة بالعربية
+                let typeText = 'جديد';
+                if (product.type === 'used') typeText = 'مستعمل';
+                else if (product.type === 'electric') typeText = 'كهربائي';
+                
+                html += `
                     <div class="product-card ${product.featured ? 'featured' : ''}">
                         ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
                         <div class="product-image">
-                            <img src="${mainImage}" alt="${product.name_ar}" onerror="this.src='https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                            <img src="${mainImage}" alt="${product.name_ar}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                         </div>
                         <div class="product-info">
-                            <h3 class="product-title">${product.name_ar}</h3>
+                            <h3 class="product-title">${product.name_ar || 'سيارة'}</h3>
                             <div class="product-category">
-                                <i class="fas fa-tag"></i> ${brand?.name_ar || 'غير محدد'} • ${product.model || ''}
+                                <i class="fas fa-tag"></i> ${brand.name_ar} • ${product.model || ''} • ${typeText}
                             </div>
                             <div class="product-price">
-                                ${(product.price || 0).toLocaleString()} ج.م
-                                ${product.old_price ? `<span class="old-price">${product.old_price.toLocaleString()} ج.م</span>` : ''}
+                                ${price} ج.م
+                                ${oldPrice ? `<span class="old-price">${oldPrice} ج.م</span>` : ''}
                             </div>
                             <ul class="product-specs">
                                 ${product.year ? `<li><i class="fas fa-calendar-alt"></i> ${product.year}</li>` : ''}
                                 ${product.fuel ? `<li><i class="fas fa-gas-pump"></i> ${product.fuel}</li>` : ''}
-                                ${product.mileage ? `<li><i class="fas fa-tachometer-alt"></i> ${product.mileage.toLocaleString()} كم</li>` : ''}
+                                ${product.mileage ? `<li><i class="fas fa-tachometer-alt"></i> ${Number(product.mileage).toLocaleString()} كم</li>` : ''}
                                 ${product.engine ? `<li><i class="fas fa-engine"></i> ${product.engine}</li>` : ''}
                             </ul>
                             <div class="product-actions">
@@ -1697,7 +1962,10 @@
                         </div>
                     </div>
                 `;
-            }).join('');
+            });
+            
+            container.innerHTML = html;
+            console.log('✅ تم تحديث شبكة المنتجات بنجاح');
         }
 
         function updateSearchOptions() {

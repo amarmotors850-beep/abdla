@@ -1,6 +1,6 @@
 /**
  * Supabase Client - سيارات عبدالله
- * الإصدار: 8.0.0 - آمن ومصحح بالكامل
+ * الإصدار: 9.0.0 - تم إصلاح مشكلة عرض المنتجات بالكامل
  */
 
 // تهيئة Supabase - استخدام Anon Key الآمن
@@ -29,12 +29,14 @@ class DatabaseService {
     // ==================== المنتجات ====================
     async getProducts(filters = {}) {
         try {
+            console.log('🔄 جاري تحميل المنتجات من Supabase...');
+            
             let query = this.supabase
                 .from(this.tables.products)
                 .select(`
                     *,
-                    brands(name_ar, name_en),
-                    categories(name_ar, name_en)
+                    brand:brands(id, name_ar, name_en, logo),
+                    category:categories(id, name_ar, name_en)
                 `);
 
             // تطبيق الفلاتر
@@ -59,17 +61,34 @@ class DatabaseService {
             if (filters.installment) {
                 query = query.eq('installment', true);
             }
-            if (filters.active) {
+            if (filters.active === true) {
                 query = query.eq('active', true);
             }
 
             const { data, error } = await query.order('created_at', { ascending: false });
 
-            if (error) throw error;
-            return { success: true, data: data || [] };
+            if (error) {
+                console.error('❌ خطأ من Supabase:', error);
+                throw error;
+            }
+
+            console.log(`✅ تم تحميل ${data?.length || 0} منتج بنجاح`, data);
+            
+            // تنسيق البيانات لتكون متوافقة مع الواجهة
+            const formattedData = (data || []).map(item => ({
+                ...item,
+                brand_name: item.brand?.name_ar || null,
+                category_name: item.category?.name_ar || null
+            }));
+
+            return { success: true, data: formattedData };
         } catch (error) {
-            console.error('خطأ في جلب المنتجات:', error);
-            return { success: false, error: error.message, data: [] };
+            console.error('❌ خطأ في جلب المنتجات:', error);
+            return { 
+                success: false, 
+                error: error.message || 'حدث خطأ في تحميل المنتجات', 
+                data: [] 
+            };
         }
     }
 
@@ -79,39 +98,47 @@ class DatabaseService {
                 .from(this.tables.products)
                 .select(`
                     *,
-                    brands(name_ar, name_en),
-                    categories(name_ar, name_en)
+                    brand:brands(id, name_ar, name_en, logo),
+                    category:categories(id, name_ar, name_en)
                 `)
                 .eq('id', id)
                 .single();
 
             if (error) throw error;
-            return { success: true, data };
+            
+            const formattedData = {
+                ...data,
+                brand_name: data.brand?.name_ar || null,
+                category_name: data.category?.name_ar || null
+            };
+            
+            return { success: true, data: formattedData };
         } catch (error) {
-            console.error('خطأ في جلب المنتج:', error);
+            console.error('❌ خطأ في جلب المنتج:', error);
             return { success: false, error: error.message };
         }
     }
 
     async addProduct(product) {
         try {
+            console.log('🔄 جاري إضافة منتج جديد:', product);
+            
             // تحويل أسماء الحقول لصيغة قاعدة البيانات
             const dbProduct = {
                 name_ar: product.nameAr || product.name_ar,
                 name_en: product.nameEn || product.name_en,
                 brand_id: product.brandId || product.brand_id,
                 category_id: product.categoryId || product.category_id,
-                sub_category_id: product.subCategoryId || product.sub_category_id,
-                model: product.model,
-                year: product.year,
-                price: product.price,
-                old_price: product.oldPrice || product.old_price,
-                type: product.type,
-                fuel: product.fuel,
-                engine: product.engine,
-                mileage: product.mileage,
+                model: product.model || null,
+                year: product.year ? parseInt(product.year) : null,
+                price: parseFloat(product.price) || 0,
+                old_price: product.oldPrice ? parseFloat(product.oldPrice) : (product.old_price || null),
+                type: product.type || 'new',
+                fuel: product.fuel || null,
+                engine: product.engine || null,
+                mileage: product.mileage ? parseInt(product.mileage) : null,
                 colors: product.colors || [],
-                description: product.description,
+                description: product.description || '',
                 images: product.images || [],
                 featured: product.featured || false,
                 installment: product.installment || false,
@@ -126,36 +153,39 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
+            
+            console.log('✅ تم إضافة المنتج بنجاح:', data[0]);
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة المنتج:', error);
+            console.error('❌ خطأ في إضافة المنتج:', error);
             return { success: false, error: error.message };
         }
     }
 
     async updateProduct(id, updates) {
         try {
+            console.log('🔄 جاري تحديث المنتج:', id, updates);
+            
             // تحويل أسماء الحقول لصيغة قاعدة البيانات
             const dbUpdates = {
                 name_ar: updates.nameAr || updates.name_ar,
                 name_en: updates.nameEn || updates.name_en,
                 brand_id: updates.brandId || updates.brand_id,
                 category_id: updates.categoryId || updates.category_id,
-                sub_category_id: updates.subCategoryId || updates.sub_category_id,
-                model: updates.model,
-                year: updates.year,
-                price: updates.price,
-                old_price: updates.oldPrice || updates.old_price,
-                type: updates.type,
-                fuel: updates.fuel,
-                engine: updates.engine,
-                mileage: updates.mileage,
+                model: updates.model || null,
+                year: updates.year ? parseInt(updates.year) : null,
+                price: parseFloat(updates.price) || 0,
+                old_price: updates.oldPrice ? parseFloat(updates.oldPrice) : (updates.old_price || null),
+                type: updates.type || 'new',
+                fuel: updates.fuel || null,
+                engine: updates.engine || null,
+                mileage: updates.mileage ? parseInt(updates.mileage) : null,
                 colors: updates.colors || [],
-                description: updates.description,
+                description: updates.description || '',
                 images: updates.images || [],
-                featured: updates.featured,
-                installment: updates.installment,
-                active: updates.active,
+                featured: updates.featured || false,
+                installment: updates.installment || false,
+                active: updates.active !== false,
                 updated_at: new Date().toISOString()
             };
 
@@ -166,40 +196,51 @@ class DatabaseService {
                 .select();
 
             if (error) throw error;
+            
+            console.log('✅ تم تحديث المنتج بنجاح:', data[0]);
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في تحديث المنتج:', error);
+            console.error('❌ خطأ في تحديث المنتج:', error);
             return { success: false, error: error.message };
         }
     }
 
     async deleteProduct(id) {
         try {
+            console.log('🔄 جاري حذف المنتج:', id);
+            
             const { error } = await this.supabase
                 .from(this.tables.products)
                 .delete()
                 .eq('id', id);
 
             if (error) throw error;
+            
+            console.log('✅ تم حذف المنتج بنجاح');
             return { success: true };
         } catch (error) {
-            console.error('خطأ في حذف المنتج:', error);
+            console.error('❌ خطأ في حذف المنتج:', error);
             return { success: false, error: error.message };
         }
     }
 
     // ==================== الماركات ====================
-    async getBrands() {
+    async getBrands(activeOnly = false) {
         try {
-            const { data, error } = await this.supabase
+            let query = this.supabase
                 .from(this.tables.brands)
-                .select('*')
-                .order('name_ar');
+                .select('*');
+            
+            if (activeOnly) {
+                query = query.eq('active', true);
+            }
+            
+            const { data, error } = await query.order('name_ar');
 
             if (error) throw error;
             return { success: true, data: data || [] };
         } catch (error) {
-            console.error('خطأ في جلب الماركات:', error);
+            console.error('❌ خطأ في جلب الماركات:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -223,7 +264,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة الماركة:', error);
+            console.error('❌ خطأ في إضافة الماركة:', error);
             return { success: false, error: error.message };
         }
     }
@@ -247,7 +288,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في تحديث الماركة:', error);
+            console.error('❌ خطأ في تحديث الماركة:', error);
             return { success: false, error: error.message };
         }
     }
@@ -274,23 +315,28 @@ class DatabaseService {
             if (error) throw error;
             return { success: true };
         } catch (error) {
-            console.error('خطأ في حذف الماركة:', error);
+            console.error('❌ خطأ في حذف الماركة:', error);
             return { success: false, error: error.message };
         }
     }
 
     // ==================== الأقسام ====================
-    async getCategories() {
+    async getCategories(activeOnly = false) {
         try {
-            const { data, error } = await this.supabase
+            let query = this.supabase
                 .from(this.tables.categories)
-                .select('*')
-                .order('name_ar');
+                .select('*');
+            
+            if (activeOnly) {
+                query = query.eq('active', true);
+            }
+            
+            const { data, error } = await query.order('name_ar');
 
             if (error) throw error;
             return { success: true, data: data || [] };
         } catch (error) {
-            console.error('خطأ في جلب الأقسام:', error);
+            console.error('❌ خطأ في جلب الأقسام:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -300,7 +346,6 @@ class DatabaseService {
             const dbCategory = {
                 name_ar: category.nameAr || category.name_ar,
                 name_en: category.nameEn || category.name_en,
-                parent_id: category.parentId || category.parent_id || null,
                 description: category.description || null,
                 image: category.image || null,
                 active: category.active !== false,
@@ -316,12 +361,62 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة القسم:', error);
+            console.error('❌ خطأ في إضافة القسم:', error);
             return { success: false, error: error.message };
         }
     }
 
-    // يمكن إضافة دوال التحديث والحذف للأقسام بنفس النمط
+    async updateCategory(id, updates) {
+        try {
+            const dbUpdates = {
+                name_ar: updates.nameAr || updates.name_ar,
+                name_en: updates.nameEn || updates.name_en,
+                description: updates.description,
+                image: updates.image,
+                active: updates.active,
+                updated_at: new Date().toISOString()
+            };
+
+            const { data, error } = await this.supabase
+                .from(this.tables.categories)
+                .update(dbUpdates)
+                .eq('id', id)
+                .select();
+
+            if (error) throw error;
+            return { success: true, data: data[0] };
+        } catch (error) {
+            console.error('❌ خطأ في تحديث القسم:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteCategory(id) {
+        try {
+            // التحقق من عدم وجود منتجات مرتبطة
+            const { count, error: countError } = await this.supabase
+                .from(this.tables.products)
+                .select('*', { count: 'exact', head: true })
+                .eq('category_id', id);
+
+            if (countError) throw countError;
+
+            if (count > 0) {
+                return { success: false, error: 'لا يمكن حذف القسم لارتباطه بمنتجات' };
+            }
+
+            const { error } = await this.supabase
+                .from(this.tables.categories)
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            return { success: true };
+        } catch (error) {
+            console.error('❌ خطأ في حذف القسم:', error);
+            return { success: false, error: error.message };
+        }
+    }
 
     // ==================== المستخدمين ====================
     async getUsers() {
@@ -334,7 +429,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data || [] };
         } catch (error) {
-            console.error('خطأ في جلب المستخدمين:', error);
+            console.error('❌ خطأ في جلب المستخدمين:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -357,7 +452,7 @@ class DatabaseService {
             
             return { success: true, data };
         } catch (error) {
-            console.error('خطأ في تسجيل الدخول:', error);
+            console.error('❌ خطأ في تسجيل الدخول:', error);
             return { success: false, error: 'بيانات الدخول غير صحيحة' };
         }
     }
@@ -386,7 +481,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة المستخدم:', error);
+            console.error('❌ خطأ في إضافة المستخدم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -411,7 +506,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في تحديث المستخدم:', error);
+            console.error('❌ خطأ في تحديث المستخدم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -426,7 +521,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true };
         } catch (error) {
-            console.error('خطأ في حذف المستخدم:', error);
+            console.error('❌ خطأ في حذف المستخدم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -448,7 +543,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data || [] };
         } catch (error) {
-            console.error('خطأ في جلب طلبات البيع:', error);
+            console.error('❌ خطأ في جلب طلبات البيع:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -463,14 +558,12 @@ class DatabaseService {
                 car_brand: request.carBrand || request.car_brand,
                 car_model: request.carModel || request.car_model,
                 car_year: request.carYear || request.car_year,
-                car_trim: request.carTrim || request.car_trim || null,
                 car_condition: request.carCondition || request.car_condition,
-                car_mileage: request.carMileage || request.car_mileage,
-                expected_price: request.expectedPrice || request.expected_price,
-                car_fuel: request.carFuel || request.car_fuel || null,
-                car_description: request.carDescription || request.car_description,
+                car_mileage: request.carMileage ? parseInt(request.carMileage) : (request.car_mileage || null),
+                expected_price: parseFloat(request.expectedPrice || request.expected_price) || 0,
+                car_description: request.carDescription || request.car_description || '',
                 car_images: request.carImages || request.car_images || [],
-                contact_method: request.contactMethod || request.contact_method,
+                contact_method: request.contactMethod || request.contact_method || 'phone',
                 status: 'pending',
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -484,7 +577,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة طلب البيع:', error);
+            console.error('❌ خطأ في إضافة طلب البيع:', error);
             return { success: false, error: error.message };
         }
     }
@@ -502,7 +595,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true };
         } catch (error) {
-            console.error('خطأ في تحديث حالة طلب البيع:', error);
+            console.error('❌ خطأ في تحديث حالة طلب البيع:', error);
             return { success: false, error: error.message };
         }
     }
@@ -518,7 +611,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data || [] };
         } catch (error) {
-            console.error('خطأ في جلب طلبات الاستبدال:', error);
+            console.error('❌ خطأ في جلب طلبات الاستبدال:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -534,7 +627,7 @@ class DatabaseService {
                 desired_car: request.desiredCar || request.desired_car,
                 current_car_details: request.currentCarDetails || request.current_car_details || null,
                 current_car_images: request.currentCarImages || request.current_car_images || [],
-                contact_method: request.contactMethod || request.contact_method,
+                contact_method: request.contactMethod || request.contact_method || 'phone',
                 notes: request.notes || null,
                 status: 'pending',
                 created_at: new Date().toISOString(),
@@ -549,7 +642,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة طلب الاستبدال:', error);
+            console.error('❌ خطأ في إضافة طلب الاستبدال:', error);
             return { success: false, error: error.message };
         }
     }
@@ -561,14 +654,20 @@ class DatabaseService {
                 .from(this.tables.orders)
                 .select(`
                     *,
-                    products(name_ar, price)
+                    product:products(name_ar, price)
                 `)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            return { success: true, data: data || [] };
+            
+            const formattedData = (data || []).map(item => ({
+                ...item,
+                product_name: item.product?.name_ar || null
+            }));
+            
+            return { success: true, data: formattedData };
         } catch (error) {
-            console.error('خطأ في جلب الطلبات:', error);
+            console.error('❌ خطأ في جلب الطلبات:', error);
             return { success: false, error: error.message, data: [] };
         }
     }
@@ -577,13 +676,11 @@ class DatabaseService {
         try {
             const dbOrder = {
                 product_id: order.productId || order.product_id,
-                product_name: order.productName || order.product_name,
-                product_price: order.productPrice || order.product_price,
                 customer_name: order.customerName || order.customer_name,
                 customer_phone: order.customerPhone || order.customer_phone,
                 customer_email: order.customerEmail || order.customer_email || null,
                 customer_city: order.customerCity || order.customer_city,
-                payment_method: order.paymentMethod || order.payment_method,
+                payment_method: order.paymentMethod || order.payment_method || 'cash',
                 notes: order.notes || null,
                 status: 'pending',
                 created_at: new Date().toISOString(),
@@ -598,7 +695,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true, data: data[0] };
         } catch (error) {
-            console.error('خطأ في إضافة الطلب:', error);
+            console.error('❌ خطأ في إضافة الطلب:', error);
             return { success: false, error: error.message };
         }
     }
@@ -616,7 +713,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true };
         } catch (error) {
-            console.error('خطأ في تحديث حالة الطلب:', error);
+            console.error('❌ خطأ في تحديث حالة الطلب:', error);
             return { success: false, error: error.message };
         }
     }
@@ -637,7 +734,7 @@ class DatabaseService {
                     site_name_ar: 'سيارات عبدالله',
                     site_name_en: 'Abdullah Cars',
                     site_description_ar: 'ريادة وخبرة في عالم السيارات منذ 1993',
-                    site_description_en: 'Leadership and experience since 1993',
+                    site_description_en: 'Leadership and experience in the automotive world since 1993',
                     contact_phone: '01121811110',
                     contact_whatsapp: '01121811110',
                     contact_email: 'amarmotors850@gmail.com',
@@ -653,14 +750,14 @@ class DatabaseService {
             
             return { success: true, data };
         } catch (error) {
-            console.error('خطأ في جلب الإعدادات:', error);
+            console.error('❌ خطأ في جلب الإعدادات:', error);
             
             // إعدادات افتراضية في حالة الخطأ
             const defaultSettings = {
                 site_name_ar: 'سيارات عبدالله',
                 site_name_en: 'Abdullah Cars',
                 site_description_ar: 'ريادة وخبرة في عالم السيارات منذ 1993',
-                site_description_en: 'Leadership and experience since 1993',
+                site_description_en: 'Leadership and experience in the automotive world since 1993',
                 contact_phone: '01121811110',
                 contact_whatsapp: '01121811110',
                 contact_email: 'amarmotors850@gmail.com',
@@ -723,7 +820,7 @@ class DatabaseService {
             if (error) throw error;
             return { success: true };
         } catch (error) {
-            console.error('خطأ في تحديث الإعدادات:', error);
+            console.error('❌ خطأ في تحديث الإعدادات:', error);
             return { success: false, error: error.message };
         }
     }
@@ -747,7 +844,7 @@ class DatabaseService {
 
             return { success: true, url: publicUrl };
         } catch (error) {
-            console.error('خطأ في رفع الصورة:', error);
+            console.error('❌ خطأ في رفع الصورة:', error);
             
             // استخدام FileReader كبديل
             return new Promise((resolve) => {
@@ -809,7 +906,7 @@ class DatabaseService {
                 }
             };
         } catch (error) {
-            console.error('خطأ في جلب الإحصائيات:', error);
+            console.error('❌ خطأ في جلب الإحصائيات:', error);
             return { success: false, error: error.message };
         }
     }
@@ -818,5 +915,5 @@ class DatabaseService {
 // تهيئة الكائن العام
 window.db = new DatabaseService();
 
-// للتصحيح - يمكن إزالته في الإنتاج
-console.log('✅ Database service initialized with Anon Key');
+// للتصحيح
+console.log('✅ Database service initialized with Anon Key (Version 9.0.0)');
