@@ -11,162 +11,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Animated Background (نفس الأنماط السابقة) -->
-    <style>
-        /* ============ أنماط الخلفية المتحركة ============ */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .floating-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .particle {
-            position: absolute;
-            background: linear-gradient(45deg, rgba(197, 48, 48, 0.12), rgba(102, 126, 234, 0.12));
-            border-radius: 50%;
-            filter: blur(60px);
-            animation: float-particle 25s infinite;
-        }
-
-        .particle:nth-child(1) { width: 500px; height: 500px; top: -150px; right: -150px; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 450px; height: 450px; bottom: -150px; left: -150px; animation-delay: -5s; }
-        .particle:nth-child(3) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; }
-        .particle:nth-child(4) { width: 350px; height: 350px; top: 20%; right: 20%; animation-delay: -15s; }
-        .particle:nth-child(5) { width: 300px; height: 300px; bottom: 30%; left: 10%; animation-delay: -20s; }
-        .particle:nth-child(6) { width: 250px; height: 250px; top: 70%; right: 30%; animation-delay: -25s; }
-        .particle:nth-child(7) { width: 200px; height: 200px; bottom: 40%; left: 40%; animation-delay: -30s; }
-        .particle:nth-child(8) { width: 150px; height: 150px; top: 30%; left: 20%; animation-delay: -35s; }
-
-        @keyframes float-particle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            25% { transform: translate(3%, 5%) scale(1.15); opacity: 0.55; }
-            50% { transform: translate(-2%, 2%) scale(0.9); opacity: 0.35; }
-            75% { transform: translate(5%, -3%) scale(1.1); opacity: 0.5; }
-        }
-
-        .wave-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                rgba(197, 48, 48, 0.07) 0%, 
-                rgba(102, 126, 234, 0.07) 25%,
-                rgba(197, 48, 48, 0.07) 50%,
-                rgba(102, 126, 234, 0.07) 75%,
-                rgba(197, 48, 48, 0.07) 100%);
-            animation: wave-animation 15s infinite linear;
-        }
-
-        .wave::before, .wave::after {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: inherit;
-            animation: wave-animation 20s infinite linear;
-            opacity: 0.6;
-        }
-
-        .wave::after {
-            animation: wave-animation 25s infinite reverse;
-            opacity: 0.4;
-        }
-
-        @keyframes wave-animation {
-            0% { transform: translateX(0) translateY(0) scaleY(1); }
-            25% { transform: translateX(-25%) translateY(-10px) scaleY(1.1); }
-            50% { transform: translateX(-50%) translateY(-15px) scaleY(1.2); }
-            75% { transform: translateX(-75%) translateY(-10px) scaleY(1.1); }
-            100% { transform: translateX(-100%) translateY(0) scaleY(1); }
-        }
-
-        .gradient-flow {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle at 50% 50%,
-                        rgba(197, 48, 48, 0.08) 0%,
-                        rgba(102, 126, 234, 0.08) 20%,
-                        rgba(197, 48, 48, 0.06) 40%,
-                        rgba(102, 126, 234, 0.06) 60%,
-                        transparent 80%);
-            animation: rotate-gradient 50s linear infinite;
-        }
-
-        @keyframes rotate-gradient {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.3); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .small-particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: rgba(197, 48, 48, 0.2);
-            border-radius: 50%;
-            filter: blur(3px);
-            animation: float-small 20s infinite;
-        }
-
-        @keyframes float-small {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
-            25% { transform: translate(25px, -35px) scale(1.6); opacity: 0.4; }
-            50% { transform: translate(-25px, 25px) scale(0.7); opacity: 0.15; }
-            75% { transform: translate(35px, 20px) scale(1.3); opacity: 0.3; }
-        }
-
-        @media (max-width: 768px) {
-            .particle:nth-child(1), .particle:nth-child(2) { width: 300px; height: 300px; }
-            .particle:nth-child(3), .particle:nth-child(4) { width: 250px; height: 250px; }
-            .particle:nth-child(5), .particle:nth-child(6) { width: 200px; height: 200px; }
-            .particle:nth-child(7), .particle:nth-child(8) { width: 150px; height: 150px; }
-        }
-    </style>
-
     <style>
         /* ============ متغيرات CSS ============ */
         :root {
-            --primary: #c53030;
-            --primary-dark: #9b2c2c;
-            --secondary: #0a0a0a;
-            --light: #f7fafc;
-            --white: #ffffff;
-            --gray-100: #f7fafc;
-            --gray-200: #edf2f7;
-            --gray-300: #e2e8f0;
-            --gray-400: #cbd5e0;
-            --gray-500: #a0aec0;
-            --gray-600: #718096;
-            --gray-700: #4a5568;
-            --gray-800: #2d3748;
-            --gray-900: #1a202c;
+            --primary: #C5A059;        /* دهبي فخم */
+            --primary-dark: #A67C3B;    /* دهبي غامق */
+            --primary-light: #E5C28E;   /* دهبي فاتح */
+            --secondary: #0A0A0A;       /* أسود */
+            --accent: #8B1E1E;          /* أحمر */
+            --light: #F5F5F5;           /* أبيض فاتح */
+            --white: #FFFFFF;
+            --gray-100: #F0F0F0;
+            --gray-200: #E0E0E0;
+            --gray-300: #D0D0D0;
+            --gray-400: #B0B0B0;
+            --gray-500: #909090;
+            --gray-600: #707070;
+            --gray-700: #505050;
+            --gray-800: #303030;
+            --gray-900: #1A1A1A;
             --success: #38a169;
             --warning: #d69e2e;
             --danger: #e53e3e;
@@ -196,24 +59,156 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--light);
-            color: var(--gray-900);
+            background: var(--secondary);
+            color: var(--white);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* ============ الهيدر (نفس index.html) ============ */
+        /* ============ أنماط الخلفية المتحركة ============ */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .rotating-rings {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ring {
+            position: absolute;
+            border: 2px solid rgba(197, 160, 89, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate-ring linear infinite;
+        }
+
+        .ring::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(197, 160, 89, 0.3);
+            border-radius: 50%;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
+        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+
+        @keyframes rotate-ring {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .gold-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: float-particle 15s infinite;
+            opacity: 0.3;
+        }
+
+        .gold-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .gold-particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
+        .gold-particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
+        .gold-particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
+        .gold-particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
+        .gold-particle:nth-child(6) { top: 85%; left: 30%; width: 5px; height: 5px; animation-delay: 5s; }
+        .gold-particle:nth-child(7) { top: 45%; left: 45%; animation-delay: 2.5s; }
+        .gold-particle:nth-child(8) { top: 30%; left: 60%; width: 7px; height: 7px; animation-delay: 3.5s; }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(30px, -40px) scale(1.5); opacity: 0.6; }
+            50% { transform: translate(-30px, 30px) scale(0.8); opacity: 0.2; }
+            75% { transform: translate(40px, 20px) scale(1.2); opacity: 0.4; }
+        }
+
+        .gold-gradient {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 50% 50%,
+                        rgba(197, 160, 89, 0.08) 0%,
+                        transparent 30%,
+                        rgba(139, 30, 30, 0.05) 60%,
+                        transparent 80%);
+            animation: rotate-gradient 60s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .gold-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, 
+                rgba(197, 160, 89, 0.05) 0%, 
+                transparent 25%,
+                rgba(197, 160, 89, 0.05) 50%,
+                transparent 75%,
+                rgba(197, 160, 89, 0.05) 100%);
+            animation: wave-move 15s infinite linear;
+        }
+
+        @keyframes wave-move {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-5%) translateY(-20px); }
+            100% { transform: translateX(-10%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .ring:nth-child(3) { width: 400px; height: 400px; }
+            .ring:nth-child(4) { width: 600px; height: 600px; }
+            .ring:nth-child(5) { width: 800px; height: 800px; }
+        }
+
+        /* ============ الهيدر ============ */
         .main-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
             z-index: 1000;
             box-shadow: var(--shadow-md);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            border-bottom: 2px solid var(--primary);
         }
 
         .nav-container {
@@ -235,7 +230,7 @@
         .logo-circle {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
@@ -245,7 +240,7 @@
 
         .logo-circle i {
             font-size: 2rem;
-            color: white;
+            color: var(--white);
         }
 
         .logo-text {
@@ -256,7 +251,7 @@
         .logo-title {
             font-size: 1.8rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
@@ -264,7 +259,7 @@
 
         .logo-subtitle {
             font-size: 0.9rem;
-            color: var(--gray-600);
+            color: var(--gray-400);
             font-weight: 600;
         }
 
@@ -276,7 +271,7 @@
 
         .main-nav a {
             text-decoration: none;
-            color: var(--gray-700);
+            color: var(--gray-300);
             font-weight: 600;
             padding: 0.8rem 1.2rem;
             border-radius: var(--radius-full);
@@ -289,7 +284,7 @@
         .main-nav a:hover,
         .main-nav a.active {
             color: var(--primary);
-            background: rgba(197, 48, 48, 0.1);
+            background: rgba(197, 160, 89, 0.1);
         }
 
         .nav-actions {
@@ -313,8 +308,8 @@
         }
 
         .nav-btn.primary {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             box-shadow: var(--shadow);
         }
 
@@ -331,7 +326,7 @@
 
         .nav-btn.secondary:hover {
             background: var(--primary);
-            color: white;
+            color: var(--secondary);
             transform: translateY(-3px);
         }
 
@@ -340,7 +335,7 @@
             background: none;
             border: none;
             font-size: 1.8rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
             cursor: pointer;
             padding: 0.5rem;
             border-radius: var(--radius-md);
@@ -348,13 +343,13 @@
         }
 
         .mobile-menu:hover {
-            background: var(--gray-100);
+            background: rgba(255,255,255,0.1);
         }
 
         /* ============ رأس الصفحة ============ */
         .page-header {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             padding: 8rem 2rem 4rem;
             margin-bottom: 3rem;
             text-align: center;
@@ -382,6 +377,7 @@
             margin-bottom: 1rem;
             position: relative;
             z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .page-subtitle {
@@ -391,6 +387,7 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            color: rgba(255,255,255,0.9);
         }
 
         /* ============ تخطيط الصفحة ============ */
@@ -405,20 +402,21 @@
 
         /* ============ السايدبار ============ */
         .category-sidebar {
-            background: white;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-2xl);
             padding: 2rem;
             box-shadow: var(--shadow-lg);
             height: fit-content;
             position: sticky;
             top: 100px;
-            border: 1px solid var(--gray-200);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .sidebar-section {
             margin-bottom: 2rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .sidebar-section:last-child {
@@ -430,7 +428,7 @@
         .sidebar-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--white);
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
@@ -458,7 +456,7 @@
         }
 
         .filter-option:hover {
-            background: var(--gray-100);
+            background: rgba(197, 160, 89, 0.1);
         }
 
         .filter-option input[type="checkbox"] {
@@ -466,10 +464,11 @@
             height: 18px;
             border-radius: var(--radius-sm);
             cursor: pointer;
+            accent-color: var(--primary);
         }
 
         .filter-option span {
-            color: var(--gray-700);
+            color: var(--gray-300);
             font-size: 0.95rem;
         }
 
@@ -482,25 +481,27 @@
         .price-input {
             flex: 1;
             padding: 0.8rem;
-            border: 2px solid var(--gray-200);
+            border: 2px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-md);
             font-family: 'Cairo', sans-serif;
             transition: var(--transition);
+            background: rgba(0,0,0,0.3);
+            color: var(--white);
         }
 
         .price-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197,48,48,0.1);
+            box-shadow: 0 0 0 3px rgba(197,160,89,0.1);
         }
 
         .reset-btn {
             width: 100%;
             padding: 1rem;
-            background: var(--gray-100);
-            border: none;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-lg);
-            color: var(--gray-700);
+            color: var(--gray-300);
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
@@ -509,12 +510,11 @@
             justify-content: center;
             gap: 0.5rem;
             margin-top: 1.5rem;
-            border: 2px solid var(--gray-200);
         }
 
         .reset-btn:hover {
             background: var(--primary);
-            color: white;
+            color: var(--secondary);
             border-color: var(--primary);
         }
 
@@ -533,7 +533,7 @@
         }
 
         .results-count {
-            color: var(--gray-600);
+            color: var(--gray-400);
             font-size: 1rem;
         }
 
@@ -545,13 +545,18 @@
 
         .sort-select {
             padding: 0.8rem 1.5rem;
-            border: 2px solid var(--gray-200);
+            border: 2px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-lg);
             font-family: 'Cairo', sans-serif;
-            color: var(--gray-700);
+            color: var(--white);
             cursor: pointer;
             transition: var(--transition);
-            background: white;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .sort-select option {
+            background: var(--secondary);
+            color: var(--white);
         }
 
         .sort-select:focus {
@@ -567,18 +572,20 @@
         }
 
         .product-card {
-            background: white;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-xl);
             overflow: hidden;
             box-shadow: var(--shadow-lg);
             transition: var(--transition-bounce);
-            border: 1px solid var(--gray-200);
+            border: 1px solid rgba(197, 160, 89, 0.2);
             position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-2xl);
+            border-color: var(--primary);
         }
 
         .product-image {
@@ -603,8 +610,8 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             padding: 0.4rem 1.2rem;
             border-radius: var(--radius-full);
             font-size: 0.85rem;
@@ -620,7 +627,7 @@
         .product-title {
             font-size: 1.3rem;
             font-weight: 800;
-            color: var(--gray-900);
+            color: var(--white);
             margin-bottom: 0.3rem;
         }
 
@@ -646,7 +653,7 @@
 
         .product-price .old-price {
             font-size: 1rem;
-            color: var(--gray-500);
+            color: var(--gray-600);
             text-decoration: line-through;
             font-weight: 600;
         }
@@ -660,14 +667,15 @@
         }
 
         .product-specs li {
-            background: var(--gray-100);
+            background: rgba(0,0,0,0.3);
             padding: 0.3rem 1rem;
             border-radius: var(--radius-full);
-            color: var(--gray-700);
+            color: var(--gray-300);
             font-size: 0.85rem;
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            border: 1px solid rgba(197,160,89,0.1);
         }
 
         .product-specs i {
@@ -679,8 +687,8 @@
             display: block;
             width: 100%;
             padding: 0.9rem;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             border: none;
             border-radius: var(--radius-lg);
             font-weight: 600;
@@ -702,7 +710,7 @@
             gap: 0.8rem;
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid var(--gray-200);
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .page-btn {
@@ -711,19 +719,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--gray-200);
-            background: white;
+            border: 2px solid rgba(197, 160, 89, 0.2);
+            background: rgba(0,0,0,0.3);
             border-radius: var(--radius-md);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--gray-300);
         }
 
         .page-btn:hover,
         .page-btn.active {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             border-color: transparent;
         }
 
@@ -737,25 +745,27 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 4rem 2rem;
-            background: white;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-2xl);
             box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .empty-state i {
             font-size: 4rem;
-            color: var(--gray-400);
+            color: var(--gray-600);
             margin-bottom: 1.5rem;
         }
 
         .empty-state h3 {
             font-size: 1.8rem;
-            color: var(--gray-700);
+            color: var(--white);
             margin-bottom: 1rem;
         }
 
         .empty-state p {
-            color: var(--gray-600);
+            color: var(--gray-400);
             margin-bottom: 2rem;
             max-width: 500px;
             margin-left: auto;
@@ -792,7 +802,8 @@
         }
 
         .toast {
-            background: white;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1.2rem 1.8rem;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
@@ -803,6 +814,7 @@
             max-width: 450px;
             animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             border-right: 5px solid var(--primary);
+            color: var(--white);
         }
 
         @keyframes slideInRight {
@@ -820,10 +832,44 @@
         .toast.warning .toast-icon { color: var(--warning); }
 
         .toast-content { flex: 1; }
-        .toast-title { font-weight: 700; margin-bottom: 0.3rem; color: var(--gray-900); }
-        .toast-message { color: var(--gray-600); font-size: 0.95rem; }
-        .toast-close { background: none; border: none; color: var(--gray-400); cursor: pointer; padding: 0.6rem; font-size: 1.1rem; transition: var(--transition); }
-        .toast-close:hover { color: var(--gray-700); }
+        .toast-title { font-weight: 700; margin-bottom: 0.3rem; color: var(--white); }
+        .toast-message { color: var(--gray-400); font-size: 0.95rem; }
+        .toast-close { background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0.6rem; font-size: 1.1rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--white); }
+
+        /* ============ حالة التحميل الرئيسية ============ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(197,160,89,0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        .loading-text { color: var(--white); font-size: 1.2rem; font-weight: 600; }
+
+        /* ============ شريط التمرير ============ */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--secondary); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--accent), var(--primary)); }
 
         /* ============ Responsive ============ */
         @media (max-width: 1200px) {
@@ -845,7 +891,7 @@
                 top: 90px;
                 right: 0;
                 width: 100%;
-                background: white;
+                background: var(--secondary);
                 flex-direction: column;
                 padding: 2rem;
                 box-shadow: var(--shadow-xl);
@@ -854,6 +900,7 @@
                 visibility: hidden;
                 transition: var(--transition);
                 z-index: 999;
+                border: 1px solid rgba(197,160,89,0.2);
             }
             .main-nav ul.active {
                 transform: translateY(0);
@@ -872,7 +919,6 @@
             .products-grid { grid-template-columns: 1fr; }
             .category-header-actions { flex-direction: column; align-items: flex-start; }
             .sort-select { width: 100%; }
-            .toast { min-width: auto; width: calc(100% - 40px); }
         }
 
         @media (max-width: 480px) {
@@ -881,29 +927,25 @@
             .page-title { font-size: 1.8rem; }
             .page-subtitle { font-size: 1rem; }
         }
-
-        /* ============ شريط التمرير ============ */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--gray-100); border-radius: var(--radius-full); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #c53030, #9b2c2c); border-radius: var(--radius-full); }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #9b2c2c, #c53030); }
     </style>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Supabase Client -->
+    <!-- JSONBin.io Client -->
     <script src="supabase-client.js"></script>
 </head>
 <body>
     <!-- الخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="floating-particles">
-            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-            <div class="particle"></div><div class="particle"></div>
+        <div class="rotating-rings">
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+            <div class="ring"></div><div class="ring"></div>
         </div>
-        <div class="wave-container"><div class="wave"></div></div>
-        <div class="gradient-flow"></div>
+        <div class="gold-particles">
+            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
+            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
+            <div class="gold-particle"></div><div class="gold-particle"></div>
+        </div>
+        <div class="gold-gradient"></div>
+        <div class="gold-wave"></div>
     </div>
 
     <!-- الهيدر -->
@@ -952,10 +994,7 @@
         <!-- السايدبار - الفلاتر -->
         <aside class="category-sidebar">
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-filter"></i>
-                    تصفية حسب
-                </h3>
+                <h3 class="sidebar-title"><i class="fas fa-filter"></i> تصفية حسب</h3>
                 <div class="filter-options">
                     <label class="filter-option">
                         <input type="checkbox" id="filterFeatured" onchange="applyFilters()">
@@ -969,30 +1008,17 @@
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-tags"></i>
-                    الماركات
-                </h3>
-                <div class="filter-options" id="brandFilters">
-                    <!-- سيتم تعبئتها ديناميكياً -->
-                </div>
+                <h3 class="sidebar-title"><i class="fas fa-tags"></i> الماركات</h3>
+                <div class="filter-options" id="brandFilters"></div>
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-folder"></i>
-                    الأقسام الرئيسية
-                </h3>
-                <div class="filter-options" id="mainCategoryFilters">
-                    <!-- سيتم تعبئتها ديناميكياً -->
-                </div>
+                <h3 class="sidebar-title"><i class="fas fa-folder"></i> الأقسام الرئيسية</h3>
+                <div class="filter-options" id="mainCategoryFilters"></div>
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-money-bill-wave"></i>
-                    نطاق السعر
-                </h3>
+                <h3 class="sidebar-title"><i class="fas fa-money-bill-wave"></i> نطاق السعر</h3>
                 <div class="price-range">
                     <input type="number" class="price-input" id="minPrice" placeholder="من" min="0" onchange="applyFilters()">
                     <input type="number" class="price-input" id="maxPrice" placeholder="إلى" min="0" onchange="applyFilters()">
@@ -1000,23 +1026,13 @@
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-calendar-alt"></i>
-                    سنة الصنع
-                </h3>
-                <div class="filter-options" id="yearFilters">
-                    <!-- سيتم تعبئتها ديناميكياً -->
-                </div>
+                <h3 class="sidebar-title"><i class="fas fa-calendar-alt"></i> سنة الصنع</h3>
+                <div class="filter-options" id="yearFilters"></div>
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title">
-                    <i class="fas fa-cog"></i>
-                    نوع الوقود
-                </h3>
-                <div class="filter-options" id="fuelFilters">
-                    <!-- سيتم تعبئتها ديناميكياً -->
-                </div>
+                <h3 class="sidebar-title"><i class="fas fa-cog"></i> نوع الوقود</h3>
+                <div class="filter-options" id="fuelFilters"></div>
             </div>
 
             <button class="reset-btn" onclick="resetFilters()">
@@ -1042,10 +1058,9 @@
 
             <!-- شبكة المنتجات -->
             <div class="products-grid" id="productsGrid">
-                <!-- سيتم تعبئتها ديناميكياً -->
                 <div class="loading-state">
                     <i class="fas fa-spinner"></i>
-                    <p style="margin-top: 1rem; color: var(--gray-600);">جاري تحميل السيارات...</p>
+                    <p style="margin-top: 1rem; color: var(--gray-400);">جاري تحميل السيارات...</p>
                 </div>
             </div>
 
@@ -1087,43 +1102,27 @@
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 جاري تحميل صفحة التصنيف...');
             
-            // إعداد القائمة للجوال
             setupMobileMenu();
-            
-            // تحميل البيانات من Supabase
             await loadData();
-            
-            // تحميل معايير البحث من URL
             loadURLParams();
-            
-            // تحديث الواجهة
             updateUI();
             
             console.log('✅ صفحة التصنيف جاهزة');
         });
 
-        // ============ تحميل البيانات من Supabase ============
+        // ============ تحميل البيانات من JSONBin.io ============
         async function loadData() {
             showLoading('جاري تحميل البيانات...');
             
             try {
-                // تحميل المنتجات
                 const productsResult = await window.db.getProducts({ active: true });
-                if (productsResult.success) {
-                    allProducts = productsResult.data;
-                }
+                if (productsResult.success) allProducts = productsResult.data;
                 
-                // تحميل الماركات
                 const brandsResult = await window.db.getBrands();
-                if (brandsResult.success) {
-                    allBrands = brandsResult.data;
-                }
+                if (brandsResult.success) allBrands = brandsResult.data;
                 
-                // تحميل الأقسام
                 const categoriesResult = await window.db.getCategories();
-                if (categoriesResult.success) {
-                    allCategories = categoriesResult.data;
-                }
+                if (categoriesResult.success) allCategories = categoriesResult.data;
                 
                 return true;
             } catch (error) {
@@ -1139,47 +1138,32 @@
         function loadURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
             
-            // الماركة
             const brand = urlParams.get('brand');
-            if (brand) {
-                activeFilters.brands = [brand];
-            }
+            if (brand) activeFilters.brands = [brand];
             
-            // الفئة
             const category = urlParams.get('category');
-            if (category) {
-                activeFilters.mainCategories = [category];
-            }
+            if (category) activeFilters.mainCategories = [category];
             
-            // بحث
             const search = urlParams.get('search');
             if (search) {
                 const searchResults = localStorage.getItem('search_results');
                 if (searchResults) {
                     try {
                         const results = JSON.parse(searchResults);
-                        if (results.length > 0) {
-                            allProducts = results;
-                        }
-                    } catch (e) {
-                        console.error(e);
-                    }
+                        if (results.length > 0) allProducts = results;
+                    } catch (e) { console.error(e); }
                 }
             }
         }
 
         // ============ تحديث الواجهة ============
         function updateUI() {
-            // تحديث خيارات الفلاتر
             updateFilterOptions();
-            
-            // تطبيق الفلاتر
             applyFilters();
         }
 
         // ============ تحديث خيارات الفلاتر ============
         function updateFilterOptions() {
-            // الماركات
             const brandFilterContainer = document.getElementById('brandFilters');
             if (brandFilterContainer) {
                 brandFilterContainer.innerHTML = allBrands.map(brand => `
@@ -1190,7 +1174,6 @@
                 `).join('');
             }
             
-            // الأقسام الرئيسية
             const categoryFilterContainer = document.getElementById('mainCategoryFilters');
             if (categoryFilterContainer) {
                 categoryFilterContainer.innerHTML = allCategories.map(cat => `
@@ -1201,7 +1184,6 @@
                 `).join('');
             }
             
-            // السنوات
             const years = getUniqueYears();
             const yearFilterContainer = document.getElementById('yearFilters');
             if (yearFilterContainer) {
@@ -1213,7 +1195,6 @@
                 `).join('');
             }
             
-            // أنواع الوقود
             const fuels = ['بنزين', 'ديزل', 'كهرباء', 'هايبرد'];
             const fuelFilterContainer = document.getElementById('fuelFilters');
             if (fuelFilterContainer) {
@@ -1230,70 +1211,48 @@
         function countProductsByBrand(brandId) {
             return allProducts.filter(p => p.brand_id === brandId).length;
         }
-
         function countProductsByCategory(categoryId) {
             return allProducts.filter(p => p.category_id === categoryId).length;
         }
-
         function countProductsByYear(year) {
             return allProducts.filter(p => p.year == year).length;
         }
-
         function countProductsByFuel(fuel) {
             return allProducts.filter(p => p.fuel === fuel).length;
         }
-
         function getUniqueYears() {
             const years = new Set();
-            allProducts.forEach(p => {
-                if (p.year) years.add(p.year);
-            });
+            allProducts.forEach(p => { if (p.year) years.add(p.year); });
             return Array.from(years).sort((a, b) => b - a);
         }
 
         // ============ دوال الفلترة ============
         function toggleBrandFilter(brandId) {
             const index = activeFilters.brands.indexOf(brandId);
-            if (index === -1) {
-                activeFilters.brands.push(brandId);
-            } else {
-                activeFilters.brands.splice(index, 1);
-            }
+            if (index === -1) activeFilters.brands.push(brandId);
+            else activeFilters.brands.splice(index, 1);
             applyFilters();
         }
-
         function toggleCategoryFilter(categoryId) {
             const index = activeFilters.mainCategories.indexOf(categoryId);
-            if (index === -1) {
-                activeFilters.mainCategories.push(categoryId);
-            } else {
-                activeFilters.mainCategories.splice(index, 1);
-            }
+            if (index === -1) activeFilters.mainCategories.push(categoryId);
+            else activeFilters.mainCategories.splice(index, 1);
             applyFilters();
         }
-
         function toggleYearFilter(year) {
             const index = activeFilters.years.indexOf(year);
-            if (index === -1) {
-                activeFilters.years.push(year);
-            } else {
-                activeFilters.years.splice(index, 1);
-            }
+            if (index === -1) activeFilters.years.push(year);
+            else activeFilters.years.splice(index, 1);
             applyFilters();
         }
-
         function toggleFuelFilter(fuel) {
             const index = activeFilters.fuels.indexOf(fuel);
-            if (index === -1) {
-                activeFilters.fuels.push(fuel);
-            } else {
-                activeFilters.fuels.splice(index, 1);
-            }
+            if (index === -1) activeFilters.fuels.push(fuel);
+            else activeFilters.fuels.splice(index, 1);
             applyFilters();
         }
 
         function applyFilters() {
-            // تحديث قيم الفلاتر
             activeFilters.featured = document.getElementById('filterFeatured')?.checked || false;
             activeFilters.installment = document.getElementById('filterInstallment')?.checked || false;
             
@@ -1304,102 +1263,39 @@
             
             activeFilters.sort = document.getElementById('sortSelect')?.value || 'default';
             
-            // تطبيق الفلاتر
             filteredProducts = allProducts.filter(product => {
-                // فلتر الماركة
-                if (activeFilters.brands.length > 0 && !activeFilters.brands.includes(product.brand_id)) {
-                    return false;
-                }
-                
-                // فلتر القسم الرئيسي
-                if (activeFilters.mainCategories.length > 0 && !activeFilters.mainCategories.includes(product.category_id)) {
-                    return false;
-                }
-                
-                // فلتر السنة
-                if (activeFilters.years.length > 0 && !activeFilters.years.includes(product.year)) {
-                    return false;
-                }
-                
-                // فلتر الوقود
-                if (activeFilters.fuels.length > 0 && !activeFilters.fuels.includes(product.fuel)) {
-                    return false;
-                }
-                
-                // فلتر المميز
-                if (activeFilters.featured && !product.featured) {
-                    return false;
-                }
-                
-                // فلتر التقسيط
-                if (activeFilters.installment && !product.installment) {
-                    return false;
-                }
-                
-                // فلتر السعر
-                if (product.price < activeFilters.minPrice || product.price > activeFilters.maxPrice) {
-                    return false;
-                }
-                
+                if (activeFilters.brands.length > 0 && !activeFilters.brands.includes(product.brand_id)) return false;
+                if (activeFilters.mainCategories.length > 0 && !activeFilters.mainCategories.includes(product.category_id)) return false;
+                if (activeFilters.years.length > 0 && !activeFilters.years.includes(product.year)) return false;
+                if (activeFilters.fuels.length > 0 && !activeFilters.fuels.includes(product.fuel)) return false;
+                if (activeFilters.featured && !product.featured) return false;
+                if (activeFilters.installment && !product.installment) return false;
+                if (product.price < activeFilters.minPrice || product.price > activeFilters.maxPrice) return false;
                 return true;
             });
             
-            // ترتيب النتائج
             sortProducts();
-            
-            // تحديث الصفحة
             currentPage = 1;
             renderProducts();
         }
 
         function sortProducts() {
             switch (activeFilters.sort) {
-                case 'price_asc':
-                    filteredProducts.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price_desc':
-                    filteredProducts.sort((a, b) => b.price - a.price);
-                    break;
-                case 'year_desc':
-                    filteredProducts.sort((a, b) => b.year - a.year);
-                    break;
-                case 'year_asc':
-                    filteredProducts.sort((a, b) => a.year - b.year);
-                    break;
-                default:
-                    // الترتيب الافتراضي - الأحدث أولاً
-                    filteredProducts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                case 'price_asc': filteredProducts.sort((a, b) => a.price - b.price); break;
+                case 'price_desc': filteredProducts.sort((a, b) => b.price - a.price); break;
+                case 'year_desc': filteredProducts.sort((a, b) => b.year - a.year); break;
+                case 'year_asc': filteredProducts.sort((a, b) => a.year - b.year); break;
+                default: filteredProducts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             }
         }
 
         function resetFilters() {
-            // إعادة تعيين الفلاتر النشطة
-            activeFilters = {
-                brands: [],
-                mainCategories: [],
-                years: [],
-                fuels: [],
-                featured: false,
-                installment: false,
-                minPrice: 0,
-                maxPrice: Infinity,
-                sort: 'default'
-            };
-            
-            // إلغاء تحديد جميع الـ checkboxes
+            activeFilters = { brands: [], mainCategories: [], years: [], fuels: [], featured: false, installment: false, minPrice: 0, maxPrice: Infinity, sort: 'default' };
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            
-            // إعادة تعيين حقول السعر
             document.getElementById('minPrice').value = '';
             document.getElementById('maxPrice').value = '';
-            
-            // إعادة تعيين الترتيب
             document.getElementById('sortSelect').value = 'default';
-            
-            // إعادة تعيين المنتجات
             filteredProducts = [...allProducts];
-            
-            // تحديث الصفحة
             currentPage = 1;
             renderProducts();
         }
@@ -1409,7 +1305,6 @@
             const grid = document.getElementById('productsGrid');
             const total = filteredProducts.length;
             
-            // تحديث عداد النتائج
             document.getElementById('totalResults').textContent = total;
             
             if (total === 0) {
@@ -1419,8 +1314,7 @@
                         <h3>لا توجد نتائج</h3>
                         <p>لم نعثر على سيارات تطابق معايير البحث الخاصة بك. جرب معايير بحث مختلفة.</p>
                         <button class="nav-btn primary" onclick="resetFilters()" style="display: inline-flex;">
-                            <i class="fas fa-redo"></i>
-                            إعادة تعيين الفلاتر
+                            <i class="fas fa-redo"></i> إعادة تعيين الفلاتر
                         </button>
                     </div>
                 `;
@@ -1428,16 +1322,13 @@
                 return;
             }
             
-            // حساب الترقيم
             const start = (currentPage - 1) * productsPerPage;
             const end = Math.min(start + productsPerPage, total);
             const pageProducts = filteredProducts.slice(start, end);
             
-            // تحديث عداد البداية والنهاية
             document.getElementById('resultsStart').textContent = total > 0 ? start + 1 : 0;
             document.getElementById('resultsEnd').textContent = end;
             
-            // عرض المنتجات
             grid.innerHTML = pageProducts.map(product => {
                 const brand = allBrands.find(b => b.id === product.brand_id);
                 const mainCategory = allCategories.find(c => c.id === product.category_id);
@@ -1473,7 +1364,6 @@
                 `;
             }).join('');
             
-            // عرض أزرار الترقيم
             renderPagination(total);
         }
 
@@ -1487,11 +1377,8 @@
             }
             
             let html = '';
-            
-            // زر السابق
             html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
             
-            // الصفحات
             for (let i = 1; i <= totalPages; i++) {
                 if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
                     html += `<button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
@@ -1500,7 +1387,6 @@
                 }
             }
             
-            // زر التالي
             html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
             
             pagination.innerHTML = html;
@@ -1514,8 +1400,6 @@
             
             currentPage = page;
             renderProducts();
-            
-            // التمرير لأعلى الصفحة
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1526,9 +1410,7 @@
             
             mobileMenu.addEventListener('click', () => {
                 mainNav.classList.toggle('active');
-                mobileMenu.innerHTML = mainNav.classList.contains('active') 
-                    ? '<i class="fas fa-times"></i>' 
-                    : '<i class="fas fa-bars"></i>';
+                mobileMenu.innerHTML = mainNav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             });
             
             document.addEventListener('click', (e) => {
@@ -1544,27 +1426,15 @@
             document.getElementById('loadingText').textContent = message;
             document.getElementById('loadingOverlay').classList.add('active');
         }
-
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.remove('active');
         }
-
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            
-            toast.innerHTML = `
-                <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
-                <div class="toast-content">
-                    <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
-            `;
-            
+            toast.innerHTML = `<div class="toast-icon">${icons[type] || 'ℹ️'}</div><div class="toast-content"><div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 5000);
         }

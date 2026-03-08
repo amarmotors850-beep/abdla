@@ -19,32 +19,54 @@
         }
 
         :root {
-            --primary: #c53030;
-            --primary-dark: #9b1c1c;
-            --primary-light: #e53e3e;
-            --secondary: #0a0a0a;
-            --sidebar-bg: #0a0a0a;
-            --content-bg: #f5f5f5;
-            --text-light: #ffffff;
-            --text-dark: #1a1a1a;
-            --glass-bg: rgba(10, 10, 10, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --success: #10b981;
+            --primary: #C5A059;        /* دهبي فخم */
+            --primary-dark: #A67C3B;    /* دهبي غامق */
+            --primary-light: #E5C28E;   /* دهبي فاتح */
+            --secondary: #0A0A0A;       /* أسود */
+            --accent: #8B1E1E;          /* أحمر */
+            --light: #F5F5F5;           /* أبيض فاتح */
+            --white: #FFFFFF;
+            --gray-100: #F0F0F0;
+            --gray-200: #E0E0E0;
+            --gray-300: #D0D0D0;
+            --gray-400: #B0B0B0;
+            --gray-500: #909090;
+            --gray-600: #707070;
+            --gray-700: #505050;
+            --gray-800: #303030;
+            --gray-900: #1A1A1A;
+            --success: #38a169;
             --warning: #f59e0b;
             --danger: #ef4444;
             --info: #3b82f6;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+            --radius-2xl: 40px;
+            --radius-full: 50px;
+            
+            --transition: all 0.3s ease;
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         body {
-            background: var(--content-bg);
-            color: var(--text-dark);
+            background: var(--secondary);
+            color: var(--white);
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* ========== ANIMATED BACKGROUND (Login Page) ========== */
+        /* ========== ANIMATED BACKGROUND ========== */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -53,46 +75,102 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .bg-gradient {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(125deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            background: radial-gradient(circle at 30% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
         }
 
-        .bg-particles {
+        .rotating-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .particle {
+        .ring {
+            position: absolute;
+            border: 2px solid rgba(197, 160, 89, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate-ring linear infinite;
+        }
+
+        .ring::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(197, 160, 89, 0.3);
+            border-radius: 50%;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+
+        @keyframes rotate-ring {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .gold-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gold-particle {
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(197, 48, 48, 0.3);
+            background: var(--primary);
             border-radius: 50%;
-            animation: float 8s infinite;
+            filter: blur(1px);
+            animation: float-particle 15s infinite;
+            opacity: 0.3;
         }
 
-        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
-        .particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
-        .particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
-        .particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
+        .gold-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .gold-particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
+        .gold-particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
+        .gold-particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
+        .gold-particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-50px) scale(1.5); opacity: 0.6; }
+        @keyframes float-particle {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(30px, -40px) scale(1.5); opacity: 0.6; }
+            50% { transform: translate(-30px, 30px) scale(0.8); opacity: 0.2; }
+            75% { transform: translate(40px, 20px) scale(1.2); opacity: 0.4; }
         }
 
-        .bg-overlay {
+        .gold-gradient {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(197, 48, 48, 0.1) 0%, transparent 70%);
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 50% 50%,
+                        rgba(197, 160, 89, 0.08) 0%,
+                        transparent 30%,
+                        rgba(139, 30, 30, 0.05) 60%,
+                        transparent 80%);
+            animation: rotate-gradient 60s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         /* ========== LOGIN PAGE STYLES ========== */
@@ -107,26 +185,20 @@
         }
 
         .login-card {
-            background: var(--glass-bg);
+            background: rgba(26, 26, 26, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: var(--radius-2xl);
             padding: 3rem;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-2xl);
             animation: slideIn 0.5s ease;
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-header {
@@ -141,14 +213,14 @@
         }
 
         .login-title {
-            color: var(--text-light);
+            color: var(--white);
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
         .login-subtitle {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--gray-500);
             font-size: 0.95rem;
         }
 
@@ -158,7 +230,7 @@
 
         .form-label {
             display: block;
-            color: var(--text-light);
+            color: var(--gray-300);
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
@@ -166,9 +238,9 @@
         .input-group {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: var(--radius-lg);
             padding: 0.5rem 1rem;
             transition: all 0.3s;
         }
@@ -176,8 +248,8 @@
         .input-group:hover,
         .input-group:focus-within {
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(197, 48, 48, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
         }
 
         .input-group i {
@@ -188,21 +260,21 @@
         .input-group input {
             background: transparent;
             border: none;
-            color: var(--text-light);
+            color: var(--white);
             width: 100%;
             font-size: 1rem;
             outline: none;
         }
 
         .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--gray-600);
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-light);
+            color: var(--gray-300);
         }
 
         .checkbox-group input[type="checkbox"] {
@@ -214,10 +286,10 @@
         .login-btn {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
@@ -231,26 +303,26 @@
 
         .login-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(197, 48, 48, 0.4);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4);
         }
 
         .login-footer {
             text-align: center;
             margin-top: 2rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--gray-600);
             font-size: 0.9rem;
         }
 
         .demo-credentials {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background: rgba(197, 160, 89, 0.05);
+            border-radius: var(--radius-lg);
             padding: 1rem;
             margin-top: 1.5rem;
             border: 1px dashed var(--primary);
         }
 
         .demo-credentials p {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--gray-300);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
@@ -265,23 +337,25 @@
             display: flex;
             width: 100%;
             min-height: 100vh;
-            background: #f0f2f5;
+            background: transparent;
         }
 
         .sidebar {
             width: 280px;
-            background: var(--sidebar-bg);
-            color: var(--text-light);
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--white);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             transition: all 0.3s;
             z-index: 1000;
+            border-left: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .sidebar-header {
             padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             text-align: center;
         }
 
@@ -294,26 +368,28 @@
         .sidebar-logo span {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-light);
+            color: var(--white);
         }
 
         .user-info {
             padding: 1.5rem;
-            background: rgba(197, 48, 48, 0.1);
+            background: rgba(197, 160, 89, 0.05);
             margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .user-avatar {
             width: 60px;
             height: 60px;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
             font-size: 1.8rem;
-            color: white;
+            color: var(--white);
+            border: 2px solid var(--primary);
         }
 
         .user-name {
@@ -321,18 +397,20 @@
             font-weight: 700;
             margin-bottom: 0.2rem;
             text-align: center;
+            color: var(--white);
         }
 
         .user-role {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(197, 160, 89, 0.1);
             padding: 0.2rem 1rem;
-            border-radius: 50px;
+            border-radius: var(--radius-full);
             font-size: 0.8rem;
-            color: var(--primary-light);
+            color: var(--primary);
             margin: 0 auto;
             text-align: center;
             width: fit-content;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .sidebar-nav {
@@ -344,9 +422,9 @@
             align-items: center;
             gap: 12px;
             padding: 0.8rem 1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--gray-300);
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
             transition: all 0.3s;
             margin-bottom: 0.5rem;
             cursor: pointer;
@@ -354,9 +432,10 @@
 
         .nav-item:hover,
         .nav-item.active {
-            background: var(--primary);
-            color: white;
+            background: rgba(197, 160, 89, 0.1);
+            color: var(--primary);
             transform: translateX(-5px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .nav-item i {
@@ -372,20 +451,22 @@
         }
 
         .top-bar {
-            background: white;
-            border-radius: 15px;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
             padding: 1rem 2rem;
             margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .page-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--white);
         }
 
         .page-title i {
@@ -394,11 +475,11 @@
         }
 
         .logout-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
             padding: 0.6rem 1.5rem;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
             cursor: pointer;
             font-weight: 600;
             display: flex;
@@ -408,7 +489,8 @@
         }
 
         .logout-btn:hover {
-            background: #dc2626;
+            background: var(--danger);
+            color: var(--white);
             transform: translateY(-2px);
         }
 
@@ -421,38 +503,41 @@
         }
 
         .stat-card {
-            background: white;
-            border-radius: 15px;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
             padding: 1.5rem;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-lg);
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(197, 48, 48, 0.2);
+            box-shadow: var(--shadow-2xl);
+            border-color: var(--primary);
         }
 
         .stat-info h3 {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--gray-400);
             margin-bottom: 0.5rem;
         }
 
         .stat-number {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--white);
         }
 
         .stat-icon {
             width: 60px;
             height: 60px;
-            background: rgba(197, 48, 48, 0.1);
-            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(197, 160, 89, 0.1), rgba(139, 30, 30, 0.1));
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -462,11 +547,13 @@
 
         /* Content Cards */
         .content-card {
-            background: white;
-            border-radius: 20px;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-2xl);
             padding: 2rem;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-lg);
             margin-bottom: 1.5rem;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .card-header {
@@ -474,12 +561,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .card-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--white);
         }
 
         .card-title i {
@@ -498,34 +587,35 @@
         }
 
         th {
-            background: #f8f9fa;
+            background: rgba(197, 160, 89, 0.1);
             padding: 1rem;
             text-align: right;
             font-weight: 600;
-            color: #666;
+            color: var(--gray-300);
         }
 
         td {
             padding: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            color: var(--gray-300);
         }
 
         tr:hover td {
-            background: #f8f9fa;
+            background: rgba(197, 160, 89, 0.05);
         }
 
         .status-badge {
             padding: 0.3rem 1rem;
-            border-radius: 50px;
+            border-radius: var(--radius-full);
             font-size: 0.85rem;
             font-weight: 600;
             display: inline-block;
         }
 
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-contacted { background: #cce5ff; color: #004085; }
-        .status-sold { background: #d4edda; color: #155724; }
-        .status-rejected { background: #f8d7da; color: #721c24; }
+        .status-pending { background: rgba(214, 158, 46, 0.1); color: var(--warning); border: 1px solid var(--warning); }
+        .status-contacted { background: rgba(66, 153, 225, 0.1); color: #4299e1; border: 1px solid #4299e1; }
+        .status-sold { background: rgba(56, 161, 105, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .status-rejected { background: rgba(229, 62, 62, 0.1); color: var(--danger); border: 1px solid var(--danger); }
 
         /* Profile Form */
         .profile-form {
@@ -540,25 +630,28 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #555;
+            color: var(--gray-300);
         }
 
         .form-control {
             width: 100%;
             padding: 0.8rem 1rem;
-            border: 2px solid #eee;
-            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(197, 160, 89, 0.2);
+            border-radius: var(--radius-lg);
             font-size: 1rem;
+            color: var(--white);
             transition: all 0.3s;
         }
 
         .form-control:focus {
-            border-color: var(--primary);
             outline: none;
+            border-color: var(--primary);
+            background: rgba(0,0,0,0.5);
         }
 
         .form-control:disabled {
-            background: #f8f9fa;
+            background: rgba(255,255,255,0.05);
             cursor: not-allowed;
         }
 
@@ -572,13 +665,13 @@
         .avatar-preview {
             width: 80px;
             height: 80px;
-            background: #f0f2f5;
+            background: rgba(0,0,0,0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            color: #999;
+            color: var(--primary);
             border: 3px solid var(--primary);
             overflow: hidden;
         }
@@ -590,40 +683,42 @@
         }
 
         .save-btn {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             border: none;
             padding: 1rem 2rem;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .save-btn:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Toast Notifications */
         .toast-container {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            bottom: 30px;
+            left: 30px;
             z-index: 9999;
         }
 
         .toast {
-            background: white;
-            border-radius: 10px;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
             padding: 1rem 2rem;
             margin-top: 0.5rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-xl);
             display: flex;
             align-items: center;
             gap: 10px;
             animation: slideInRight 0.3s;
             border-right: 4px solid;
+            color: var(--white);
         }
 
         .toast.success { border-color: var(--success); }
@@ -632,15 +727,37 @@
         .toast.info { border-color: var(--info); }
 
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(197, 160, 89, 0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: var(--white); font-size: 1.2rem; font-weight: 600; }
 
         /* Permission-based visibility */
         [data-permission] {
@@ -671,54 +788,37 @@
             display: none !important;
         }
 
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-            z-index: 4000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .loading-overlay.active { display: flex; }
-        .loading-spinner {
-            width: 70px;
-            height: 70px;
-            border: 5px solid var(--gray-200);
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1.5rem;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: var(--gray-800); font-size: 1.2rem; font-weight: 600; }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--secondary); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--accent), var(--primary)); }
     </style>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Supabase Client -->
+    <!-- JSONBin.io Client -->
     <script src="supabase-client.js"></script>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient"></div>
+        <div class="rotating-rings">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+        </div>
+        <div class="gold-particles">
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+        </div>
+        <div class="gold-gradient"></div>
+    </div>
+
     <!-- Login Page -->
     <div id="loginPage" class="login-container">
-        <div class="animated-bg">
-            <div class="bg-gradient"></div>
-            <div class="bg-particles">
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-            </div>
-            <div class="bg-overlay"></div>
-        </div>
-
         <div class="login-card">
             <div class="login-header">
                 <div class="login-logo">
@@ -817,7 +917,7 @@
                     <i class="fas fa-user"></i>
                     الملف الشخصي
                 </div>
-                <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem 0;">
+                <hr style="border-color: rgba(197,160,89,0.2); margin: 1rem 0;">
                 <div onclick="userPanel.logout()" class="nav-item" style="color: var(--danger);">
                     <i class="fas fa-sign-out-alt"></i>
                     تسجيل الخروج
@@ -858,7 +958,7 @@
         class UserPanelController {
             constructor() {
                 this.currentUser = null;
-                this.sessionTimeout = 12 * 60 * 60 * 1000; // 12 hours
+                this.sessionTimeout = 12 * 60 * 60 * 1000;
                 this.allUsers = [];
                 this.allProducts = [];
                 this.allSellRequests = [];
@@ -868,44 +968,26 @@
             }
 
             async init() {
-                // Check for existing session
                 this.checkExistingSession();
-                
-                // Load data from Supabase
                 await this.loadData();
             }
 
             async loadData() {
                 try {
-                    // Load users
                     const usersResult = await window.db.getUsers();
-                    if (usersResult.success) {
-                        this.allUsers = usersResult.data;
-                    }
+                    if (usersResult.success) this.allUsers = usersResult.data;
                     
-                    // Load products
                     const productsResult = await window.db.getProducts({ active: true });
-                    if (productsResult.success) {
-                        this.allProducts = productsResult.data;
-                    }
+                    if (productsResult.success) this.allProducts = productsResult.data;
                     
-                    // Load sell requests
                     const sellResult = await window.db.getSellRequests();
-                    if (sellResult.success) {
-                        this.allSellRequests = sellResult.data;
-                    }
+                    if (sellResult.success) this.allSellRequests = sellResult.data;
                     
-                    // Load exchange requests
                     const exchangeResult = await window.db.getExchangeRequests();
-                    if (exchangeResult.success) {
-                        this.allExchangeRequests = exchangeResult.data;
-                    }
+                    if (exchangeResult.success) this.allExchangeRequests = exchangeResult.data;
                     
-                    // Load orders
                     const ordersResult = await window.db.getOrders();
-                    if (ordersResult.success) {
-                        this.allOrders = ordersResult.data;
-                    }
+                    if (ordersResult.success) this.allOrders = ordersResult.data;
                 } catch (error) {
                     console.error('Error loading data:', error);
                 }
@@ -944,13 +1026,11 @@
                 this.showLoading('جاري تسجيل الدخول...');
 
                 try {
-                    // Login using Supabase
                     const result = await window.db.login(username, password);
                     
                     if (result.success) {
                         this.currentUser = result.data;
                         
-                        // Create session
                         if (rememberMe) {
                             localStorage.setItem('userSession', JSON.stringify(this.currentUser));
                             localStorage.setItem('sessionStartTime', Date.now().toString());
@@ -989,7 +1069,6 @@
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('dashboardPanel').classList.remove('hidden');
                 
-                // Update user info in sidebar
                 document.getElementById('displayName').textContent = this.currentUser.full_name;
                 
                 let roleText = '';
@@ -1002,16 +1081,12 @@
                 }
                 document.getElementById('displayRole').textContent = roleText;
 
-                // Update avatar
                 const avatarEl = document.getElementById('userAvatar');
                 if (this.currentUser.avatar) {
                     avatarEl.innerHTML = `<img src="${this.currentUser.avatar}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
                 } else {
                     avatarEl.innerHTML = '<i class="fas fa-user"></i>';
                 }
-
-                // Update permissions visibility
-                this.updatePermissionsUI();
             }
 
             showLoginPage() {
@@ -1026,26 +1101,12 @@
                 return false;
             }
 
-            updatePermissionsUI() {
-                // Show/hide elements based on permissions
-                document.querySelectorAll('[data-permission]').forEach(el => {
-                    const permission = el.dataset.permission;
-                    if (this.checkPermission(permission)) {
-                        el.classList.add('has-permission');
-                    } else {
-                        el.classList.remove('has-permission');
-                    }
-                });
-            }
-
             async loadPage(page) {
-                // Update active nav item
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 document.querySelector(`[data-page="${page}"]`).classList.add('active');
 
-                // Update page title
                 const titles = {
                     'dashboard': 'لوحة المعلومات',
                     'cars': 'عرض السيارات',
@@ -1056,29 +1117,16 @@
                 };
                 document.getElementById('mainPageTitle').innerHTML = `<i class="fas fa-${this.getPageIcon(page)}"></i> ${titles[page]}`;
 
-                // Load page content
                 this.showLoading('جاري تحميل الصفحة...');
                 
                 try {
                     switch(page) {
-                        case 'dashboard':
-                            await this.loadDashboard();
-                            break;
-                        case 'cars':
-                            await this.loadCars();
-                            break;
-                        case 'sellRequests':
-                            await this.loadSellRequests();
-                            break;
-                        case 'exchangeRequests':
-                            await this.loadExchangeRequests();
-                            break;
-                        case 'orders':
-                            await this.loadOrders();
-                            break;
-                        case 'profile':
-                            await this.loadProfile();
-                            break;
+                        case 'dashboard': await this.loadDashboard(); break;
+                        case 'cars': await this.loadCars(); break;
+                        case 'sellRequests': await this.loadSellRequests(); break;
+                        case 'exchangeRequests': await this.loadExchangeRequests(); break;
+                        case 'orders': await this.loadOrders(); break;
+                        case 'profile': await this.loadProfile(); break;
                     }
                 } catch (error) {
                     console.error(error);
@@ -1089,73 +1137,10 @@
             }
 
             async loadDashboard() {
-                // Get stats
                 const productsCount = this.allProducts.length;
                 const sellRequestsCount = this.allSellRequests.length;
                 const exchangeRequestsCount = this.allExchangeRequests.length;
                 const ordersCount = this.allOrders.length;
-
-                // Get recent sell requests
-                const recentSells = this.allSellRequests.slice(0, 5);
-                // Get recent exchange requests
-                const recentExchanges = this.allExchangeRequests.slice(0, 5);
-
-                let recentSellsHTML = '';
-                if (recentSells.length === 0) {
-                    recentSellsHTML = '<p style="text-align: center; color: #666; padding: 1rem;">لا توجد طلبات بيع حديثة</p>';
-                } else {
-                    recentSellsHTML = '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة</th><th>الحالة</th></tr></thead><tbody>';
-                    recentSells.forEach(request => {
-                        const statusClass = {
-                            'pending': 'status-pending',
-                            'contacted': 'status-contacted',
-                            'sold': 'status-sold',
-                            'rejected': 'status-rejected'
-                        }[request.status] || 'status-pending';
-                        
-                        const statusText = {
-                            'pending': 'قيد المراجعة',
-                            'contacted': 'تم التواصل',
-                            'sold': 'تم البيع',
-                            'rejected': 'مرفوض'
-                        }[request.status] || 'قيد المراجعة';
-
-                        recentSellsHTML += `<tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        </tr>`;
-                    });
-                    recentSellsHTML += '</tbody></table></div>';
-                }
-
-                let recentExchangesHTML = '';
-                if (recentExchanges.length === 0) {
-                    recentExchangesHTML = '<p style="text-align: center; color: #666; padding: 1rem;">لا توجد طلبات استبدال حديثة</p>';
-                } else {
-                    recentExchangesHTML = '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة الحالية</th><th>السيارة المطلوبة</th><th>الحالة</th></tr></thead><tbody>';
-                    recentExchanges.forEach(request => {
-                        const statusClass = {
-                            'pending': 'status-pending',
-                            'contacted': 'status-contacted',
-                            'completed': 'status-sold'
-                        }[request.status] || 'status-pending';
-                        
-                        const statusText = {
-                            'pending': 'قيد المراجعة',
-                            'contacted': 'تم التواصل',
-                            'completed': 'تم الاستبدال'
-                        }[request.status] || 'قيد المراجعة';
-
-                        recentExchangesHTML += `<tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.current_car}</td>
-                            <td>${request.desired_car}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        </tr>`;
-                    });
-                    recentExchangesHTML += '</tbody></table></div>';
-                }
 
                 const content = `
                     <div class="stats-grid">
@@ -1164,84 +1149,29 @@
                                 <h3>🚗 إجمالي السيارات</h3>
                                 <div class="stat-number">${productsCount}</div>
                             </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-car"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-car"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
                                 <h3>📝 طلبات البيع</h3>
                                 <div class="stat-number">${sellRequestsCount}</div>
                             </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-tag"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-tag"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
                                 <h3>🔄 طلبات الاستبدال</h3>
                                 <div class="stat-number">${exchangeRequestsCount}</div>
                             </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
                                 <h3>📦 طلبات الشراء</h3>
                                 <div class="stat-number">${ordersCount}</div>
                             </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
                         </div>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-check-circle"></i>
-                                صلاحياتك
-                            </h3>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_cars') ? '#10b981' : '#ef4444'};"></i>
-                                عرض السيارات: ${this.checkPermission('view_cars') ? '✅' : '❌'}
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_sell') ? '#10b981' : '#ef4444'};"></i>
-                                عرض طلبات البيع: ${this.checkPermission('view_sell') ? '✅' : '❌'}
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_exchange') ? '#10b981' : '#ef4444'};"></i>
-                                عرض طلبات الاستبدال: ${this.checkPermission('view_exchange') ? '✅' : '❌'}
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-eye" style="color: ${this.checkPermission('view_orders') ? '#10b981' : '#ef4444'};"></i>
-                                عرض طلبات الشراء: ${this.checkPermission('view_orders') ? '✅' : '❌'}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-tag"></i>
-                                آخر طلبات البيع
-                            </h3>
-                        </div>
-                        ${recentSellsHTML}
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-exchange-alt"></i>
-                                آخر طلبات الاستبدال
-                            </h3>
-                        </div>
-                        ${recentExchangesHTML}
                     </div>
                 `;
 
@@ -1250,15 +1180,14 @@
 
             async loadCars() {
                 if (!this.checkPermission('view_cars')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض السيارات</h3></div>';
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض السيارات</h3></div>';
                     return;
                 }
 
-                let carsHTML = '<div class="content-card">';
-                carsHTML += '<div class="card-header"><h3 class="card-title"><i class="fas fa-car"></i> قائمة السيارات</h3></div>';
+                let carsHTML = '<div class="content-card"><div class="card-header"><h3 class="card-title"><i class="fas fa-car"></i> قائمة السيارات</h3></div>';
                 
                 if (this.allProducts.length === 0) {
-                    carsHTML += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد سيارات متاحة حالياً</p>';
+                    carsHTML += '<p style="text-align: center; color: var(--gray-500); padding: 2rem;">لا توجد سيارات متاحة حالياً</p>';
                 } else {
                     carsHTML += '<div class="table-responsive"><table><thead><tr><th>السيارة</th><th>السعر</th><th>الموديل</th><th></th></tr></thead><tbody>';
                     
@@ -1267,7 +1196,7 @@
                             <td>${product.name_ar || 'غير محدد'}</td>
                             <td>${this.formatPrice(product.price)} ج.م</td>
                             <td>${product.year || 'غير محدد'}</td>
-                            <td><button class="status-badge" style="background: var(--primary); color: white; border: none; padding: 0.3rem 1rem; border-radius: 50px;" onclick="window.open('product-details.html?id=${product.id}', '_blank')">عرض التفاصيل</button></td>
+                            <td><button class="status-badge" style="background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 0.3rem 1rem; border-radius: var(--radius-full);" onclick="window.open('product-details.html?id=${product.id}', '_blank')">عرض التفاصيل</button></td>
                         </tr>`;
                     });
                     
@@ -1280,15 +1209,14 @@
 
             async loadSellRequests() {
                 if (!this.checkPermission('view_sell')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات البيع</h3></div>';
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات البيع</h3></div>';
                     return;
                 }
 
-                let html = '<div class="content-card">';
-                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-tag"></i> طلبات البيع</h3></div>';
+                let html = '<div class="content-card"><div class="card-header"><h3 class="card-title"><i class="fas fa-tag"></i> طلبات البيع</h3></div>';
                 
                 if (this.allSellRequests.length === 0) {
-                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات بيع حالياً</p>';
+                    html += '<p style="text-align: center; color: var(--gray-500); padding: 2rem;">لا توجد طلبات بيع حالياً</p>';
                 } else {
                     html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة</th><th>الهاتف</th><th>الحالة</th>';
                     
@@ -1321,7 +1249,7 @@
                         
                         if (this.checkPermission('update_sell')) {
                             html += `<td>
-                                <select onchange="userPanel.updateSellStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
+                                <select onchange="userPanel.updateSellStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(197,160,89,0.2);">
                                     <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
                                     <option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
                                     <option value="sold" ${request.status === 'sold' ? 'selected' : ''}>تم البيع</option>
@@ -1340,126 +1268,11 @@
                 document.getElementById('pageContent').innerHTML = html;
             }
 
-            async loadExchangeRequests() {
-                if (!this.checkPermission('view_exchange')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات الاستبدال</h3></div>';
-                    return;
-                }
-
-                let html = '<div class="content-card">';
-                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-exchange-alt"></i> طلبات الاستبدال</h3></div>';
-                
-                if (this.allExchangeRequests.length === 0) {
-                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات استبدال حالياً</p>';
-                } else {
-                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة الحالية</th><th>السيارة المطلوبة</th><th>الهاتف</th><th>الحالة</th></tr></thead><tbody>';
-                    
-                    this.allExchangeRequests.forEach(request => {
-                        const statusClass = {
-                            'pending': 'status-pending',
-                            'contacted': 'status-contacted',
-                            'completed': 'status-sold'
-                        }[request.status] || 'status-pending';
-                        
-                        const statusText = {
-                            'pending': 'قيد المراجعة',
-                            'contacted': 'تم التواصل',
-                            'completed': 'تم الاستبدال'
-                        }[request.status] || 'قيد المراجعة';
-
-                        html += `<tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.current_car}</td>
-                            <td>${request.desired_car}</td>
-                            <td>${request.customer_phone}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        </tr>`;
-                    });
-                    
-                    html += '</tbody></table></div>';
-                }
-                
-                html += '</div>';
-                document.getElementById('pageContent').innerHTML = html;
-            }
-
-            async loadOrders() {
-                if (!this.checkPermission('view_orders')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات الشراء</h3></div>';
-                    return;
-                }
-
-                let html = '<div class="content-card">';
-                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-shopping-cart"></i> طلبات الشراء</h3></div>';
-                
-                if (this.allOrders.length === 0) {
-                    html += '<p style="text-align: center; color: #666; padding: 2rem;">لا توجد طلبات شراء حالياً</p>';
-                } else {
-                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>المنتج</th><th>الهاتف</th><th>طريقة الدفع</th><th>الحالة</th>';
-                    
-                    if (this.checkPermission('update_orders')) {
-                        html += '<th>إجراء</th>';
-                    }
-                    
-                    html += '</tr></thead><tbody>';
-                    
-                    this.allOrders.forEach(order => {
-                        const statusClass = {
-                            'pending': 'status-pending',
-                            'processing': 'status-contacted',
-                            'completed': 'status-sold',
-                            'cancelled': 'status-rejected'
-                        }[order.status] || 'status-pending';
-                        
-                        const statusText = {
-                            'pending': 'قيد المراجعة',
-                            'processing': 'جاري التجهيز',
-                            'completed': 'تم التسليم',
-                            'cancelled': 'ملغي'
-                        }[order.status] || 'قيد المراجعة';
-
-                        const paymentText = {
-                            'cash': 'كاش',
-                            'bank': 'تحويل بنكي',
-                            'wallet': 'محفظة إلكترونية'
-                        }[order.payment_method] || 'كاش';
-
-                        html += `<tr>
-                            <td>${order.customer_name}</td>
-                            <td>${order.product_name || 'غير محدد'}</td>
-                            <td>${order.customer_phone}</td>
-                            <td>${paymentText}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>`;
-                        
-                        if (this.checkPermission('update_orders')) {
-                            html += `<td>
-                                <select onchange="userPanel.updateOrderStatus('${order.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
-                                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                                    <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>جاري التجهيز</option>
-                                    <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تم التسليم</option>
-                                    <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>ملغي</option>
-                                </select>
-                            </td>`;
-                        }
-                        
-                        html += '</tr>';
-                    });
-                    
-                    html += '</tbody></table></div>';
-                }
-                
-                html += '</div>';
-                document.getElementById('pageContent').innerHTML = html;
-            }
-
             async loadProfile() {
                 const content = `
                     <div class="content-card">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-user"></i>
-                                الملف الشخصي
-                            </h3>
+                            <h3 class="card-title"><i class="fas fa-user"></i> الملف الشخصي</h3>
                         </div>
 
                         <div class="profile-form">
@@ -1501,25 +1314,6 @@
                                 <input type="text" class="form-control" value="${this.getRoleName(this.currentUser.role)}" disabled>
                             </div>
 
-                            <hr style="margin: 2rem 0;">
-
-                            <h3 style="margin-bottom: 1rem;">تغيير كلمة المرور</h3>
-
-                            <div class="form-row">
-                                <label>كلمة المرور الحالية</label>
-                                <input type="password" class="form-control" id="currentPassword" placeholder="••••••••">
-                            </div>
-
-                            <div class="form-row">
-                                <label>كلمة المرور الجديدة</label>
-                                <input type="password" class="form-control" id="newPassword" placeholder="••••••••">
-                            </div>
-
-                            <div class="form-row">
-                                <label>تأكيد كلمة المرور الجديدة</label>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••">
-                            </div>
-
                             <button onclick="userPanel.updateProfile()" class="save-btn">
                                 <i class="fas fa-save"></i>
                                 حفظ التغييرات
@@ -1556,27 +1350,14 @@
                 const fullName = document.getElementById('profileFullName').value;
                 const email = document.getElementById('profileEmail').value;
                 const phone = document.getElementById('profilePhone').value;
-                const currentPassword = document.getElementById('currentPassword').value;
-                const newPassword = document.getElementById('newPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
 
                 this.showLoading('جاري تحديث الملف الشخصي...');
 
                 try {
-                    // Update basic info
-                    if (fullName && fullName !== this.currentUser.full_name) {
-                        this.currentUser.full_name = fullName;
-                    }
+                    if (fullName) this.currentUser.full_name = fullName;
+                    if (email) this.currentUser.email = email;
+                    if (phone) this.currentUser.phone = phone;
 
-                    if (email && email !== this.currentUser.email) {
-                        this.currentUser.email = email;
-                    }
-
-                    if (phone && phone !== this.currentUser.phone) {
-                        this.currentUser.phone = phone;
-                    }
-
-                    // Update in Supabase
                     const updateResult = await window.db.updateUser(this.currentUser.id, {
                         fullName: this.currentUser.full_name,
                         email: this.currentUser.email,
@@ -1585,42 +1366,9 @@
                         active: true
                     });
 
-                    if (!updateResult.success) {
-                        throw new Error('فشل تحديث البيانات');
-                    }
+                    if (!updateResult.success) throw new Error('فشل تحديث البيانات');
 
-                    // Update password if provided
-                    if (currentPassword && newPassword && confirmPassword) {
-                        if (currentPassword !== this.currentUser.password) {
-                            this.showToast('كلمة المرور الحالية غير صحيحة', 'error');
-                            this.hideLoading();
-                            return;
-                        }
-
-                        if (newPassword !== confirmPassword) {
-                            this.showToast('كلمة المرور الجديدة غير متطابقة', 'error');
-                            this.hideLoading();
-                            return;
-                        }
-
-                        if (newPassword.length < 6) {
-                            this.showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
-                            this.hideLoading();
-                            return;
-                        }
-
-                        const passwordResult = await window.db.updateUserPassword(this.currentUser.id, newPassword);
-                        if (!passwordResult.success) {
-                            throw new Error('فشل تحديث كلمة المرور');
-                        }
-                        
-                        this.currentUser.password = newPassword;
-                    }
-
-                    // Update session
                     localStorage.setItem('userSession', JSON.stringify(this.currentUser));
-
-                    // Update display name in sidebar
                     document.getElementById('displayName').textContent = this.currentUser.full_name;
 
                     this.showToast('تم تحديث الملف الشخصي بنجاح', 'success');
@@ -1638,11 +1386,8 @@
                 try {
                     const result = await window.db.updateSellRequestStatus(requestId, status);
                     if (result.success) {
-                        // Update local data
                         const request = this.allSellRequests.find(r => r.id === requestId);
-                        if (request) {
-                            request.status = status;
-                        }
+                        if (request) request.status = status;
                         this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
                         this.loadSellRequests();
                     }
@@ -1654,47 +1399,13 @@
                 }
             }
 
-            async updateOrderStatus(orderId, status) {
-                this.showLoading('جاري تحديث الحالة...');
-                
-                try {
-                    const result = await window.db.updateOrderStatus(orderId, status);
-                    if (result.success) {
-                        // Update local data
-                        const order = this.allOrders.find(o => o.id === orderId);
-                        if (order) {
-                            order.status = status;
-                        }
-                        this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
-                        this.loadOrders();
-                    }
-                } catch (error) {
-                    console.error(error);
-                    this.showToast('حدث خطأ في تحديث الحالة', 'error');
-                } finally {
-                    this.hideLoading();
-                }
-            }
-
             getRoleName(role) {
-                const roles = {
-                    admin: 'مدير',
-                    viewer: 'مشاهد',
-                    sales: 'مبيعات',
-                    editor: 'محرر'
-                };
+                const roles = { admin: 'مدير', viewer: 'مشاهد', sales: 'مبيعات', editor: 'محرر' };
                 return roles[role] || role;
             }
 
             getPageIcon(page) {
-                const icons = {
-                    'dashboard': 'chart-pie',
-                    'cars': 'car',
-                    'sellRequests': 'tag',
-                    'exchangeRequests': 'exchange-alt',
-                    'orders': 'shopping-cart',
-                    'profile': 'user'
-                };
+                const icons = { 'dashboard': 'chart-pie', 'cars': 'car', 'sellRequests': 'tag', 'exchangeRequests': 'exchange-alt', 'orders': 'shopping-cart', 'profile': 'user' };
                 return icons[page] || 'circle';
             }
 
@@ -1703,19 +1414,12 @@
             }
 
             showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
-                toast.innerHTML = `
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                `;
-
-                const container = document.getElementById('toastContainer');
+                toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i><span>${message}</span>`;
                 container.appendChild(toast);
-
-                setTimeout(() => {
-                    toast.remove();
-                }, 5000);
+                setTimeout(() => toast.remove(), 5000);
             }
 
             showLoading(message) {
@@ -1728,7 +1432,6 @@
             }
         }
 
-        // Initialize User Panel
         const userPanel = new UserPanelController();
     </script>
 </body>

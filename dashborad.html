@@ -12,175 +12,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     
-    <!-- Animated Background -->
-    <style>
-        /* ============ أنماط الخلفية المتحركة ============ */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .floating-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .particle {
-            position: absolute;
-            background: linear-gradient(45deg, rgba(197, 48, 48, 0.12), rgba(102, 126, 234, 0.12));
-            border-radius: 50%;
-            filter: blur(60px);
-            animation: float-particle 25s infinite;
-        }
-
-        .particle:nth-child(1) { width: 500px; height: 500px; top: -150px; right: -150px; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 450px; height: 450px; bottom: -150px; left: -150px; animation-delay: -5s; }
-        .particle:nth-child(3) { width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; }
-        .particle:nth-child(4) { width: 350px; height: 350px; top: 20%; right: 20%; animation-delay: -15s; }
-        .particle:nth-child(5) { width: 300px; height: 300px; bottom: 30%; left: 10%; animation-delay: -20s; }
-        .particle:nth-child(6) { width: 250px; height: 250px; top: 70%; right: 30%; animation-delay: -25s; }
-        .particle:nth-child(7) { width: 200px; height: 200px; bottom: 40%; left: 40%; animation-delay: -30s; }
-        .particle:nth-child(8) { width: 150px; height: 150px; top: 30%; left: 20%; animation-delay: -35s; }
-
-        @keyframes float-particle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            25% { transform: translate(3%, 5%) scale(1.15); opacity: 0.55; }
-            50% { transform: translate(-2%, 2%) scale(0.9); opacity: 0.35; }
-            75% { transform: translate(5%, -3%) scale(1.1); opacity: 0.5; }
-        }
-
-        .wave-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                rgba(197, 48, 48, 0.07) 0%, 
-                rgba(102, 126, 234, 0.07) 25%,
-                rgba(197, 48, 48, 0.07) 50%,
-                rgba(102, 126, 234, 0.07) 75%,
-                rgba(197, 48, 48, 0.07) 100%);
-            animation: wave-animation 15s infinite linear;
-        }
-
-        .wave::before, .wave::after {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: inherit;
-            animation: wave-animation 20s infinite linear;
-            opacity: 0.6;
-        }
-
-        .wave::after {
-            animation: wave-animation 25s infinite reverse;
-            opacity: 0.4;
-        }
-
-        @keyframes wave-animation {
-            0% { transform: translateX(0) translateY(0) scaleY(1); }
-            25% { transform: translateX(-25%) translateY(-10px) scaleY(1.1); }
-            50% { transform: translateX(-50%) translateY(-15px) scaleY(1.2); }
-            75% { transform: translateX(-75%) translateY(-10px) scaleY(1.1); }
-            100% { transform: translateX(-100%) translateY(0) scaleY(1); }
-        }
-
-        .gradient-flow {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle at 50% 50%,
-                        rgba(197, 48, 48, 0.08) 0%,
-                        rgba(102, 126, 234, 0.08) 20%,
-                        rgba(197, 48, 48, 0.06) 40%,
-                        rgba(102, 126, 234, 0.06) 60%,
-                        transparent 80%);
-            animation: rotate-gradient 50s linear infinite;
-        }
-
-        @keyframes rotate-gradient {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.3); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .small-particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: rgba(197, 48, 48, 0.2);
-            border-radius: 50%;
-            filter: blur(3px);
-            animation: float-small 20s infinite;
-        }
-
-        .small-particle:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
-        .small-particle:nth-child(2) { top: 75%; right: 12%; animation-delay: -4s; }
-        .small-particle:nth-child(3) { bottom: 25%; left: 25%; animation-delay: -8s; }
-        .small-particle:nth-child(4) { top: 45%; right: 35%; animation-delay: -12s; }
-        .small-particle:nth-child(5) { bottom: 55%; left: 65%; animation-delay: -16s; }
-        .small-particle:nth-child(6) { top: 85%; right: 75%; animation-delay: -20s; }
-        .small-particle:nth-child(7) { top: 35%; left: 45%; animation-delay: -24s; }
-        .small-particle:nth-child(8) { bottom: 15%; right: 55%; animation-delay: -28s; }
-        .small-particle:nth-child(9) { top: 95%; left: 18%; animation-delay: -32s; }
-        .small-particle:nth-child(10) { bottom: 65%; right: 25%; animation-delay: -36s; }
-        .small-particle:nth-child(11) { top: 55%; left: 78%; animation-delay: -40s; }
-        .small-particle:nth-child(12) { bottom: 85%; right: 45%; animation-delay: -44s; }
-
-        @keyframes float-small {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
-            25% { transform: translate(25px, -35px) scale(1.6); opacity: 0.4; }
-            50% { transform: translate(-25px, 25px) scale(0.7); opacity: 0.15; }
-            75% { transform: translate(35px, 20px) scale(1.3); opacity: 0.3; }
-        }
-
-        @media (max-width: 768px) {
-            .particle:nth-child(1), .particle:nth-child(2) { width: 300px; height: 300px; }
-            .particle:nth-child(3), .particle:nth-child(4) { width: 250px; height: 250px; }
-            .particle:nth-child(5), .particle:nth-child(6) { width: 200px; height: 200px; }
-            .particle:nth-child(7), .particle:nth-child(8) { width: 150px; height: 150px; }
-        }
-    </style>
-
     <style>
         /* ============ متغيرات CSS الرئيسية ============ */
         :root {
-            --primary: #c53030;
-            --primary-dark: #9b2c2c;
-            --secondary: #0a0a0a;
-            --light: #f7fafc;
-            --white: #ffffff;
-            --gray-100: #f7fafc;
-            --gray-200: #edf2f7;
-            --gray-300: #e2e8f0;
-            --gray-400: #cbd5e0;
-            --gray-500: #a0aec0;
-            --gray-600: #718096;
-            --gray-700: #4a5568;
-            --gray-800: #2d3748;
-            --gray-900: #1a202c;
+            --primary: #C5A059;        /* دهبي فخم */
+            --primary-dark: #A67C3B;    /* دهبي غامق */
+            --primary-light: #E5C28E;   /* دهبي فاتح */
+            --secondary: #0A0A0A;       /* أسود */
+            --accent: #8B1E1E;          /* أحمر */
+            --light: #F5F5F5;           /* أبيض فاتح */
+            --white: #FFFFFF;
+            --gray-100: #F0F0F0;
+            --gray-200: #E0E0E0;
+            --gray-300: #D0D0D0;
+            --gray-400: #B0B0B0;
+            --gray-500: #909090;
+            --gray-600: #707070;
+            --gray-700: #505050;
+            --gray-800: #303030;
+            --gray-900: #1A1A1A;
             --success: #38a169;
             --warning: #d69e2e;
             --danger: #e53e3e;
@@ -210,11 +60,143 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--light);
-            color: var(--gray-900);
+            background: var(--secondary);
+            color: var(--white);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* ============ أنماط الخلفية المتحركة بحلقات ذهبية ============ */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .rotating-rings {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ring {
+            position: absolute;
+            border: 2px solid rgba(197, 160, 89, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate-ring linear infinite;
+        }
+
+        .ring::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(197, 160, 89, 0.3);
+            border-radius: 50%;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
+        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+
+        @keyframes rotate-ring {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .gold-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: float-particle 15s infinite;
+            opacity: 0.3;
+        }
+
+        .gold-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .gold-particle:nth-child(2) { top: 60%; left: 20%; width: 6px; height: 6px; animation-delay: 2s; }
+        .gold-particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
+        .gold-particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
+        .gold-particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
+        .gold-particle:nth-child(6) { top: 85%; left: 30%; width: 5px; height: 5px; animation-delay: 5s; }
+        .gold-particle:nth-child(7) { top: 45%; left: 45%; animation-delay: 2.5s; }
+        .gold-particle:nth-child(8) { top: 30%; left: 60%; width: 7px; height: 7px; animation-delay: 3.5s; }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(30px, -40px) scale(1.5); opacity: 0.6; }
+            50% { transform: translate(-30px, 30px) scale(0.8); opacity: 0.2; }
+            75% { transform: translate(40px, 20px) scale(1.2); opacity: 0.4; }
+        }
+
+        .gold-gradient {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 50% 50%,
+                        rgba(197, 160, 89, 0.08) 0%,
+                        transparent 30%,
+                        rgba(139, 30, 30, 0.05) 60%,
+                        transparent 80%);
+            animation: rotate-gradient 60s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .gold-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, 
+                rgba(197, 160, 89, 0.05) 0%, 
+                transparent 25%,
+                rgba(197, 160, 89, 0.05) 50%,
+                transparent 75%,
+                rgba(197, 160, 89, 0.05) 100%);
+            animation: wave-move 15s infinite linear;
+        }
+
+        @keyframes wave-move {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-5%) translateY(-20px); }
+            100% { transform: translateX(-10%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .ring:nth-child(3) { width: 400px; height: 400px; }
+            .ring:nth-child(4) { width: 600px; height: 600px; }
+            .ring:nth-child(5) { width: 800px; height: 800px; }
         }
 
         /* ============ شاشة التحميل ============ */
@@ -224,19 +206,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%);
+            background: linear-gradient(135deg, var(--secondary) 0%, #000000 100%);
             z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: opacity 0.5s ease;
+            border: 2px solid var(--primary);
         }
 
         .loading-logo {
             width: 100px;
             height: 100px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(197, 160, 89, 0.15);
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
@@ -244,6 +227,7 @@
             margin-bottom: 2rem;
             position: relative;
             box-shadow: var(--shadow-xl);
+            border: 3px solid rgba(197, 160, 89, 0.3);
         }
 
         .loading-logo::before {
@@ -251,18 +235,18 @@
             position: absolute;
             width: 120px;
             height: 120px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(197, 160, 89, 0.5);
             border-radius: var(--radius-full);
             animation: pulse 2s infinite;
         }
 
         .loading-logo i {
             font-size: 3rem;
-            color: white;
+            color: var(--primary);
         }
 
         .loading-text {
-            color: white;
+            color: var(--primary);
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
@@ -271,14 +255,14 @@
         .loading-bar {
             width: 250px;
             height: 5px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-full);
             overflow: hidden;
         }
 
         .loading-progress {
             height: 100%;
-            background: white;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             width: 0%;
             animation: loading 2s ease-in-out infinite;
         }
@@ -302,8 +286,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, 
-                rgba(197, 48, 48, 0.95) 0%,
-                rgba(155, 44, 44, 0.95) 100%);
+                rgba(10, 10, 10, 0.98) 0%,
+                rgba(0, 0, 0, 0.98) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -318,13 +302,13 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(26, 26, 26, 0.98);
             backdrop-filter: blur(20px);
             border-radius: var(--radius-2xl);
             padding: 3rem;
             box-shadow: var(--shadow-2xl);
             animation: slideUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(197, 160, 89, 0.3);
         }
 
         .login-header {
@@ -336,7 +320,7 @@
             width: 90px;
             height: 90px;
             margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
@@ -346,23 +330,23 @@
 
         .login-logo i {
             font-size: 2.5rem;
-            color: white;
+            color: var(--white);
         }
 
         .login-title {
             font-size: 2.2rem;
             font-weight: 900;
-            color: var(--gray-900);
+            color: var(--white);
             margin-bottom: 0.5rem;
         }
 
         .login-subtitle {
-            color: var(--gray-600);
+            color: var(--gray-500);
             font-size: 0.95rem;
         }
 
         .login-error {
-            background: #fed7d7;
+            background: rgba(229, 62, 62, 0.1);
             color: var(--danger);
             padding: 1rem 1.5rem;
             border-radius: var(--radius-lg);
@@ -395,7 +379,7 @@
             right: 1.2rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray-400);
+            color: var(--gray-500);
             font-size: 1.2rem;
             transition: var(--transition);
         }
@@ -403,20 +387,20 @@
         .input-field {
             width: 100%;
             padding: 1.1rem 3.2rem 1.1rem 1.2rem;
-            background: var(--light);
-            border: 2px solid var(--gray-200);
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-lg);
             font-family: 'Cairo', sans-serif;
             font-size: 1rem;
-            color: var(--gray-900);
+            color: var(--white);
             transition: var(--transition);
         }
 
         .input-field:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(197, 48, 48, 0.1);
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
         }
 
         .input-field:focus + .input-icon {
@@ -435,7 +419,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--gray-700);
+            color: var(--gray-400);
         }
 
         .forgot-link {
@@ -446,14 +430,14 @@
         }
 
         .forgot-link:hover {
-            color: var(--primary-dark);
+            color: var(--primary-light);
         }
 
         .login-button {
             width: 100%;
             padding: 1.1rem;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             border: none;
             border-radius: var(--radius-lg);
             font-family: 'Cairo', sans-serif;
@@ -495,7 +479,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            color: var(--gray-600);
+            color: var(--gray-500);
             font-size: 0.9rem;
             margin-top: 1.8rem;
         }
@@ -519,9 +503,9 @@
             right: 0;
             left: 0;
             height: 80px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            border-bottom: 2px solid var(--primary);
             padding: 0 2rem;
             display: flex;
             justify-content: space-between;
@@ -541,7 +525,7 @@
             background: none;
             border: none;
             font-size: 1.6rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
             cursor: pointer;
             padding: 0.6rem;
             border-radius: var(--radius-md);
@@ -549,7 +533,7 @@
         }
 
         .menu-toggle:hover {
-            background: var(--gray-100);
+            background: rgba(255,255,255,0.1);
         }
 
         .dashboard-brand {
@@ -562,7 +546,7 @@
         .brand-logo {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
@@ -572,17 +556,17 @@
 
         .brand-logo i {
             font-size: 1.4rem;
-            color: white;
+            color: var(--white);
         }
 
         .brand-text {
             font-size: 1.5rem;
             font-weight: 900;
-            color: var(--gray-900);
+            color: var(--white);
         }
 
         .brand-text span {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -602,15 +586,15 @@
             align-items: center;
             gap: 0.8rem;
             padding: 0.6rem 1.2rem;
-            background: var(--light);
-            border: none;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-full);
             cursor: pointer;
             transition: var(--transition);
         }
 
         .user-button:hover {
-            background: var(--gray-100);
+            background: rgba(197, 160, 89, 0.1);
             transform: translateY(-2px);
             box-shadow: var(--shadow);
         }
@@ -619,11 +603,11 @@
             width: 40px;
             height: 40px;
             border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--white);
             font-weight: 700;
             font-size: 1rem;
             overflow: hidden;
@@ -643,13 +627,13 @@
 
         .user-name {
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--white);
             font-size: 0.95rem;
         }
 
         .user-role {
             font-size: 0.8rem;
-            color: var(--gray-600);
+            color: var(--gray-500);
         }
 
         .dropdown-arrow {
@@ -663,14 +647,15 @@
             top: calc(100% + 15px);
             left: 0;
             width: 260px;
-            background: white;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
             padding: 0.8rem;
             z-index: 1000;
             display: none;
             animation: fadeInDown 0.3s ease;
-            border: 1px solid var(--gray-200);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .user-dropdown.show {
@@ -687,7 +672,7 @@
             align-items: center;
             gap: 0.8rem;
             padding: 0.9rem 1.2rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
             text-decoration: none;
             border-radius: var(--radius);
             transition: var(--transition);
@@ -696,7 +681,7 @@
         }
 
         .dropdown-item:hover {
-            background: var(--gray-100);
+            background: rgba(197, 160, 89, 0.1);
             color: var(--primary);
         }
 
@@ -705,12 +690,12 @@
         }
 
         .dropdown-item.danger:hover {
-            background: #fed7d7;
+            background: rgba(229, 62, 62, 0.1);
         }
 
         .dropdown-divider {
             height: 1px;
-            background: var(--gray-200);
+            background: rgba(197, 160, 89, 0.2);
             margin: 0.6rem 0;
         }
 
@@ -721,9 +706,9 @@
             right: 0;
             bottom: 0;
             width: 300px;
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(15px);
-            border-left: 1px solid var(--gray-200);
+            border-left: 1px solid rgba(197, 160, 89, 0.2);
             overflow-y: auto;
             z-index: 900;
             transition: var(--transition);
@@ -761,7 +746,7 @@
             align-items: center;
             gap: 1rem;
             padding: 0.9rem 1.2rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
             text-decoration: none;
             border-radius: var(--radius-lg);
             transition: var(--transition);
@@ -771,15 +756,16 @@
         }
 
         .menu-link:hover {
-            background: var(--gray-100);
+            background: rgba(197, 160, 89, 0.1);
             color: var(--primary);
             transform: translateX(-5px);
         }
 
         .menu-link.active {
-            background: linear-gradient(135deg, rgba(197, 48, 48, 0.1) 0%, rgba(155, 44, 44, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(197, 160, 89, 0.15), rgba(139, 30, 30, 0.15));
             color: var(--primary);
             font-weight: 700;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .menu-link.active::before {
@@ -789,7 +775,7 @@
             top: 0;
             bottom: 0;
             width: 5px;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
         }
 
         .menu-icon {
@@ -799,8 +785,8 @@
         }
 
         .menu-badge {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             padding: 0.2rem 0.8rem;
             border-radius: var(--radius-full);
             font-size: 0.8rem;
@@ -845,15 +831,15 @@
         .page-title {
             font-size: 2.2rem;
             font-weight: 900;
-            color: var(--gray-900);
+            color: var(--white);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .page-subtitle {
-            color: var(--gray-600);
+            color: var(--gray-500);
             font-size: 1.1rem;
         }
 
@@ -863,15 +849,66 @@
             margin-top: 1.5rem;
         }
 
-        /* البطاقات */
+        /* البطاقات الإحصائية */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-2xl);
+            border-color: var(--primary);
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(197, 160, 89, 0.1), rgba(139, 30, 30, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* البطاقات العادية */
         .card {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(26, 26, 26, 0.8);
             backdrop-filter: blur(10px);
             border-radius: var(--radius-xl);
             padding: 2rem;
             box-shadow: var(--shadow-lg);
             margin-bottom: 2rem;
-            border: 1px solid rgba(226, 232, 240, 0.5);
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .card-header {
@@ -880,13 +917,13 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .card-title {
             font-size: 1.4rem;
             font-weight: 700;
-            color: var(--gray-900);
+            color: var(--white);
             display: flex;
             align-items: center;
             gap: 0.8rem;
@@ -911,7 +948,7 @@
         .form-label {
             display: block;
             margin-bottom: 0.6rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
             font-weight: 600;
             font-size: 0.95rem;
         }
@@ -924,20 +961,25 @@
         .form-control {
             width: 100%;
             padding: 0.9rem 1.2rem;
-            background: var(--light);
-            border: 2px solid var(--gray-200);
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(197, 160, 89, 0.2);
             border-radius: var(--radius-lg);
             font-family: 'Cairo', sans-serif;
             font-size: 1rem;
-            color: var(--gray-900);
+            color: var(--white);
             transition: var(--transition);
+        }
+
+        .form-control option {
+            background: var(--secondary);
+            color: var(--white);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(197, 48, 48, 0.1);
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
         }
 
         .form-textarea {
@@ -945,33 +987,44 @@
             resize: vertical;
         }
 
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23C5A059' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 1rem center;
+            background-size: 1rem;
+            padding-left: 2.5rem;
+        }
+
         .form-check {
             display: flex;
             align-items: center;
             gap: 0.7rem;
             margin-bottom: 0.8rem;
+            color: var(--gray-300);
         }
 
         .form-check-input {
             width: 18px;
             height: 18px;
             border-radius: var(--radius-sm);
+            accent-color: var(--primary);
         }
 
         /* رفع الصور */
         .image-upload {
-            border: 2px dashed var(--gray-300);
+            border: 2px dashed rgba(197, 160, 89, 0.3);
             border-radius: var(--radius-lg);
             padding: 2rem;
             text-align: center;
             transition: var(--transition);
             cursor: pointer;
-            background: var(--light);
+            background: rgba(0,0,0,0.3);
         }
 
         .image-upload:hover {
             border-color: var(--primary);
-            background: rgba(197, 48, 48, 0.05);
+            background: rgba(197, 160, 89, 0.05);
         }
 
         .image-preview {
@@ -980,11 +1033,11 @@
             margin: 0 auto 1.5rem;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            background: white;
+            background: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--gray-200);
+            border: 2px solid rgba(197, 160, 89, 0.2);
         }
 
         .image-preview img {
@@ -1014,42 +1067,44 @@
 
         /* الجداول */
         .table-container {
-            background: white;
+            background: rgba(0,0,0,0.3);
             border-radius: var(--radius-xl);
             overflow: hidden;
             box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-200);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            overflow-x: auto;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 800px;
         }
 
         .data-table thead {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
         }
 
         .data-table th {
             padding: 1.2rem 1rem;
             text-align: right;
-            color: white;
+            color: var(--white);
             font-weight: 700;
             font-size: 0.95rem;
         }
 
         .data-table tbody tr {
             transition: var(--transition);
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
 
         .data-table tbody tr:hover {
-            background: rgba(197, 48, 48, 0.03);
+            background: rgba(197, 160, 89, 0.05);
         }
 
         .data-table td {
             padding: 1.2rem 1rem;
-            color: var(--gray-700);
+            color: var(--gray-300);
         }
 
         .table-image {
@@ -1057,7 +1112,7 @@
             height: 60px;
             border-radius: var(--radius);
             object-fit: cover;
-            border: 2px solid var(--gray-200);
+            border: 2px solid rgba(197, 160, 89, 0.2);
         }
 
         .status-badge {
@@ -1071,31 +1126,37 @@
         .status-active {
             background: rgba(56, 161, 105, 0.1);
             color: var(--success);
+            border: 1px solid var(--success);
         }
 
         .status-inactive {
             background: rgba(160, 174, 192, 0.1);
-            color: var(--gray-600);
+            color: var(--gray-400);
+            border: 1px solid var(--gray-600);
         }
 
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(214, 158, 46, 0.1);
+            color: var(--warning);
+            border: 1px solid var(--warning);
         }
 
         .status-contacted {
-            background: #cce5ff;
-            color: #004085;
+            background: rgba(66, 153, 225, 0.1);
+            color: #4299e1;
+            border: 1px solid #4299e1;
         }
 
         .status-sold {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
         }
 
         .status-rejected {
-            background: #f8d7da;
-            color: #721c24;
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
         }
 
         .table-actions {
@@ -1119,33 +1180,36 @@
         .table-btn.edit {
             background: rgba(56, 161, 105, 0.1);
             color: var(--success);
+            border: 1px solid var(--success);
         }
 
         .table-btn.edit:hover {
             background: var(--success);
-            color: white;
+            color: var(--white);
             transform: translateY(-2px);
         }
 
         .table-btn.delete {
             background: rgba(229, 62, 62, 0.1);
             color: var(--danger);
+            border: 1px solid var(--danger);
         }
 
         .table-btn.delete:hover {
             background: var(--danger);
-            color: white;
+            color: var(--white);
             transform: translateY(-2px);
         }
 
         .table-btn.view {
             background: rgba(66, 153, 225, 0.1);
             color: #4299e1;
+            border: 1px solid #4299e1;
         }
 
         .table-btn.view:hover {
             background: #4299e1;
-            color: white;
+            color: var(--white);
             transform: translateY(-2px);
         }
 
@@ -1174,7 +1238,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -1183,8 +1247,8 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             box-shadow: var(--shadow);
         }
 
@@ -1194,15 +1258,14 @@
         }
 
         .btn-secondary {
-            background: var(--light);
-            color: var(--gray-700);
-            border: 2px solid var(--gray-300);
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
         .btn-secondary:hover {
             background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            color: var(--secondary);
             transform: translateY(-3px);
         }
 
@@ -1233,7 +1296,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 2000;
             display: none;
@@ -1248,7 +1311,8 @@
         }
 
         .modal {
-            background: white;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius-2xl);
             width: 100%;
             max-width: 900px;
@@ -1256,13 +1320,13 @@
             overflow: hidden;
             box-shadow: var(--shadow-2xl);
             animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border: 1px solid var(--gray-200);
+            border: 1px solid rgba(197, 160, 89, 0.3);
         }
 
         .modal-header {
             padding: 1.5rem 2rem;
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1276,7 +1340,7 @@
         .modal-close {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            color: white;
+            color: var(--white);
             width: 40px;
             height: 40px;
             border-radius: var(--radius-full);
@@ -1311,7 +1375,8 @@
         }
 
         .toast {
-            background: white;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1.2rem 1.8rem;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
@@ -1322,6 +1387,7 @@
             max-width: 450px;
             animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             border-right: 5px solid var(--primary);
+            color: var(--white);
         }
 
         @keyframes slideInRight {
@@ -1333,42 +1399,16 @@
         .toast.error { border-color: var(--danger); }
         .toast.warning { border-color: var(--warning); }
 
-        .toast-icon {
-            font-size: 1.6rem;
-        }
-
+        .toast-icon { font-size: 1.6rem; }
         .toast.success .toast-icon { color: var(--success); }
         .toast.error .toast-icon { color: var(--danger); }
         .toast.warning .toast-icon { color: var(--warning); }
 
-        .toast-content {
-            flex: 1;
-        }
-
-        .toast-title {
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            color: var(--gray-900);
-        }
-
-        .toast-message {
-            color: var(--gray-600);
-            font-size: 0.95rem;
-        }
-
-        .toast-close {
-            background: none;
-            border: none;
-            color: var(--gray-400);
-            cursor: pointer;
-            padding: 0.6rem;
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-
-        .toast-close:hover {
-            color: var(--gray-700);
-        }
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; margin-bottom: 0.3rem; color: var(--white); }
+        .toast-message { color: var(--gray-400); font-size: 0.95rem; }
+        .toast-close { background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0.6rem; font-size: 1.1rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--white); }
 
         /* حالة التحميل */
         .loading-overlay {
@@ -1377,7 +1417,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(10, 10, 10, 0.9);
             backdrop-filter: blur(5px);
             z-index: 4000;
             display: none;
@@ -1386,67 +1426,34 @@
             flex-direction: column;
         }
 
-        .loading-overlay.active {
-            display: flex;
-        }
-
+        .loading-overlay.active { display: flex; }
         .loading-spinner {
             width: 70px;
             height: 70px;
-            border: 5px solid var(--gray-200);
+            border: 5px solid rgba(197, 160, 89, 0.1);
             border-top: 5px solid var(--primary);
-            border-radius: var(--radius-full);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: var(--gray-800);
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: var(--white); font-size: 1.2rem; font-weight: 600; }
 
         /* شريط التمرير المخصص */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: var(--radius-full);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #c53030, #9b2c2c);
-            border-radius: var(--radius-full);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #9b2c2c, #c53030);
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--secondary); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--accent), var(--primary)); }
 
         /* استجابة للجوال */
         @media (max-width: 1200px) {
-            .dashboard-sidebar {
-                width: 280px;
-            }
-            .dashboard-main {
-                margin-right: 280px;
-            }
-            .form-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
+            .dashboard-sidebar { width: 280px; }
+            .dashboard-main { margin-right: 280px; }
+            .form-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
         }
 
         @media (max-width: 992px) {
-            .menu-toggle {
-                display: block;
-            }
+            .menu-toggle { display: block; }
             .dashboard-sidebar {
                 transform: translateX(100%);
                 box-shadow: var(--shadow-2xl);
@@ -1460,103 +1467,45 @@
             .dashboard-main.expanded {
                 margin-right: 0;
             }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+            .form-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .dashboard-header {
-                padding: 0 1.2rem;
-            }
-            .brand-text {
-                font-size: 1.3rem;
-            }
-            .user-info,
-            .user-name,
-            .user-role {
-                display: none;
-            }
-            .user-button {
-                padding: 0.5rem;
-            }
-            .dashboard-main {
-                padding: 1.5rem;
-            }
-            .page-title {
-                font-size: 2rem;
-            }
-            .table-container {
-                overflow-x: auto;
-            }
-            .data-table {
-                min-width: 900px;
-            }
-            .modal {
-                margin: 1rem;
-            }
+            .dashboard-header { padding: 0 1.2rem; }
+            .brand-text { font-size: 1.3rem; }
+            .user-info { display: none; }
+            .user-button { padding: 0.5rem; }
+            .dashboard-main { padding: 1.5rem; }
+            .page-title { font-size: 2rem; }
+            .modal { margin: 1rem; }
         }
 
         @media (max-width: 480px) {
-            .login-card {
-                padding: 2rem 1.5rem;
-            }
-            .card {
-                padding: 1.5rem;
-            }
-            .page-actions {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .button-group {
-                flex-direction: column;
-            }
-            .toast {
-                min-width: auto;
-                width: calc(100% - 40px);
-            }
+            .login-card { padding: 2rem 1.5rem; }
+            .card { padding: 1.5rem; }
+            .page-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .toast { min-width: auto; width: calc(100% - 40px); }
         }
     </style>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Supabase Client -->
+    <!-- JSONBin.io Client -->
     <script src="supabase-client.js"></script>
 </head>
 <body>
     <!-- الخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="floating-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
+        <div class="rotating-rings">
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+            <div class="ring"></div><div class="ring"></div>
         </div>
-        <div class="wave-container">
-            <div class="wave"></div>
+        <div class="gold-particles">
+            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
+            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
+            <div class="gold-particle"></div><div class="gold-particle"></div>
         </div>
-        <div class="gradient-flow"></div>
-        <div class="floating-particles">
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-            <div class="small-particle"></div>
-        </div>
+        <div class="gold-gradient"></div>
+        <div class="gold-wave"></div>
     </div>
 
     <!-- شاشة التحميل -->
@@ -1772,83 +1721,55 @@
                     <p class="page-subtitle">مرحباً بك في نظام إدارة سيارات عبدالله</p>
                 </div>
 
-                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-car"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>🚗 إجمالي السيارات</h3>
+                            <div class="stat-number" id="statProductsValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statProductsValue">0</h3>
-                            <p>إجمالي السيارات</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-car"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-tags"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>🏷️ الماركات</h3>
+                            <div class="stat-number" id="statBrandsValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statBrandsValue">0</h3>
-                            <p>الماركات</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-tags"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-folder"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>📁 الأقسام</h3>
+                            <div class="stat-number" id="statCategoriesValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statCategoriesValue">0</h3>
-                            <p>الأقسام</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-folder"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>👥 المستخدمين</h3>
+                            <div class="stat-number" id="statUsersValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statUsersValue">0</h3>
-                            <p>المستخدمين</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-tag"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>📝 طلبات البيع</h3>
+                            <div class="stat-number" id="statSellRequestsValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statSellRequestsValue">0</h3>
-                            <p>طلبات البيع</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-tag"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>🔄 طلبات الاستبدال</h3>
+                            <div class="stat-number" id="statExchangeRequestsValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statExchangeRequestsValue">0</h3>
-                            <p>طلبات الاستبدال</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
+                        <div class="stat-info">
+                            <h3>📦 طلبات الشراء</h3>
+                            <div class="stat-number" id="statOrdersValue">0</div>
                         </div>
-                        <div class="stat-content">
-                            <h3 id="statOrdersValue">0</h3>
-                            <p>طلبات الشراء</p>
-                        </div>
+                        <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
                     </div>
                 </div>
             </section>
@@ -1869,26 +1790,22 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-tags"></i> قائمة الماركات</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="brandsTable">
-                                <thead>
-                                    <tr>
-                                        <th>الشعار</th>
-                                        <th>الاسم (عربي)</th>
-                                        <th>الاسم (إنجليزي)</th>
-                                        <th>الحالة</th>
-                                        <th>تاريخ الإضافة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="brandsTableBody">
-                                    <tr>
-                                        <td colspan="6" style="text-align: center; padding: 2rem;">لا توجد ماركات</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="brandsTable">
+                            <thead>
+                                <tr>
+                                    <th>الشعار</th>
+                                    <th>الاسم (عربي)</th>
+                                    <th>الاسم (إنجليزي)</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الإضافة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="brandsTableBody">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">لا توجد ماركات</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -1909,26 +1826,22 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-folder"></i> قائمة الأقسام</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="categoriesTable">
-                                <thead>
-                                    <tr>
-                                        <th>الصورة</th>
-                                        <th>الاسم (عربي)</th>
-                                        <th>الاسم (إنجليزي)</th>
-                                        <th>الوصف</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="categoriesTableBody">
-                                    <tr>
-                                        <td colspan="6" style="text-align: center; padding: 2rem;">لا توجد أقسام</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="categoriesTable">
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الاسم (عربي)</th>
+                                    <th>الاسم (إنجليزي)</th>
+                                    <th>الوصف</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTableBody">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">لا توجد أقسام</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -1949,28 +1862,24 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-car"></i> قائمة السيارات</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="productsTable">
-                                <thead>
-                                    <tr>
-                                        <th>الصورة</th>
-                                        <th>الاسم</th>
-                                        <th>الماركة</th>
-                                        <th>القسم</th>
-                                        <th>السعر</th>
-                                        <th>النوع</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productsTableBody">
-                                    <tr>
-                                        <td colspan="8" style="text-align: center; padding: 2rem;">لا توجد سيارات</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الاسم</th>
+                                    <th>الماركة</th>
+                                    <th>القسم</th>
+                                    <th>السعر</th>
+                                    <th>النوع</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <tr><td colspan="8" style="text-align: center; padding: 2rem;">لا توجد سيارات</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -1986,27 +1895,23 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-tag"></i> قائمة طلبات البيع</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="sellRequestsTable">
-                                <thead>
-                                    <tr>
-                                        <th>العميل</th>
-                                        <th>الهاتف</th>
-                                        <th>السيارة</th>
-                                        <th>السعر</th>
-                                        <th>طريقة التواصل</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="sellRequestsTableBody">
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات بيع</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="sellRequestsTable">
+                            <thead>
+                                <tr>
+                                    <th>العميل</th>
+                                    <th>الهاتف</th>
+                                    <th>السيارة</th>
+                                    <th>السعر</th>
+                                    <th>طريقة التواصل</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sellRequestsTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات بيع</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -2022,27 +1927,23 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-exchange-alt"></i> قائمة طلبات الاستبدال</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="exchangeRequestsTable">
-                                <thead>
-                                    <tr>
-                                        <th>العميل</th>
-                                        <th>الهاتف</th>
-                                        <th>السيارة الحالية</th>
-                                        <th>السيارة المطلوبة</th>
-                                        <th>طريقة التواصل</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="exchangeRequestsTableBody">
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات استبدال</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="exchangeRequestsTable">
+                            <thead>
+                                <tr>
+                                    <th>العميل</th>
+                                    <th>الهاتف</th>
+                                    <th>السيارة الحالية</th>
+                                    <th>السيارة المطلوبة</th>
+                                    <th>طريقة التواصل</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="exchangeRequestsTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات استبدال</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -2058,27 +1959,23 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-shopping-cart"></i> قائمة طلبات الشراء</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="ordersTable">
-                                <thead>
-                                    <tr>
-                                        <th>العميل</th>
-                                        <th>الهاتف</th>
-                                        <th>المنتج</th>
-                                        <th>السعر</th>
-                                        <th>طريقة الدفع</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ordersTableBody">
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات شراء</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>العميل</th>
+                                    <th>الهاتف</th>
+                                    <th>المنتج</th>
+                                    <th>السعر</th>
+                                    <th>طريقة الدفع</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد طلبات شراء</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -2099,27 +1996,23 @@
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-users"></i> قائمة المستخدمين</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-container">
-                            <table class="data-table" id="usersTable">
-                                <thead>
-                                    <tr>
-                                        <th>الصورة</th>
-                                        <th>الاسم</th>
-                                        <th>اسم المستخدم</th>
-                                        <th>البريد</th>
-                                        <th>الدور</th>
-                                        <th>الحالة</th>
-                                        <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTableBody">
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; padding: 2rem;">لا توجد مستخدمين</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-container">
+                        <table class="data-table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الاسم</th>
+                                    <th>اسم المستخدم</th>
+                                    <th>البريد</th>
+                                    <th>الدور</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 2rem;">لا توجد مستخدمين</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -2211,7 +2104,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" style="border-top: 1px solid var(--gray-200);">
+                    <div class="card-body" style="border-top: 1px solid rgba(197,160,89,0.2);">
                         <button class="btn btn-primary" onclick="dashboard.saveSiteSettings()">
                             <i class="fas fa-save"></i> حفظ الإعدادات
                         </button>
@@ -2259,7 +2152,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" style="border-top: 1px solid var(--gray-200);">
+                    <div class="card-body" style="border-top: 1px solid rgba(197,160,89,0.2);">
                         <button class="btn btn-primary" onclick="dashboard.saveProfile()">
                             <i class="fas fa-save"></i> حفظ التغييرات
                         </button>
@@ -2628,7 +2521,7 @@
                 // إعداد مستمعي الأحداث
                 this.setupEventListeners();
                 
-                // تحميل البيانات من Supabase
+                // تحميل البيانات من JSONBin.io
                 await this.loadData();
             }
 
@@ -2659,7 +2552,7 @@
                 localStorage.setItem('admin_session', JSON.stringify(session));
             }
 
-            // ============ تحميل البيانات من Supabase ============
+            // ============ تحميل البيانات من JSONBin.io ============
             async loadData() {
                 this.showLoading('جاري تحميل البيانات...');
                 
@@ -2810,12 +2703,7 @@
             }
 
             getRoleName(role) {
-                const roles = {
-                    admin: 'مدير',
-                    editor: 'محرر',
-                    sales: 'مبيعات',
-                    viewer: 'مشاهد'
-                };
+                const roles = { admin: 'مدير', editor: 'محرر', sales: 'مبيعات', viewer: 'مشاهد' };
                 return roles[role] || role;
             }
 
@@ -2852,36 +2740,20 @@
                     if (menuItem) menuItem.classList.add('active');
                     
                     switch(sectionId) {
-                        case 'brands':
-                            this.loadBrands();
+                        case 'brands': this.loadBrands(); break;
+                        case 'categories': this.loadCategories(); break;
+                        case 'products': 
+                            this.loadProducts(); 
+                            this.loadBrandOptions(); 
+                            this.loadCategoryOptions(); 
+                            this.loadYearOptions(); 
                             break;
-                        case 'categories':
-                            this.loadCategories();
-                            break;
-                        case 'products':
-                            this.loadProducts();
-                            this.loadBrandOptions();
-                            this.loadCategoryOptions();
-                            this.loadYearOptions();
-                            break;
-                        case 'sell-requests':
-                            this.loadSellRequests();
-                            break;
-                        case 'exchange-requests':
-                            this.loadExchangeRequests();
-                            break;
-                        case 'orders':
-                            this.loadOrders();
-                            break;
-                        case 'users':
-                            this.loadUsers();
-                            break;
-                        case 'site-settings':
-                            this.loadSiteSettings();
-                            break;
-                        case 'profile':
-                            this.loadProfile();
-                            break;
+                        case 'sell-requests': this.loadSellRequests(); break;
+                        case 'exchange-requests': this.loadExchangeRequests(); break;
+                        case 'orders': this.loadOrders(); break;
+                        case 'users': this.loadUsers(); break;
+                        case 'site-settings': this.loadSiteSettings(); break;
+                        case 'profile': this.loadProfile(); break;
                     }
                 }
             }
@@ -2898,28 +2770,12 @@
                 
                 tbody.innerHTML = this.brands.map(brand => `
                     <tr>
-                        <td>
-                            ${brand.logo ? `<img src="${brand.logo}" class="table-image" alt="${brand.name_ar}">` : 
-                            '<div style="width: 60px; height: 60px; background: var(--gray-100); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-tag"></i></div>'}
-                        </td>
+                        <td>${brand.logo ? `<img src="${brand.logo}" class="table-image" alt="${brand.name_ar}">` : '<div style="width: 60px; height: 60px; background: rgba(197,160,89,0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-tag" style="color: var(--primary);"></i></div>'}</td>
                         <td>${brand.name_ar}</td>
                         <td>${brand.name_en}</td>
-                        <td>
-                            <span class="status-badge ${brand.active ? 'status-active' : 'status-inactive'}">
-                                ${brand.active ? 'نشط' : 'غير نشط'}
-                            </span>
-                        </td>
+                        <td><span class="status-badge ${brand.active ? 'status-active' : 'status-inactive'}">${brand.active ? 'نشط' : 'غير نشط'}</span></td>
                         <td>${brand.created_at ? new Date(brand.created_at).toLocaleDateString('ar-EG') : '-'}</td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="table-btn edit" onclick="dashboard.editBrand('${brand.id}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="table-btn delete" onclick="dashboard.deleteBrand('${brand.id}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        <td><div class="table-actions"><button class="table-btn edit" onclick="dashboard.editBrand('${brand.id}')"><i class="fas fa-edit"></i></button><button class="table-btn delete" onclick="dashboard.deleteBrand('${brand.id}')"><i class="fas fa-trash"></i></button></div></td>
                     </tr>
                 `).join('');
             }
@@ -2927,9 +2783,8 @@
             showBrandModal(brandId = null) {
                 const modal = document.getElementById('brandModal');
                 const title = document.getElementById('brandModalTitle');
-                const form = document.getElementById('brandForm');
                 
-                form.reset();
+                document.getElementById('brandForm').reset();
                 document.getElementById('brandId').value = '';
                 document.getElementById('brandLogoPreview').innerHTML = '<div class="image-placeholder"><i class="fas fa-image"></i><span>انقر لرفع الشعار</span></div>';
                 document.getElementById('brandLogoUrl').value = '';
@@ -2943,7 +2798,6 @@
                         document.getElementById('brandNameAr').value = brand.name_ar;
                         document.getElementById('brandNameEn').value = brand.name_en;
                         document.getElementById('brandActive').checked = brand.active !== false;
-                        
                         if (brand.logo) {
                             document.getElementById('brandLogoPreview').innerHTML = `<img src="${brand.logo}" alt="Brand logo">`;
                             document.getElementById('brandLogoUrl').value = brand.logo;
@@ -2952,7 +2806,6 @@
                 } else {
                     title.textContent = 'إضافة ماركة جديدة';
                 }
-                
                 modal.classList.add('active');
             }
 
@@ -2969,14 +2822,10 @@
                 
                 try {
                     let result;
-                    if (id) {
-                        result = await window.db.updateBrand(id, brandData);
-                    } else {
-                        result = await window.db.addBrand(brandData);
-                    }
+                    if (id) result = await window.db.updateBrand(id, brandData);
+                    else result = await window.db.addBrand(brandData);
                     
                     if (result.success) {
-                        // تحديث البيانات المحلية
                         await this.loadData();
                         this.loadBrands();
                         this.updateDashboardStats();
@@ -3000,7 +2849,6 @@
                 
                 try {
                     const result = await window.db.deleteBrand(brandId);
-                    
                     if (result.success) {
                         await this.loadData();
                         this.loadBrands();
@@ -3029,28 +2877,12 @@
                 
                 tbody.innerHTML = this.categories.map(cat => `
                     <tr>
-                        <td>
-                            ${cat.image ? `<img src="${cat.image}" class="table-image" alt="${cat.name_ar}">` : 
-                            '<div style="width: 60px; height: 60px; background: var(--gray-100); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-folder"></i></div>'}
-                        </td>
+                        <td>${cat.image ? `<img src="${cat.image}" class="table-image" alt="${cat.name_ar}">` : '<div style="width: 60px; height: 60px; background: rgba(197,160,89,0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-folder" style="color: var(--primary);"></i></div>'}</td>
                         <td>${cat.name_ar}</td>
                         <td>${cat.name_en}</td>
                         <td>${cat.description || '-'}</td>
-                        <td>
-                            <span class="status-badge ${cat.active ? 'status-active' : 'status-inactive'}">
-                                ${cat.active ? 'نشط' : 'غير نشط'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="table-btn edit" onclick="dashboard.editCategory('${cat.id}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="table-btn delete" onclick="dashboard.deleteCategory('${cat.id}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        <td><span class="status-badge ${cat.active ? 'status-active' : 'status-inactive'}">${cat.active ? 'نشط' : 'غير نشط'}</span></td>
+                        <td><div class="table-actions"><button class="table-btn edit" onclick="dashboard.editCategory('${cat.id}')"><i class="fas fa-edit"></i></button><button class="table-btn delete" onclick="dashboard.deleteCategory('${cat.id}')"><i class="fas fa-trash"></i></button></div></td>
                     </tr>
                 `).join('');
             }
@@ -3058,9 +2890,8 @@
             showCategoryModal(categoryId = null) {
                 const modal = document.getElementById('categoryModal');
                 const title = document.getElementById('categoryModalTitle');
-                const form = document.getElementById('categoryForm');
                 
-                form.reset();
+                document.getElementById('categoryForm').reset();
                 document.getElementById('categoryId').value = '';
                 document.getElementById('categoryImagePreview').innerHTML = '<div class="image-placeholder"><i class="fas fa-image"></i><span>انقر لرفع الصورة</span></div>';
                 document.getElementById('categoryImageUrl').value = '';
@@ -3075,7 +2906,6 @@
                         document.getElementById('categoryNameEn').value = category.name_en;
                         document.getElementById('categoryDesc').value = category.description || '';
                         document.getElementById('categoryActive').checked = category.active !== false;
-                        
                         if (category.image) {
                             document.getElementById('categoryImagePreview').innerHTML = `<img src="${category.image}" alt="Category image">`;
                             document.getElementById('categoryImageUrl').value = category.image;
@@ -3084,7 +2914,6 @@
                 } else {
                     title.textContent = 'إضافة قسم جديد';
                 }
-                
                 modal.classList.add('active');
             }
 
@@ -3102,13 +2931,8 @@
                 
                 try {
                     let result;
-                    if (id) {
-                        result = await window.db.updateCategory ? 
-                            await window.db.updateCategory(id, categoryData) : 
-                            { success: false, error: 'وظيفة التحديث غير متوفرة' };
-                    } else {
-                        result = await window.db.addCategory(categoryData);
-                    }
+                    if (id) result = await window.db.updateCategory ? await window.db.updateCategory(id, categoryData) : { success: false, error: 'وظيفة التحديث غير متوفرة' };
+                    else result = await window.db.addCategory(categoryData);
                     
                     if (result.success) {
                         await this.loadData();
@@ -3161,66 +2985,37 @@
                     const category = this.categories.find(c => c.id === product.category_id);
                     const mainImage = product.images?.[0] || '';
                     
-                    return `
-                        <tr>
-                            <td>
-                                ${mainImage ? `<img src="${mainImage}" class="table-image" alt="${product.name_ar}">` : 
-                                '<div style="width: 60px; height: 60px; background: var(--gray-100); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-car"></i></div>'}
-                            </td>
-                            <td>${product.name_ar}</td>
-                            <td>${brand?.name_ar || '-'}</td>
-                            <td>${category?.name_ar || '-'}</td>
-                            <td>${(product.price || 0).toLocaleString()} ج.م</td>
-                            <td>
-                                <span class="status-badge ${product.type === 'new' ? 'status-active' : 'status-pending'}">
-                                    ${product.type === 'new' ? 'جديد' : product.type === 'used' ? 'مستعمل' : 'كهربائي'}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="status-badge ${product.active ? 'status-active' : 'status-inactive'}">
-                                    ${product.active ? 'نشط' : 'غير نشط'}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="table-actions">
-                                    <button class="table-btn edit" onclick="dashboard.editProduct('${product.id}')">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="table-btn delete" onclick="dashboard.deleteProduct('${product.id}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                    return `<tr>
+                        <td>${mainImage ? `<img src="${mainImage}" class="table-image" alt="${product.name_ar}">` : '<div style="width: 60px; height: 60px; background: rgba(197,160,89,0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;"><i class="fas fa-car" style="color: var(--primary);"></i></div>'}</td>
+                        <td>${product.name_ar}</td>
+                        <td>${brand?.name_ar || '-'}</td>
+                        <td>${category?.name_ar || '-'}</td>
+                        <td>${(product.price || 0).toLocaleString()} ج.م</td>
+                        <td><span class="status-badge ${product.type === 'new' ? 'status-active' : 'status-pending'}">${product.type === 'new' ? 'جديد' : product.type === 'used' ? 'مستعمل' : 'كهربائي'}</span></td>
+                        <td><span class="status-badge ${product.active ? 'status-active' : 'status-inactive'}">${product.active ? 'نشط' : 'غير نشط'}</span></td>
+                        <td><div class="table-actions"><button class="table-btn edit" onclick="dashboard.editProduct('${product.id}')"><i class="fas fa-edit"></i></button><button class="table-btn delete" onclick="dashboard.deleteProduct('${product.id}')"><i class="fas fa-trash"></i></button></div></td>
+                    </tr>`;
                 }).join('');
             }
 
             loadBrandOptions() {
                 const brandSelect = document.getElementById('productBrand');
                 if (!brandSelect) return;
-                
-                brandSelect.innerHTML = '<option value="">اختر الماركة</option>' + 
-                    this.brands.map(b => `<option value="${b.id}">${b.name_ar}</option>`).join('');
+                brandSelect.innerHTML = '<option value="">اختر الماركة</option>' + this.brands.map(b => `<option value="${b.id}">${b.name_ar}</option>`).join('');
             }
 
             loadCategoryOptions() {
                 const categorySelect = document.getElementById('productCategory');
                 if (!categorySelect) return;
-                
-                categorySelect.innerHTML = '<option value="">اختر القسم</option>' + 
-                    this.categories.map(c => `<option value="${c.id}">${c.name_ar}</option>`).join('');
+                categorySelect.innerHTML = '<option value="">اختر القسم</option>' + this.categories.map(c => `<option value="${c.id}">${c.name_ar}</option>`).join('');
             }
 
             loadYearOptions() {
                 const yearSelect = document.getElementById('productYear');
                 if (!yearSelect) return;
-                
                 const currentYear = new Date().getFullYear();
                 let options = '<option value="">اختر السنة</option>';
-                for (let y = currentYear + 1; y >= 2000; y--) {
-                    options += `<option value="${y}">${y}</option>`;
-                }
+                for (let y = currentYear + 1; y >= 2000; y--) options += `<option value="${y}">${y}</option>`;
                 yearSelect.innerHTML = options;
             }
 
@@ -3231,9 +3026,8 @@
                 
                 const modal = document.getElementById('productModal');
                 const title = document.getElementById('productModalTitle');
-                const form = document.getElementById('productForm');
                 
-                form.reset();
+                document.getElementById('productForm').reset();
                 document.getElementById('productId').value = '';
                 document.getElementById('productImagesPreview').innerHTML = '<div class="image-placeholder"><i class="fas fa-images"></i><span>انقر لرفع الصور</span></div>';
                 document.getElementById('productImagesUrls').value = '';
@@ -3282,7 +3076,6 @@
                 } else {
                     title.textContent = 'إضافة سيارة جديدة';
                 }
-                
                 modal.classList.add('active');
             }
 
@@ -3306,8 +3099,7 @@
                     mileage: parseInt(document.getElementById('productMileage').value) || null,
                     colors: colors,
                     description: document.getElementById('productDescription').value,
-                    images: document.getElementById('productImagesUrls').value ? 
-                        document.getElementById('productImagesUrls').value.split(',').filter(u => u) : [],
+                    images: document.getElementById('productImagesUrls').value ? document.getElementById('productImagesUrls').value.split(',').filter(u => u) : [],
                     featured: document.getElementById('productFeatured').checked,
                     installment: document.getElementById('productInstallment').checked,
                     active: document.getElementById('productActive').checked
@@ -3317,11 +3109,8 @@
                 
                 try {
                     let result;
-                    if (id) {
-                        result = await window.db.updateProduct(id, productData);
-                    } else {
-                        result = await window.db.addProduct(productData);
-                    }
+                    if (id) result = await window.db.updateProduct(id, productData);
+                    else result = await window.db.addProduct(productData);
                     
                     if (result.success) {
                         await this.loadData();
@@ -3375,49 +3164,24 @@
                 }
                 
                 tbody.innerHTML = this.sellRequests.map(request => {
-                    const statusClass = {
-                        'pending': 'status-pending',
-                        'contacted': 'status-contacted',
-                        'sold': 'status-sold',
-                        'rejected': 'status-rejected'
-                    }[request.status] || 'status-pending';
-                    
-                    const statusText = {
-                        'pending': 'قيد المراجعة',
-                        'contacted': 'تم التواصل',
-                        'sold': 'تم البيع',
-                        'rejected': 'مرفوض'
-                    }[request.status] || 'قيد المراجعة';
-
-                    return `
-                        <tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.customer_phone}</td>
-                            <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
-                            <td>${(request.expected_price || 0).toLocaleString()} ج.م</td>
-                            <td>${this.getContactMethodText(request.contact_method)}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <select onchange="dashboard.updateSellRequestStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
-                                        <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                                        <option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
-                                        <option value="sold" ${request.status === 'sold' ? 'selected' : ''}>تم البيع</option>
-                                        <option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>مرفوض</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                    const statusClass = { 'pending': 'status-pending', 'contacted': 'status-contacted', 'sold': 'status-sold', 'rejected': 'status-rejected' }[request.status] || 'status-pending';
+                    const statusText = { 'pending': 'قيد المراجعة', 'contacted': 'تم التواصل', 'sold': 'تم البيع', 'rejected': 'مرفوض' }[request.status] || 'قيد المراجعة';
+                    return `<tr>
+                        <td>${request.customer_name}</td>
+                        <td>${request.customer_phone}</td>
+                        <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
+                        <td>${(request.expected_price || 0).toLocaleString()} ج.م</td>
+                        <td>${this.getContactMethodText(request.contact_method)}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td><div class="table-actions"><select onchange="dashboard.updateSellRequestStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(197,160,89,0.2);"><option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option><option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option><option value="sold" ${request.status === 'sold' ? 'selected' : ''}>تم البيع</option><option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>مرفوض</option></select></div></td>
+                    </tr>`;
                 }).join('');
             }
 
             async updateSellRequestStatus(requestId, status) {
                 this.showLoading('جاري تحديث الحالة...');
-                
                 try {
                     const result = await window.db.updateSellRequestStatus(requestId, status);
-                    
                     if (result.success) {
                         await this.loadData();
                         this.loadSellRequests();
@@ -3445,45 +3209,23 @@
                 }
                 
                 tbody.innerHTML = this.exchangeRequests.map(request => {
-                    const statusClass = {
-                        'pending': 'status-pending',
-                        'contacted': 'status-contacted',
-                        'completed': 'status-sold'
-                    }[request.status] || 'status-pending';
-                    
-                    const statusText = {
-                        'pending': 'قيد المراجعة',
-                        'contacted': 'تم التواصل',
-                        'completed': 'تم الاستبدال'
-                    }[request.status] || 'قيد المراجعة';
-
-                    return `
-                        <tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.customer_phone}</td>
-                            <td>${request.current_car}</td>
-                            <td>${request.desired_car}</td>
-                            <td>${this.getContactMethodText(request.contact_method)}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <select onchange="dashboard.updateExchangeRequestStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
-                                        <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                                        <option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
-                                        <option value="completed" ${request.status === 'completed' ? 'selected' : ''}>تم الاستبدال</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                    const statusClass = { 'pending': 'status-pending', 'contacted': 'status-contacted', 'completed': 'status-sold' }[request.status] || 'status-pending';
+                    const statusText = { 'pending': 'قيد المراجعة', 'contacted': 'تم التواصل', 'completed': 'تم الاستبدال' }[request.status] || 'قيد المراجعة';
+                    return `<tr>
+                        <td>${request.customer_name}</td>
+                        <td>${request.customer_phone}</td>
+                        <td>${request.current_car}</td>
+                        <td>${request.desired_car}</td>
+                        <td>${this.getContactMethodText(request.contact_method)}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td><div class="table-actions"><select onchange="dashboard.updateExchangeRequestStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(197,160,89,0.2);"><option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option><option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option><option value="completed" ${request.status === 'completed' ? 'selected' : ''}>تم الاستبدال</option></select></div></td>
+                    </tr>`;
                 }).join('');
             }
 
             async updateExchangeRequestStatus(requestId, status) {
                 this.showLoading('جاري تحديث الحالة...');
-                
                 try {
-                    // TODO: إضافة دالة تحديث حالة طلب الاستبدال
                     this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
                     await this.loadData();
                     this.loadExchangeRequests();
@@ -3507,56 +3249,25 @@
                 
                 tbody.innerHTML = this.orders.map(order => {
                     const product = this.products.find(p => p.id === order.product_id);
-                    
-                    const statusClass = {
-                        'pending': 'status-pending',
-                        'processing': 'status-contacted',
-                        'completed': 'status-sold',
-                        'cancelled': 'status-rejected'
-                    }[order.status] || 'status-pending';
-                    
-                    const statusText = {
-                        'pending': 'قيد المراجعة',
-                        'processing': 'جاري التجهيز',
-                        'completed': 'تم التسليم',
-                        'cancelled': 'ملغي'
-                    }[order.status] || 'قيد المراجعة';
-
-                    const paymentText = {
-                        'cash': 'كاش',
-                        'bank': 'تحويل بنكي',
-                        'wallet': 'محفظة إلكترونية'
-                    }[order.payment_method] || 'كاش';
-
-                    return `
-                        <tr>
-                            <td>${order.customer_name}</td>
-                            <td>${order.customer_phone}</td>
-                            <td>${product?.name_ar || 'غير محدد'}</td>
-                            <td>${(product?.price || 0).toLocaleString()} ج.م</td>
-                            <td>${paymentText}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                            <td>
-                                <div class="table-actions">
-                                    <select onchange="dashboard.updateOrderStatus('${order.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; border: 1px solid #ddd;">
-                                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                                        <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>جاري التجهيز</option>
-                                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تم التسليم</option>
-                                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>ملغي</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                    const statusClass = { 'pending': 'status-pending', 'processing': 'status-contacted', 'completed': 'status-sold', 'cancelled': 'status-rejected' }[order.status] || 'status-pending';
+                    const statusText = { 'pending': 'قيد المراجعة', 'processing': 'جاري التجهيز', 'completed': 'تم التسليم', 'cancelled': 'ملغي' }[order.status] || 'قيد المراجعة';
+                    const paymentText = { 'cash': 'كاش', 'bank': 'تحويل بنكي', 'wallet': 'محفظة إلكترونية' }[order.payment_method] || 'كاش';
+                    return `<tr>
+                        <td>${order.customer_name}</td>
+                        <td>${order.customer_phone}</td>
+                        <td>${product?.name_ar || 'غير محدد'}</td>
+                        <td>${(product?.price || 0).toLocaleString()} ج.م</td>
+                        <td>${paymentText}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td><div class="table-actions"><select onchange="dashboard.updateOrderStatus('${order.id}', this.value)" style="padding: 0.3rem; border-radius: 5px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(197,160,89,0.2);"><option value="pending" ${order.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option><option value="processing" ${order.status === 'processing' ? 'selected' : ''}>جاري التجهيز</option><option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تم التسليم</option><option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>ملغي</option></select></div></td>
+                    </tr>`;
                 }).join('');
             }
 
             async updateOrderStatus(orderId, status) {
                 this.showLoading('جاري تحديث الحالة...');
-                
                 try {
                     const result = await window.db.updateOrderStatus(orderId, status);
-                    
                     if (result.success) {
                         await this.loadData();
                         this.loadOrders();
@@ -3583,42 +3294,23 @@
                     return;
                 }
                 
-                tbody.innerHTML = this.users.map(user => `
-                    <tr>
-                        <td>
-                            ${user.avatar ? `<img src="${user.avatar}" class="table-image" alt="${user.full_name}">` : 
-                            `<div class="table-image" style="background: linear-gradient(135deg, #c53030, #9b2c2c); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">${user.full_name?.charAt(0) || user.username?.charAt(0) || 'م'}</div>`}
-                        </td>
-                        <td>${user.full_name}</td>
-                        <td>${user.username}</td>
-                        <td>${user.email}</td>
-                        <td>${this.getRoleName(user.role)}</td>
-                        <td>
-                            <span class="status-badge ${user.active ? 'status-active' : 'status-inactive'}">
-                                ${user.active ? 'نشط' : 'غير نشط'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="table-btn edit" onclick="dashboard.editUser('${user.id}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="table-btn delete" onclick="dashboard.deleteUser('${user.id}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = this.users.map(user => `<tr>
+                    <td>${user.avatar ? `<img src="${user.avatar}" class="table-image" alt="${user.full_name}">` : `<div class="table-image" style="background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">${user.full_name?.charAt(0) || user.username?.charAt(0) || 'م'}</div>`}</td>
+                    <td>${user.full_name}</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${this.getRoleName(user.role)}</td>
+                    <td><span class="status-badge ${user.active ? 'status-active' : 'status-inactive'}">${user.active ? 'نشط' : 'غير نشط'}</span></td>
+                    <td><div class="table-actions"><button class="table-btn edit" onclick="dashboard.editUser('${user.id}')"><i class="fas fa-edit"></i></button><button class="table-btn delete" onclick="dashboard.deleteUser('${user.id}')"><i class="fas fa-trash"></i></button></div></td>
+                </tr>`).join('');
             }
 
             showUserModal(userId = null) {
                 const modal = document.getElementById('userModal');
                 const title = document.getElementById('userModalTitle');
-                const form = document.getElementById('userForm');
                 const passwordGroup = document.getElementById('passwordFieldGroup');
                 
-                form.reset();
+                document.getElementById('userForm').reset();
                 document.getElementById('userId').value = '';
                 document.getElementById('userAvatarPreview').innerHTML = '<div class="image-placeholder"><i class="fas fa-user"></i><span>انقر لرفع الصورة</span></div>';
                 document.getElementById('userAvatarUrl').value = '';
@@ -3627,7 +3319,6 @@
                 if (userId) {
                     title.textContent = 'تعديل المستخدم';
                     passwordGroup.style.display = 'none';
-                    
                     const user = this.users.find(u => u.id === userId);
                     if (user) {
                         document.getElementById('userId').value = user.id;
@@ -3637,7 +3328,6 @@
                         document.getElementById('userRole').value = user.role;
                         document.getElementById('userPhone').value = user.phone || '';
                         document.getElementById('userActive').checked = user.active !== false;
-                        
                         if (user.avatar) {
                             document.getElementById('userAvatarPreview').innerHTML = `<img src="${user.avatar}" alt="User avatar">`;
                             document.getElementById('userAvatarUrl').value = user.avatar;
@@ -3648,7 +3338,6 @@
                     passwordGroup.style.display = 'block';
                     document.getElementById('userPassword').required = true;
                 }
-                
                 modal.classList.add('active');
             }
 
@@ -3664,19 +3353,14 @@
                     active: document.getElementById('userActive').checked
                 };
                 
-                if (!id) {
-                    userData.password = document.getElementById('userPassword').value;
-                }
+                if (!id) userData.password = document.getElementById('userPassword').value;
                 
                 this.showLoading(id ? 'جاري تحديث المستخدم...' : 'جاري إضافة المستخدم...');
                 
                 try {
                     let result;
-                    if (id) {
-                        result = await window.db.updateUser(id, userData);
-                    } else {
-                        result = await window.db.addUser(userData);
-                    }
+                    if (id) result = await window.db.updateUser(id, userData);
+                    else result = await window.db.addUser(userData);
                     
                     if (result.success) {
                         await this.loadData();
@@ -3798,12 +3482,7 @@
                 this.showLoading('جاري تحديث الملف الشخصي...');
                 
                 try {
-                    const updateData = {
-                        fullName: fullName,
-                        email: email,
-                        avatar: avatar
-                    };
-                    
+                    const updateData = { fullName, email, avatar };
                     const result = await window.db.updateUser(this.currentUser.id, updateData);
                     
                     if (result.success) {
@@ -3853,14 +3532,12 @@
                 
                 const preview = document.getElementById(previewId);
                 preview.innerHTML = '';
-                
                 const urls = [];
                 
                 this.showLoading('جاري رفع الصور...');
                 
                 for (let i = 0; i < Math.min(files.length, 5); i++) {
-                    const file = files[i];
-                    const result = await window.db.uploadImage(file);
+                    const result = await window.db.uploadImage(files[i]);
                     if (result.success) {
                         urls.push(result.url);
                         const img = document.createElement('img');
@@ -3875,24 +3552,17 @@
                 }
                 
                 document.getElementById(urlInputId).value = urls.join(',');
-                
                 this.hideLoading();
                 this.showToast('تم رفع الصور بنجاح', 'success');
             }
 
             // ============ دوال مساعدة ============
             getContactMethodText(method) {
-                const methods = {
-                    'whatsapp': 'واتساب',
-                    'phone': 'مكالمة هاتفية',
-                    'email': 'بريد إلكتروني',
-                    'visit': 'زيارة المعرض'
-                };
+                const methods = { 'whatsapp': 'واتساب', 'phone': 'مكالمة هاتفية', 'email': 'بريد إلكتروني', 'visit': 'زيارة المعرض' };
                 return methods[method] || method;
             }
 
             setupEventListeners() {
-                // قائمة المستخدم
                 document.getElementById('userMenuBtn').addEventListener('click', function(e) {
                     e.stopPropagation();
                     document.getElementById('userDropdown').classList.toggle('show');
@@ -3902,46 +3572,22 @@
                     document.getElementById('userDropdown').classList.remove('show');
                 });
                 
-                // قائمة الجوال
                 document.getElementById('menuToggle').addEventListener('click', function() {
                     document.getElementById('sidebar').classList.toggle('active');
                     document.getElementById('mainContent').classList.toggle('expanded');
                 });
                 
-                // إغلاق المودالات عند الضغط خارجها
                 document.querySelectorAll('.modal-overlay').forEach(modal => {
                     modal.addEventListener('click', function(e) {
-                        if (e.target === this) {
-                            this.classList.remove('active');
-                        }
+                        if (e.target === this) this.classList.remove('active');
                     });
                 });
                 
-                // نماذج المودالات
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.login();
-                });
-                
-                document.getElementById('brandForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.saveBrand();
-                });
-                
-                document.getElementById('categoryForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.saveCategory();
-                });
-                
-                document.getElementById('productForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.saveProduct();
-                });
-                
-                document.getElementById('userForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.saveUser();
-                });
+                document.getElementById('loginForm').addEventListener('submit', (e) => { e.preventDefault(); this.login(); });
+                document.getElementById('brandForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveBrand(); });
+                document.getElementById('categoryForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveCategory(); });
+                document.getElementById('productForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveProduct(); });
+                document.getElementById('userForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveUser(); });
             }
 
             closeModal(modalId) {
@@ -3961,23 +3607,8 @@
                 const container = document.getElementById('toastContainer');
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
-                
-                const icons = {
-                    success: '✅',
-                    error: '❌',
-                    warning: '⚠️',
-                    info: 'ℹ️'
-                };
-                
-                toast.innerHTML = `
-                    <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
-                    <div class="toast-content">
-                        <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
-                        <div class="toast-message">${message}</div>
-                    </div>
-                    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
-                `;
-                
+                const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+                toast.innerHTML = `<div class="toast-icon">${icons[type] || 'ℹ️'}</div><div class="toast-content"><div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
                 container.appendChild(toast);
                 setTimeout(() => toast.remove(), 5000);
             }
