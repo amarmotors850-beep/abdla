@@ -1,21 +1,20 @@
 /**
  * JSONBin.io Client - سيارات عبدالله
- * الإصدار: 12.0.0 - نسخة مصححة ومضمونة 100%
- * جميع العمليات (إضافة، تعديل، حذف، قراءة) تعمل بشكل صحيح
+ * الإصدار: 11.0.0 - تم إصلاح مشكلة الكتابة نهائياً
  */
 
 // ==================== فئة التعامل مع JSONBin.io ====================
 class JSONBinService {
     constructor() {
-        // بيانات JSONBin.io
+        // بيانات JSONBin.io الجديدة من عندك
         this.binId = '69adc10143b1c97be9c1cfe6';
         this.masterKey = '$2a$10$sM3RpWpnxdTzERKoikHKpeLm4eQP/F4Nb599znATf4o84RA1nwBFW';
         this.accessKey = '$2a$10$7K2sm8j3C90xXy1ltw0gVeWRTpygbouubjJDFuDDaX35OiGMVjwNK';
         
-        // الروابط
+        // الروابط - مهم جداً: نستخدم /v3/b/ للقراءة والكتابة
         this.baseUrl = `https://api.jsonbin.io/v3/b/${this.binId}`;
         
-        // الهيكل الافتراضي للبيانات
+        // الهيكل الافتراضي للبيانات (فاضي تماماً عشان تملاه من الأدمن)
         this.defaultData = {
             settings: {
                 site_name_ar: 'سيارات عبدالله',
@@ -26,13 +25,11 @@ class JSONBinService {
                 contact_whatsapp: '01121811110',
                 contact_email: 'amarmotors850@gmail.com',
                 contact_address: 'الجيزة، مصر',
-                social_facebook: 'https://www.facebook.com/share/1SdkvcBynu',
-                social_instagram: 'https://www.instagram.com/abdullah_auto_',
-                social_tiktok: 'https://www.tiktok.com/@abdullah.auto0',
+                social_facebook: '',
+                social_instagram: '',
+                social_tiktok: '',
                 social_twitter: '',
-                social_youtube: '',
-                telegram_bot_token: '',
-                telegram_chat_id: ''
+                social_youtube: ''
             },
             brands: [],
             categories: [],
@@ -67,6 +64,7 @@ class JSONBinService {
     // دالة للقراءة من JSONBin.io
     async fetchData(force = false) {
         try {
+            // التحقق من الكاش
             const now = Date.now();
             if (!force && this.cache && (now - this.lastFetch) < this.cacheDuration) {
                 console.log('✅ استخدام البيانات المخزنة مؤقتاً');
@@ -75,6 +73,7 @@ class JSONBinService {
 
             console.log('🔄 جاري تحميل البيانات من JSONBin.io...');
             
+            // مهم: نستخدم X-Access-Key للقراءة
             const response = await fetch(this.baseUrl, {
                 method: 'GET',
                 headers: {
@@ -89,14 +88,17 @@ class JSONBinService {
 
             const result = await response.json();
             
+            // JSONBin.io v3 بيرجع البيانات جوا record
             let data = result.record;
             
+            // إذا كانت البيانات فارغة، استخدم البيانات الافتراضية
             if (!data || Object.keys(data).length === 0) {
                 console.log('⚠️ البيانات فارغة، جاري تهيئة البيانات الافتراضية...');
                 await this.initData();
                 return this.fetchData(true);
             }
             
+            // تحديث الكاش
             this.cache = data;
             this.lastFetch = now;
             
@@ -106,6 +108,7 @@ class JSONBinService {
         } catch (error) {
             console.error('❌ خطأ في تحميل البيانات:', error);
             
+            // استخدام البيانات المخزنة مؤقتاً في حالة الخطأ
             if (this.cache) {
                 return { 
                     success: true, 
@@ -114,6 +117,7 @@ class JSONBinService {
                 };
             }
             
+            // لو مفيش كاش، استخدم البيانات الافتراضية
             return { 
                 success: true, 
                 data: this.defaultData,
@@ -122,31 +126,17 @@ class JSONBinService {
         }
     }
 
-    // دالة للكتابة على JSONBin.io
+    // دالة للكتابة على JSONBin.io - مشكلة الإضافة والتعديل والحذف كانت هنا
     async saveData(data) {
         try {
             console.log('🔄 جاري حفظ البيانات في JSONBin.io...');
             
-            // التأكد من وجود جميع الأقسام المطلوبة
-            const requiredSections = ['settings', 'brands', 'categories', 'products', 'users', 'sellRequests', 'exchangeRequests', 'orders'];
-            requiredSections.forEach(section => {
-                if (!data[section]) {
-                    if (section === 'settings') {
-                        data[section] = this.defaultData.settings;
-                    } else if (section === 'users') {
-                        data[section] = this.defaultData.users;
-                    } else {
-                        data[section] = [];
-                    }
-                }
-            });
-            
+            // مهم جداً: نستخدم X-Master-Key للكتابة
             const response = await fetch(this.baseUrl, {
                 method: 'PUT',
                 headers: {
                     'X-Master-Key': this.masterKey,
-                    'Content-Type': 'application/json',
-                    'X-Bin-Versioning': 'false'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
@@ -158,6 +148,7 @@ class JSONBinService {
 
             const result = await response.json();
             
+            // تحديث الكاش
             this.cache = data;
             this.lastFetch = Date.now();
             
@@ -166,7 +157,10 @@ class JSONBinService {
             
         } catch (error) {
             console.error('❌ خطأ في حفظ البيانات:', error);
+            
+            // حفظ محلي في حالة الفشل
             this.cache = data;
+            
             return { 
                 success: false, 
                 error: error.message,
@@ -175,31 +169,22 @@ class JSONBinService {
         }
     }
 
-    // تهيئة البيانات الافتراضية
+    // تهيئة البيانات الافتراضية في الـ Bin
     async initData() {
         try {
             console.log('🔄 جاري تهيئة البيانات الافتراضية...');
             
-            const response = await fetch(this.baseUrl, {
-                method: 'PUT',
-                headers: {
-                    'X-Master-Key': this.masterKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.defaultData)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // حفظ البيانات الافتراضية
+            const result = await this.saveData(this.defaultData);
+            
+            if (result.success) {
+                console.log('✅ تم تهيئة البيانات الافتراضية بنجاح');
+            } else {
+                console.error('❌ فشل تهيئة البيانات:', result.error);
             }
-
-            const result = await response.json();
-            console.log('✅ تم تهيئة البيانات الافتراضية بنجاح');
-            return { success: true, data: result };
             
         } catch (error) {
             console.error('❌ خطأ في تهيئة البيانات:', error);
-            return { success: false, error: error.message };
         }
     }
 
@@ -211,6 +196,7 @@ class JSONBinService {
             
             let products = result.data.products || [];
             
+            // تطبيق الفلاتر
             if (filters.brandId) products = products.filter(p => p.brand_id === filters.brandId);
             if (filters.categoryId) products = products.filter(p => p.category_id === filters.categoryId);
             if (filters.type) products = products.filter(p => p.type === filters.type);
@@ -220,6 +206,7 @@ class JSONBinService {
             if (filters.installment) products = products.filter(p => p.installment === true);
             if (filters.active === true) products = products.filter(p => p.active === true);
             
+            // ترتيب النتائج
             products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             
             return { success: true, data: products };
@@ -236,8 +223,10 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const product = result.data.products?.find(p => p.id === id);
+            
             if (!product) return { success: false, error: 'المنتج غير موجود' };
             
+            // إضافة معلومات الماركة والقسم
             const brand = result.data.brands?.find(b => b.id === product.brand_id);
             const category = result.data.categories?.find(c => c.id === product.category_id);
             
@@ -255,14 +244,16 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
+            // إنشاء ID جديد
             const newId = 'prod_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             const newProduct = {
                 id: newId,
-                name_ar: product.nameAr || product.name_ar || '',
-                name_en: product.nameEn || product.name_en || '',
-                brand_id: product.brandId || product.brand_id || '',
-                category_id: product.categoryId || product.category_id || '',
+                name_ar: product.nameAr || product.name_ar,
+                name_en: product.nameEn || product.name_en,
+                brand_id: product.brandId || product.brand_id,
+                category_id: product.categoryId || product.category_id,
                 model: product.model || null,
                 year: product.year ? parseInt(product.year) : null,
                 price: parseFloat(product.price) || 0,
@@ -280,9 +271,11 @@ class JSONBinService {
                 created_at: new Date().toISOString()
             };
             
+            // إضافة للمصفوفة
             if (!data.products) data.products = [];
             data.products.push(newProduct);
             
+            // حفظ البيانات - هنا المشكلة كانت محتاجة X-Master-Key
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
@@ -303,12 +296,15 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
+            // البحث عن المنتج
             const index = data.products?.findIndex(p => p.id === id);
             
             if (index === -1 || index === undefined) {
                 return { success: false, error: 'المنتج غير موجود' };
             }
             
+            // تحديث البيانات
             data.products[index] = {
                 ...data.products[index],
                 name_ar: updates.nameAr || updates.name_ar || data.products[index].name_ar,
@@ -331,6 +327,7 @@ class JSONBinService {
                 active: updates.active !== undefined ? updates.active : data.products[index].active
             };
             
+            // حفظ البيانات
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
@@ -351,8 +348,11 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
+            // حذف المنتج
             data.products = data.products?.filter(p => p.id !== id) || [];
             
+            // حفظ البيانات
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
@@ -367,15 +367,17 @@ class JSONBinService {
         }
     }
 
-    // ==================== الماركات (مصححة 100%) ====================
+    // ==================== الماركات ====================
     async getBrands(activeOnly = false) {
         try {
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات', data: [] };
             
             let brands = result.data.brands || [];
+            
             if (activeOnly) brands = brands.filter(b => b.active === true);
-            brands.sort((a, b) => (a.name_ar || '').localeCompare(b.name_ar || ''));
+            
+            brands.sort((a, b) => a.name_ar.localeCompare(b.name_ar));
             
             return { success: true, data: brands };
             
@@ -385,31 +387,10 @@ class JSONBinService {
         }
     }
 
-    async getBrandById(id) {
+    async addBrand(brand) {
         try {
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
-            
-            const brand = result.data.brands?.find(b => b.id === id);
-            if (!brand) return { success: false, error: 'الماركة غير موجودة' };
-            
-            return { success: true, data: brand };
-            
-        } catch (error) {
-            console.error('❌ خطأ في جلب الماركة:', error);
-            return { success: false, error: error.message };
-        }
-    }
-
-    async addBrand(brand) {
-        try {
-            console.log("🔄 محاولة إضافة ماركة:", brand);
-            
-            const result = await this.fetchData();
-            if (!result.success) {
-                console.error("❌ فشل تحميل البيانات:", result.error);
-                return { success: false, error: 'فشل تحميل البيانات' };
-            }
             
             const data = result.data;
             
@@ -417,26 +398,21 @@ class JSONBinService {
             
             const newBrand = {
                 id: newId,
-                name_ar: brand.nameAr || brand.name_ar || "",
-                name_en: brand.nameEn || brand.name_en || "",
+                name_ar: brand.nameAr || brand.name_ar,
+                name_en: brand.nameEn || brand.name_en,
                 logo: brand.logo || null,
-                active: brand.active !== undefined ? brand.active : true,
+                active: brand.active !== false,
                 created_at: new Date().toISOString()
             };
-            
-            console.log("📦 الماركة الجديدة:", newBrand);
             
             if (!data.brands) data.brands = [];
             data.brands.push(newBrand);
             
-            console.log("💾 جاري حفظ البيانات...");
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                console.log("✅ تمت الإضافة بنجاح");
                 return { success: true, data: newBrand };
             } else {
-                console.error("❌ فشل الحفظ:", saveResult.error);
                 return { success: false, error: saveResult.error || 'فشل حفظ الماركة' };
             }
             
@@ -448,12 +424,11 @@ class JSONBinService {
 
     async updateBrand(id, updates) {
         try {
-            console.log("🔄 محاولة تحديث ماركة:", id, updates);
-            
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const index = data.brands?.findIndex(b => b.id === id);
             
             if (index === -1 || index === undefined) {
@@ -468,12 +443,9 @@ class JSONBinService {
                 active: updates.active !== undefined ? updates.active : data.brands[index].active
             };
             
-            console.log("📦 الماركة بعد التحديث:", data.brands[index]);
-            
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                console.log("✅ تم التحديث بنجاح");
                 return { success: true, data: data.brands[index] };
             } else {
                 return { success: false, error: saveResult.error || 'فشل تحديث الماركة' };
@@ -487,14 +459,14 @@ class JSONBinService {
 
     async deleteBrand(id) {
         try {
-            console.log("🔄 محاولة حذف ماركة:", id);
-            
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
             
+            // التحقق من عدم وجود منتجات مرتبطة
             const hasProducts = data.products?.some(p => p.brand_id === id);
+            
             if (hasProducts) {
                 return { success: false, error: 'لا يمكن حذف الماركة لارتباطها بمنتجات' };
             }
@@ -504,7 +476,6 @@ class JSONBinService {
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                console.log("✅ تم الحذف بنجاح");
                 return { success: true };
             } else {
                 return { success: false, error: saveResult.error || 'فشل حذف الماركة' };
@@ -516,46 +487,28 @@ class JSONBinService {
         }
     }
 
-    // ==================== الفئات (مصححة) ====================
-    async getCategories(activeOnly = false, brandId = null) {
+    // ==================== الأقسام ====================
+    async getCategories(activeOnly = false) {
         try {
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات', data: [] };
             
             let categories = result.data.categories || [];
+            
             if (activeOnly) categories = categories.filter(c => c.active === true);
-            if (brandId) categories = categories.filter(c => c.brand_id === brandId);
-            categories.sort((a, b) => (a.name_ar || '').localeCompare(b.name_ar || ''));
+            
+            categories.sort((a, b) => a.name_ar.localeCompare(b.name_ar));
             
             return { success: true, data: categories };
             
         } catch (error) {
-            console.error('❌ خطأ في جلب الفئات:', error);
+            console.error('❌ خطأ في جلب الأقسام:', error);
             return { success: false, error: error.message, data: [] };
-        }
-    }
-
-    async getCategoryById(id) {
-        try {
-            const result = await this.fetchData();
-            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
-            
-            const category = result.data.categories?.find(c => c.id === id);
-            if (!category) return { success: false, error: 'الفئة غير موجودة' };
-            
-            const brand = result.data.brands?.find(b => b.id === category.brand_id);
-            return { success: true, data: { ...category, brand } };
-            
-        } catch (error) {
-            console.error('❌ خطأ في جلب الفئة:', error);
-            return { success: false, error: error.message };
         }
     }
 
     async addCategory(category) {
         try {
-            console.log("🔄 محاولة إضافة فئة:", category);
-            
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
@@ -565,12 +518,11 @@ class JSONBinService {
             
             const newCategory = {
                 id: newId,
-                brand_id: category.brandId || category.brand_id || "",
-                name_ar: category.nameAr || category.name_ar || "",
-                name_en: category.nameEn || category.name_en || "",
+                name_ar: category.nameAr || category.name_ar,
+                name_en: category.nameEn || category.name_en,
                 description: category.description || null,
                 image: category.image || null,
-                active: category.active !== undefined ? category.active : true,
+                active: category.active !== false,
                 created_at: new Date().toISOString()
             };
             
@@ -582,11 +534,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true, data: newCategory };
             } else {
-                return { success: false, error: saveResult.error || 'فشل حفظ الفئة' };
+                return { success: false, error: saveResult.error || 'فشل حفظ القسم' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في إضافة الفئة:', error);
+            console.error('❌ خطأ في إضافة القسم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -597,15 +549,15 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const index = data.categories?.findIndex(c => c.id === id);
             
             if (index === -1 || index === undefined) {
-                return { success: false, error: 'الفئة غير موجودة' };
+                return { success: false, error: 'القسم غير موجود' };
             }
             
             data.categories[index] = {
                 ...data.categories[index],
-                brand_id: updates.brandId || updates.brand_id || data.categories[index].brand_id,
                 name_ar: updates.nameAr || updates.name_ar || data.categories[index].name_ar,
                 name_en: updates.nameEn || updates.name_en || data.categories[index].name_en,
                 description: updates.description !== undefined ? updates.description : data.categories[index].description,
@@ -618,11 +570,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true, data: data.categories[index] };
             } else {
-                return { success: false, error: saveResult.error || 'فشل تحديث الفئة' };
+                return { success: false, error: saveResult.error || 'فشل تحديث القسم' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في تحديث الفئة:', error);
+            console.error('❌ خطأ في تحديث القسم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -634,9 +586,11 @@ class JSONBinService {
             
             const data = result.data;
             
+            // التحقق من عدم وجود منتجات مرتبطة
             const hasProducts = data.products?.some(p => p.category_id === id);
+            
             if (hasProducts) {
-                return { success: false, error: 'لا يمكن حذف الفئة لارتباطها بمنتجات' };
+                return { success: false, error: 'لا يمكن حذف القسم لارتباطه بمنتجات' };
             }
             
             data.categories = data.categories?.filter(c => c.id !== id) || [];
@@ -646,11 +600,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true };
             } else {
-                return { success: false, error: saveResult.error || 'فشل حذف الفئة' };
+                return { success: false, error: saveResult.error || 'فشل حذف القسم' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في حذف الفئة:', error);
+            console.error('❌ خطأ في حذف القسم:', error);
             return { success: false, error: error.message };
         }
     }
@@ -675,9 +629,12 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const user = result.data.users?.find(u => u.username === username && u.password === password && u.active === true);
+            
             if (!user) return { success: false, error: 'بيانات الدخول غير صحيحة' };
             
+            // إزالة كلمة المرور من النتيجة
             const { password: _, ...userWithoutPassword } = user;
+            
             return { success: true, data: userWithoutPassword };
             
         } catch (error) {
@@ -693,6 +650,7 @@ class JSONBinService {
             
             const data = result.data;
             
+            // التحقق من عدم تكرار اسم المستخدم
             const existing = data.users?.find(u => u.username === user.username);
             if (existing) return { success: false, error: 'اسم المستخدم موجود بالفعل' };
             
@@ -736,6 +694,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const index = data.users?.findIndex(u => u.id === id);
             
             if (index === -1 || index === undefined) {
@@ -772,6 +731,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             data.users = data.users?.filter(u => u.id !== id) || [];
             
             const saveResult = await this.saveData(data);
@@ -811,6 +771,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const newId = 'sell_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             const newRequest = {
@@ -857,6 +818,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const index = data.sellRequests?.findIndex(r => r.id === id);
             
             if (index === -1 || index === undefined) {
@@ -868,7 +830,7 @@ class JSONBinService {
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                return { success: true, data: data.sellRequests[index] };
+                return { success: true };
             } else {
                 return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
             }
@@ -902,6 +864,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const newId = 'exchange_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             const newRequest = {
@@ -937,35 +900,7 @@ class JSONBinService {
         }
     }
 
-    async updateExchangeRequestStatus(id, status) {
-        try {
-            const result = await this.fetchData();
-            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
-            
-            const data = result.data;
-            const index = data.exchangeRequests?.findIndex(r => r.id === id);
-            
-            if (index === -1 || index === undefined) {
-                return { success: false, error: 'الطلب غير موجود' };
-            }
-            
-            data.exchangeRequests[index].status = status;
-            
-            const saveResult = await this.saveData(data);
-            
-            if (saveResult.success) {
-                return { success: true, data: data.exchangeRequests[index] };
-            } else {
-                return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
-            }
-            
-        } catch (error) {
-            console.error('❌ خطأ في تحديث حالة الطلب:', error);
-            return { success: false, error: error.message };
-        }
-    }
-
-    // ==================== طلبات الشراء ====================
+    // ==================== الطلبات (الشراء) ====================
     async getOrders() {
         try {
             const result = await this.fetchData();
@@ -973,6 +908,7 @@ class JSONBinService {
             
             const orders = result.data.orders || [];
             
+            // إضافة معلومات المنتج لكل طلب
             const ordersWithProducts = orders.map(order => {
                 const product = result.data.products?.find(p => p.id === order.product_id);
                 return { ...order, product_name: product?.name_ar || null, product_price: product?.price || 0 };
@@ -994,9 +930,12 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const order = result.data.orders?.find(o => o.id === id);
+            
             if (!order) return { success: false, error: 'الطلب غير موجود' };
             
+            // إضافة معلومات المنتج
             const product = result.data.products?.find(p => p.id === order.product_id);
+            
             return { success: true, data: { ...order, product_name: product?.name_ar || null, product_price: product?.price || 0 } };
             
         } catch (error) {
@@ -1011,7 +950,8 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
-            const newId = 'order_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            const newId = 'order_' + Date.now();
             
             const newOrder = {
                 id: newId,
@@ -1049,6 +989,7 @@ class JSONBinService {
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
             
             const data = result.data;
+            
             const index = data.orders?.findIndex(o => o.id === id);
             
             if (index === -1 || index === undefined) {
@@ -1060,7 +1001,7 @@ class JSONBinService {
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                return { success: true, data: data.orders[index] };
+                return { success: true };
             } else {
                 return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
             }
@@ -1105,9 +1046,7 @@ class JSONBinService {
                 social_instagram: settings.socialInstagram || settings.social_instagram || data.settings?.social_instagram,
                 social_tiktok: settings.socialTiktok || settings.social_tiktok || data.settings?.social_tiktok,
                 social_twitter: settings.socialTwitter || settings.social_twitter || data.settings?.social_twitter,
-                social_youtube: settings.socialYoutube || settings.social_youtube || data.settings?.social_youtube,
-                telegram_bot_token: settings.telegramBotToken || settings.telegram_bot_token || data.settings?.telegram_bot_token || '',
-                telegram_chat_id: settings.telegramChatId || settings.telegram_chat_id || data.settings?.telegram_chat_id || ''
+                social_youtube: settings.socialYoutube || settings.social_youtube || data.settings?.social_youtube
             };
             
             const saveResult = await this.saveData(data);
@@ -1124,7 +1063,7 @@ class JSONBinService {
         }
     }
 
-    // ==================== رفع الصور ====================
+    // ==================== رفع الصور (محاكاة) ====================
     async uploadImage(file) {
         try {
             return new Promise((resolve) => {
@@ -1171,5 +1110,5 @@ class JSONBinService {
 window.db = new JSONBinService();
 
 // للتصحيح
-console.log('✅ JSONBin.io Client initialized (Version 12.0.0 - Fully Fixed)');
+console.log('✅ JSONBin.io Client initialized with WRITE FIX (Version 11.0.0)');
 console.log('📦 Bin ID:', '69adc10143b1c97be9c1cfe6');
