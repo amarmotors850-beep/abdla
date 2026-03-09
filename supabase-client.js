@@ -7,9 +7,9 @@
 class JSONBinService {
     constructor() {
         // بيانات JSONBin.io الجديدة من عندك
-        this.binId = '69adc10143b1c97be9c1cfe6';
-        this.masterKey = '$2a$10$sM3RpWpnxdTzERKoikHKpeLm4eQP/F4Nb599znATf4o84RA1nwBFW';
-        this.accessKey = '$2a$10$7K2sm8j3C90xXy1ltw0gVeWRTpygbouubjJDFuDDaX35OiGMVjwNK';
+        this.binId = '69aec3d1ae596e708f70a4b1';
+        this.masterKey = '$2a$10$5TC82Hcrk4LspbvBTJrqh.iqTX2mpcdQfPbjvC63S5QX4fXkFigBu';
+        this.accessKey = '$2a$10$eQBw4tq9Vsav9YzteOkPgeI5EwPNhe/B.3t/hxhuX/bzYa57CnPWe';
         
         // الروابط - مهم جداً: نستخدم /v3/b/ للقراءة والكتابة
         this.baseUrl = `https://api.jsonbin.io/v3/b/${this.binId}`;
@@ -1111,4 +1111,4 @@ window.db = new JSONBinService();
 
 // للتصحيح
 console.log('✅ JSONBin.io Client initialized with WRITE FIX (Version 11.0.0)');
-console.log('📦 Bin ID:', '69adc10143b1c97be9c1cfe6');
+console.log('📦 Bin ID:', '69aec3d1ae596e708f70a4b1');
