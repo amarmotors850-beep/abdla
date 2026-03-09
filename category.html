@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصفح السيارات | سيارات عبدالله</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- SEO الرئيسي -->
+    <title>تصفح جميع السيارات | سيارات عبدالله</title>
+    <meta name="title" content="تصفح جميع السيارات | سيارات عبدالله">
+    <meta name="description" content="تصفح مجموعتنا المتميزة من السيارات الفاخرة. أحدث الموديلات، أفضل الأسعار، تقسيط مريح، وضمان شامل. ابحث عن سيارتك المثالية الآن.">
+    <meta name="keywords" content="سيارات للبيع, سيارات مستعملة, سيارات جديدة, سيارات فاخرة, عروض سيارات, تقسيط سيارات">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.abdullah-cars.com/category.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.abdullah-cars.com/category.html">
+    <meta property="og:title" content="تصفح جميع السيارات | سيارات عبدالله">
+    <meta property="og:description" content="تصفح مجموعتنا المتميزة من السيارات الفاخرة. أحدث الموديلات بأفضل الأسعار.">
+    <meta property="og:image" content="https://www.abdullah-cars.com/images/logo.png">
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ملفات الأمان والتشفير -->
+    <script src="security.js" defer></script>
     
     <style>
         /* ============ متغيرات CSS ============ */
@@ -78,23 +96,23 @@
             pointer-events: none;
         }
 
-        .rotating-rings {
+        .golden-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .ring {
+        .gold-ring {
             position: absolute;
             border: 2px solid rgba(197, 160, 89, 0.1);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate-ring linear infinite;
+            animation: rotateRing linear infinite;
         }
 
-        .ring::after {
+        .gold-ring::after {
             content: '';
             position: absolute;
             width: 10px;
@@ -107,13 +125,13 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
-        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
-        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
-        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+        .gold-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .gold-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .gold-ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .gold-ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
+        .gold-ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
 
-        @keyframes rotate-ring {
+        @keyframes rotateRing {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
@@ -193,9 +211,9 @@
         }
 
         @media (max-width: 768px) {
-            .ring:nth-child(3) { width: 400px; height: 400px; }
-            .ring:nth-child(4) { width: 600px; height: 600px; }
-            .ring:nth-child(5) { width: 800px; height: 800px; }
+            .gold-ring:nth-child(3) { width: 400px; height: 400px; }
+            .gold-ring:nth-child(4) { width: 600px; height: 600px; }
+            .gold-ring:nth-child(5) { width: 800px; height: 800px; }
         }
 
         /* ============ الهيدر ============ */
@@ -227,20 +245,19 @@
             text-decoration: none;
         }
 
-        .logo-circle {
+        .logo-image {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
             box-shadow: var(--shadow-lg);
+            border: 2px solid var(--primary);
         }
 
-        .logo-circle i {
-            font-size: 2rem;
-            color: var(--white);
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .logo-text {
@@ -388,6 +405,22 @@
             position: relative;
             z-index: 1;
             color: rgba(255,255,255,0.9);
+        }
+
+        .breadcrumb {
+            position: relative;
+            z-index: 1;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .breadcrumb a {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
         }
 
         /* ============ تخطيط الصفحة ============ */
@@ -923,21 +956,21 @@
 
         @media (max-width: 480px) {
             .logo-title { font-size: 1.5rem; }
-            .logo-circle { width: 50px; height: 50px; }
+            .logo-image { width: 50px; height: 50px; }
             .page-title { font-size: 1.8rem; }
             .page-subtitle { font-size: 1rem; }
         }
     </style>
 
     <!-- JSONBin.io Client -->
-    <script src="supabase-client.js"></script>
+    <script src="supabase-client.js" defer></script>
 </head>
 <body>
     <!-- الخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="rotating-rings">
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div>
+        <div class="golden-rings">
+            <div class="gold-ring"></div><div class="gold-ring"></div><div class="gold-ring"></div>
+            <div class="gold-ring"></div><div class="gold-ring"></div>
         </div>
         <div class="gold-particles">
             <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
@@ -952,8 +985,8 @@
     <header class="main-header">
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-circle">
-                    <i class="fas fa-car"></i>
+                <div class="logo-image">
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <div class="logo-text">
                     <div class="logo-title">سيارات عبدالله</div>
@@ -965,6 +998,7 @@
                 <ul id="mainNav">
                     <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
                     <li><a href="index.html#services"><i class="fas fa-cogs"></i> الخدمات</a></li>
+                    <li><a href="index.html#brands"><i class="fas fa-tags"></i> الماركات</a></li>
                     <li><a href="category.html" class="active"><i class="fas fa-car"></i> السيارات</a></li>
                     <li><a href="index.html#contact"><i class="fas fa-phone"></i> اتصل بنا</a></li>
                     <li><a href="sell.html"><i class="fas fa-tag"></i> بيع سيارتك</a></li>
@@ -987,6 +1021,9 @@
     <div class="page-header">
         <h1 class="page-title" id="pageTitle">جميع السيارات</h1>
         <p class="page-subtitle" id="pageSubtitle">تصفح مجموعتنا المتميزة من السيارات الفاخرة بأفضل الأسعار</p>
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="index.html">الرئيسية</a> > <span>جميع السيارات</span>
+        </div>
     </div>
 
     <!-- المحتوى الرئيسي -->
@@ -1013,8 +1050,8 @@
             </div>
 
             <div class="sidebar-section">
-                <h3 class="sidebar-title"><i class="fas fa-folder"></i> الأقسام الرئيسية</h3>
-                <div class="filter-options" id="mainCategoryFilters"></div>
+                <h3 class="sidebar-title"><i class="fas fa-folder"></i> الفئات</h3>
+                <div class="filter-options" id="categoryFilters"></div>
             </div>
 
             <div class="sidebar-section">
@@ -1088,7 +1125,7 @@
         let productsPerPage = 12;
         let activeFilters = {
             brands: [],
-            mainCategories: [],
+            categories: [],
             years: [],
             fuels: [],
             featured: false,
@@ -1139,10 +1176,26 @@
             const urlParams = new URLSearchParams(window.location.search);
             
             const brand = urlParams.get('brand');
-            if (brand) activeFilters.brands = [brand];
+            if (brand) {
+                activeFilters.brands = [brand];
+                
+                // تحديث عنوان الصفحة لعرض الماركة المحددة
+                const selectedBrand = allBrands.find(b => b.id === brand);
+                if (selectedBrand) {
+                    document.getElementById('pageTitle').textContent = `سيارات ${selectedBrand.name_ar}`;
+                    document.getElementById('pageSubtitle').textContent = `تصفح جميع سيارات ${selectedBrand.name_ar} المتوفرة`;
+                    document.getElementById('breadcrumb').innerHTML = `
+                        <a href="index.html">الرئيسية</a> > 
+                        <a href="category.html">السيارات</a> > 
+                        <span>${selectedBrand.name_ar}</span>
+                    `;
+                }
+            }
             
             const category = urlParams.get('category');
-            if (category) activeFilters.mainCategories = [category];
+            if (category) {
+                activeFilters.categories = [category];
+            }
             
             const search = urlParams.get('search');
             if (search) {
@@ -1164,43 +1217,47 @@
 
         // ============ تحديث خيارات الفلاتر ============
         function updateFilterOptions() {
+            // فلاتر الماركات
             const brandFilterContainer = document.getElementById('brandFilters');
             if (brandFilterContainer) {
                 brandFilterContainer.innerHTML = allBrands.map(brand => `
                     <label class="filter-option">
-                        <input type="checkbox" value="${brand.id}" onchange="toggleBrandFilter('${brand.id}')">
+                        <input type="checkbox" value="${brand.id}" onchange="toggleBrandFilter('${brand.id}')" ${activeFilters.brands.includes(brand.id) ? 'checked' : ''}>
                         <span>${brand.name_ar} (${countProductsByBrand(brand.id)})</span>
                     </label>
                 `).join('');
             }
             
-            const categoryFilterContainer = document.getElementById('mainCategoryFilters');
+            // فلاتر الفئات
+            const categoryFilterContainer = document.getElementById('categoryFilters');
             if (categoryFilterContainer) {
                 categoryFilterContainer.innerHTML = allCategories.map(cat => `
                     <label class="filter-option">
-                        <input type="checkbox" value="${cat.id}" onchange="toggleCategoryFilter('${cat.id}')">
+                        <input type="checkbox" value="${cat.id}" onchange="toggleCategoryFilter('${cat.id}')" ${activeFilters.categories.includes(cat.id) ? 'checked' : ''}>
                         <span>${cat.name_ar} (${countProductsByCategory(cat.id)})</span>
                     </label>
                 `).join('');
             }
             
+            // فلاتر السنوات
             const years = getUniqueYears();
             const yearFilterContainer = document.getElementById('yearFilters');
             if (yearFilterContainer) {
                 yearFilterContainer.innerHTML = years.map(year => `
                     <label class="filter-option">
-                        <input type="checkbox" value="${year}" onchange="toggleYearFilter(${year})">
+                        <input type="checkbox" value="${year}" onchange="toggleYearFilter(${year})" ${activeFilters.years.includes(year) ? 'checked' : ''}>
                         <span>${year} (${countProductsByYear(year)})</span>
                     </label>
                 `).join('');
             }
             
+            // فلاتر الوقود
             const fuels = ['بنزين', 'ديزل', 'كهرباء', 'هايبرد'];
             const fuelFilterContainer = document.getElementById('fuelFilters');
             if (fuelFilterContainer) {
                 fuelFilterContainer.innerHTML = fuels.map(fuel => `
                     <label class="filter-option">
-                        <input type="checkbox" value="${fuel}" onchange="toggleFuelFilter('${fuel}')">
+                        <input type="checkbox" value="${fuel}" onchange="toggleFuelFilter('${fuel}')" ${activeFilters.fuels.includes(fuel) ? 'checked' : ''}>
                         <span>${fuel} (${countProductsByFuel(fuel)})</span>
                     </label>
                 `).join('');
@@ -1234,9 +1291,9 @@
             applyFilters();
         }
         function toggleCategoryFilter(categoryId) {
-            const index = activeFilters.mainCategories.indexOf(categoryId);
-            if (index === -1) activeFilters.mainCategories.push(categoryId);
-            else activeFilters.mainCategories.splice(index, 1);
+            const index = activeFilters.categories.indexOf(categoryId);
+            if (index === -1) activeFilters.categories.push(categoryId);
+            else activeFilters.categories.splice(index, 1);
             applyFilters();
         }
         function toggleYearFilter(year) {
@@ -1265,7 +1322,7 @@
             
             filteredProducts = allProducts.filter(product => {
                 if (activeFilters.brands.length > 0 && !activeFilters.brands.includes(product.brand_id)) return false;
-                if (activeFilters.mainCategories.length > 0 && !activeFilters.mainCategories.includes(product.category_id)) return false;
+                if (activeFilters.categories.length > 0 && !activeFilters.categories.includes(product.category_id)) return false;
                 if (activeFilters.years.length > 0 && !activeFilters.years.includes(product.year)) return false;
                 if (activeFilters.fuels.length > 0 && !activeFilters.fuels.includes(product.fuel)) return false;
                 if (activeFilters.featured && !product.featured) return false;
@@ -1290,14 +1347,28 @@
         }
 
         function resetFilters() {
-            activeFilters = { brands: [], mainCategories: [], years: [], fuels: [], featured: false, installment: false, minPrice: 0, maxPrice: Infinity, sort: 'default' };
+            activeFilters = { 
+                brands: [], 
+                categories: [], 
+                years: [], 
+                fuels: [], 
+                featured: false, 
+                installment: false, 
+                minPrice: 0, 
+                maxPrice: Infinity, 
+                sort: 'default' 
+            };
+            
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('minPrice').value = '';
             document.getElementById('maxPrice').value = '';
             document.getElementById('sortSelect').value = 'default';
+            
             filteredProducts = [...allProducts];
             currentPage = 1;
             renderProducts();
+            
+            showToast('تم إعادة تعيين الفلاتر', 'info');
         }
 
         // ============ عرض المنتجات ============
@@ -1331,7 +1402,7 @@
             
             grid.innerHTML = pageProducts.map(product => {
                 const brand = allBrands.find(b => b.id === product.brand_id);
-                const mainCategory = allCategories.find(c => c.id === product.category_id);
+                const category = allCategories.find(c => c.id === product.category_id);
                 const mainImage = product.images?.[0] || 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 
                 return `
@@ -1343,7 +1414,8 @@
                         <div class="product-info">
                             <h3 class="product-title">${product.name_ar}</h3>
                             <div class="product-category">
-                                <i class="fas fa-tag"></i> ${brand?.name_ar || 'غير محدد'} • ${mainCategory?.name_ar || ''}
+                                <i class="fas fa-tag"></i> ${brand?.name_ar || 'غير محدد'} 
+                                ${category?.name_ar ? `• ${category.name_ar}` : ''}
                             </div>
                             <div class="product-price">
                                 ${(product.price || 0).toLocaleString()} ج.م

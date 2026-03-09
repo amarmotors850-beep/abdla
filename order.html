@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تأكيد الطلب - سيارات عبدالله</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- SEO الرئيسي -->
+    <title>تأكيد الطلب | سيارات عبدالله</title>
+    <meta name="title" content="تأكيد الطلب | سيارات عبدالله">
+    <meta name="description" content="تم استلام طلبك بنجاح. شكراً لتسوقك مع سيارات عبدالله.">
+    <meta name="robots" content="noindex, nofollow">
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- ملفات الأمان والتشفير -->
+    <script src="security.js" defer></script>
     
     <style>
         /* ========== RESET & VARIABLES ========== */
@@ -76,30 +85,23 @@
             pointer-events: none;
         }
 
-        .bg-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
-        }
-
-        .rotating-rings {
+        .golden-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .ring {
+        .gold-ring {
             position: absolute;
             border: 2px solid rgba(197, 160, 89, 0.1);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate-ring linear infinite;
+            animation: rotateRing linear infinite;
         }
 
-        .ring::after {
+        .gold-ring::after {
             content: '';
             position: absolute;
             width: 10px;
@@ -112,13 +114,11 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
-        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
-        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
-        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+        .gold-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .gold-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .gold-ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
 
-        @keyframes rotate-ring {
+        @keyframes rotateRing {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
@@ -145,9 +145,6 @@
         .gold-particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 4s; }
         .gold-particle:nth-child(4) { top: 70%; left: 50%; width: 8px; height: 8px; animation-delay: 1s; }
         .gold-particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 3s; }
-        .gold-particle:nth-child(6) { top: 85%; left: 30%; width: 5px; height: 5px; animation-delay: 5s; }
-        .gold-particle:nth-child(7) { top: 45%; left: 45%; animation-delay: 2.5s; }
-        .gold-particle:nth-child(8) { top: 30%; left: 60%; width: 7px; height: 7px; animation-delay: 3.5s; }
 
         @keyframes float-particle {
             0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
@@ -197,10 +194,18 @@
             gap: 10px;
         }
 
-        .logo i {
-            font-size: 2.2rem;
-            color: var(--primary);
-            filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.3));
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .logo span {
@@ -223,7 +228,6 @@
             padding: 0.5rem 1rem;
             border-radius: var(--radius-lg);
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .main-nav a:hover,
@@ -676,19 +680,22 @@
     </style>
 
     <!-- JSONBin.io Client -->
-    <script src="supabase-client.js"></script>
+    <script src="supabase-client.js" defer></script>
 </head>
 <body>
     <!-- Animated Background -->
     <div class="animated-bg">
-        <div class="bg-gradient"></div>
-        <div class="rotating-rings">
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+        <div class="golden-rings">
+            <div class="gold-ring"></div>
+            <div class="gold-ring"></div>
+            <div class="gold-ring"></div>
         </div>
         <div class="gold-particles">
-            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
-            <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
-            <div class="gold-particle"></div><div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
+            <div class="gold-particle"></div>
         </div>
         <div class="gold-gradient"></div>
     </div>
@@ -696,7 +703,9 @@
     <!-- Header -->
     <header class="main-header">
         <div class="logo">
-            <i class="fas fa-car"></i>
+            <div class="logo-image">
+                <img src="logo.png" alt="سيارات عبدالله">
+            </div>
             <span>سيارات عبدالله</span>
         </div>
         <nav class="main-nav">
@@ -817,11 +826,13 @@
         <div class="loading-text" id="loadingText">جاري التحميل...</div>
     </div>
 
+    <script src="supabase-client.js"></script>
     <script>
         // Order Page Controller
         class OrderPageController {
             constructor() {
                 this.orderId = this.getOrderIdFromUrl();
+                this.siteSettings = null;
                 this.init();
             }
 
@@ -831,11 +842,21 @@
             }
 
             async init() {
+                await this.loadSettings();
                 if (!this.orderId) {
                     this.showError();
                     return;
                 }
                 await this.loadOrderDetails();
+            }
+
+            async loadSettings() {
+                try {
+                    const result = await window.db.getSettings();
+                    if (result.success) this.siteSettings = result.data;
+                } catch (error) {
+                    console.error('Error loading settings:', error);
+                }
             }
 
             async loadOrderDetails() {

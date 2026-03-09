@@ -1,20 +1,20 @@
 /**
  * JSONBin.io Client - سيارات عبدالله
- * الإصدار: 11.0.0 - تم إصلاح مشكلة الكتابة نهائياً
+ * الإصدار: 11.0.0 - نسخة كاملة مع جميع العمليات (إضافة، تعديل، حذف، قراءة)
  */
 
 // ==================== فئة التعامل مع JSONBin.io ====================
 class JSONBinService {
     constructor() {
-        // بيانات JSONBin.io الجديدة من عندك
+        // بيانات JSONBin.io
         this.binId = '69adc10143b1c97be9c1cfe6';
         this.masterKey = '$2a$10$sM3RpWpnxdTzERKoikHKpeLm4eQP/F4Nb599znATf4o84RA1nwBFW';
         this.accessKey = '$2a$10$7K2sm8j3C90xXy1ltw0gVeWRTpygbouubjJDFuDDaX35OiGMVjwNK';
         
-        // الروابط - مهم جداً: نستخدم /v3/b/ للقراءة والكتابة
+        // الروابط - للقراءة والكتابة
         this.baseUrl = `https://api.jsonbin.io/v3/b/${this.binId}`;
         
-        // الهيكل الافتراضي للبيانات (فاضي تماماً عشان تملاه من الأدمن)
+        // الهيكل الافتراضي للبيانات
         this.defaultData = {
             settings: {
                 site_name_ar: 'سيارات عبدالله',
@@ -25,11 +25,13 @@ class JSONBinService {
                 contact_whatsapp: '01121811110',
                 contact_email: 'amarmotors850@gmail.com',
                 contact_address: 'الجيزة، مصر',
-                social_facebook: '',
-                social_instagram: '',
-                social_tiktok: '',
+                social_facebook: 'https://www.facebook.com/share/1SdkvcBynu',
+                social_instagram: 'https://www.instagram.com/abdullah_auto_',
+                social_tiktok: 'https://www.tiktok.com/@abdullah.auto0',
                 social_twitter: '',
-                social_youtube: ''
+                social_youtube: '',
+                telegram_bot_token: '',
+                telegram_chat_id: ''
             },
             brands: [],
             categories: [],
@@ -44,6 +46,19 @@ class JSONBinService {
                     phone: '01121811110',
                     role: 'admin',
                     permissions: ['all'],
+                    avatar: '',
+                    active: true,
+                    created_at: new Date().toISOString()
+                },
+                {
+                    id: 'user_001',
+                    username: 'user1',
+                    password: '123456',
+                    full_name: 'مستخدم تجريبي',
+                    email: 'user1@example.com',
+                    phone: '01012345678',
+                    role: 'viewer',
+                    permissions: ['view_cars'],
                     avatar: '',
                     active: true,
                     created_at: new Date().toISOString()
@@ -73,7 +88,6 @@ class JSONBinService {
 
             console.log('🔄 جاري تحميل البيانات من JSONBin.io...');
             
-            // مهم: نستخدم X-Access-Key للقراءة
             const response = await fetch(this.baseUrl, {
                 method: 'GET',
                 headers: {
@@ -88,7 +102,7 @@ class JSONBinService {
 
             const result = await response.json();
             
-            // JSONBin.io v3 بيرجع البيانات جوا record
+            // JSONBin.io v3 يرجع البيانات داخل record
             let data = result.record;
             
             // إذا كانت البيانات فارغة، استخدم البيانات الافتراضية
@@ -126,12 +140,11 @@ class JSONBinService {
         }
     }
 
-    // دالة للكتابة على JSONBin.io - مشكلة الإضافة والتعديل والحذف كانت هنا
+    // دالة للكتابة على JSONBin.io
     async saveData(data) {
         try {
             console.log('🔄 جاري حفظ البيانات في JSONBin.io...');
             
-            // مهم جداً: نستخدم X-Master-Key للكتابة
             const response = await fetch(this.baseUrl, {
                 method: 'PUT',
                 headers: {
@@ -174,7 +187,6 @@ class JSONBinService {
         try {
             console.log('🔄 جاري تهيئة البيانات الافتراضية...');
             
-            // حفظ البيانات الافتراضية
             const result = await this.saveData(this.defaultData);
             
             if (result.success) {
@@ -226,7 +238,7 @@ class JSONBinService {
             
             if (!product) return { success: false, error: 'المنتج غير موجود' };
             
-            // إضافة معلومات الماركة والقسم
+            // إضافة معلومات الماركة والفئة
             const brand = result.data.brands?.find(b => b.id === product.brand_id);
             const category = result.data.categories?.find(c => c.id === product.category_id);
             
@@ -275,7 +287,7 @@ class JSONBinService {
             if (!data.products) data.products = [];
             data.products.push(newProduct);
             
-            // حفظ البيانات - هنا المشكلة كانت محتاجة X-Master-Key
+            // حفظ البيانات
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
@@ -387,6 +399,23 @@ class JSONBinService {
         }
     }
 
+    async getBrandById(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const brand = result.data.brands?.find(b => b.id === id);
+            
+            if (!brand) return { success: false, error: 'الماركة غير موجودة' };
+            
+            return { success: true, data: brand };
+            
+        } catch (error) {
+            console.error('❌ خطأ في جلب الماركة:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     async addBrand(brand) {
         try {
             const result = await this.fetchData();
@@ -487,8 +516,8 @@ class JSONBinService {
         }
     }
 
-    // ==================== الأقسام ====================
-    async getCategories(activeOnly = false) {
+    // ==================== الفئات (Categories) ====================
+    async getCategories(activeOnly = false, brandId = null) {
         try {
             const result = await this.fetchData();
             if (!result.success) return { success: false, error: 'فشل تحميل البيانات', data: [] };
@@ -496,14 +525,35 @@ class JSONBinService {
             let categories = result.data.categories || [];
             
             if (activeOnly) categories = categories.filter(c => c.active === true);
+            if (brandId) categories = categories.filter(c => c.brand_id === brandId);
             
             categories.sort((a, b) => a.name_ar.localeCompare(b.name_ar));
             
             return { success: true, data: categories };
             
         } catch (error) {
-            console.error('❌ خطأ في جلب الأقسام:', error);
+            console.error('❌ خطأ في جلب الفئات:', error);
             return { success: false, error: error.message, data: [] };
+        }
+    }
+
+    async getCategoryById(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const category = result.data.categories?.find(c => c.id === id);
+            
+            if (!category) return { success: false, error: 'الفئة غير موجودة' };
+            
+            // إضافة معلومات الماركة
+            const brand = result.data.brands?.find(b => b.id === category.brand_id);
+            
+            return { success: true, data: { ...category, brand } };
+            
+        } catch (error) {
+            console.error('❌ خطأ في جلب الفئة:', error);
+            return { success: false, error: error.message };
         }
     }
 
@@ -518,6 +568,7 @@ class JSONBinService {
             
             const newCategory = {
                 id: newId,
+                brand_id: category.brandId || category.brand_id,
                 name_ar: category.nameAr || category.name_ar,
                 name_en: category.nameEn || category.name_en,
                 description: category.description || null,
@@ -534,11 +585,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true, data: newCategory };
             } else {
-                return { success: false, error: saveResult.error || 'فشل حفظ القسم' };
+                return { success: false, error: saveResult.error || 'فشل حفظ الفئة' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في إضافة القسم:', error);
+            console.error('❌ خطأ في إضافة الفئة:', error);
             return { success: false, error: error.message };
         }
     }
@@ -553,11 +604,12 @@ class JSONBinService {
             const index = data.categories?.findIndex(c => c.id === id);
             
             if (index === -1 || index === undefined) {
-                return { success: false, error: 'القسم غير موجود' };
+                return { success: false, error: 'الفئة غير موجودة' };
             }
             
             data.categories[index] = {
                 ...data.categories[index],
+                brand_id: updates.brandId || updates.brand_id || data.categories[index].brand_id,
                 name_ar: updates.nameAr || updates.name_ar || data.categories[index].name_ar,
                 name_en: updates.nameEn || updates.name_en || data.categories[index].name_en,
                 description: updates.description !== undefined ? updates.description : data.categories[index].description,
@@ -570,11 +622,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true, data: data.categories[index] };
             } else {
-                return { success: false, error: saveResult.error || 'فشل تحديث القسم' };
+                return { success: false, error: saveResult.error || 'فشل تحديث الفئة' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في تحديث القسم:', error);
+            console.error('❌ خطأ في تحديث الفئة:', error);
             return { success: false, error: error.message };
         }
     }
@@ -590,7 +642,7 @@ class JSONBinService {
             const hasProducts = data.products?.some(p => p.category_id === id);
             
             if (hasProducts) {
-                return { success: false, error: 'لا يمكن حذف القسم لارتباطه بمنتجات' };
+                return { success: false, error: 'لا يمكن حذف الفئة لارتباطها بمنتجات' };
             }
             
             data.categories = data.categories?.filter(c => c.id !== id) || [];
@@ -600,11 +652,11 @@ class JSONBinService {
             if (saveResult.success) {
                 return { success: true };
             } else {
-                return { success: false, error: saveResult.error || 'فشل حذف القسم' };
+                return { success: false, error: saveResult.error || 'فشل حذف الفئة' };
             }
             
         } catch (error) {
-            console.error('❌ خطأ في حذف القسم:', error);
+            console.error('❌ خطأ في حذف الفئة:', error);
             return { success: false, error: error.message };
         }
     }
@@ -620,6 +672,26 @@ class JSONBinService {
         } catch (error) {
             console.error('❌ خطأ في جلب المستخدمين:', error);
             return { success: false, error: error.message, data: [] };
+        }
+    }
+
+    async getUserById(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const user = result.data.users?.find(u => u.id === id);
+            
+            if (!user) return { success: false, error: 'المستخدم غير موجود' };
+            
+            // إزالة كلمة المرور من النتيجة
+            const { password, ...userWithoutPassword } = user;
+            
+            return { success: true, data: userWithoutPassword };
+            
+        } catch (error) {
+            console.error('❌ خطأ في جلب المستخدم:', error);
+            return { success: false, error: error.message };
         }
     }
 
@@ -765,6 +837,23 @@ class JSONBinService {
         }
     }
 
+    async getSellRequestById(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const request = result.data.sellRequests?.find(r => r.id === id);
+            
+            if (!request) return { success: false, error: 'الطلب غير موجود' };
+            
+            return { success: true, data: request };
+            
+        } catch (error) {
+            console.error('❌ خطأ في جلب طلب البيع:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     async addSellRequest(request) {
         try {
             const result = await this.fetchData();
@@ -830,13 +919,36 @@ class JSONBinService {
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                return { success: true };
+                return { success: true, data: data.sellRequests[index] };
             } else {
                 return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
             }
             
         } catch (error) {
             console.error('❌ خطأ في تحديث حالة الطلب:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteSellRequest(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const data = result.data;
+            
+            data.sellRequests = data.sellRequests?.filter(r => r.id !== id) || [];
+            
+            const saveResult = await this.saveData(data);
+            
+            if (saveResult.success) {
+                return { success: true };
+            } else {
+                return { success: false, error: saveResult.error || 'فشل حذف الطلب' };
+            }
+            
+        } catch (error) {
+            console.error('❌ خطأ في حذف الطلب:', error);
             return { success: false, error: error.message };
         }
     }
@@ -855,6 +967,23 @@ class JSONBinService {
         } catch (error) {
             console.error('❌ خطأ في جلب طلبات الاستبدال:', error);
             return { success: false, error: error.message, data: [] };
+        }
+    }
+
+    async getExchangeRequestById(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const request = result.data.exchangeRequests?.find(r => r.id === id);
+            
+            if (!request) return { success: false, error: 'الطلب غير موجود' };
+            
+            return { success: true, data: request };
+            
+        } catch (error) {
+            console.error('❌ خطأ في جلب طلب الاستبدال:', error);
+            return { success: false, error: error.message };
         }
     }
 
@@ -896,6 +1025,58 @@ class JSONBinService {
             
         } catch (error) {
             console.error('❌ خطأ في إضافة طلب الاستبدال:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async updateExchangeRequestStatus(id, status) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const data = result.data;
+            
+            const index = data.exchangeRequests?.findIndex(r => r.id === id);
+            
+            if (index === -1 || index === undefined) {
+                return { success: false, error: 'الطلب غير موجود' };
+            }
+            
+            data.exchangeRequests[index].status = status;
+            
+            const saveResult = await this.saveData(data);
+            
+            if (saveResult.success) {
+                return { success: true, data: data.exchangeRequests[index] };
+            } else {
+                return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
+            }
+            
+        } catch (error) {
+            console.error('❌ خطأ في تحديث حالة الطلب:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteExchangeRequest(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const data = result.data;
+            
+            data.exchangeRequests = data.exchangeRequests?.filter(r => r.id !== id) || [];
+            
+            const saveResult = await this.saveData(data);
+            
+            if (saveResult.success) {
+                return { success: true };
+            } else {
+                return { success: false, error: saveResult.error || 'فشل حذف الطلب' };
+            }
+            
+        } catch (error) {
+            console.error('❌ خطأ في حذف الطلب:', error);
             return { success: false, error: error.message };
         }
     }
@@ -951,7 +1132,7 @@ class JSONBinService {
             
             const data = result.data;
             
-            const newId = 'order_' + Date.now();
+            const newId = 'order_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
             const newOrder = {
                 id: newId,
@@ -1001,13 +1182,36 @@ class JSONBinService {
             const saveResult = await this.saveData(data);
             
             if (saveResult.success) {
-                return { success: true };
+                return { success: true, data: data.orders[index] };
             } else {
                 return { success: false, error: saveResult.error || 'فشل تحديث الطلب' };
             }
             
         } catch (error) {
             console.error('❌ خطأ في تحديث حالة الطلب:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteOrder(id) {
+        try {
+            const result = await this.fetchData();
+            if (!result.success) return { success: false, error: 'فشل تحميل البيانات' };
+            
+            const data = result.data;
+            
+            data.orders = data.orders?.filter(o => o.id !== id) || [];
+            
+            const saveResult = await this.saveData(data);
+            
+            if (saveResult.success) {
+                return { success: true };
+            } else {
+                return { success: false, error: saveResult.error || 'فشل حذف الطلب' };
+            }
+            
+        } catch (error) {
+            console.error('❌ خطأ في حذف الطلب:', error);
             return { success: false, error: error.message };
         }
     }
@@ -1046,7 +1250,9 @@ class JSONBinService {
                 social_instagram: settings.socialInstagram || settings.social_instagram || data.settings?.social_instagram,
                 social_tiktok: settings.socialTiktok || settings.social_tiktok || data.settings?.social_tiktok,
                 social_twitter: settings.socialTwitter || settings.social_twitter || data.settings?.social_twitter,
-                social_youtube: settings.socialYoutube || settings.social_youtube || data.settings?.social_youtube
+                social_youtube: settings.socialYoutube || settings.social_youtube || data.settings?.social_youtube,
+                telegram_bot_token: settings.telegramBotToken || settings.telegram_bot_token || data.settings?.telegram_bot_token || '',
+                telegram_chat_id: settings.telegramChatId || settings.telegram_chat_id || data.settings?.telegram_chat_id || ''
             };
             
             const saveResult = await this.saveData(data);
@@ -1110,5 +1316,5 @@ class JSONBinService {
 window.db = new JSONBinService();
 
 // للتصحيح
-console.log('✅ JSONBin.io Client initialized with WRITE FIX (Version 11.0.0)');
+console.log('✅ JSONBin.io Client initialized (Version 11.0.0 - Full Version)');
 console.log('📦 Bin ID:', '69adc10143b1c97be9c1cfe6');

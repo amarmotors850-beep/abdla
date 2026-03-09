@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة المستخدمين - سيارات عبدالله</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- منع SEO لصفحات المستخدمين -->
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    
+    <title>لوحة المستخدمين | سيارات عبدالله</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- ملفات الأمان والتشفير -->
+    <script src="security.js" defer></script>
     
     <style>
         /* ========== RESET & VARIABLES ========== */
@@ -78,30 +86,23 @@
             pointer-events: none;
         }
 
-        .bg-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
-        }
-
-        .rotating-rings {
+        .golden-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .ring {
+        .gold-ring {
             position: absolute;
             border: 2px solid rgba(197, 160, 89, 0.1);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate-ring linear infinite;
+            animation: rotateRing linear infinite;
         }
 
-        .ring::after {
+        .gold-ring::after {
             content: '';
             position: absolute;
             width: 10px;
@@ -114,11 +115,11 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
-        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .gold-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .gold-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .gold-ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
 
-        @keyframes rotate-ring {
+        @keyframes rotateRing {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
@@ -207,9 +208,18 @@
         }
 
         .login-logo {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .login-title {
@@ -360,15 +370,26 @@
         }
 
         .sidebar-logo {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 0.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .sidebar-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .sidebar-logo span {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--white);
+            display: block;
+            margin-top: 0.5rem;
         }
 
         .user-info {
@@ -390,6 +411,13 @@
             font-size: 1.8rem;
             color: var(--white);
             border: 2px solid var(--primary);
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-name {
@@ -759,15 +787,6 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { color: var(--white); font-size: 1.2rem; font-weight: 600; }
 
-        /* Permission-based visibility */
-        [data-permission] {
-            display: none;
-        }
-
-        [data-permission].has-permission {
-            display: block;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -796,16 +815,15 @@
     </style>
 
     <!-- JSONBin.io Client -->
-    <script src="supabase-client.js"></script>
+    <script src="supabase-client.js" defer></script>
 </head>
 <body>
     <!-- Animated Background -->
     <div class="animated-bg">
-        <div class="bg-gradient"></div>
-        <div class="rotating-rings">
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
+        <div class="golden-rings">
+            <div class="gold-ring"></div>
+            <div class="gold-ring"></div>
+            <div class="gold-ring"></div>
         </div>
         <div class="gold-particles">
             <div class="gold-particle"></div>
@@ -822,7 +840,7 @@
         <div class="login-card">
             <div class="login-header">
                 <div class="login-logo">
-                    <i class="fas fa-car"></i>
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <h1 class="login-title">🔐 تسجيل الدخول</h1>
                 <p class="login-subtitle">لوحة المستخدمين - سيارات عبدالله</p>
@@ -861,8 +879,6 @@
             <div class="demo-credentials">
                 <p><i class="fas fa-info-circle"></i> بيانات الدخول التجريبية:</p>
                 <p><span>مستخدم عادي:</span> user1 / 123456</p>
-                <p><span>مدير مبيعات:</span> sales1 / 123456</p>
-                <p><span>محرر:</span> editor1 / 123456</p>
             </div>
 
             <div class="login-footer">
@@ -877,9 +893,9 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                    <i class="fas fa-car"></i>
-                    <span>سيارات عبدالله</span>
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
+                <span>سيارات عبدالله</span>
             </div>
 
             <div id="sidebarUserInfo" class="user-info">
@@ -901,17 +917,9 @@
                     <i class="fas fa-car"></i>
                     عرض السيارات
                 </div>
-                <div onclick="userPanel.loadPage('sellRequests')" class="nav-item" data-page="sellRequests" data-permission="view_sell">
+                <div onclick="userPanel.loadPage('my-requests')" class="nav-item" data-page="my-requests">
                     <i class="fas fa-tag"></i>
-                    طلبات البيع
-                </div>
-                <div onclick="userPanel.loadPage('exchangeRequests')" class="nav-item" data-page="exchangeRequests" data-permission="view_exchange">
-                    <i class="fas fa-exchange-alt"></i>
-                    طلبات الاستبدال
-                </div>
-                <div onclick="userPanel.loadPage('orders')" class="nav-item" data-page="orders" data-permission="view_orders">
-                    <i class="fas fa-shopping-cart"></i>
-                    طلبات الشراء
+                    طلباتي
                 </div>
                 <div onclick="userPanel.loadPage('profile')" class="nav-item" data-page="profile">
                     <i class="fas fa-user"></i>
@@ -953,6 +961,7 @@
         <div class="loading-text" id="loadingText">جاري التحميل...</div>
     </div>
 
+    <script src="supabase-client.js"></script>
     <script>
         // User Panel Controller
         class UserPanelController {
@@ -1094,13 +1103,6 @@
                 document.getElementById('dashboardPanel').classList.add('hidden');
             }
 
-            checkPermission(action) {
-                if (!this.currentUser) return false;
-                if (this.currentUser.permissions && this.currentUser.permissions.includes('all')) return true;
-                if (this.currentUser.permissions && this.currentUser.permissions.includes(action)) return true;
-                return false;
-            }
-
             async loadPage(page) {
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
@@ -1110,9 +1112,7 @@
                 const titles = {
                     'dashboard': 'لوحة المعلومات',
                     'cars': 'عرض السيارات',
-                    'sellRequests': 'طلبات البيع',
-                    'exchangeRequests': 'طلبات الاستبدال',
-                    'orders': 'طلبات الشراء',
+                    'my-requests': 'طلباتي',
                     'profile': 'الملف الشخصي'
                 };
                 document.getElementById('mainPageTitle').innerHTML = `<i class="fas fa-${this.getPageIcon(page)}"></i> ${titles[page]}`;
@@ -1123,9 +1123,7 @@
                     switch(page) {
                         case 'dashboard': await this.loadDashboard(); break;
                         case 'cars': await this.loadCars(); break;
-                        case 'sellRequests': await this.loadSellRequests(); break;
-                        case 'exchangeRequests': await this.loadExchangeRequests(); break;
-                        case 'orders': await this.loadOrders(); break;
+                        case 'my-requests': await this.loadMyRequests(); break;
                         case 'profile': await this.loadProfile(); break;
                     }
                 } catch (error) {
@@ -1137,41 +1135,42 @@
             }
 
             async loadDashboard() {
-                const productsCount = this.allProducts.length;
-                const sellRequestsCount = this.allSellRequests.length;
-                const exchangeRequestsCount = this.allExchangeRequests.length;
-                const ordersCount = this.allOrders.length;
-
+                const mySellRequests = this.allSellRequests.filter(r => r.customer_phone === this.currentUser.phone).length;
+                const myOrders = this.allOrders.filter(o => o.customer_phone === this.currentUser.phone).length;
+                
                 const content = `
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-info">
                                 <h3>🚗 إجمالي السيارات</h3>
-                                <div class="stat-number">${productsCount}</div>
+                                <div class="stat-number">${this.allProducts.length}</div>
                             </div>
                             <div class="stat-icon"><i class="fas fa-car"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3>📝 طلبات البيع</h3>
-                                <div class="stat-number">${sellRequestsCount}</div>
+                                <h3>📝 طلبات البيع الخاصة بي</h3>
+                                <div class="stat-number">${mySellRequests}</div>
                             </div>
                             <div class="stat-icon"><i class="fas fa-tag"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3>🔄 طلبات الاستبدال</h3>
-                                <div class="stat-number">${exchangeRequestsCount}</div>
-                            </div>
-                            <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3>📦 طلبات الشراء</h3>
-                                <div class="stat-number">${ordersCount}</div>
+                                <h3>📦 طلبات الشراء الخاصة بي</h3>
+                                <div class="stat-number">${myOrders}</div>
                             </div>
                             <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
                         </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-info-circle"></i> مرحباً بك في لوحة المستخدمين</h3>
+                        </div>
+                        <p style="color: var(--gray-400); line-height: 1.8;">
+                            يمكنك من هنا متابعة طلباتك وعرض السيارات المتاحة وتحديث ملفك الشخصي.
+                            إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.
+                        </p>
                     </div>
                 `;
 
@@ -1179,11 +1178,6 @@
             }
 
             async loadCars() {
-                if (!this.checkPermission('view_cars')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض السيارات</h3></div>';
-                    return;
-                }
-
                 let carsHTML = '<div class="content-card"><div class="card-header"><h3 class="card-title"><i class="fas fa-car"></i> قائمة السيارات</h3></div>';
                 
                 if (this.allProducts.length === 0) {
@@ -1191,7 +1185,7 @@
                 } else {
                     carsHTML += '<div class="table-responsive"><table><thead><tr><th>السيارة</th><th>السعر</th><th>الموديل</th><th></th></tr></thead><tbody>';
                     
-                    this.allProducts.forEach(product => {
+                    this.allProducts.slice(0, 10).forEach(product => {
                         carsHTML += `<tr>
                             <td>${product.name_ar || 'غير محدد'}</td>
                             <td>${this.formatPrice(product.price)} ج.م</td>
@@ -1201,64 +1195,89 @@
                     });
                     
                     carsHTML += '</tbody></table></div>';
+                    
+                    if (this.allProducts.length > 10) {
+                        carsHTML += '<p style="text-align: center; margin-top: 1rem;"><a href="category.html" style="color: var(--primary);">عرض جميع السيارات</a></p>';
+                    }
                 }
                 
                 carsHTML += '</div>';
                 document.getElementById('pageContent').innerHTML = carsHTML;
             }
 
-            async loadSellRequests() {
-                if (!this.checkPermission('view_sell')) {
-                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-lock" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i><h3>ليس لديك صلاحية لعرض طلبات البيع</h3></div>';
+            async loadMyRequests() {
+                if (!this.currentUser.phone) {
+                    document.getElementById('pageContent').innerHTML = '<div class="content-card" style="text-align: center; padding: 3rem;"><i class="fas fa-phone" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i><h3>يرجى تحديث رقم الهاتف في الملف الشخصي أولاً</h3></div>';
                     return;
                 }
-
-                let html = '<div class="content-card"><div class="card-header"><h3 class="card-title"><i class="fas fa-tag"></i> طلبات البيع</h3></div>';
                 
-                if (this.allSellRequests.length === 0) {
-                    html += '<p style="text-align: center; color: var(--gray-500); padding: 2rem;">لا توجد طلبات بيع حالياً</p>';
+                const mySellRequests = this.allSellRequests.filter(r => r.customer_phone === this.currentUser.phone);
+                const myOrders = this.allOrders.filter(o => o.customer_phone === this.currentUser.phone);
+                
+                let html = '<div class="content-card">';
+                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-tag"></i> طلبات البيع الخاصة بي</h3></div>';
+                
+                if (mySellRequests.length === 0) {
+                    html += '<p style="text-align: center; color: var(--gray-500); padding: 1rem;">لا توجد طلبات بيع</p>';
                 } else {
-                    html += '<div class="table-responsive"><table><thead><tr><th>العميل</th><th>السيارة</th><th>الهاتف</th><th>الحالة</th>';
+                    html += '<div class="table-responsive"><table><thead><tr><th>السيارة</th><th>السعر</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody>';
                     
-                    if (this.checkPermission('update_sell')) {
-                        html += '<th>إجراء</th>';
-                    }
-                    
-                    html += '</tr></thead><tbody>';
-                    
-                    this.allSellRequests.forEach(request => {
+                    mySellRequests.forEach(req => {
                         const statusClass = {
                             'pending': 'status-pending',
                             'contacted': 'status-contacted',
                             'sold': 'status-sold',
                             'rejected': 'status-rejected'
-                        }[request.status] || 'status-pending';
+                        }[req.status] || 'status-pending';
                         
                         const statusText = {
                             'pending': 'قيد المراجعة',
                             'contacted': 'تم التواصل',
                             'sold': 'تم البيع',
                             'rejected': 'مرفوض'
-                        }[request.status] || 'قيد المراجعة';
-
+                        }[req.status] || 'قيد المراجعة';
+                        
                         html += `<tr>
-                            <td>${request.customer_name}</td>
-                            <td>${request.car_brand} ${request.car_model} ${request.car_year}</td>
-                            <td>${request.customer_phone}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>`;
+                            <td>${req.car_brand} ${req.car_model} ${req.car_year}</td>
+                            <td>${this.formatPrice(req.expected_price)} ج.م</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>${new Date(req.created_at).toLocaleDateString('ar-EG')}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                html += '</div><div class="content-card">';
+                html += '<div class="card-header"><h3 class="card-title"><i class="fas fa-shopping-cart"></i> طلبات الشراء الخاصة بي</h3></div>';
+                
+                if (myOrders.length === 0) {
+                    html += '<p style="text-align: center; color: var(--gray-500); padding: 1rem;">لا توجد طلبات شراء</p>';
+                } else {
+                    html += '<div class="table-responsive"><table><thead><tr><th>المنتج</th><th>السعر</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody>';
+                    
+                    myOrders.forEach(order => {
+                        const product = this.allProducts.find(p => p.id === order.product_id);
+                        const statusClass = {
+                            'pending': 'status-pending',
+                            'processing': 'status-contacted',
+                            'completed': 'status-sold',
+                            'cancelled': 'status-rejected'
+                        }[order.status] || 'status-pending';
                         
-                        if (this.checkPermission('update_sell')) {
-                            html += `<td>
-                                <select onchange="userPanel.updateSellStatus('${request.id}', this.value)" style="padding: 0.3rem; border-radius: var(--radius-md); background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(197,160,89,0.2);">
-                                    <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>قيد المراجعة</option>
-                                    <option value="contacted" ${request.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
-                                    <option value="sold" ${request.status === 'sold' ? 'selected' : ''}>تم البيع</option>
-                                    <option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>مرفوض</option>
-                                </select>
-                            </td>`;
-                        }
+                        const statusText = {
+                            'pending': 'قيد المراجعة',
+                            'processing': 'جاري التجهيز',
+                            'completed': 'تم التسليم',
+                            'cancelled': 'ملغي'
+                        }[order.status] || 'قيد المراجعة';
                         
-                        html += '</tr>';
+                        html += `<tr>
+                            <td>${product?.name_ar || 'غير محدد'}</td>
+                            <td>${product ? this.formatPrice(product.price) : '0'} ج.م</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>${new Date(order.created_at).toLocaleDateString('ar-EG')}</td>
+                        </tr>`;
                     });
                     
                     html += '</tbody></table></div>';
@@ -1380,32 +1399,13 @@
                 }
             }
 
-            async updateSellStatus(requestId, status) {
-                this.showLoading('جاري تحديث الحالة...');
-                
-                try {
-                    const result = await window.db.updateSellRequestStatus(requestId, status);
-                    if (result.success) {
-                        const request = this.allSellRequests.find(r => r.id === requestId);
-                        if (request) request.status = status;
-                        this.showToast('تم تحديث حالة الطلب بنجاح', 'success');
-                        this.loadSellRequests();
-                    }
-                } catch (error) {
-                    console.error(error);
-                    this.showToast('حدث خطأ في تحديث الحالة', 'error');
-                } finally {
-                    this.hideLoading();
-                }
-            }
-
             getRoleName(role) {
                 const roles = { admin: 'مدير', viewer: 'مشاهد', sales: 'مبيعات', editor: 'محرر' };
                 return roles[role] || role;
             }
 
             getPageIcon(page) {
-                const icons = { 'dashboard': 'chart-pie', 'cars': 'car', 'sellRequests': 'tag', 'exchangeRequests': 'exchange-alt', 'orders': 'shopping-cart', 'profile': 'user' };
+                const icons = { 'dashboard': 'chart-pie', 'cars': 'car', 'my-requests': 'tag', 'profile': 'user' };
                 return icons[page] || 'circle';
             }
 

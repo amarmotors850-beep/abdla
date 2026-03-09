@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- SEO الرئيسي -->
     <title>بيع سيارتك | سيارات عبدالله</title>
+    <meta name="title" content="بيع سيارتك | سيارات عبدالله">
+    <meta name="description" content="بيع سيارتك بأفضل سعر مع تقييم عادل ودفع فوري. نضمن لك عملية بيع آمنة وسريعة.">
+    <meta name="keywords" content="بيع سيارة, تقييم سيارات, شراء سيارات مستعملة, سيارات للبيع">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.abdullah-cars.com/sell.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.abdullah-cars.com/sell.html">
+    <meta property="og:title" content="بيع سيارتك | سيارات عبدالله">
+    <meta property="og:description" content="بيع سيارتك بأفضل سعر مع تقييم عادل ودفع فوري.">
+    <meta property="og:image" content="https://www.abdullah-cars.com/images/logo.png">
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ملفات الأمان والتشفير -->
+    <script src="security.js" defer></script>
     
     <style>
         /* ============ متغيرات CSS ============ */
@@ -78,23 +96,23 @@
             pointer-events: none;
         }
 
-        .rotating-rings {
+        .golden-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .ring {
+        .gold-ring {
             position: absolute;
             border: 2px solid rgba(197, 160, 89, 0.1);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate-ring linear infinite;
+            animation: rotateRing linear infinite;
         }
 
-        .ring::after {
+        .gold-ring::after {
             content: '';
             position: absolute;
             width: 10px;
@@ -107,13 +125,13 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
-        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
-        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
-        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+        .gold-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .gold-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .gold-ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .gold-ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
+        .gold-ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
 
-        @keyframes rotate-ring {
+        @keyframes rotateRing {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
@@ -193,9 +211,9 @@
         }
 
         @media (max-width: 768px) {
-            .ring:nth-child(3) { width: 400px; height: 400px; }
-            .ring:nth-child(4) { width: 600px; height: 600px; }
-            .ring:nth-child(5) { width: 800px; height: 800px; }
+            .gold-ring:nth-child(3) { width: 400px; height: 400px; }
+            .gold-ring:nth-child(4) { width: 600px; height: 600px; }
+            .gold-ring:nth-child(5) { width: 800px; height: 800px; }
         }
 
         /* ============ الهيدر ============ */
@@ -227,20 +245,19 @@
             text-decoration: none;
         }
 
-        .logo-circle {
+        .logo-image {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
             box-shadow: var(--shadow-lg);
+            border: 2px solid var(--primary);
         }
 
-        .logo-circle i {
-            font-size: 2rem;
-            color: var(--white);
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .logo-text {
@@ -346,19 +363,15 @@
             background: rgba(255,255,255,0.1);
         }
 
-        /* ============ رأس الصفحة مع صورة bell.png ============ */
+        /* ============ رأس الصفحة ============ */
         .page-header {
-            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(26,26,26,0.9)), url('bell.png');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: var(--white);
             padding: 8rem 2rem 4rem;
             margin-bottom: 3rem;
             text-align: center;
             position: relative;
             overflow: hidden;
-            border-bottom: 2px solid var(--primary);
         }
 
         .page-header::before {
@@ -368,7 +381,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(197,160,89,0.1)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,224C960,245,1056,267,1152,250.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,224C960,245,1056,267,1152,250.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
             background-size: cover;
             background-position: bottom;
             bottom: 0;
@@ -381,7 +394,7 @@
             margin-bottom: 1rem;
             position: relative;
             z-index: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .page-subtitle {
@@ -391,7 +404,23 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
-            color: var(--gray-300);
+            color: rgba(255,255,255,0.9);
+        }
+
+        .breadcrumb {
+            position: relative;
+            z-index: 1;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .breadcrumb a {
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
         }
 
         /* ============ المحتوى الرئيسي ============ */
@@ -880,7 +909,7 @@
 
         @media (max-width: 480px) {
             .logo-title { font-size: 1.5rem; }
-            .logo-circle { width: 50px; height: 50px; }
+            .logo-image { width: 50px; height: 50px; }
             .page-title { font-size: 1.8rem; }
             .section-title { font-size: 1.3rem; }
             .benefits-grid { grid-template-columns: 1fr; }
@@ -889,14 +918,14 @@
     </style>
 
     <!-- JSONBin.io Client -->
-    <script src="supabase-client.js"></script>
+    <script src="supabase-client.js" defer></script>
 </head>
 <body>
     <!-- الخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="rotating-rings">
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div>
+        <div class="golden-rings">
+            <div class="gold-ring"></div><div class="gold-ring"></div><div class="gold-ring"></div>
+            <div class="gold-ring"></div><div class="gold-ring"></div>
         </div>
         <div class="gold-particles">
             <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
@@ -911,8 +940,8 @@
     <header class="main-header">
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-circle">
-                    <i class="fas fa-car"></i>
+                <div class="logo-image">
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <div class="logo-text">
                     <div class="logo-title">سيارات عبدالله</div>
@@ -941,10 +970,13 @@
         </div>
     </header>
 
-    <!-- رأس الصفحة مع صورة bell.png -->
+    <!-- رأس الصفحة -->
     <div class="page-header">
         <h1 class="page-title">بيع سيارتك</h1>
         <p class="page-subtitle">أدخل تفاصيل سيارتك وسنقوم بالتواصل معك خلال 24 ساعة بأفضل سعر</p>
+        <div class="breadcrumb">
+            <a href="index.html">الرئيسية</a> > <span>بيع سيارتك</span>
+        </div>
     </div>
 
     <!-- المحتوى الرئيسي -->
@@ -985,14 +1017,6 @@
                             <label class="form-label required">الماركة</label>
                             <select class="form-control form-select" id="carBrand" required>
                                 <option value="">اختر الماركة</option>
-                                <option value="Toyota">تويوتا</option>
-                                <option value="Hyundai">هيونداي</option>
-                                <option value="Kia">كيا</option>
-                                <option value="Nissan">نيسان</option>
-                                <option value="Chevrolet">شيفروليه</option>
-                                <option value="Mercedes">مرسيدس</option>
-                                <option value="BMW">بي ام دبليو</option>
-                                <option value="Other">أخرى</option>
                             </select>
                         </div>
                         
@@ -1018,9 +1042,10 @@
                         <div class="form-group">
                             <label class="form-label required">حالة السيارة</label>
                             <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="carCondition" value="new" required> <span>جديدة (زيرو)</span></label>
-                                <label class="radio-label"><input type="radio" name="carCondition" value="used" required> <span>مستعملة</span></label>
-                                <label class="radio-label"><input type="radio" name="carCondition" value="electric" required> <span>كهربائية</span></label>
+                                <label class="radio-label"><input type="radio" name="carCondition" value="excellent" required> <span>ممتازة</span></label>
+                                <label class="radio-label"><input type="radio" name="carCondition" value="very_good" required> <span>جيدة جداً</span></label>
+                                <label class="radio-label"><input type="radio" name="carCondition" value="good" required> <span>جيدة</span></label>
+                                <label class="radio-label"><input type="radio" name="carCondition" value="fair" required> <span>متوسطة</span></label>
                             </div>
                         </div>
                         
@@ -1155,9 +1180,11 @@
         <div class="loading-text" id="loadingText">جاري التحميل...</div>
     </div>
 
+    <script src="supabase-client.js"></script>
     <script>
         // ============ متغيرات النظام ============
         let siteSettings = null;
+        let allBrands = [];
         let selectedImages = [];
         let selectedMethod = null;
 
@@ -1166,8 +1193,9 @@
             console.log('🚀 جاري تحميل صفحة بيع سيارة...');
             
             setupMobileMenu();
-            populateYearOptions();
             await loadData();
+            populateBrandOptions();
+            populateYearOptions();
             
             console.log('✅ الصفحة جاهزة');
         });
@@ -1177,9 +1205,26 @@
             try {
                 const settingsResult = await window.db.getSettings();
                 if (settingsResult.success) siteSettings = settingsResult.data;
+                
+                const brandsResult = await window.db.getBrands();
+                if (brandsResult.success) allBrands = brandsResult.data;
             } catch (error) {
                 console.error('❌ خطأ في تحميل البيانات:', error);
             }
+        }
+
+        // ============ تعبئة الماركات ============
+        function populateBrandOptions() {
+            const brandSelect = document.getElementById('carBrand');
+            if (!brandSelect) return;
+            
+            brandSelect.innerHTML = '<option value="">اختر الماركة</option>';
+            allBrands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand.name_ar;
+                option.textContent = brand.name_ar;
+                brandSelect.appendChild(option);
+            });
         }
 
         // ============ تعبئة سنوات الصنع ============
@@ -1278,6 +1323,11 @@
                 if (result.success) {
                     showToast('تم إرسال طلب البيع بنجاح! سنتواصل معك قريباً', 'success');
                     
+                    // إرسال إشعار Telegram
+                    if (siteSettings?.telegram_bot_token && siteSettings?.telegram_chat_id) {
+                        sendTelegramNotification(sellRequest, result.data.id);
+                    }
+                    
                     this.reset();
                     selectedImages = [];
                     selectedMethod = null;
@@ -1295,6 +1345,40 @@
                 hideLoading();
             }
         });
+
+        // ============ إرسال إشعار Telegram ============
+        async function sendTelegramNotification(request, requestId) {
+            try {
+                const message = `
+💰 *طلب بيع جديد* 💰
+
+👤 *العميل:* ${request.customerName}
+📞 *الهاتف:* ${request.customerPhone}
+🏙️ *المدينة:* ${request.customerCity}
+
+🚗 *السيارة:* ${request.carBrand} ${request.carModel} ${request.carYear}
+📏 *المسافة:* ${request.carMileage.toLocaleString()} كم
+🏷️ *الحالة:* ${request.carCondition}
+💵 *السعر المتوقع:* ${request.carPrice.toLocaleString()} ج.م
+
+💬 *طريقة التواصل:* ${request.contactMethod}
+🆔 *رقم الطلب:* ${requestId}
+📅 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
+                `;
+                
+                await fetch(`https://api.telegram.org/bot${siteSettings.telegram_bot_token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: siteSettings.telegram_chat_id,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.error('خطأ في إرسال إشعار Telegram:', error);
+            }
+        }
 
         // ============ القائمة للجوال ============
         function setupMobileMenu() {

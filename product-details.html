@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- SEO الرئيسي - ديناميكي يتم تحديثه بالجافاسكريبت -->
     <title>تفاصيل السيارة | سيارات عبدالله</title>
+    <meta name="description" content="تفاصيل كاملة عن السيارة مع المواصفات والأسعار وصور عالية الجودة.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph - ديناميكي -->
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="تفاصيل السيارة | سيارات عبدالله">
+    <meta property="og:description" content="تفاصيل كاملة عن السيارة مع المواصفات والأسعار.">
+    <meta property="og:image" content="https://www.abdullah-cars.com/images/logo.png">
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +24,9 @@
     
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- ملفات الأمان والتشفير -->
+    <script src="security.js" defer></script>
     
     <style>
         /* ============ متغيرات CSS ============ */
@@ -81,23 +95,23 @@
             pointer-events: none;
         }
 
-        .rotating-rings {
+        .golden-rings {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .ring {
+        .gold-ring {
             position: absolute;
             border: 2px solid rgba(197, 160, 89, 0.1);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate-ring linear infinite;
+            animation: rotateRing linear infinite;
         }
 
-        .ring::after {
+        .gold-ring::after {
             content: '';
             position: absolute;
             width: 10px;
@@ -110,13 +124,13 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-        .ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
-        .ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
-        .ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
-        .ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
+        .gold-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
+        .gold-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 30s; animation-direction: reverse; border-width: 3px; border-color: rgba(197, 160, 89, 0.15); }
+        .gold-ring:nth-child(3) { width: 600px; height: 600px; animation-duration: 40s; border-width: 4px; border-color: rgba(197, 160, 89, 0.2); }
+        .gold-ring:nth-child(4) { width: 800px; height: 800px; animation-duration: 50s; animation-direction: reverse; border-width: 5px; border-color: rgba(197, 160, 89, 0.25); }
+        .gold-ring:nth-child(5) { width: 1000px; height: 1000px; animation-duration: 60s; border-width: 6px; border-color: rgba(197, 160, 89, 0.3); }
 
-        @keyframes rotate-ring {
+        @keyframes rotateRing {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
@@ -196,9 +210,9 @@
         }
 
         @media (max-width: 768px) {
-            .ring:nth-child(3) { width: 400px; height: 400px; }
-            .ring:nth-child(4) { width: 600px; height: 600px; }
-            .ring:nth-child(5) { width: 800px; height: 800px; }
+            .gold-ring:nth-child(3) { width: 400px; height: 400px; }
+            .gold-ring:nth-child(4) { width: 600px; height: 600px; }
+            .gold-ring:nth-child(5) { width: 800px; height: 800px; }
         }
 
         /* ============ الهيدر ============ */
@@ -230,20 +244,19 @@
             text-decoration: none;
         }
 
-        .logo-circle {
+        .logo-image {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
             box-shadow: var(--shadow-lg);
+            border: 2px solid var(--primary);
         }
 
-        .logo-circle i {
-            font-size: 2rem;
-            color: var(--white);
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .logo-text {
@@ -1063,7 +1076,7 @@
 
         @media (max-width: 480px) {
             .logo-title { font-size: 1.5rem; }
-            .logo-circle { width: 50px; height: 50px; }
+            .logo-image { width: 50px; height: 50px; }
             .product-title { font-size: 1.5rem; }
             .current-price { font-size: 2rem; }
             .meta-item { font-size: 0.9rem; }
@@ -1071,14 +1084,14 @@
     </style>
 
     <!-- JSONBin.io Client -->
-    <script src="supabase-client.js"></script>
+    <script src="supabase-client.js" defer></script>
 </head>
 <body>
     <!-- الخلفية المتحركة -->
     <div class="animated-bg">
-        <div class="rotating-rings">
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div>
+        <div class="golden-rings">
+            <div class="gold-ring"></div><div class="gold-ring"></div><div class="gold-ring"></div>
+            <div class="gold-ring"></div><div class="gold-ring"></div>
         </div>
         <div class="gold-particles">
             <div class="gold-particle"></div><div class="gold-particle"></div><div class="gold-particle"></div>
@@ -1093,8 +1106,8 @@
     <header class="main-header">
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-circle">
-                    <i class="fas fa-car"></i>
+                <div class="logo-image">
+                    <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <div class="logo-text">
                     <div class="logo-title">سيارات عبدالله</div>
@@ -1311,6 +1324,7 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
+    <script src="supabase-client.js"></script>
     <script>
         // ============ متغيرات النظام ============
         let siteSettings = null;
@@ -1378,12 +1392,38 @@
                 document.getElementById('productContent').style.display = 'block';
                 
                 updateUI();
+                updateSEO();
                 loadRelatedProducts();
             } catch (error) {
                 console.error(error);
                 showToast('حدث خطأ في تحميل المنتج', 'error');
             } finally {
                 hideLoading();
+            }
+        }
+
+        // ============ تحديث SEO ============
+        function updateSEO() {
+            if (!currentProduct) return;
+            
+            const brand = allBrands.find(b => b.id === currentProduct.brand_id);
+            const title = `${currentProduct.name_ar} | سيارات عبدالله`;
+            const description = `سيارة ${currentProduct.name_ar} ${brand?.name_ar || ''} موديل ${currentProduct.year || ''} - ${currentProduct.price.toLocaleString()} ج.م. ${currentProduct.description?.substring(0, 150) || ''}`;
+            
+            document.title = title;
+            
+            let metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) metaDesc.setAttribute('content', description);
+            
+            let ogTitle = document.querySelector('meta[property="og:title"]');
+            if (ogTitle) ogTitle.setAttribute('content', title);
+            
+            let ogDesc = document.querySelector('meta[property="og:description"]');
+            if (ogDesc) ogDesc.setAttribute('content', description);
+            
+            let ogImage = document.querySelector('meta[property="og:image"]');
+            if (ogImage && currentProduct.images?.length > 0) {
+                ogImage.setAttribute('content', currentProduct.images[0]);
             }
         }
 
@@ -1537,6 +1577,12 @@
                 
                 if (result.success) {
                     showToast('تم إرسال طلبك بنجاح! سنتواصل معك قريباً', 'success');
+                    
+                    // إرسال إشعار Telegram
+                    if (siteSettings?.telegram_bot_token && siteSettings?.telegram_chat_id) {
+                        sendTelegramNotification(orderData, result.data.id);
+                    }
+                    
                     closeModal('orderModal');
                     
                     localStorage.setItem('last_order', JSON.stringify(result.data));
@@ -1552,6 +1598,41 @@
                 hideLoading();
             }
         });
+
+        // ============ إرسال إشعار Telegram ============
+        async function sendTelegramNotification(order, orderId) {
+            try {
+                const productName = currentProduct.name_ar;
+                const productPrice = currentProduct.price.toLocaleString();
+                
+                const message = `
+🛒 *طلب شراء جديد* 🛒
+
+👤 *العميل:* ${order.customerName}
+📞 *الهاتف:* ${order.customerPhone}
+🏙️ *المدينة:* ${order.customerCity}
+
+🚗 *السيارة:* ${productName}
+💵 *السعر:* ${productPrice} ج.م
+💳 *طريقة الدفع:* ${order.paymentMethod === 'cash' ? 'كاش' : order.paymentMethod === 'bank' ? 'تحويل بنكي' : 'محفظة إلكترونية'}
+
+🆔 *رقم الطلب:* ${orderId}
+📅 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
+                `;
+                
+                await fetch(`https://api.telegram.org/bot${siteSettings.telegram_bot_token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: siteSettings.telegram_chat_id,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.error('خطأ في إرسال إشعار Telegram:', error);
+            }
+        }
 
         // ============ استفسار عبر واتساب ============
         function contactWhatsApp() {
