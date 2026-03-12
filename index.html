@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v4.0 -->
+    <!-- كود التشفير الأساسي للموقع - سيارات عبدالله v5.0 (ثنائي اللغة) -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     
@@ -52,12 +52,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- ملفات الأمان والتشفير -->
-    
-    
-    <!-- JSONBin.io Client -->
-    
     
     <!-- Structured Data / Schema.org -->
     <script type="application/ld+json">
@@ -186,6 +180,18 @@
             
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* متغيرات اللغة */
+            --font-family: 'Cairo', sans-serif;
+        }
+
+        /* نمط اللغة الإنجليزية */
+        html[lang="en"] {
+            --font-family: 'Cairo', sans-serif;
+        }
+        
+        html[lang="en"] body {
+            font-family: var(--font-family);
         }
 
         * {
@@ -195,7 +201,7 @@
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: var(--font-family);
             background: var(--secondary);
             color: var(--white);
             min-height: 100vh;
@@ -239,7 +245,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, rgba(10,10,10,0.7), rgba(139,30,30,0.3));
+            background: linear-gradient(45deg, rgba(10,10,10,0.5), rgba(139,30,30,0.2));
             z-index: 1;
         }
 
@@ -294,7 +300,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* ============ أنماط الخلفية المتحركة المتطورة ============ */
+        /* ============ خلفية بسيطة ============ */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -302,199 +308,49 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            overflow: hidden;
+            background: var(--secondary);
             pointer-events: none;
         }
 
-        /* طبقة الدوائر الذهبية الدوارة */
-        .golden-rings {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .gold-ring {
-            position: absolute;
-            border: 2px solid rgba(197, 160, 89, 0.15);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: rotateRing linear infinite;
-            box-shadow: 0 0 30px rgba(197,160,89,0.1);
-        }
-
-        .gold-ring::before,
-        .gold-ring::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: var(--primary);
-            border-radius: 50%;
-            top: -7.5px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 20px var(--primary);
-            filter: blur(1px);
-        }
-
-        .gold-ring::after {
-            top: auto;
-            bottom: -7.5px;
-            width: 10px;
-            height: 10px;
-            background: rgba(197,160,89,0.8);
-        }
-
-        .gold-ring:nth-child(1) { width: 150px; height: 150px; animation-duration: 15s; border-width: 1px; }
-        .gold-ring:nth-child(2) { width: 300px; height: 300px; animation-duration: 20s; animation-direction: reverse; border-width: 2px; border-color: rgba(197,160,89,0.2); }
-        .gold-ring:nth-child(3) { width: 450px; height: 450px; animation-duration: 25s; border-width: 3px; border-color: rgba(197,160,89,0.25); }
-        .gold-ring:nth-child(4) { width: 600px; height: 600px; animation-duration: 30s; animation-direction: reverse; border-width: 4px; border-color: rgba(197,160,89,0.3); }
-        .gold-ring:nth-child(5) { width: 750px; height: 750px; animation-duration: 35s; border-width: 5px; border-color: rgba(197,160,89,0.35); }
-        .gold-ring:nth-child(6) { width: 900px; height: 900px; animation-duration: 40s; border-width: 6px; border-color: rgba(197,160,89,0.4); }
-
-        @keyframes rotateRing {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* طبقة الكلمات المتناوبة في المنتصف */
-        .rotating-words {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
-            width: 100%;
-            pointer-events: none;
-        }
-
-        .word-container {
-            position: relative;
-            height: 80px;
-            overflow: hidden;
-        }
-
-        .rotating-word {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--white));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(100px);
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            text-shadow: 0 0 30px rgba(197,160,89,0.5);
-            white-space: nowrap;
-        }
-
-        .rotating-word.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .rotating-word.prev {
-            opacity: 0;
-            transform: translateY(-100px);
-        }
-
-        /* جزيئات ذهبية متطايرة */
-        .gold-particles-advanced {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .particle {
-            position: absolute;
-            background: var(--primary);
-            border-radius: 50%;
-            filter: blur(2px);
-            animation: floatParticle linear infinite;
-        }
-
-        .particle:nth-child(1) { width: 8px; height: 8px; top: 15%; left: 20%; animation-duration: 8s; }
-        .particle:nth-child(2) { width: 12px; height: 12px; top: 75%; left: 80%; animation-duration: 12s; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 6px; height: 6px; top: 40%; left: 60%; animation-duration: 10s; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 10px; height: 10px; top: 85%; left: 15%; animation-duration: 14s; animation-delay: 1s; }
-        .particle:nth-child(5) { width: 7px; height: 7px; top: 25%; left: 85%; animation-duration: 9s; animation-delay: 3s; }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 55%; left: 35%; animation-duration: 11s; animation-delay: 5s; }
-        .particle:nth-child(7) { width: 5px; height: 5px; top: 10%; left: 45%; animation-duration: 7s; animation-delay: 6s; }
-        .particle:nth-child(8) { width: 11px; height: 11px; top: 70%; left: 70%; animation-duration: 13s; animation-delay: 7s; }
-
-        @keyframes floatParticle {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-            25% { transform: translate(50px, -80px) scale(1.5); opacity: 0.7; }
-            50% { transform: translate(-60px, 60px) scale(0.8); opacity: 0.4; }
-            75% { transform: translate(70px, -40px) scale(1.2); opacity: 0.6; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-        }
-
-        /* موجات ذهبية متحركة */
-        .gold-waves {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(45deg, 
-                rgba(197, 160, 89, 0.05) 0%, 
-                transparent 25%,
-                rgba(197, 160, 89, 0.05) 50%,
-                transparent 75%,
-                rgba(197, 160, 89, 0.05) 100%);
-            animation: moveWave 20s infinite linear;
-        }
-
-        @keyframes moveWave {
-            0% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(-5%) translateY(-40px); }
-            100% { transform: translateX(-10%) translateY(0); }
-        }
-
-        /* تدرج ذهبي دوار */
+        /* تدرج ذهبي بسيط */
         .gold-gradient-advanced {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle at 50% 50%,
-                        rgba(197, 160, 89, 0.1) 0%,
-                        transparent 30%,
-                        rgba(139, 30, 30, 0.07) 60%,
-                        transparent 80%);
-            animation: rotateGradient 80s linear infinite;
-        }
-
-        @keyframes rotateGradient {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.3); }
-            100% { transform: rotate(360deg) scale(1); }
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(197, 160, 89, 0.03) 0%, transparent 50%);
         }
 
         @media (max-width: 992px) {
-            .rotating-word { font-size: 2rem; }
-            .gold-ring:nth-child(5) { width: 600px; height: 600px; }
-            .gold-ring:nth-child(6) { width: 750px; height: 750px; }
-        }
-
-        @media (max-width: 768px) {
-            .rotating-word { font-size: 1.8rem; }
             .splash-title { font-size: 2rem; }
             .splash-logo { width: 100px; height: 100px; }
         }
 
-        @media (max-width: 480px) {
-            .rotating-word { font-size: 1.5rem; }
+        /* ============ زر تبديل اللغة ============ */
+        .lang-switch {
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: 1rem;
+            font-size: 0.95rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .lang-switch:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .lang-switch i {
+            font-size: 1rem;
         }
 
         /* ============ الهيدر ============ */
@@ -668,7 +524,7 @@
             background: rgba(255,255,255,0.1);
         }
 
-        /* ============ قسم الهيرو ============ */
+        /* ============ قسم الهيرو مع فيديو ============ */
         .hero-section {
             min-height: 100vh;
             position: relative;
@@ -694,7 +550,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.5;
+            opacity: 0.95; /* زيادة الشفافية لجعل الفيديو أكثر وضوحاً */
+            filter: brightness(1.1) contrast(1.1); /* تفتيح الفيديو */
         }
 
         .hero-overlay {
@@ -704,9 +561,9 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to bottom, 
-                rgba(10,10,10,0.9) 0%,
-                rgba(10,10,10,0.7) 50%,
-                rgba(10,10,10,0.5) 100%);
+                rgba(10,10,10,0.3) 0%,  /* تقليل التعتيم */
+                rgba(10,10,10,0.2) 50%,
+                rgba(10,10,10,0.1) 100%);
             z-index: -1;
         }
 
@@ -740,50 +597,8 @@
             opacity: 0.95;
             line-height: 1.8;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            color: var(--gray-300);
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            background: rgba(197, 160, 89, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: var(--radius-xl);
-            min-width: 200px;
-            transition: var(--transition-bounce);
-            border: 1px solid rgba(197, 160, 89, 0.2);
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px) scale(1.05);
-            background: rgba(197, 160, 89, 0.2);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--primary);
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--white), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            display: block;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
+            color: var(--white);
             font-weight: 600;
-            color: var(--gray-300);
-            opacity: 0.95;
         }
 
         .hero-actions {
@@ -794,10 +609,62 @@
             margin-top: 2rem;
         }
 
+        /* ============ الإحصائيات تحت الفيديو ============ */
+        .stats-section {
+            max-width: 1200px;
+            margin: -30px auto 4rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item-new {
+            background: var(--secondary);
+            backdrop-filter: blur(10px);
+            padding: 2rem 2.5rem;
+            border-radius: var(--radius-xl);
+            min-width: 200px;
+            transition: var(--transition-bounce);
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+
+        .stat-item-new:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.3);
+            border-color: var(--accent);
+        }
+
+        .stat-number-new {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--white), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label-new {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            opacity: 0.95;
+        }
+
         /* ============ البحث السريع ============ */
         .quick-search {
             max-width: 1200px;
-            margin: -60px auto 4rem;
+            margin: 0 auto 4rem;
             padding: 0 2rem;
             position: relative;
             z-index: 100;
@@ -860,6 +727,197 @@
             justify-content: center;
             gap: 1rem;
             margin-top: 2rem;
+        }
+
+        /* ============ قسم السيرة الذاتية للموقع ============ */
+        .about-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(26,26,26,0.98));
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(197,160,89,0.3);
+            border-bottom: 1px solid rgba(197,160,89,0.3);
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(197,160,89,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-content {
+            color: var(--white);
+        }
+
+        .about-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .about-title span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius-full);
+        }
+
+        .about-text {
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--gray-300);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .highlight-item {
+            background: rgba(197, 160, 89, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            transition: var(--transition);
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-5px);
+            background: rgba(197, 160, 89, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .highlight-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .highlight-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .highlight-desc {
+            font-size: 1rem;
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+
+        .about-vision-mission {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .vision-box, .mission-box {
+            background: rgba(0,0,0,0.5);
+            padding: 1.8rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(197,160,89,0.2);
+        }
+
+        .vision-box h4, .mission-box h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .vision-box p, .mission-box p {
+            color: var(--gray-300);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-2xl);
+            border: 3px solid var(--primary);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition-bounce);
+        }
+
+        .about-image img:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 2rem;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            animation: pulse 2s infinite;
+        }
+
+        .experience-badge .years {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .experience-badge .text {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         /* ============ قسم الخدمات ============ */
@@ -1010,7 +1068,7 @@
             box-shadow: var(--shadow-xl);
         }
 
-        /* ============ قسم الماركات (Horizontal Scroll) ============ */
+        /* ============ قسم الماركات (Horizontal Scroll محسّن) ============ */
         .brands-section {
             padding: 6rem 2rem;
             background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(26,26,26,0.95));
@@ -1022,6 +1080,7 @@
             margin: 0 auto;
             overflow: hidden;
             position: relative;
+            padding: 0 20px;
         }
 
         .brands-wrapper {
@@ -1033,6 +1092,8 @@
             cursor: grab;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch; /* للتمرير السلس على iOS */
+            touch-action: pan-x; /* تحسين التمرير باللمس */
         }
 
         .brands-wrapper:active {
@@ -1048,11 +1109,14 @@
             width: 200px;
             text-align: center;
             transition: var(--transition-bounce);
+            user-select: none; /* منع التحديد أثناء السحب */
+            -webkit-tap-highlight-color: transparent; /* إزالة التمييز عند النقر على iOS */
         }
 
         .brand-link {
             text-decoration: none;
             display: block;
+            cursor: pointer;
         }
 
         .brand-image {
@@ -1065,12 +1129,14 @@
             transition: var(--transition-bounce);
             box-shadow: var(--shadow-lg);
             background: rgba(0,0,0,0.5);
+            pointer-events: none; /* للسماح بالسحب عبر الصورة */
         }
 
         .brand-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            pointer-events: none;
         }
 
         .brand-item:hover .brand-image {
@@ -1124,16 +1190,17 @@
             font-size: 1.2rem;
         }
 
-        .scroll-arrow:hover {
+        .scroll-arrow:hover:not(.disabled) {
             background: var(--primary);
             color: var(--secondary);
             transform: scale(1.1);
         }
 
         .scroll-arrow.disabled {
-            opacity: 0.5;
-            pointer-events: none;
+            opacity: 0.3;
+            cursor: not-allowed;
             border-color: var(--gray-600);
+            pointer-events: none;
         }
 
         /* ============ قسم السيارات ============ */
@@ -1541,6 +1608,8 @@
         /* ============ Responsive ============ */
         @media (max-width: 1200px) {
             .hero-title { font-size: 3.8rem; }
+            .about-container { grid-template-columns: 1fr; gap: 3rem; }
+            .about-image { order: -1; max-width: 600px; margin: 0 auto; }
             .products-container { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
         }
 
@@ -1568,13 +1637,15 @@
             }
             .mobile-menu { display: block; }
             .hero-title { font-size: 3rem; }
-            .hero-stats { gap: 2rem; }
-            .stat-item { min-width: 160px; }
+            .stats-container { gap: 1.5rem; }
+            .stat-item-new { min-width: 150px; padding: 1.5rem; }
             .search-grid { grid-template-columns: 1fr; }
             .services-grid { grid-template-columns: 1fr; }
             .products-header { flex-direction: column; text-align: center; }
             .brand-item { width: 160px; }
             .brand-image { width: 120px; height: 120px; }
+            .about-highlights { grid-template-columns: 1fr; }
+            .about-vision-mission { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -1582,21 +1653,22 @@
             .hero-section { padding: 7rem 1.5rem 3rem; }
             .hero-title { font-size: 2.5rem; }
             .hero-subtitle { font-size: 1.2rem; }
-            .stat-number { font-size: 2.8rem; }
+            .stat-number-new { font-size: 2.8rem; }
             .section-title { font-size: 2.2rem; }
             .products-container { grid-template-columns: 1fr; }
             .product-actions { flex-direction: column; }
             .search-actions { flex-direction: column; }
             .nav-btn { width: 100%; justify-content: center; }
-            .rotating-word { font-size: 1.5rem; }
-            .word-container { height: 50px; }
+            .about-title { font-size: 2.2rem; }
+            .experience-badge { width: 120px; height: 120px; padding: 1rem; }
+            .experience-badge .years { font-size: 2rem; }
         }
 
         @media (max-width: 480px) {
             .hero-title { font-size: 2rem; }
             .logo-title { font-size: 1.5rem; }
             .logo-image { width: 50px; height: 50px; }
-            .stat-item { min-width: 100%; }
+            .stat-item-new { min-width: 100%; }
             .service-card { padding: 1.8rem; }
             .toast { min-width: auto; width: calc(100% - 40px); }
             .brand-item { width: 140px; }
@@ -1615,52 +1687,13 @@
             <div class="splash-logo">
                 <img src="logo.png" alt="سيارات عبدالله">
             </div>
-            <div class="splash-title">سيارات عبدالله</div>
-            <div class="splash-subtitle">ريادة وخبرة منذ 1993</div>
+            <div class="splash-title" data-i18n="splashTitle">سيارات عبدالله</div>
+            <div class="splash-subtitle" data-i18n="splashSubtitle">ريادة وخبرة منذ 1993</div>
         </div>
     </div>
 
-    <!-- الخلفية المتحركة المتطورة -->
+    <!-- الخلفية البسيطة (تم إزالة الأنيميشن) -->
     <div class="animated-bg">
-        <!-- دوائر ذهبية دوارة -->
-        <div class="golden-rings">
-            <div class="gold-ring"></div>
-            <div class="gold-ring"></div>
-            <div class="gold-ring"></div>
-            <div class="gold-ring"></div>
-            <div class="gold-ring"></div>
-            <div class="gold-ring"></div>
-        </div>
-        
-        <!-- الكلمات المتناوبة في المنتصف -->
-        <div class="rotating-words">
-            <div class="word-container">
-                <div class="rotating-word active" data-word="0">سيارات عبدالله</div>
-                <div class="rotating-word" data-word="1">عمار</div>
-                <div class="rotating-word" data-word="2">أفضل أنواع السيارات</div>
-                <div class="rotating-word" data-word="3">استبدل سيارتك</div>
-                <div class="rotating-word" data-word="4">بيع سيارتك</div>
-                <div class="rotating-word" data-word="5">أفضل معرض</div>
-                <div class="rotating-word" data-word="6">عبدالله</div>
-            </div>
-        </div>
-        
-        <!-- جزيئات ذهبية متطايرة -->
-        <div class="gold-particles-advanced">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
-        
-        <!-- موجات ذهبية متحركة -->
-        <div class="gold-waves"></div>
-        
-        <!-- تدرج لوني ذهبي دوار -->
         <div class="gold-gradient-advanced"></div>
     </div>
 
@@ -1672,28 +1705,33 @@
                     <img src="logo.png" alt="سيارات عبدالله">
                 </div>
                 <div class="logo-text">
-                    <div class="logo-title">سيارات عبدالله</div>
-                    <div class="logo-subtitle">ريادة وخبرة منذ 1993</div>
+                    <div class="logo-title" data-i18n="logoTitle">سيارات عبدالله</div>
+                    <div class="logo-subtitle" data-i18n="logoSubtitle">ريادة وخبرة منذ 1993</div>
                 </div>
             </a>
 
             <nav class="main-nav">
                 <ul id="mainNav">
-                    <li><a href="#home" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
-                    <li><a href="#services"><i class="fas fa-cogs"></i> الخدمات</a></li>
-                    <li><a href="#brands"><i class="fas fa-tags"></i> الماركات</a></li>
-                    <li><a href="#products"><i class="fas fa-car"></i> السيارات</a></li>
-                    <li><a href="#contact"><i class="fas fa-phone"></i> اتصل بنا</a></li>
-                    <li><a href="sell.html"><i class="fas fa-tag"></i> بيع سيارتك</a></li>
+                    <li><a href="#home" class="active"><i class="fas fa-home"></i> <span data-i18n="navHome">الرئيسية</span></a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> <span data-i18n="navAbout">عن الموقع</span></a></li>
+                    <li><a href="#services"><i class="fas fa-cogs"></i> <span data-i18n="navServices">الخدمات</span></a></li>
+                    <li><a href="#brands"><i class="fas fa-tags"></i> <span data-i18n="navBrands">الماركات</span></a></li>
+                    <li><a href="#products"><i class="fas fa-car"></i> <span data-i18n="navCars">السيارات</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-phone"></i> <span data-i18n="navContact">اتصل بنا</span></a></li>
+                    <li><a href="sell.html"><i class="fas fa-tag"></i> <span data-i18n="navSell">بيع سيارتك</span></a></li>
                 </ul>
             </nav>
 
             <div class="nav-actions">
+                <button class="lang-switch" id="langToggle">
+                    <i class="fas fa-globe"></i>
+                    <span id="langText">English</span>
+                </button>
                 <button class="nav-btn secondary" id="searchToggleBtn">
-                    <i class="fas fa-search"></i> بحث
+                    <i class="fas fa-search"></i> <span data-i18n="search">بحث</span>
                 </button>
                 <a href="sell.html" class="nav-btn primary">
-                    <i class="fas fa-tag"></i> بيع سيارتك
+                    <i class="fas fa-tag"></i> <span data-i18n="sellCar">بيع سيارتك</span>
                 </a>
             </div>
 
@@ -1703,7 +1741,7 @@
         </div>
     </header>
 
-    <!-- قسم الهيرو مع فيديو -->
+    <!-- قسم الهيرو مع فيديو (معدل للون الأبيض) -->
     <section class="hero-section" id="home">
         <div class="hero-video-background">
             <video autoplay muted loop playsinline poster="logo.png">
@@ -1713,61 +1751,64 @@
         <div class="hero-overlay"></div>
 
         <div class="hero-content">
-            <h1 class="hero-title fade-in">سيارات عبدالله</h1>
-            <p class="hero-subtitle fade-in delay-1">
+            <h1 class="hero-title fade-in" data-i18n="heroTitle">سيارات عبدالله</h1>
+            <p class="hero-subtitle fade-in delay-1" data-i18n="heroSubtitle">
                 ريادة وخبرة في عالم السيارات منذ 1993. نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.
             </p>
             
-            <div class="hero-stats">
-                <div class="stat-item fade-in delay-1">
-                    <span class="stat-number" id="totalCars">0</span>
-                    <span class="stat-label">سيارة متاحة</span>
-                </div>
-                <div class="stat-item fade-in delay-2">
-                    <span class="stat-number" id="totalBrands">0</span>
-                    <span class="stat-label">ماركة عالمية</span>
-                </div>
-                <div class="stat-item fade-in delay-2">
-                    <span class="stat-number" id="experienceYears">30+</span>
-                    <span class="stat-label">سنة خبرة</span>
-                </div>
-            </div>
-            
-            <div class="hero-actions fade-in delay-3">
+            <div class="hero-actions fade-in delay-2">
                 <a href="#products" class="nav-btn primary">
-                    <i class="fas fa-car"></i> تصفح السيارات
+                    <i class="fas fa-car"></i> <span data-i18n="browseCars">تصفح السيارات</span>
                 </a>
                 <a href="#contact" class="nav-btn secondary">
-                    <i class="fas fa-phone"></i> تواصل معنا
+                    <i class="fas fa-phone"></i> <span data-i18n="contactUs">تواصل معنا</span>
                 </a>
             </div>
         </div>
     </section>
+
+    <!-- الإحصائيات تحت الفيديو (منقولة من الهيرو) -->
+    <div class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item-new fade-in">
+                <span class="stat-number-new" id="totalCars">0</span>
+                <span class="stat-label-new" data-i18n="carsAvailable">سيارة متاحة</span>
+            </div>
+            <div class="stat-item-new fade-in delay-1">
+                <span class="stat-number-new" id="totalBrands">0</span>
+                <span class="stat-label-new" data-i18n="globalBrands">ماركة عالمية</span>
+            </div>
+            <div class="stat-item-new fade-in delay-2">
+                <span class="stat-number-new" id="experienceYears">30+</span>
+                <span class="stat-label-new" data-i18n="yearsExperience">سنة خبرة</span>
+            </div>
+        </div>
+    </div>
 
     <!-- البحث السريع (مخفي افتراضياً) -->
     <div class="quick-search" id="quickSearch" style="display: none;">
         <div class="search-box">
             <div class="search-grid">
                 <div class="search-group">
-                    <label class="search-label">الماركة</label>
+                    <label class="search-label" data-i18n="brand">الماركة</label>
                     <select class="search-input" id="searchBrand">
-                        <option value="">جميع الماركات</option>
+                        <option value="" data-i18n="allBrands">جميع الماركات</option>
                     </select>
                 </div>
                 <div class="search-group">
-                    <label class="search-label">الفئة</label>
+                    <label class="search-label" data-i18n="category">الفئة</label>
                     <select class="search-input" id="searchCategory">
-                        <option value="">جميع الفئات</option>
+                        <option value="" data-i18n="allCategories">جميع الفئات</option>
                     </select>
                 </div>
                 <div class="search-group">
-                    <label class="search-label">السنة</label>
+                    <label class="search-label" data-i18n="year">السنة</label>
                     <select class="search-input" id="searchYear">
-                        <option value="">جميع السنوات</option>
+                        <option value="" data-i18n="allYears">جميع السنوات</option>
                     </select>
                 </div>
                 <div class="search-group">
-                    <label class="search-label">نطاق السعر (ج.م)</label>
+                    <label class="search-label" data-i18n="priceRange">نطاق السعر (ج.م)</label>
                     <div style="display: flex; gap: 0.5rem;">
                         <input type="number" class="search-input" id="minPrice" placeholder="من" min="0">
                         <input type="number" class="search-input" id="maxPrice" placeholder="إلى" min="0">
@@ -1776,30 +1817,90 @@
             </div>
             <div class="search-actions">
                 <button class="nav-btn primary" onclick="performSearch()">
-                    <i class="fas fa-search"></i> بحث متقدم
+                    <i class="fas fa-search"></i> <span data-i18n="advancedSearch">بحث متقدم</span>
                 </button>
                 <button class="nav-btn secondary" onclick="resetSearch()">
-                    <i class="fas fa-redo"></i> إعادة تعيين
+                    <i class="fas fa-redo"></i> <span data-i18n="reset">إعادة تعيين</span>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- قسم السيرة الذاتية للموقع (About Us) -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-content">
+                <h2 class="about-title fade-in"><span data-i18n="aboutTitle">مرحباً بكم في</span> <span data-i18n="aboutTitleHighlight">سيارات عبدالله</span></h2>
+                
+                <div class="about-text fade-in delay-1">
+                    <p data-i18n="aboutText1">
+                        وجهتكم الموثوقة لشراء السيارات في مصر. نعمل على تقديم مجموعة مختارة من السيارات التي تجمع بين الجودة، الأداء، والفخامة، مع الحرص على توفير خيارات تناسب مختلف الاحتياجات والميزانيات.
+                    </p>
+                    <p data-i18n="aboutText2">
+                        في سيارات عبدالله نؤمن أن شراء السيارة يجب أن يكون تجربة سهلة ومريحة، لذلك نحرص على توفير معلومات واضحة عن كل سيارة، وفحصها بعناية لضمان أفضل حالة ممكنة قبل عرضها للبيع.
+                    </p>
+                </div>
+
+                <div class="about-highlights">
+                    <div class="highlight-item fade-in delay-2">
+                        <div class="highlight-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3 class="highlight-title" data-i18n="highlight1Title">سيارات مختارة بعناية</h3>
+                        <p class="highlight-desc" data-i18n="highlight1Desc">نختار أفضل السيارات لضمان الجودة والموثوقية</p>
+                    </div>
+                    <div class="highlight-item fade-in delay-2">
+                        <div class="highlight-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                        <h3 class="highlight-title" data-i18n="highlight2Title">مصداقية وشفافية</h3>
+                        <p class="highlight-desc" data-i18n="highlight2Desc">نعمل بشفافية كاملة في جميع تعاملاتنا</p>
+                    </div>
+                    <div class="highlight-item fade-in delay-3">
+                        <div class="highlight-icon"><i class="fas fa-tags"></i></div>
+                        <h3 class="highlight-title" data-i18n="highlight3Title">أسعار تنافسية</h3>
+                        <p class="highlight-desc" data-i18n="highlight3Desc">نقدم أفضل الأسعار مع خيارات تناسب الجميع</p>
+                    </div>
+                    <div class="highlight-item fade-in delay-3">
+                        <div class="highlight-icon"><i class="fas fa-headset"></i></div>
+                        <h3 class="highlight-title" data-i18n="highlight4Title">خدمة عملاء متميزة</h3>
+                        <p class="highlight-desc" data-i18n="highlight4Desc">فريق متخصص لمساعدتك في اختيار السيارة المناسبة</p>
+                    </div>
+                </div>
+
+                <div class="about-vision-mission">
+                    <div class="vision-box fade-in delay-3">
+                        <h4 data-i18n="visionTitle">رؤيتنا</h4>
+                        <p data-i18n="visionText">أن نكون من أبرز معارض السيارات التي يثق بها العملاء، من خلال تقديم سيارات عالية الجودة وخدمة احترافية.</p>
+                    </div>
+                    <div class="mission-box fade-in delay-3">
+                        <h4 data-i18n="missionTitle">رسالتنا</h4>
+                        <p data-i18n="missionText">تقديم تجربة شراء سيارات مميزة تعتمد على الثقة، الشفافية، والأسعار التنافسية، مع مساعدة العميل في اختيار السيارة الأنسب لاحتياجاته.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-image fade-in">
+                <img src="logo.png" alt="سيارات عبدالله - رفاهية ألمانية بأفضل الأسعار" onerror="this.src='https://images.unsplash.com/photo-1566478989037-eec170784d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                <div class="experience-badge">
+                    <span class="years">30+</span>
+                    <span class="text" data-i18n="yearsOfExperience">سنة خبرة</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- قسم الخدمات -->
     <section class="services-section" id="services">
-        <h2 class="section-title fade-in">خدماتنا <span>المتميزة</span></h2>
+        <h2 class="section-title fade-in"><span data-i18n="servicesTitle">خدماتنا</span> <span data-i18n="servicesTitleHighlight">المتميزة</span></h2>
         
         <div class="services-grid">
             <div class="service-card fade-in">
                 <div class="service-icon">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <h3 class="service-title">شراء سيارة</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-i18n="serviceBuyTitle">شراء سيارة</h3>
+                <p class="service-description" data-i18n="serviceBuyDesc">
                     ابحث عن سيارتك المثالية من بين مجموعة واسعة من السيارات الجديدة والمستعملة، مع ضمان الجودة والفحص الدقيق.
                 </p>
                 <a href="category.html" class="service-btn">
-                    <span>تصفح السيارات</span>
+                    <span data-i18n="browseCars">تصفح السيارات</span>
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -1808,12 +1909,12 @@
                 <div class="service-icon">
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
-                <h3 class="service-title">بيع سيارة</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-i18n="serviceSellTitle">بيع سيارة</h3>
+                <p class="service-description" data-i18n="serviceSellDesc">
                     بيع سيارتك بأفضل سعر مع تقييم عادل وضمان الدفع الفوري. نضمن لك عملية بيع آمنة وسريعة دون أي متاعب.
                 </p>
                 <a href="sell.html" class="service-btn">
-                    <span>أضف إعلان بيع</span>
+                    <span data-i18n="addAd">أضف إعلان بيع</span>
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -1822,12 +1923,12 @@
                 <div class="service-icon">
                     <i class="fas fa-exchange-alt"></i>
                 </div>
-                <h3 class="service-title">استبدال سيارة</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-i18n="serviceExchangeTitle">استبدال سيارة</h3>
+                <p class="service-description" data-i18n="serviceExchangeDesc">
                     استبدل سيارتك الحالية بسيارة أخرى جديدة مع تقييم عادل. نوفر لك أفضل الصفقات مع مراعاة قيمة سيارتك الحالية.
                 </p>
                 <a href="exchange.html" class="service-btn">
-                    <span>طلب استبدال</span>
+                    <span data-i18n="requestExchange">طلب استبدال</span>
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
@@ -1836,7 +1937,7 @@
 
     <!-- قسم الماركات (Horizontal Scroll) -->
     <section class="brands-section" id="brands">
-        <h2 class="section-title fade-in"><span>الماركات</span> العالمية</h2>
+        <h2 class="section-title fade-in"><span data-i18n="brandsTitle">الماركات</span> <span data-i18n="brandsTitleHighlight">العالمية</span></h2>
         
         <div class="brands-container">
             <div class="brands-wrapper" id="brandsWrapper">
@@ -1856,12 +1957,12 @@
     <!-- قسم السيارات -->
     <section class="products-section" id="products">
         <div class="products-header">
-            <h2 class="section-title fade-in">أحدث <span>السيارات</span></h2>
+            <h2 class="section-title fade-in"><span data-i18n="productsTitle">أحدث</span> <span data-i18n="productsTitleHighlight">السيارات</span></h2>
             <div class="products-filter fade-in delay-1">
-                <button class="filter-btn active" onclick="filterProducts('all')">الكل</button>
-                <button class="filter-btn" onclick="filterProducts('new')">جديد</button>
-                <button class="filter-btn" onclick="filterProducts('used')">مستعمل</button>
-                <button class="filter-btn" onclick="filterProducts('featured')">مميز</button>
+                <button class="filter-btn active" onclick="filterProducts('all')" data-i18n="all">الكل</button>
+                <button class="filter-btn" onclick="filterProducts('new')" data-i18n="new">جديد</button>
+                <button class="filter-btn" onclick="filterProducts('used')" data-i18n="used">مستعمل</button>
+                <button class="filter-btn" onclick="filterProducts('featured')" data-i18n="featured">كهربائية</button>
             </div>
         </div>
         
@@ -1869,13 +1970,13 @@
             <!-- سيتم تعبئتها بالجافاسكريبت -->
             <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
                 <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
-                <p style="margin-top: 1rem; color: var(--gray-500);">جاري تحميل السيارات...</p>
+                <p style="margin-top: 1rem; color: var(--gray-500);" data-i18n="loadingCars">جاري تحميل السيارات...</p>
             </div>
         </div>
         
         <div style="text-align: center; margin-top: 3rem;">
             <a href="category.html" class="nav-btn primary">
-                <i class="fas fa-car"></i> عرض جميع السيارات
+                <i class="fas fa-car"></i> <span data-i18n="viewAllCars">عرض جميع السيارات</span>
                 <i class="fas fa-arrow-left"></i>
             </a>
         </div>
@@ -1885,8 +1986,8 @@
     <footer class="main-footer" id="contact">
         <div class="footer-content">
             <div class="footer-col">
-                <h3>سيارات عبدالله</h3>
-                <p id="siteDescription">
+                <h3 data-i18n="footerAbout">سيارات عبدالله</h3>
+                <p id="siteDescription" data-i18n="footerDesc">
                     ريادة وخبرة في عالم السيارات منذ 1993، نقدم لكم أفضل الخدمات وأجود السيارات
                     مع ضمان شامل وخدمة مميزة وثقة تامة لعملائنا الكرام.
                 </p>
@@ -1899,38 +2000,39 @@
             </div>
             
             <div class="footer-col">
-                <h3>روابط سريعة</h3>
+                <h3 data-i18n="quickLinks">روابط سريعة</h3>
                 <ul class="footer-links">
-                    <li><a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
-                    <li><a href="#services"><i class="fas fa-chevron-left"></i> الخدمات</a></li>
-                    <li><a href="#brands"><i class="fas fa-chevron-left"></i> الماركات</a></li>
-                    <li><a href="#products"><i class="fas fa-chevron-left"></i> السيارات</a></li>
-                    <li><a href="sell.html"><i class="fas fa-chevron-left"></i> بيع سيارتك</a></li>
-                    <li><a href="exchange.html"><i class="fas fa-chevron-left"></i> استبدال</a></li>
+                    <li><a href="#home"><i class="fas fa-chevron-left"></i> <span data-i18n="navHome">الرئيسية</span></a></li>
+                    <li><a href="#about"><i class="fas fa-chevron-left"></i> <span data-i18n="navAbout">عن الموقع</span></a></li>
+                    <li><a href="#services"><i class="fas fa-chevron-left"></i> <span data-i18n="navServices">الخدمات</span></a></li>
+                    <li><a href="#brands"><i class="fas fa-chevron-left"></i> <span data-i18n="navBrands">الماركات</span></a></li>
+                    <li><a href="#products"><i class="fas fa-chevron-left"></i> <span data-i18n="navCars">السيارات</span></a></li>
+                    <li><a href="sell.html"><i class="fas fa-chevron-left"></i> <span data-i18n="navSell">بيع سيارتك</span></a></li>
+                    <li><a href="exchange.html"><i class="fas fa-chevron-left"></i> <span data-i18n="exchange">استبدال</span></a></li>
                 </ul>
             </div>
             
             <div class="footer-col">
-                <h3>اتصل بنا</h3>
+                <h3 data-i18n="contactUs">اتصل بنا</h3>
                 <ul class="footer-links" id="contactInfo">
                     <li><a href="tel:01121811110"><i class="fas fa-phone"></i> 01121811110</a></li>
                     <li><a href="https://wa.me/201121811110" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a></li>
                     <li><a href="mailto:amarmotors850@gmail.com"><i class="fas fa-envelope"></i> amarmotors850@gmail.com</a></li>
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> الجيزة، مصر</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> <span data-i18n="address">الجيزة، مصر</span></a></li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>© 1993-2026 سيارات عبدالله. جميع الحقوق محفوظة.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.85rem;">ريادة وخبرة في عالم السيارات منذ 1993</p>
+            <p>© 1993-2026 <span data-i18n="copyright">سيارات عبدالله. جميع الحقوق محفوظة.</span></p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;" data-i18n="copyrightTagline">ريادة وخبرة في عالم السيارات منذ 1993</p>
         </div>
     </footer>
 
     <!-- حالة التحميل -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">جاري التحميل...</div>
+        <div class="loading-text" id="loadingText" data-i18n="loading">جاري التحميل...</div>
     </div>
 
     <!-- حاوية الإشعارات -->
@@ -1956,65 +2058,230 @@
         let allBrands = [];
         let allCategories = [];
         let currentFilter = 'all';
-        let wordIndex = 0;
-        const words = document.querySelectorAll('.rotating-word');
-        const totalWords = words.length;
+        
+        // نظام الترجمة
+        let currentLang = 'ar';
+        const translations = {
+            ar: {
+                // عام
+                'splashTitle': 'سيارات عبدالله',
+                'splashSubtitle': 'ريادة وخبرة منذ 1993',
+                'logoTitle': 'سيارات عبدالله',
+                'logoSubtitle': 'ريادة وخبرة منذ 1993',
+                'navHome': 'الرئيسية',
+                'navAbout': 'عن الموقع',
+                'navServices': 'الخدمات',
+                'navBrands': 'الماركات',
+                'navCars': 'السيارات',
+                'navContact': 'اتصل بنا',
+                'navSell': 'بيع سيارتك',
+                'search': 'بحث',
+                'sellCar': 'بيع سيارتك',
+                
+                // الهيرو
+                'heroTitle': 'سيارات عبدالله',
+                'heroSubtitle': 'ريادة وخبرة في عالم السيارات منذ 1993. نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة.',
+                'browseCars': 'تصفح السيارات',
+                'contactUs': 'تواصل معنا',
+                
+                // الإحصائيات
+                'carsAvailable': 'سيارة متاحة',
+                'globalBrands': 'ماركة عالمية',
+                'yearsExperience': 'سنة خبرة',
+                
+                // البحث
+                'brand': 'الماركة',
+                'allBrands': 'جميع الماركات',
+                'category': 'الفئة',
+                'allCategories': 'جميع الفئات',
+                'year': 'السنة',
+                'allYears': 'جميع السنوات',
+                'priceRange': 'نطاق السعر (ج.م)',
+                'advancedSearch': 'بحث متقدم',
+                'reset': 'إعادة تعيين',
+                
+                // عن الموقع
+                'aboutTitle': 'مرحباً بكم في',
+                'aboutTitleHighlight': 'سيارات عبدالله',
+                'aboutText1': 'وجهتكم الموثوقة لشراء السيارات في مصر. نعمل على تقديم مجموعة مختارة من السيارات التي تجمع بين الجودة، الأداء، والفخامة، مع الحرص على توفير خيارات تناسب مختلف الاحتياجات والميزانيات.',
+                'aboutText2': 'في سيارات عبدالله نؤمن أن شراء السيارة يجب أن يكون تجربة سهلة ومريحة، لذلك نحرص على توفير معلومات واضحة عن كل سيارة، وفحصها بعناية لضمان أفضل حالة ممكنة قبل عرضها للبيع.',
+                'highlight1Title': 'سيارات مختارة بعناية',
+                'highlight1Desc': 'نختار أفضل السيارات لضمان الجودة والموثوقية',
+                'highlight2Title': 'مصداقية وشفافية',
+                'highlight2Desc': 'نعمل بشفافية كاملة في جميع تعاملاتنا',
+                'highlight3Title': 'أسعار تنافسية',
+                'highlight3Desc': 'نقدم أفضل الأسعار مع خيارات تناسب الجميع',
+                'highlight4Title': 'خدمة عملاء متميزة',
+                'highlight4Desc': 'فريق متخصص لمساعدتك في اختيار السيارة المناسبة',
+                'visionTitle': 'رؤيتنا',
+                'visionText': 'أن نكون من أبرز معارض السيارات التي يثق بها العملاء، من خلال تقديم سيارات عالية الجودة وخدمة احترافية.',
+                'missionTitle': 'رسالتنا',
+                'missionText': 'تقديم تجربة شراء سيارات مميزة تعتمد على الثقة، الشفافية، والأسعار التنافسية، مع مساعدة العميل في اختيار السيارة الأنسب لاحتياجاته.',
+                'yearsOfExperience': 'سنة خبرة',
+                
+                // الخدمات
+                'servicesTitle': 'خدماتنا',
+                'servicesTitleHighlight': 'المتميزة',
+                'serviceBuyTitle': 'شراء سيارة',
+                'serviceBuyDesc': 'ابحث عن سيارتك المثالية من بين مجموعة واسعة من السيارات الجديدة والمستعملة، مع ضمان الجودة والفحص الدقيق.',
+                'serviceSellTitle': 'بيع سيارة',
+                'serviceSellDesc': 'بيع سيارتك بأفضل سعر مع تقييم عادل وضمان الدفع الفوري. نضمن لك عملية بيع آمنة وسريعة دون أي متاعب.',
+                'serviceExchangeTitle': 'استبدال سيارة',
+                'serviceExchangeDesc': 'استبدل سيارتك الحالية بسيارة أخرى جديدة مع تقييم عادل. نوفر لك أفضل الصفقات مع مراعاة قيمة سيارتك الحالية.',
+                'addAd': 'أضف إعلان بيع',
+                'requestExchange': 'طلب استبدال',
+                
+                // الماركات
+                'brandsTitle': 'الماركات',
+                'brandsTitleHighlight': 'العالمية',
+                
+                // السيارات
+                'productsTitle': 'أحدث',
+                'productsTitleHighlight': 'السيارات',
+                'all': 'الكل',
+                'new': 'جديد',
+                'used': 'مستعمل',
+                'featured': 'مميز',
+                'loadingCars': 'جاري تحميل السيارات...',
+                'viewAllCars': 'عرض جميع السيارات',
+                
+                // الفوتر
+                'footerAbout': 'سيارات عبدالله',
+                'footerDesc': 'ريادة وخبرة في عالم السيارات منذ 1993، نقدم لكم أفضل الخدمات وأجود السيارات مع ضمان شامل وخدمة مميزة وثقة تامة لعملائنا الكرام.',
+                'quickLinks': 'روابط سريعة',
+                'exchange': 'استبدال',
+                'address': 'الجيزة، مصر',
+                'copyright': 'سيارات عبدالله. جميع الحقوق محفوظة.',
+                'copyrightTagline': 'ريادة وخبرة في عالم السيارات منذ 1993',
+                
+                // متنوع
+                'loading': 'جاري التحميل...',
+            },
+            en: {
+                // General
+                'splashTitle': 'Abdullah Cars',
+                'splashSubtitle': 'Leadership & Experience Since 1993',
+                'logoTitle': 'Abdullah Cars',
+                'logoSubtitle': 'Leadership & Experience Since 1993',
+                'navHome': 'Home',
+                'navAbout': 'About',
+                'navServices': 'Services',
+                'navBrands': 'Brands',
+                'navCars': 'Cars',
+                'navContact': 'Contact',
+                'navSell': 'Sell Your Car',
+                'search': 'Search',
+                'sellCar': 'Sell Your Car',
+                
+                // Hero
+                'heroTitle': 'Abdullah Cars',
+                'heroSubtitle': 'Leadership and experience in the automotive world since 1993. We offer you the best services and finest cars with comprehensive warranty and distinguished service.',
+                'browseCars': 'Browse Cars',
+                'contactUs': 'Contact Us',
+                
+                // Stats
+                'carsAvailable': 'Cars Available',
+                'globalBrands': 'Global Brands',
+                'yearsExperience': 'Years Experience',
+                
+                // Search
+                'brand': 'Brand',
+                'allBrands': 'All Brands',
+                'category': 'Category',
+                'allCategories': 'All Categories',
+                'year': 'Year',
+                'allYears': 'All Years',
+                'priceRange': 'Price Range (EGP)',
+                'advancedSearch': 'Advanced Search',
+                'reset': 'Reset',
+                
+                // About
+                'aboutTitle': 'Welcome to',
+                'aboutTitleHighlight': 'Abdullah Cars',
+                'aboutText1': 'Your trusted destination for buying cars in Egypt. We offer a selected collection of cars that combine quality, performance, and luxury, while providing options that suit different needs and budgets.',
+                'aboutText2': 'At Abdullah Cars, we believe that buying a car should be an easy and comfortable experience. Therefore, we ensure clear information about each car and careful inspection to guarantee the best possible condition before offering it for sale.',
+                'highlight1Title': 'Carefully Selected Cars',
+                'highlight1Desc': 'We choose the best cars to ensure quality and reliability',
+                'highlight2Title': 'Credibility & Transparency',
+                'highlight2Desc': 'We work with complete transparency in all our dealings',
+                'highlight3Title': 'Competitive Prices',
+                'highlight3Desc': 'We offer the best prices with options for everyone',
+                'highlight4Title': 'Excellent Customer Service',
+                'highlight4Desc': 'A specialized team to help you choose the right car',
+                'visionTitle': 'Our Vision',
+                'visionText': 'To be among the leading car showrooms trusted by customers, by offering high-quality cars and professional service.',
+                'missionTitle': 'Our Mission',
+                'missionText': 'Providing a distinguished car buying experience based on trust, transparency, and competitive prices, while helping the customer choose the most suitable car for their needs.',
+                'yearsOfExperience': 'Years of Experience',
+                
+                // Services
+                'servicesTitle': 'Our',
+                'servicesTitleHighlight': 'Services',
+                'serviceBuyTitle': 'Buy a Car',
+                'serviceBuyDesc': 'Find your perfect car from a wide range of new and used cars, with quality assurance and thorough inspection.',
+                'serviceSellTitle': 'Sell a Car',
+                'serviceSellDesc': 'Sell your car at the best price with fair evaluation and immediate payment guarantee. We ensure a safe and fast selling process without any hassle.',
+                'serviceExchangeTitle': 'Exchange a Car',
+                'serviceExchangeDesc': 'Exchange your current car for another new car with fair evaluation. We provide you with the best deals considering your current car value.',
+                'addAd': 'Add Selling Ad',
+                'requestExchange': 'Request Exchange',
+                
+                // Brands
+                'brandsTitle': 'Global',
+                'brandsTitleHighlight': 'Brands',
+                
+                // Products
+                'productsTitle': 'Latest',
+                'productsTitleHighlight': 'Cars',
+                'all': 'All',
+                'new': 'New',
+                'used': 'Used',
+                'featured': 'Featured',
+                'loadingCars': 'Loading cars...',
+                'viewAllCars': 'View All Cars',
+                
+                // Footer
+                'footerAbout': 'Abdullah Cars',
+                'footerDesc': 'Leadership and experience in the automotive world since 1993. We offer you the best services and finest cars with comprehensive warranty, distinguished service, and complete trust for our valued customers.',
+                'quickLinks': 'Quick Links',
+                'exchange': 'Exchange',
+                'address': 'Giza, Egypt',
+                'copyright': 'Abdullah Cars. All rights reserved.',
+                'copyrightTagline': 'Leadership & Experience Since 1993',
+                
+                // Misc
+                'loading': 'Loading...',
+            }
+        };
 
-        // ============ تشغيل الكلمات المتناوبة ============
-        function rotateWords() {
-            if (words.length === 0) return;
+        // ============ دوال الترجمة ============
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('langText').textContent = currentLang === 'ar' ? 'English' : 'العربية';
             
-            // إخفاء الكلمة الحالية
-            words.forEach(word => word.classList.remove('active', 'prev'));
+            // تحديث جميع العناصر التي تحمل data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+                        el.placeholder = translations[currentLang][key];
+                    } else if (el.tagName === 'OPTION') {
+                        el.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                }
+            });
             
-            // إظهار الكلمة التالية
-            words[wordIndex].classList.add('active');
-            
-            // تحديث المؤشر
-            wordIndex = (wordIndex + 1) % totalWords;
-            
-            // تعيين الكلمة السابقة (للتأثير البصري)
-            if (wordIndex > 0) {
-                words[wordIndex - 1].classList.add('prev');
-            } else {
-                words[totalWords - 1].classList.add('prev');
+            // تحديث خيارات البحث بعد التحميل
+            if (allBrands.length > 0) {
+                updateSearchOptions();
             }
         }
 
-        // بدء تشغيل الكلمات كل 2 ثانية
-        setInterval(rotateWords, 2500);
-
-        // ============ التمرير الأفقي للماركات ============
-        window.scrollBrands = function(direction) {
-            const wrapper = document.getElementById('brandsWrapper');
-            const scrollAmount = 300;
-            
-            if (direction === 'left') {
-                wrapper.scrollLeft -= scrollAmount;
-            } else {
-                wrapper.scrollLeft += scrollAmount;
-            }
-            
-            // تحديث حالة الأزرار
-            setTimeout(() => {
-                const leftBtn = document.getElementById('scrollLeft');
-                const rightBtn = document.getElementById('scrollRight');
-                
-                if (wrapper.scrollLeft <= 10) {
-                    leftBtn.classList.add('disabled');
-                } else {
-                    leftBtn.classList.remove('disabled');
-                }
-                
-                if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
-                    rightBtn.classList.add('disabled');
-                } else {
-                    rightBtn.classList.remove('disabled');
-                }
-            }, 100);
-        };
-
-        // ============ التهيئة ============
+        // ============ تشغيل الموقع ============
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 جاري تحميل الموقع...');
             
@@ -2023,6 +2290,9 @@
             
             // إعداد زر البحث
             setupSearchButton();
+            
+            // إعداد زر الترجمة
+            document.getElementById('langToggle').addEventListener('click', toggleLanguage);
             
             // تحميل البيانات من JSONBin.io
             await loadData();
@@ -2038,7 +2308,7 @@
 
         // ============ تحميل البيانات من JSONBin.io ============
         async function loadData() {
-            showLoading('جاري تحميل البيانات...');
+            showLoading(translations[currentLang].loading);
             
             try {
                 // تحميل الإعدادات
@@ -2132,7 +2402,7 @@
             if (!allBrands || allBrands.length === 0) {
                 wrapper.innerHTML = `
                     <div style="text-align: center; width: 100%; padding: 2rem;">
-                        <p style="color: var(--gray-400);">لا توجد ماركات متاحة حالياً</p>
+                        <p style="color: var(--gray-400);">${translations[currentLang].allBrands}</p>
                     </div>
                 `;
                 return;
@@ -2153,8 +2423,8 @@
                                      alt="${brand.name_ar}"
                                      onerror="this.src='https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                             </div>
-                            <div class="brand-name">${brand.name_ar}</div>
-                            ${categoriesCount > 0 ? `<div class="brand-category">${brandCategories.length} فئة</div>` : ''}
+                            <div class="brand-name">${currentLang === 'ar' ? brand.name_ar : brand.name_en || brand.name_ar}</div>
+                            ${categoriesCount > 0 ? `<div class="brand-category">${brandCategories.length} ${translations[currentLang].category}</div>` : ''}
                             <span class="brand-count">${brandCategories.length}</span>
                         </a>
                     </div>
@@ -2163,23 +2433,49 @@
             
             wrapper.innerHTML = html;
             
-            // تحديث حالة أزرار التمرير
+            // تحديث حالة أزرار التمرير بعد تحميل المحتوى
             setTimeout(() => {
-                const leftBtn = document.getElementById('scrollLeft');
-                const rightBtn = document.getElementById('scrollRight');
-                
-                if (wrapper.scrollWidth <= wrapper.clientWidth) {
-                    leftBtn.classList.add('disabled');
-                    rightBtn.classList.add('disabled');
-                } else {
-                    if (wrapper.scrollLeft <= 10) {
-                        leftBtn.classList.add('disabled');
-                    }
-                }
+                updateScrollButtons();
             }, 100);
         }
 
-        // ============ تفعيل التمرير بالسحب للماركات ============
+        // ============ دوال التمرير المحسنة ============
+        function updateScrollButtons() {
+            const wrapper = document.getElementById('brandsWrapper');
+            const leftBtn = document.getElementById('scrollLeft');
+            const rightBtn = document.getElementById('scrollRight');
+            
+            if (!wrapper || !leftBtn || !rightBtn) return;
+            
+            // تفعيل/تعطيل الأزرار بناءً على موضع التمرير
+            if (wrapper.scrollLeft <= 5) {
+                leftBtn.classList.add('disabled');
+            } else {
+                leftBtn.classList.remove('disabled');
+            }
+            
+            if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 5) {
+                rightBtn.classList.add('disabled');
+            } else {
+                rightBtn.classList.remove('disabled');
+            }
+        }
+
+        window.scrollBrands = function(direction) {
+            const wrapper = document.getElementById('brandsWrapper');
+            const scrollAmount = 300;
+            
+            if (direction === 'left') {
+                wrapper.scrollLeft -= scrollAmount;
+            } else {
+                wrapper.scrollLeft += scrollAmount;
+            }
+            
+            // تحديث حالة الأزرار بعد التمرير
+            setTimeout(updateScrollButtons, 100);
+        };
+
+        // ============ تفعيل التمرير بالسحب للماركات (محسّن للأجهزة المحمولة) ============
         function setupBrandsDragScroll() {
             const wrapper = document.getElementById('brandsWrapper');
             if (!wrapper) return;
@@ -2187,47 +2483,80 @@
             let isDown = false;
             let startX;
             let scrollLeft;
+            let isDragging = false;
 
+            // للفأرة
             wrapper.addEventListener('mousedown', (e) => {
                 isDown = true;
-                wrapper.classList.add('active');
+                isDragging = false;
                 startX = e.pageX - wrapper.offsetLeft;
                 scrollLeft = wrapper.scrollLeft;
+                wrapper.style.cursor = 'grabbing';
+                e.preventDefault(); // منع التحديد
             });
 
             wrapper.addEventListener('mouseleave', () => {
-                isDown = false;
-                wrapper.classList.remove('active');
+                if (isDown) {
+                    isDown = false;
+                    wrapper.style.cursor = 'grab';
+                }
             });
 
             wrapper.addEventListener('mouseup', () => {
-                isDown = false;
-                wrapper.classList.remove('active');
+                if (isDown) {
+                    isDown = false;
+                    wrapper.style.cursor = 'grab';
+                    if (isDragging) {
+                        e.preventDefault();
+                    }
+                }
             });
 
             wrapper.addEventListener('mousemove', (e) => {
                 if (!isDown) return;
                 e.preventDefault();
+                isDragging = true;
                 const x = e.pageX - wrapper.offsetLeft;
-                const walk = (x - startX) * 1.5;
+                const walk = (x - startX) * 2;
                 wrapper.scrollLeft = scrollLeft - walk;
                 
-                // تحديث حالة الأزرار
-                const leftBtn = document.getElementById('scrollLeft');
-                const rightBtn = document.getElementById('scrollRight');
-                
-                if (wrapper.scrollLeft <= 10) {
-                    leftBtn.classList.add('disabled');
-                } else {
-                    leftBtn.classList.remove('disabled');
-                }
-                
-                if (wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 10) {
-                    rightBtn.classList.add('disabled');
-                } else {
-                    rightBtn.classList.remove('disabled');
-                }
+                // تحديث حالة الأزرار أثناء السحب
+                updateScrollButtons();
             });
+
+            // للأجهزة اللمسية (iOS/Android)
+            wrapper.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - wrapper.offsetLeft;
+                scrollLeft = wrapper.scrollLeft;
+            }, { passive: true });
+
+            wrapper.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                e.preventDefault(); // منع التمرير العمودي أثناء السحب الأفقي
+                const x = e.touches[0].pageX - wrapper.offsetLeft;
+                const walk = (x - startX) * 2;
+                wrapper.scrollLeft = scrollLeft - walk;
+                
+                // تحديث حالة الأزرار أثناء السحب
+                updateScrollButtons();
+            }, { passive: false });
+
+            wrapper.addEventListener('touchend', () => {
+                isDown = false;
+                updateScrollButtons();
+            });
+
+            wrapper.addEventListener('touchcancel', () => {
+                isDown = false;
+                updateScrollButtons();
+            });
+
+            // مراقبة حدث التمرير العادي
+            wrapper.addEventListener('scroll', updateScrollButtons);
+            
+            // تعيين المؤشر الأولي
+            wrapper.style.cursor = 'grab';
         }
 
         // ============ دالة عرض المنتجات ============
@@ -2241,8 +2570,8 @@
                 container.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem;">
                         <i class="fas fa-car" style="font-size: 4rem; color: var(--gray-700); margin-bottom: 1rem;"></i>
-                        <h3 style="font-size: 1.8rem; color: var(--gray-400); margin-bottom: 0.5rem;">لا توجد سيارات متاحة حالياً</h3>
-                        <p style="color: var(--gray-600); font-size: 1.1rem;">سيتم إضافة سيارات جديدة قريباً</p>
+                        <h3 style="font-size: 1.8rem; color: var(--gray-400); margin-bottom: 0.5rem;">${translations[currentLang].loadingCars}</h3>
+                        <p style="color: var(--gray-600); font-size: 1.1rem;">${translations[currentLang].allBrands}</p>
                     </div>
                 `;
                 return;
@@ -2254,8 +2583,8 @@
             let html = '';
             
             displayProducts.forEach(product => {
-                const brand = allBrands.find(b => b.id === product.brand_id) || { name_ar: 'غير محدد' };
-                const category = allCategories.find(c => c.id === product.category_id) || { name_ar: 'غير محدد' };
+                const brand = allBrands.find(b => b.id === product.brand_id) || { name_ar: 'غير محدد', name_en: 'Unknown' };
+                const category = allCategories.find(c => c.id === product.category_id) || { name_ar: 'غير محدد', name_en: 'Unknown' };
                 const mainImage = product.images && product.images.length > 0 
                     ? product.images[0] 
                     : 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
@@ -2264,41 +2593,44 @@
                 const price = product.price ? Number(product.price).toLocaleString() : '0';
                 const oldPrice = product.old_price ? Number(product.old_price).toLocaleString() : null;
                 
-                // تحديد نوع السيارة بالعربية
-                let typeText = 'جديد';
-                if (product.type === 'used') typeText = 'مستعمل';
-                else if (product.type === 'electric') typeText = 'كهربائي';
+                // تحديد نوع السيارة
+                let typeText = currentLang === 'ar' ? 'جديد' : 'New';
+                if (product.type === 'used') typeText = currentLang === 'ar' ? 'مستعمل' : 'Used';
+                else if (product.type === 'electric') typeText = currentLang === 'ar' ? 'كهربائي' : 'Electric';
+                
+                const brandName = currentLang === 'ar' ? brand.name_ar : (brand.name_en || brand.name_ar);
+                const categoryName = currentLang === 'ar' ? category.name_ar : (category.name_en || category.name_ar);
                 
                 html += `
                     <div class="product-card ${product.featured ? 'featured' : ''}">
-                        ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
+                        ${product.featured ? '<div class="product-badge">' + (currentLang === 'ar' ? 'مميز' : 'Featured') + '</div>' : ''}
                         <div class="product-image">
                             <img src="${mainImage}" alt="${product.name_ar}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                         </div>
                         <div class="product-info">
-                            <h3 class="product-title">${product.name_ar || 'سيارة'}</h3>
+                            <h3 class="product-title">${currentLang === 'ar' ? product.name_ar : (product.name_en || product.name_ar)}</h3>
                             <div class="product-category">
-                                <i class="fas fa-tag"></i> ${brand.name_ar} 
-                                ${category.name_ar ? `• ${category.name_ar}` : ''} 
+                                <i class="fas fa-tag"></i> ${brandName} 
+                                ${categoryName ? `• ${categoryName}` : ''} 
                                 • ${typeText}
                             </div>
                             <div class="product-price">
-                                ${price} ج.م
-                                ${oldPrice ? `<span class="old-price">${oldPrice} ج.م</span>` : ''}
+                                ${price} ${currentLang === 'ar' ? 'ج.م' : 'EGP'}
+                                ${oldPrice ? `<span class="old-price">${oldPrice} ${currentLang === 'ar' ? 'ج.م' : 'EGP'}</span>` : ''}
                             </div>
                             <ul class="product-specs">
                                 ${product.year ? `<li><i class="fas fa-calendar-alt"></i> ${product.year}</li>` : ''}
                                 ${product.fuel ? `<li><i class="fas fa-gas-pump"></i> ${product.fuel}</li>` : ''}
-                                ${product.mileage ? `<li><i class="fas fa-tachometer-alt"></i> ${Number(product.mileage).toLocaleString()} كم</li>` : ''}
+                                ${product.mileage ? `<li><i class="fas fa-tachometer-alt"></i> ${Number(product.mileage).toLocaleString()} ${currentLang === 'ar' ? 'كم' : 'km'}</li>` : ''}
                                 ${product.engine ? `<li><i class="fas fa-engine"></i> ${product.engine}</li>` : ''}
                             </ul>
                             <div class="product-actions">
                                 <a href="product-details.html?id=${product.id}" class="product-btn primary">
-                                    <i class="fas fa-eye"></i> التفاصيل
+                                    <i class="fas fa-eye"></i> ${currentLang === 'ar' ? 'التفاصيل' : 'Details'}
                                 </a>
                                 <button class="product-btn secondary" onclick="contactAboutProduct('${product.id}')">
-                                    <i class="fas fa-phone"></i> استفسار
+                                    <i class="fas fa-phone"></i> ${currentLang === 'ar' ? 'استفسار' : 'Inquiry'}
                                 </button>
                             </div>
                         </div>
@@ -2317,26 +2649,26 @@
             if (!brandSelect || !categorySelect || !yearSelect) return;
             
             // الماركات
-            brandSelect.innerHTML = '<option value="">جميع الماركات</option>';
+            brandSelect.innerHTML = `<option value="">${translations[currentLang].allBrands}</option>`;
             allBrands.forEach(brand => {
                 const option = document.createElement('option');
                 option.value = brand.id;
-                option.textContent = brand.name_ar;
+                option.textContent = currentLang === 'ar' ? brand.name_ar : (brand.name_en || brand.name_ar);
                 brandSelect.appendChild(option);
             });
             
             // الأقسام (الفئات)
-            categorySelect.innerHTML = '<option value="">جميع الفئات</option>';
+            categorySelect.innerHTML = `<option value="">${translations[currentLang].allCategories}</option>`;
             allCategories.forEach(cat => {
                 const option = document.createElement('option');
                 option.value = cat.id;
-                option.textContent = cat.name_ar;
+                option.textContent = currentLang === 'ar' ? cat.name_ar : (cat.name_en || cat.name_ar);
                 categorySelect.appendChild(option);
             });
             
             // السنوات
             const currentYear = new Date().getFullYear();
-            yearSelect.innerHTML = '<option value="">جميع السنوات</option>';
+            yearSelect.innerHTML = `<option value="">${translations[currentLang].allYears}</option>`;
             for (let year = currentYear + 1; year >= 2000; year--) {
                 const option = document.createElement('option');
                 option.value = year;
@@ -2352,15 +2684,15 @@
             if (contactLinks) {
                 contactLinks.innerHTML = `
                     <li><a href="tel:${siteSettings.contact_phone || '01121811110'}"><i class="fas fa-phone"></i> ${siteSettings.contact_phone || '01121811110'}</a></li>
-                    <li><a href="https://wa.me/${(siteSettings.contact_whatsapp || '01121811110').replace(/^0/, '20')}" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a></li>
+                    <li><a href="https://wa.me/${(siteSettings.contact_whatsapp || '01121811110').replace(/^0/, '20')}" target="_blank"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'واتساب' : 'WhatsApp'}</a></li>
                     <li><a href="mailto:${siteSettings.contact_email || 'amarmotors850@gmail.com'}"><i class="fas fa-envelope"></i> ${siteSettings.contact_email || 'amarmotors850@gmail.com'}</a></li>
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> ${siteSettings.contact_address || 'الجيزة، مصر'}</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> ${currentLang === 'ar' ? (siteSettings.contact_address || 'الجيزة، مصر') : (siteSettings.contact_address_en || 'Giza, Egypt')}</a></li>
                 `;
             }
             
             const siteDesc = document.getElementById('siteDescription');
-            if (siteDesc && siteSettings.site_description_ar) {
-                siteDesc.textContent = siteSettings.site_description_ar;
+            if (siteDesc) {
+                siteDesc.textContent = currentLang === 'ar' ? (siteSettings.site_description_ar || translations.ar.footerDesc) : (siteSettings.site_description_en || translations.en.footerDesc);
             }
         }
 
@@ -2404,7 +2736,7 @@
                     break;
             }
             
-            showLoading('جاري تصفية السيارات...');
+            showLoading(translations[currentLang].loading);
             
             try {
                 const result = await window.db.getProducts(filters);
@@ -2426,8 +2758,8 @@
                 container.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
                         <i class="fas fa-search" style="font-size: 3rem; color: var(--gray-700);"></i>
-                        <h3 style="margin-top: 1rem; color: var(--gray-400);">لا توجد نتائج</h3>
-                        <p style="color: var(--gray-600);">لم نعثر على سيارات تطابق البحث</p>
+                        <h3 style="margin-top: 1rem; color: var(--gray-400);">${currentLang === 'ar' ? 'لا توجد نتائج' : 'No results found'}</h3>
+                        <p style="color: var(--gray-600);">${currentLang === 'ar' ? 'لم نعثر على سيارات تطابق البحث' : 'We did not find cars matching the search'}</p>
                     </div>
                 `;
                 return;
@@ -2438,24 +2770,25 @@
                 const category = allCategories.find(c => c.id === product.category_id);
                 const mainImage = product.images?.[0] || 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 
+                const brandName = currentLang === 'ar' ? brand?.name_ar : (brand?.name_en || brand?.name_ar);
+                
                 return `
                     <div class="product-card">
-                        ${product.featured ? '<div class="product-badge">مميز</div>' : ''}
+                        ${product.featured ? '<div class="product-badge">' + (currentLang === 'ar' ? 'مميز' : 'Featured') + '</div>' : ''}
                         <div class="product-image">
                             <img src="${mainImage}" alt="${product.name_ar}">
                         </div>
                         <div class="product-info">
-                            <h3 class="product-title">${product.name_ar}</h3>
+                            <h3 class="product-title">${currentLang === 'ar' ? product.name_ar : (product.name_en || product.name_ar)}</h3>
                             <div class="product-category">
-                                <i class="fas fa-tag"></i> ${brand?.name_ar || 'غير محدد'} 
-                                ${category?.name_ar ? `• ${category.name_ar}` : ''}
+                                <i class="fas fa-tag"></i> ${brandName || (currentLang === 'ar' ? 'غير محدد' : 'Unknown')}
                             </div>
                             <div class="product-price">
-                                ${(product.price || 0).toLocaleString()} ج.م
+                                ${(product.price || 0).toLocaleString()} ${currentLang === 'ar' ? 'ج.م' : 'EGP'}
                             </div>
                             <div class="product-actions">
                                 <a href="product-details.html?id=${product.id}" class="product-btn primary">
-                                    التفاصيل
+                                    ${currentLang === 'ar' ? 'التفاصيل' : 'Details'}
                                 </a>
                             </div>
                         </div>
@@ -2489,7 +2822,7 @@
             if (minPrice) filters.minPrice = minPrice;
             if (maxPrice && maxPrice !== Infinity) filters.maxPrice = maxPrice;
             
-            showLoading('جاري البحث...');
+            showLoading(translations[currentLang].loading);
             
             try {
                 const result = await window.db.getProducts(filters);
@@ -2500,7 +2833,7 @@
                     });
                     
                     if (filtered.length === 0) {
-                        showToast('لا توجد نتائج للبحث', 'warning');
+                        showToast(currentLang === 'ar' ? 'لا توجد نتائج للبحث' : 'No search results', 'warning');
                     } else {
                         localStorage.setItem('search_results', JSON.stringify(filtered));
                         window.location.href = 'category.html?search=1';
@@ -2508,7 +2841,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                showToast('حدث خطأ في البحث', 'error');
+                showToast(currentLang === 'ar' ? 'حدث خطأ في البحث' : 'Search error', 'error');
             } finally {
                 hideLoading();
             }
@@ -2526,7 +2859,9 @@
         async function contactAboutProduct(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (product && siteSettings?.contact_whatsapp) {
-                const message = `مرحباً، أريد الاستفسار عن السيارة: ${product.name_ar}`;
+                const message = currentLang === 'ar' 
+                    ? `مرحباً، أريد الاستفسار عن السيارة: ${product.name_ar}`
+                    : `Hello, I would like to inquire about the car: ${product.name_en || product.name_ar}`;
                 const whatsapp = siteSettings.contact_whatsapp.replace(/^0/, '20');
                 window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
             } else if (siteSettings?.contact_phone) {
@@ -2571,10 +2906,15 @@
             
             const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
             
+            const title = type === 'success' ? (currentLang === 'ar' ? 'نجاح' : 'Success') : 
+                         type === 'error' ? (currentLang === 'ar' ? 'خطأ' : 'Error') : 
+                         type === 'warning' ? (currentLang === 'ar' ? 'تحذير' : 'Warning') : 
+                         (currentLang === 'ar' ? 'معلومة' : 'Info');
+            
             toast.innerHTML = `
                 <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
                 <div class="toast-content">
-                    <div class="toast-title">${type === 'success' ? 'نجاح' : type === 'error' ? 'خطأ' : type === 'warning' ? 'تحذير' : 'معلومة'}</div>
+                    <div class="toast-title">${title}</div>
                     <div class="toast-message">${message}</div>
                 </div>
                 <button class="toast-close" onclick="this.parentElement.remove()">×</button>
